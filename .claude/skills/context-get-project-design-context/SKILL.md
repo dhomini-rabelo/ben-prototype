@@ -17,6 +17,16 @@ Two distinct concerns live in the same repo:
 
 Both run inside the same Vite + React + Tailwind v4 project at [project-design/](../../../project-design/).
 
+## Source documents — read before designing
+
+These three files are the canonical brief for Ben. **Read them before any visual, UX, or copy decision** — do not rely on memory of what's "Ben-like." If a request touches design tokens, screen structure, mood, product behavior, or copy, open the relevant file first.
+
+- [docs/design.md](../../../docs/design.md) — the **design system source of truth**: full color palette, typography scale, rounded/spacing tokens, brand voice ("Modern and Human", "Linear-adjacent" precision softened with warmth), layout philosophy (Fixed and Centered, max 480px, strict 8px grid), elevation strategy (tonal layers, no heavy shadows), and component descriptions (primary button, inline error bands, optimistic capture cards, composer with press-and-hold mic, ledger peek, quiet loading states). The frontmatter tokens here are what got ported into [global.css](../../../project-design/src/core/global.css) — when adding new tokens, mirror them here first.
+- [docs/prd-to-ux/2026-05-23-ben-prototype/01b-ux-philosophy.md](../../../docs/prd-to-ux/2026-05-23-ben-prototype/01b-ux-philosophy.md) — the **organizing metaphor**: "Chat with a Live Ledger." Single chat surface + persistent glanceable ledger drawer with three tabs (Reminders / Tasks / Notes), peek strip showing "Up next: {title} in 2h". Explains how every PRD feature maps to UI (mic composer at bottom, inline capture cards in chat, drawer peek above composer, clarifying questions as plain messages, etc.). Use this when deciding *where a feature goes* on screen.
+- [docs/prd-to-ux/2026-05-23-ben-prototype/03-design-direction.md](../../../docs/prd-to-ux/2026-05-23-ben-prototype/03-design-direction.md) — **mood, tone, and the hard color guardrail**. Friend-tone copy, modern-but-human, never bubbly or clinical. **Critical guardrails:** Ben is *not* monochrome and *not* Linear's blue — the palette must be **vivid-but-adult** (considered greens, warm corals, deep ambers, friendly purples). Must-have affordances: dominant press-and-hold mic, **optimistic capture cards (no spinners between speech-end and confirmation)**, always-visible ledger peek that does not collapse on scroll.
+
+When the user gives a short prompt like "add a chat screen" or "design the ledger drawer," the answer lives in these three files combined.
+
 ## What the project represents
 
 - A **fidelity sandbox**: each Ben screen is implemented as a real React route so it can be opened, scaled into a phone-shaped iframe in the gallery, and iterated on without leaving the workspace.
