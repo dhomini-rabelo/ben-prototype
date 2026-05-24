@@ -56,6 +56,34 @@
   --color-text-error: #c53030;
   --color-slate-deep: #0f172a;
   --color-soft-gray: #e2e8f0;
+
+  --text-wordmark: 32px;
+  --text-wordmark--line-height: 40px;
+  --text-wordmark--letter-spacing: -0.04em;
+  --text-wordmark--font-weight: 700;
+
+  --text-tagline: 18px;
+  --text-tagline--line-height: 28px;
+  --text-tagline--letter-spacing: -0.01em;
+  --text-tagline--font-weight: 400;
+
+  --text-headline-lg: 24px;
+  --text-headline-lg--line-height: 32px;
+  --text-headline-lg--letter-spacing: -0.02em;
+  --text-headline-lg--font-weight: 600;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--font-weight: 400;
+
+  --text-button: 15px;
+  --text-button--line-height: 20px;
+  --text-button--font-weight: 600;
+
+  --text-label-caps: 12px;
+  --text-label-caps--line-height: 16px;
+  --text-label-caps--letter-spacing: 0.05em;
+  --text-label-caps--font-weight: 500;
 }
 
 body {
@@ -64,4 +92,28 @@ body {
 
 button {
   cursor: pointer;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.fade-in-up.delay-100 {
+  animation-delay: 100ms;
+}
+
+.fade-in-up.delay-200 {
+  animation-delay: 200ms;
 }
