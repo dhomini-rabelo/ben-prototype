@@ -14,9 +14,21 @@ Copy is friend-tone (slang allowed, warmth required), but visual language is res
 
 ## Inspirations
 
-- **Linear** — sharp, fast, beautifully restrained. Modern density, precise type, calm color, considered animations. The closest visual anchor for Ben.
-  - Borrow: precision of type hierarchy, restraint in color, calmness of state transitions, the sense that every pixel was decided.
-  - Soften: Linear is a tool for teams; Ben is a tool for one person captured in a friendly moment. Add warmth Linear doesn't have — slightly softer surfaces, friendlier corner radii, a touch more humanity in the type.
+- **Linear (as a *modernity* reference — NOT a visual clone)** — sharp, fast, beautifully restrained. We reference Linear for its *feel* of being a contemporary, considered, modern tool. **We are explicitly not copying Linear's design language or its near-monochrome palette.**
+  - Borrow from Linear: precision of type hierarchy, calmness of state transitions, considered spacing, the sense that every pixel was decided, the absence of visual noise.
+  - Do **not** borrow from Linear: its cool/desaturated color system, its dark-grey-on-near-black palette, its team-tool austerity, its iconography.
+  - Where Ben diverges hard: Ben is a one-person, friend-tone product. Where Linear uses near-monochrome grays and electric blue as the lone accent, Ben uses a **vivid but grown-up palette** (see "Color Direction" below). Where Linear's surfaces are corporate-cool, Ben's are warmer and more human.
+
+## Color Direction
+
+**The single most important guardrail in this document.** Ben's color system should feel **alive and friendly, but adult.** Vivid, saturated hues are encouraged — but they must read as a confident product palette, not a consumer toy or a child's app.
+
+- **Yes:** Saturated, modern hues (think considered greens, warm corals, deep ambers, friendly purples) used with restraint. Color carries meaning (reminder vs. task vs. note can have distinct hues). A primary accent that feels human and warm, not corporate-blue.
+- **No:** Pastel-soup palettes, candy-bright primary-school colors, rainbow gradients, Memphis-style chaos, anything that feels like a kids' app or a wellness mascot brand.
+- **No:** A monochrome or near-monochrome system. Even the "sharpest" variation must have real color presence — Ben is not greyscale-with-an-accent. If a variation reads as "Linear with friendlier copy," it has failed the brief.
+- **No:** Default to Linear's blue (#5E6AD2 and neighbors) as the primary. Pick something that signals Ben's own identity.
+
+The vividness must serve the friend-tone wrapper without undermining the assistant substance. A reasonable mental test: would this palette look at home on a modern indie productivity app made by people with taste, or would it look at home on a learn-to-code-for-kids platform? We want the former.
 
 ## Key Principles
 
@@ -31,4 +43,4 @@ Copy is friend-tone (slang allowed, warmth required), but visual language is res
 
 ---
 
-_No hex codes, dp values, component trees, or framework-specific terms in this file. Inspirations are referenced by feel, not by component spec. Renderers should interpret "Linear-like" as a mood, not a clone instruction._
+_No hex codes, dp values, component trees, or framework-specific terms in this file. Inspirations are referenced by feel, not by component spec. **"Linear-like" means modernity, restraint, and precision — never the literal visual system, palette, or component language of Linear.** Renderers MUST invent Ben's own color identity per the "Color Direction" section above._
