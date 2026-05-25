@@ -78,7 +78,7 @@ export const COMPONENTS: ComponentEntry[] = [
   { id: "icon-button", title: "IconButton", file: "/components/icon-button" },
   { id: "brand-mark", title: "BrandMark", file: "/components/brand-mark" },
   { id: "composer", title: "Composer (peek)", file: "/components/composer" },
-  { id: "chat-composer", title: "ChatComposer", file: "/components/chat-composer" },
+  { id: "chat-input", title: "ChatInput", file: "/components/chat-input" },
   { id: "message-bubble", title: "MessageBubble", file: "/components/message-bubble" },
   { id: "typing-indicator", title: "TypingIndicator", file: "/components/typing-indicator" },
   { id: "ledger-peek", title: "LedgerPeek", file: "/components/ledger-peek" },

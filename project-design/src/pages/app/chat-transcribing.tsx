@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { ChatComposer } from "../../layout/components/ui/chat-composer";
+import { ChatInput } from "../../layout/components/ui/chat-input";
 import { LedgerPeek } from "../../layout/components/ui/ledger-peek";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { Typography } from "../../layout/components/ui/typography";
@@ -15,7 +15,7 @@ export function ChatTranscribing() {
             title="Pick up milk on the way home"
             meta="in 2h"
           />
-          <ChatComposer mode="sending-disabled" />
+          <ChatInput mode="sending-disabled" />
         </>
       }
     >

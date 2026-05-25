@@ -1,7 +1,5 @@
 import type { ReactNode } from "react";
 import { cn } from "../../../core/cn";
-import { BenLogo } from "../icons/ben-logo";
-import { Typography } from "./typography";
 
 type MessageBubbleProps = {
   from: "user" | "ben";
@@ -34,12 +32,6 @@ export function MessageBubble({
           isBen ? "items-start" : "items-end",
         )}
       >
-        {isBen && state !== "skeleton" && (
-          <div className="ml-1 flex items-center gap-1.5 text-on-surface-variant">
-            <BenLogo width={12} height={10} className="text-primary" />
-            <Typography variant="label-caps">Ben</Typography>
-          </div>
-        )}
         <div
           className={cn(
             "rounded-2xl px-4 py-3 text-body-md",
@@ -50,7 +42,7 @@ export function MessageBubble({
             state === "error" &&
               "border border-text-error/30 bg-surface-error text-text-error",
             state === "skeleton" &&
-              "h-9 w-40 animate-pulse bg-surface-container-high",
+              "h-9 w-40 animate-pulse bg-outline-variant",
           )}
         >
           {state !== "skeleton" && children}

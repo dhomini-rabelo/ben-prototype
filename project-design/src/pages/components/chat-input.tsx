@@ -1,24 +1,24 @@
-import { ChatComposer } from "../../layout/components/ui/chat-composer";
+import { ChatInput } from "../../layout/components/ui/chat-input";
 import { ComponentPreview } from "./_preview";
 
-export function ChatComposerPreview() {
+export function ChatInputPreview() {
   return (
     <ComponentPreview
-      name="ChatComposer"
+      name="ChatInput"
       description="The bottom input bar. Mic dominates by default; morphs to send as soon as text is present."
       variants={[
-        { label: "Idle (mic dominant)", node: <ChatComposer /> },
+        { label: "Idle (mic dominant)", node: <ChatInput /> },
         {
           label: "Composing (send dominant)",
-          node: <ChatComposer mode="composing" value="remind me to call mom" />,
+          node: <ChatInput mode="composing" value="remind me to call mom" />,
         },
         {
           label: "Sending disabled (post-release)",
-          node: <ChatComposer mode="sending-disabled" />,
+          node: <ChatInput mode="sending-disabled" />,
         },
         {
           label: "Disabled (offline / no queue)",
-          node: <ChatComposer mode="disabled" placeholder="offline" />,
+          node: <ChatInput mode="disabled" placeholder="offline" />,
         },
       ]}
     />

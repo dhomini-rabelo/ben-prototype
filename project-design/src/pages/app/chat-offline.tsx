@@ -1,7 +1,7 @@
 import { CloudOff } from "lucide-react";
 import { CaptureCard } from "../../layout/components/ui/capture-card";
 import { ChatBanner } from "../../layout/components/ui/chat-banner";
-import { ChatComposer } from "../../layout/components/ui/chat-composer";
+import { ChatInput } from "../../layout/components/ui/chat-input";
 import { LedgerPeek } from "../../layout/components/ui/ledger-peek";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { Typography } from "../../layout/components/ui/typography";
@@ -22,7 +22,7 @@ export function ChatOffline() {
             title="Pick up milk on the way home"
             meta="in 2h"
           />
-          <ChatComposer placeholder="Message Ben (queued)" />
+          <ChatInput placeholder="Message Ben (queued)" />
         </>
       }
     >

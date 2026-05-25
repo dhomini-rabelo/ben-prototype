@@ -1,5 +1,5 @@
 import { CaptureCard } from "../../layout/components/ui/capture-card";
-import { ChatComposer } from "../../layout/components/ui/chat-composer";
+import { ChatInput } from "../../layout/components/ui/chat-input";
 import { LedgerPeek } from "../../layout/components/ui/ledger-peek";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { TypingIndicator } from "../../layout/components/ui/typing-indicator";
@@ -14,7 +14,7 @@ export function ChatEdgeCases() {
             variant="summary"
             title="12 notes · 4 tasks · 1 reminder"
           />
-          <ChatComposer />
+          <ChatInput />
         </>
       }
     >

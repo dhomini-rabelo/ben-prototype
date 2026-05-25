@@ -22,7 +22,7 @@ import { BrandMarkPreview } from "../pages/components/brand-mark";
 import { ButtonPreview } from "../pages/components/button";
 import { CaptureCardPreview } from "../pages/components/capture-card";
 import { ChatBannerPreview } from "../pages/components/chat-banner";
-import { ChatComposerPreview } from "../pages/components/chat-composer";
+import { ChatInputPreview } from "../pages/components/chat-input";
 import { ComposerPreview } from "../pages/components/composer";
 import { DesignTokens } from "../pages/components/design-tokens";
 import { IconButtonPreview } from "../pages/components/icon-button";
@@ -73,8 +73,8 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/components/brand-mark" element={<BrandMarkPreview />} />
         <Route path="/components/composer" element={<ComposerPreview />} />
         <Route
-          path="/components/chat-composer"
-          element={<ChatComposerPreview />}
+          path="/components/chat-input"
+          element={<ChatInputPreview />}
         />
         <Route
           path="/components/message-bubble"

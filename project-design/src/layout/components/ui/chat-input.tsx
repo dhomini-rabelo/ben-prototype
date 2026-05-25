@@ -2,7 +2,7 @@ import { Mic, Plus, Send } from "lucide-react";
 import type { ChangeEvent } from "react";
 import { cn } from "../../../core/cn";
 
-type ChatComposerProps = {
+type ChatInputProps = {
   value?: string;
   placeholder?: string;
   mode?: "idle" | "composing" | "disabled" | "sending-disabled";
@@ -10,13 +10,13 @@ type ChatComposerProps = {
   className?: string;
 };
 
-export function ChatComposer({
+export function ChatInput({
   value = "",
   placeholder = "Message Ben...",
   mode = "idle",
   onChange,
   className,
-}: ChatComposerProps) {
+}: ChatInputProps) {
   const hasText = mode === "composing" || value.length > 0;
   const disabled = mode === "disabled";
 

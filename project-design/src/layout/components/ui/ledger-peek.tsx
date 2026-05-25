@@ -27,7 +27,7 @@ export function LedgerPeek({
       )}
     >
       {variant === "skeleton" ? (
-        <div className="h-4 w-40 animate-pulse rounded bg-surface-container-high" />
+        <div className="h-4 w-40 animate-pulse rounded bg-outline-variant" />
       ) : variant === "empty" ? (
         <Typography variant="body-md" className="text-on-surface-variant">
           nothing on deck — Ben's listening

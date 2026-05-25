@@ -1,5 +1,5 @@
 import { CaptureCard } from "../../layout/components/ui/capture-card";
-import { ChatComposer } from "../../layout/components/ui/chat-composer";
+import { ChatInput } from "../../layout/components/ui/chat-input";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { ChatShell } from "./_chat-shell";
 
@@ -7,7 +7,7 @@ export function ChatComposing() {
   return (
     <ChatShell
       footer={
-        <ChatComposer
+        <ChatInput
           mode="composing"
           value="remind me to call mom tomorrow at"
         />

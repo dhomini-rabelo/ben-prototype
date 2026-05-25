@@ -1,23 +1,11 @@
 import { CaptureCard } from "../../layout/components/ui/capture-card";
-import { ChatComposer } from "../../layout/components/ui/chat-composer";
-import { LedgerPeek } from "../../layout/components/ui/ledger-peek";
+import { ChatInput } from "../../layout/components/ui/chat-input";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { ChatShell } from "./_chat-shell";
 
 export function ChatPopulated() {
   return (
-    <ChatShell
-      footer={
-        <>
-          <LedgerPeek
-            variant="up-next"
-            title="Pick up milk on the way home"
-            meta="in 2h"
-          />
-          <ChatComposer />
-        </>
-      }
-    >
+    <ChatShell footer={<ChatInput />}>
       <section className="flex flex-1 flex-col gap-4 pt-2">
         <MessageBubble from="ben">
           morning. what's on the list today?
@@ -37,14 +25,15 @@ export function ChatPopulated() {
         </MessageBubble>
 
         <MessageBubble from="user">
-          and jot down: try the new pour-over ratio, 1:16
+          New Project Idea: a weekend build for a tiny CLI that turns voice memos
+          into tagged notes
         </MessageBubble>
 
         <MessageBubble from="ben">
           noted.
           <CaptureCard
             kind="note"
-            title="Try the new pour-over ratio, 1:16"
+            title="New Project Idea: CLI that turns voice memos into tagged notes"
           />
         </MessageBubble>
 

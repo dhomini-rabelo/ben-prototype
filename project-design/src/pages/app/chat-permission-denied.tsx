@@ -1,6 +1,6 @@
 import { MicOff } from "lucide-react";
 import { ChatBanner } from "../../layout/components/ui/chat-banner";
-import { ChatComposer } from "../../layout/components/ui/chat-composer";
+import { ChatInput } from "../../layout/components/ui/chat-input";
 import { LedgerPeek } from "../../layout/components/ui/ledger-peek";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { ChatShell } from "./_chat-shell";
@@ -23,7 +23,7 @@ export function ChatPermissionDenied() {
             title="Pick up milk on the way home"
             meta="in 2h"
           />
-          <ChatComposer placeholder="Type — text works without mic" />
+          <ChatInput placeholder="Type — text works without mic" />
         </>
       }
     >
