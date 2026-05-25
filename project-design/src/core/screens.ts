@@ -69,6 +69,28 @@ export const PAGES: ScreenPage[] = [
       },
     ],
   },
+  {
+    id: "inline-capture",
+    title: "Inline Capture Cards",
+    states: [
+      { id: "note-loading", title: "Note — Loading", file: "/app/capture-note-loading" },
+      { id: "note-populated", title: "Note — Populated", file: "/app/capture-note-populated" },
+      { id: "note-error", title: "Note — Error", file: "/app/capture-note-error" },
+      { id: "note-edge-cases", title: "Note — Edge cases", file: "/app/capture-note-edge-cases" },
+      { id: "reminder-loading", title: "Reminder — Loading", file: "/app/capture-reminder-loading" },
+      { id: "reminder-upcoming", title: "Reminder — Upcoming", file: "/app/capture-reminder-upcoming" },
+      { id: "reminder-fired", title: "Reminder — Fired", file: "/app/capture-reminder-fired" },
+      { id: "reminder-error", title: "Reminder — Error", file: "/app/capture-reminder-error" },
+      { id: "reminder-edge-cases", title: "Reminder — Edge cases", file: "/app/capture-reminder-edge-cases" },
+      { id: "task-loading", title: "Task — Loading", file: "/app/capture-task-loading" },
+      { id: "task-open", title: "Task — Open", file: "/app/capture-task-open" },
+      { id: "task-done", title: "Task — Done", file: "/app/capture-task-done" },
+      { id: "task-error", title: "Task — Error", file: "/app/capture-task-error" },
+      { id: "task-edge-cases", title: "Task — Edge cases", file: "/app/capture-task-edge-cases" },
+      { id: "clarifying-question", title: "Clarifying question", file: "/app/capture-clarifying-question" },
+      { id: "clarifying-question-edge-cases", title: "Clarifying question — Edge cases", file: "/app/capture-clarifying-question-edge-cases" },
+    ],
+  },
 ];
 
 export const COMPONENTS: ComponentEntry[] = [

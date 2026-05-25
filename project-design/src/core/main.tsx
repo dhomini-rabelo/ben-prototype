@@ -4,6 +4,22 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { Home } from "../pages/Home/page";
 import { ChatAwaitingReply } from "../pages/app/chat-awaiting-reply";
 import { ChatComposing } from "../pages/app/chat-composing";
+import { CaptureClarifyingQuestion } from "../pages/app/capture-clarifying-question";
+import { CaptureClarifyingQuestionEdgeCases } from "../pages/app/capture-clarifying-question-edge-cases";
+import { CaptureNoteEdgeCases } from "../pages/app/capture-note-edge-cases";
+import { CaptureNoteError } from "../pages/app/capture-note-error";
+import { CaptureNoteLoading } from "../pages/app/capture-note-loading";
+import { CaptureNotePopulated } from "../pages/app/capture-note-populated";
+import { CaptureReminderEdgeCases } from "../pages/app/capture-reminder-edge-cases";
+import { CaptureReminderError } from "../pages/app/capture-reminder-error";
+import { CaptureReminderFired } from "../pages/app/capture-reminder-fired";
+import { CaptureReminderLoading } from "../pages/app/capture-reminder-loading";
+import { CaptureReminderUpcoming } from "../pages/app/capture-reminder-upcoming";
+import { CaptureTaskDone } from "../pages/app/capture-task-done";
+import { CaptureTaskEdgeCases } from "../pages/app/capture-task-edge-cases";
+import { CaptureTaskError } from "../pages/app/capture-task-error";
+import { CaptureTaskLoading } from "../pages/app/capture-task-loading";
+import { CaptureTaskOpen } from "../pages/app/capture-task-open";
 import { ChatEdgeCases } from "../pages/app/chat-edge-cases";
 import { ChatEmpty } from "../pages/app/chat-empty";
 import { ChatError } from "../pages/app/chat-error";
@@ -66,6 +82,70 @@ createRoot(document.getElementById("root")!).render(
         />
         <Route path="/app/chat-offline" element={<ChatOffline />} />
         <Route path="/app/chat-edge-cases" element={<ChatEdgeCases />} />
+        <Route
+          path="/app/capture-note-loading"
+          element={<CaptureNoteLoading />}
+        />
+        <Route
+          path="/app/capture-note-populated"
+          element={<CaptureNotePopulated />}
+        />
+        <Route
+          path="/app/capture-note-error"
+          element={<CaptureNoteError />}
+        />
+        <Route
+          path="/app/capture-note-edge-cases"
+          element={<CaptureNoteEdgeCases />}
+        />
+        <Route
+          path="/app/capture-reminder-loading"
+          element={<CaptureReminderLoading />}
+        />
+        <Route
+          path="/app/capture-reminder-upcoming"
+          element={<CaptureReminderUpcoming />}
+        />
+        <Route
+          path="/app/capture-reminder-fired"
+          element={<CaptureReminderFired />}
+        />
+        <Route
+          path="/app/capture-reminder-error"
+          element={<CaptureReminderError />}
+        />
+        <Route
+          path="/app/capture-reminder-edge-cases"
+          element={<CaptureReminderEdgeCases />}
+        />
+        <Route
+          path="/app/capture-task-loading"
+          element={<CaptureTaskLoading />}
+        />
+        <Route
+          path="/app/capture-task-open"
+          element={<CaptureTaskOpen />}
+        />
+        <Route
+          path="/app/capture-task-done"
+          element={<CaptureTaskDone />}
+        />
+        <Route
+          path="/app/capture-task-error"
+          element={<CaptureTaskError />}
+        />
+        <Route
+          path="/app/capture-task-edge-cases"
+          element={<CaptureTaskEdgeCases />}
+        />
+        <Route
+          path="/app/capture-clarifying-question"
+          element={<CaptureClarifyingQuestion />}
+        />
+        <Route
+          path="/app/capture-clarifying-question-edge-cases"
+          element={<CaptureClarifyingQuestionEdgeCases />}
+        />
         <Route path="/components/design-tokens" element={<DesignTokens />} />
         <Route path="/components/typography" element={<TypographyPreview />} />
         <Route path="/components/button" element={<ButtonPreview />} />
