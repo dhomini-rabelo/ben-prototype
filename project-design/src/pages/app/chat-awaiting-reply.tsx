@@ -1,5 +1,4 @@
 import { ChatInput } from "../../layout/components/ui/chat-input";
-import { LedgerPeek } from "../../layout/components/ui/ledger-peek";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { TypingIndicator } from "../../layout/components/ui/typing-indicator";
 import { Typography } from "../../layout/components/ui/typography";
@@ -8,18 +7,9 @@ import { ChatShell } from "./_chat-shell";
 export function ChatAwaitingReply() {
   return (
     <ChatShell
-      footer={
-        <>
-          <LedgerPeek
-            variant="up-next"
-            title="Pick up milk on the way home"
-            meta="in 2h"
-          />
-          <ChatInput />
-        </>
-      }
+      footer={<ChatInput />}
     >
-      <section className="flex flex-1 flex-col gap-4 pt-2">
+      <section className="flex flex-1 flex-col justify-end gap-4 pt-2">
         <MessageBubble from="ben">
           morning. what's on the list today?
         </MessageBubble>

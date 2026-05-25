@@ -1,6 +1,5 @@
 import { X } from "lucide-react";
 import { ChatInput } from "../../layout/components/ui/chat-input";
-import { LedgerPeek } from "../../layout/components/ui/ledger-peek";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { Typography } from "../../layout/components/ui/typography";
 import { ChatShell } from "./_chat-shell";
@@ -8,18 +7,9 @@ import { ChatShell } from "./_chat-shell";
 export function ChatTranscribing() {
   return (
     <ChatShell
-      footer={
-        <>
-          <LedgerPeek
-            variant="up-next"
-            title="Pick up milk on the way home"
-            meta="in 2h"
-          />
-          <ChatInput mode="sending-disabled" />
-        </>
-      }
+      footer={<ChatInput mode="sending-disabled" />}
     >
-      <section className="flex flex-1 flex-col gap-4 pt-2">
+      <section className="flex flex-1 flex-col justify-end gap-4 pt-2">
         <MessageBubble from="ben">
           got it — anything else for today?
         </MessageBubble>
