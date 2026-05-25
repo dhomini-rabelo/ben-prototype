@@ -25,15 +25,16 @@ export function ChatPopulated() {
         </MessageBubble>
 
         <MessageBubble from="user">
-          New Project Idea: a weekend build for a tiny CLI that turns voice memos
-          into tagged notes
+          add a weekend build for a tiny CLI that turns voice memos into tagged
+          notes to my project ideas note
         </MessageBubble>
 
         <MessageBubble from="ben">
-          noted.
+          updated.
           <CaptureCard
             kind="note"
-            title="New Project Idea: CLI that turns voice memos into tagged notes"
+            title="Project Ideas"
+            meta="Updated · added CLI for voice memo tagging"
           />
         </MessageBubble>
 

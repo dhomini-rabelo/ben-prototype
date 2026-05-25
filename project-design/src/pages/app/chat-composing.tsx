@@ -9,21 +9,26 @@ export function ChatComposing() {
       footer={
         <ChatInput
           mode="composing"
-          value="remind me to call mom tomorrow at"
+          value="remind me to sketch the voice-memo CLI tomorrow"
         />
       }
     >
-      <section className="flex flex-1 flex-col gap-4 pt-2">
+      <section className="-mb-16 flex flex-1 flex-col justify-end gap-4 pt-2">
         <MessageBubble from="user">
-          add a task to draft the q3 brief by friday
+          what are my best projects/ideas?
         </MessageBubble>
         <MessageBubble from="ben">
-          on it.
+          pulled from your Projects/Ideas note — top three:
           <CaptureCard
-            kind="task"
-            title="Draft the Q3 brief"
-            meta="Due Fri · 2026-05-29"
+            kind="note"
+            title="Projects/Ideas"
+            meta="Consulted · 12 entries"
           />
+          <ol className="mt-2 list-decimal space-y-1 pl-5 text-body-md leading-snug text-on-surface">
+            <li>CLI that turns voice memos into tagged notes</li>
+            <li>Weekly digest of unfinished tasks, grouped by theme</li>
+            <li>Tiny calendar that surfaces follow-ups from past chats</li>
+          </ol>
         </MessageBubble>
       </section>
     </ChatShell>
