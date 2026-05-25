@@ -12,7 +12,7 @@ import { IconButton } from "../../layout/components/ui/icon-button";
 import { SuggestedAction } from "../../layout/components/ui/suggested-action";
 import { Typography } from "../../layout/components/ui/typography";
 
-export function Chat() {
+export function ChatEmpty() {
   return (
     <div className="relative flex min-h-dvh flex-col items-center bg-surface text-on-surface">
       <TopBar />

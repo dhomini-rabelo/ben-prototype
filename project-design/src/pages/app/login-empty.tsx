@@ -3,7 +3,7 @@ import { GoogleIcon } from "../../layout/components/icons/google-icon";
 import { Button } from "../../layout/components/ui/button";
 import { Typography } from "../../layout/components/ui/typography";
 
-export function Login() {
+export function LoginEmpty() {
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-6 text-on-background">
       <main className="flex w-full max-w-[320px] flex-col items-center gap-8 text-center">

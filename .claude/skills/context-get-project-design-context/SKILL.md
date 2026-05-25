@@ -43,17 +43,21 @@ When the user gives a short prompt like "add a chat screen" or "design the ledge
 
 ## Directory conventions
 
-- [project-design/src/pages/Home/page.tsx](../../../project-design/src/pages/Home/page.tsx) — the **Design Gallery** itself. Pages/Components tabs, dark dotted background, phone-shaped cards.
-- [project-design/src/pages/app/](../../../project-design/src/pages/app/) — actual **Ben app pages**, one file per screen (e.g. `login.tsx`). Route is `/app/<name>`.
+- [project-design/src/pages/Home/page.tsx](../../../project-design/src/pages/Home/page.tsx) — the **Design Gallery** itself. Pages/Components tabs, dark dotted background, phone-shaped cards. **Pages tab groups state cards under their parent page** (one section per page, all that page's states inside).
+- [project-design/src/pages/app/](../../../project-design/src/pages/app/) — actual **Ben app pages, one file per page state**. Filename pattern is `<page>-<state>.tsx` (e.g. `login-empty.tsx`, `chat-empty.tsx`, `chat-recording.tsx`). Route mirrors filename: `/app/<page>-<state>`. The states for each page come from [docs/prd-to-ux/2026-05-23-ben-prototype/04-screen-prompts/](../../../docs/prd-to-ux/2026-05-23-ben-prototype/04-screen-prompts/) — e.g. `01-sign-in/01-empty.md` → `login-empty.tsx`, `02-chat-surface/05-recording.md` → `chat-recording.tsx`.
 - [project-design/src/layout/components/ui/](../../../project-design/src/layout/components/ui/) — **reusable UI primitives** (e.g. `button.tsx`, `typography.tsx`). One component per file.
 - [project-design/src/core/](../../../project-design/src/core/) — app-wide wiring: `main.tsx` (router), `global.css` (theme), `cn.ts` (className merger), `screens.ts` (gallery registry).
 
-## How to add a new Ben screen
+## How to add a new Ben screen state
 
-1. Create `project-design/src/pages/app/<name>.tsx` exporting a named React component.
-2. Register the route in [main.tsx](../../../project-design/src/core/main.tsx) at `/app/<name>`.
-3. Add an entry to `PAGES` in [screens.ts](../../../project-design/src/core/screens.ts): `{ id, title, file: "/app/<name>" }`.
-4. The gallery picks it up automatically and renders it in a 390×844 iframe card.
+A "screen" in Ben is a *page* with one or more *states* (empty, loading, populated, recording, error, etc.). Each state is its own file/route so it can be previewed independently in the gallery.
+
+1. Create `project-design/src/pages/app/<page>-<state>.tsx` exporting a named React component in PascalCase (e.g. `ChatRecording`).
+2. Register the route in [main.tsx](../../../project-design/src/core/main.tsx) at `/app/<page>-<state>`.
+3. In `PAGES` in [screens.ts](../../../project-design/src/core/screens.ts):
+   - If the page already exists, push a new entry into its `states: [...]` array: `{ id: "<state>", title: "<State>", file: "/app/<page>-<state>" }`.
+   - If it's a brand-new page, add a new `ScreenPage` object: `{ id, title, states: [...] }`.
+4. The gallery picks it up automatically: a section per page, a card per state.
 
 ## How to add a reusable component
 
