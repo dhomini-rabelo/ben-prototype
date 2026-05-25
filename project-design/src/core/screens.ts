@@ -20,7 +20,21 @@ export const PAGES: ScreenPage[] = [
   {
     id: "login",
     title: "Sign in",
-    states: [{ id: "empty", title: "Empty", file: "/app/login-empty" }],
+    states: [
+      { id: "empty", title: "Empty", file: "/app/login-empty" },
+      { id: "loading", title: "Loading", file: "/app/login-loading" },
+      { id: "error", title: "Error", file: "/app/login-error" },
+      {
+        id: "permission-denied",
+        title: "Permission denied",
+        file: "/app/login-permission-denied",
+      },
+      {
+        id: "edge-extended-wait",
+        title: "Edge — extended wait",
+        file: "/app/login-edge-extended-wait",
+      },
+    ],
   },
   {
     id: "chat",
