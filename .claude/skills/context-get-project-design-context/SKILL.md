@@ -43,9 +43,10 @@ When the user gives a short prompt like "add a chat screen" or "design the ledge
 
 ## Directory conventions
 
-- [project-design/src/pages/Home/page.tsx](../../../project-design/src/pages/Home/page.tsx) — the **Design Gallery** itself. Pages/Components tabs, dark dotted background, phone-shaped cards. **Pages tab groups state cards under their parent page** (one section per page, all that page's states inside).
+- [project-design/src/pages/Home/page.tsx](../../../project-design/src/pages/Home/page.tsx) — the **Design Gallery** itself. Pages/Components tabs, dark dotted background, phone-shaped cards. **Pages tab groups state cards under their parent page** (one section per page, all that page's states inside). **Components tab is the system-design overview** — design tokens (colors, type, spacing, radius) plus one card per reusable primitive.
 - [project-design/src/pages/app/](../../../project-design/src/pages/app/) — actual **Ben app pages, one file per page state**. Filename pattern is `<page>-<state>.tsx` (e.g. `login-empty.tsx`, `chat-empty.tsx`, `chat-recording.tsx`). Route mirrors filename: `/app/<page>-<state>`. The states for each page come from [docs/prd-to-ux/2026-05-23-ben-prototype/04-screen-prompts/](../../../docs/prd-to-ux/2026-05-23-ben-prototype/04-screen-prompts/) — e.g. `01-sign-in/01-empty.md` → `login-empty.tsx`, `02-chat-surface/05-recording.md` → `chat-recording.tsx`.
-- [project-design/src/layout/components/ui/](../../../project-design/src/layout/components/ui/) — **reusable UI primitives** (e.g. `button.tsx`, `typography.tsx`). One component per file.
+- [project-design/src/pages/components/](../../../project-design/src/pages/components/) — **preview routes for each reusable primitive and for the design-token overview**. One file per primitive (`button.tsx`, `composer.tsx`, …) plus `design-tokens.tsx`. Each renders the component in its variants on a clean phone canvas via the shared `ComponentPreview` wrapper in `_preview.tsx`. Routes live at `/components/<name>` and feed the gallery's Components tab.
+- [project-design/src/layout/components/ui/](../../../project-design/src/layout/components/ui/) — **reusable UI primitives** (e.g. `button.tsx`, `typography.tsx`). One component per file. **Every primitive here must have a matching preview file in `pages/components/` and an entry in `COMPONENTS`.**
 - [project-design/src/core/](../../../project-design/src/core/) — app-wide wiring: `main.tsx` (router), `global.css` (theme), `cn.ts` (className merger), `screens.ts` (gallery registry).
 
 ## How to add a new Ben screen state
@@ -61,9 +62,16 @@ A "screen" in Ben is a *page* with one or more *states* (empty, loading, populat
 
 ## How to add a reusable component
 
-1. Create `project-design/src/layout/components/ui/<name>.tsx`.
+Reusable components are **always separated** from screens — they live in their own folder, get their own preview route, and show up on the Components tab of the gallery. Never inline a primitive into a screen file: extract it to `ui/` and register it.
+
+1. Create the primitive at `project-design/src/layout/components/ui/<name>.tsx`.
 2. Use the `cn()` helper from [cn.ts](../../../project-design/src/core/cn.ts) when composing classes.
 3. Lean on existing theme tokens (`text-wordmark`, `text-button`, `bg-primary`, `text-on-primary`, etc.) defined in [global.css](../../../project-design/src/core/global.css).
+4. **Update the Components page.** This step is mandatory — the Components tab is the system-design overview, so it must stay in sync with what's in `ui/`:
+   - Create `project-design/src/pages/components/<name>.tsx` that renders the component's relevant variants via the shared `ComponentPreview` wrapper ([_preview.tsx](../../../project-design/src/pages/components/_preview.tsx)). Cover the meaningful states (default, with-icon, disabled, full-width, etc.) — not every prop, just what someone scanning the gallery needs to understand the primitive.
+   - Register the route in [main.tsx](../../../project-design/src/core/main.tsx) at `/components/<name>`.
+   - Add an entry to `COMPONENTS` in [screens.ts](../../../project-design/src/core/screens.ts): `{ id: "<name>", title: "<DisplayName>", file: "/components/<name>" }`.
+5. If you introduced a new design token (color, font size, spacing, radius), also update [design-tokens.tsx](../../../project-design/src/pages/components/design-tokens.tsx) so the overview reflects it.
 
 ## Design rules
 

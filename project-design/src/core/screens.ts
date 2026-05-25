@@ -29,4 +29,12 @@ export const PAGES: ScreenPage[] = [
   },
 ];
 
-export const COMPONENTS: ComponentEntry[] = [];
+export const COMPONENTS: ComponentEntry[] = [
+  { id: "design-tokens", title: "Design tokens", file: "/components/design-tokens" },
+  { id: "typography", title: "Typography", file: "/components/typography" },
+  { id: "button", title: "Button", file: "/components/button" },
+  { id: "icon-button", title: "IconButton", file: "/components/icon-button" },
+  { id: "brand-mark", title: "BrandMark", file: "/components/brand-mark" },
+  { id: "composer", title: "Composer", file: "/components/composer" },
+  { id: "suggested-action", title: "SuggestedAction", file: "/components/suggested-action" },
+];
