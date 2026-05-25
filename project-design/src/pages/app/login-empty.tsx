@@ -1,5 +1,5 @@
-import { BenLogo } from "../../layout/components/icons/ben-logo";
 import { GoogleIcon } from "../../layout/components/icons/google-icon";
+import { BrandMark } from "../../layout/components/ui/brand-mark";
 import { Button } from "../../layout/components/ui/button";
 import { Typography } from "../../layout/components/ui/typography";
 
@@ -8,10 +8,7 @@ export function LoginEmpty() {
     <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-6 text-on-background">
       <main className="flex w-full max-w-[320px] flex-col items-center gap-8 text-center">
         <div className="flex flex-col items-center gap-3">
-          <BenLogo className="fade-in-up text-primary" />
-          <Typography variant="wordmark" className="fade-in-up text-primary">
-            Ben
-          </Typography>
+          <BrandMark orientation="column" itemClassName="fade-in-up" />
           <Typography
             variant="tagline"
             className="fade-in-up delay-100 max-w-[280px] text-secondary"

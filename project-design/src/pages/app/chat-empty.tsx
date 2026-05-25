@@ -6,7 +6,7 @@ import {
   NotebookPen,
   Plus,
 } from "lucide-react";
-import { BenLogo } from "../../layout/components/icons/ben-logo";
+import { BrandMark } from "../../layout/components/ui/brand-mark";
 // import { Composer } from "../../layout/components/ui/composer";
 import { IconButton } from "../../layout/components/ui/icon-button";
 import { SuggestedAction } from "../../layout/components/ui/suggested-action";
@@ -81,12 +81,7 @@ export function ChatEmpty() {
 function TopBar() {
   return (
     <header className="fixed top-0 left-1/2 z-50 flex h-16 w-full max-w-120 -translate-x-1/2 items-center justify-between bg-surface px-6">
-      <div className="flex items-center gap-2.5">
-        <BenLogo className="text-primary" width={28} height={22} />
-        <Typography variant="wordmark" className="text-primary">
-          Ben
-        </Typography>
-      </div>
+      <BrandMark logoWidth={28} logoHeight={22} />
       <IconButton label="Menu">
         <Menu className="size-6" />
       </IconButton>
