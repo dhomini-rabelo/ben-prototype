@@ -57,6 +57,12 @@
   --color-slate-deep: #0f172a;
   --color-soft-gray: #e2e8f0;
 
+  --color-diff-added: #f6efe1;
+  --color-diff-added-fg: #6b5e3f;
+  --color-diff-added-outline: #e7d9b8;
+  --color-diff-removed: #ececed;
+  --color-diff-removed-fg: #8e8f90;
+
   --text-wordmark: 32px;
   --text-wordmark--line-height: 40px;
   --text-wordmark--letter-spacing: -0.04em;

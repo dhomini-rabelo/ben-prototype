@@ -29,6 +29,15 @@ const COLOR_GROUPS: { label: string; swatches: { name: string; token: string; va
       { name: "text-error", token: "bg-text-error", value: "#c53030" },
     ],
   },
+  {
+    label: "Diff (workspace)",
+    swatches: [
+      { name: "diff-added", token: "bg-diff-added border border-diff-added-outline", value: "#f6efe1" },
+      { name: "diff-added-fg", token: "bg-diff-added-fg", value: "#6b5e3f" },
+      { name: "diff-removed", token: "bg-diff-removed", value: "#ececed" },
+      { name: "diff-removed-fg", token: "bg-diff-removed-fg", value: "#8e8f90" },
+    ],
+  },
 ];
 
 const TYPE_SAMPLES: { variant: Parameters<typeof Typography>[0]["variant"]; label: string }[] = [

@@ -40,6 +40,23 @@ import { LoginEmpty } from "../pages/app/login-empty";
 import { LoginError } from "../pages/app/login-error";
 import { LoginLoading } from "../pages/app/login-loading";
 import { LoginPermissionDenied } from "../pages/app/login-permission-denied";
+import { TaskPickerEdgeCases } from "../pages/app/task-picker-edge-cases";
+import { TaskPickerEmpty } from "../pages/app/task-picker-empty";
+import { TaskPickerError } from "../pages/app/task-picker-error";
+import { TaskPickerLoading } from "../pages/app/task-picker-loading";
+import { TaskPickerPopulated } from "../pages/app/task-picker-populated";
+import { WorkspaceComposing } from "../pages/app/workspace-composing";
+import { WorkspaceEdgeCases } from "../pages/app/workspace-edge-cases";
+import { WorkspaceEmpty } from "../pages/app/workspace-empty";
+import { WorkspaceError } from "../pages/app/workspace-error";
+import { WorkspaceFinished } from "../pages/app/workspace-finished";
+import { WorkspaceListPopulated } from "../pages/app/workspace-list-populated";
+import { WorkspaceOffline } from "../pages/app/workspace-offline";
+import { WorkspacePendingDiff } from "../pages/app/workspace-pending-diff";
+import { WorkspacePermissionDenied } from "../pages/app/workspace-permission-denied";
+import { WorkspaceRecording } from "../pages/app/workspace-recording";
+import { WorkspaceTextPopulated } from "../pages/app/workspace-text-populated";
+import { WorkspaceTranscribing } from "../pages/app/workspace-transcribing";
 import { BrandMarkPreview } from "../pages/components/brand-mark";
 import { ButtonPreview } from "../pages/components/button";
 import { CaptureCardPreview } from "../pages/components/capture-card";
@@ -52,6 +69,11 @@ import { IconButtonPreview } from "../pages/components/icon-button";
 import { ActiveTaskPeekPreview } from "../pages/components/active-task-peek";
 import { MessageBubblePreview } from "../pages/components/message-bubble";
 import { SuggestedActionPreview } from "../pages/components/suggested-action";
+import { DiffBarPreview } from "../pages/components/diff-bar";
+import { SubThreadBannerPreview } from "../pages/components/sub-thread-banner";
+import { TaskPickerSheetPreview } from "../pages/components/task-picker-sheet";
+import { TodoListItemPreview } from "../pages/components/todo-list-item";
+import { WorkspaceTopBarPreview } from "../pages/components/workspace-top-bar";
 import { TypingIndicatorPreview } from "../pages/components/typing-indicator";
 import { TypographyPreview } from "../pages/components/typography";
 import "./global.css";
@@ -208,6 +230,85 @@ createRoot(document.getElementById("root")!).render(
         <Route
           path="/components/suggested-action"
           element={<SuggestedActionPreview />}
+        />
+        <Route
+          path="/app/task-picker-empty"
+          element={<TaskPickerEmpty />}
+        />
+        <Route
+          path="/app/task-picker-loading"
+          element={<TaskPickerLoading />}
+        />
+        <Route
+          path="/app/task-picker-populated"
+          element={<TaskPickerPopulated />}
+        />
+        <Route
+          path="/app/task-picker-error"
+          element={<TaskPickerError />}
+        />
+        <Route
+          path="/app/task-picker-edge-cases"
+          element={<TaskPickerEdgeCases />}
+        />
+        <Route path="/app/workspace-empty" element={<WorkspaceEmpty />} />
+        <Route
+          path="/app/workspace-text-populated"
+          element={<WorkspaceTextPopulated />}
+        />
+        <Route
+          path="/app/workspace-list-populated"
+          element={<WorkspaceListPopulated />}
+        />
+        <Route
+          path="/app/workspace-composing"
+          element={<WorkspaceComposing />}
+        />
+        <Route
+          path="/app/workspace-recording"
+          element={<WorkspaceRecording />}
+        />
+        <Route
+          path="/app/workspace-transcribing"
+          element={<WorkspaceTranscribing />}
+        />
+        <Route
+          path="/app/workspace-pending-diff"
+          element={<WorkspacePendingDiff />}
+        />
+        <Route path="/app/workspace-error" element={<WorkspaceError />} />
+        <Route
+          path="/app/workspace-permission-denied"
+          element={<WorkspacePermissionDenied />}
+        />
+        <Route
+          path="/app/workspace-offline"
+          element={<WorkspaceOffline />}
+        />
+        <Route
+          path="/app/workspace-finished"
+          element={<WorkspaceFinished />}
+        />
+        <Route
+          path="/app/workspace-edge-cases"
+          element={<WorkspaceEdgeCases />}
+        />
+        <Route
+          path="/components/workspace-top-bar"
+          element={<WorkspaceTopBarPreview />}
+        />
+        <Route
+          path="/components/todo-list-item"
+          element={<TodoListItemPreview />}
+        />
+        <Route path="/components/diff-bar" element={<DiffBarPreview />} />
+        <Route
+          path="/components/sub-thread-banner"
+          element={<SubThreadBannerPreview />}
+        />
+        <Route
+          path="/components/task-picker-sheet"
+          element={<TaskPickerSheetPreview />}
         />
       </Routes>
     </BrowserRouter>

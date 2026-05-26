@@ -93,6 +93,35 @@ export const PAGES: ScreenPage[] = [
     ],
   },
   {
+    id: "task-picker",
+    title: "Active-task picker",
+    states: [
+      { id: "empty", title: "Empty", file: "/app/task-picker-empty" },
+      { id: "loading", title: "Loading", file: "/app/task-picker-loading" },
+      { id: "populated", title: "Populated", file: "/app/task-picker-populated" },
+      { id: "error", title: "Error", file: "/app/task-picker-error" },
+      { id: "edge-cases", title: "Edge cases — long list", file: "/app/task-picker-edge-cases" },
+    ],
+  },
+  {
+    id: "task-workspace",
+    title: "Task workspace",
+    states: [
+      { id: "empty", title: "Empty", file: "/app/workspace-empty" },
+      { id: "text-populated", title: "Populated — text", file: "/app/workspace-text-populated" },
+      { id: "list-populated", title: "Populated — list", file: "/app/workspace-list-populated" },
+      { id: "composing", title: "Composing", file: "/app/workspace-composing" },
+      { id: "recording", title: "Recording", file: "/app/workspace-recording" },
+      { id: "transcribing", title: "Transcribing", file: "/app/workspace-transcribing" },
+      { id: "pending-diff", title: "Pending diff", file: "/app/workspace-pending-diff" },
+      { id: "error", title: "Error", file: "/app/workspace-error" },
+      { id: "permission-denied", title: "Permission denied", file: "/app/workspace-permission-denied" },
+      { id: "offline", title: "Offline", file: "/app/workspace-offline" },
+      { id: "finished", title: "Finished", file: "/app/workspace-finished" },
+      { id: "edge-cases", title: "Edge cases", file: "/app/workspace-edge-cases" },
+    ],
+  },
+  {
     id: "item-detail",
     title: "Item detail modal",
     states: [
@@ -120,4 +149,9 @@ export const COMPONENTS: ComponentEntry[] = [
   { id: "item-detail-sheet", title: "ItemDetailSheet", file: "/components/item-detail-sheet" },
   { id: "chat-banner", title: "ChatBanner", file: "/components/chat-banner" },
   { id: "suggested-action", title: "SuggestedAction", file: "/components/suggested-action" },
+  { id: "workspace-top-bar", title: "WorkspaceTopBar", file: "/components/workspace-top-bar" },
+  { id: "todo-list-item", title: "TodoListItem", file: "/components/todo-list-item" },
+  { id: "diff-bar", title: "DiffBar", file: "/components/diff-bar" },
+  { id: "sub-thread-banner", title: "SubThreadBanner", file: "/components/sub-thread-banner" },
+  { id: "task-picker-sheet", title: "TaskPickerSheet", file: "/components/task-picker-sheet" },
 ];
