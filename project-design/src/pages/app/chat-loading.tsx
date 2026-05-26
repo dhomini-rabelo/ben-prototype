@@ -1,10 +1,14 @@
+import { ActiveTaskPeek } from "../../layout/components/ui/active-task-peek";
 import { ChatInput } from "../../layout/components/ui/chat-input";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { ChatShell } from "./_chat-shell";
 
 export function ChatLoading() {
   return (
-    <ChatShell footer={<ChatInput mode="disabled" />}>
+    <ChatShell
+      peek={<ActiveTaskPeek variant="skeleton" />}
+      footer={<ChatInput mode="disabled" />}
+    >
       <section className="flex flex-1 flex-col justify-end gap-3 pt-2">
         <MessageBubble from="ben" state="skeleton" />
         <div className="flex w-full justify-end">

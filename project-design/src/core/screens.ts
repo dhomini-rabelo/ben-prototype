@@ -103,7 +103,7 @@ export const COMPONENTS: ComponentEntry[] = [
   { id: "chat-input", title: "ChatInput", file: "/components/chat-input" },
   { id: "message-bubble", title: "MessageBubble", file: "/components/message-bubble" },
   { id: "typing-indicator", title: "TypingIndicator", file: "/components/typing-indicator" },
-  { id: "ledger-peek", title: "LedgerPeek", file: "/components/ledger-peek" },
+  { id: "active-task-peek", title: "ActiveTaskPeek", file: "/components/active-task-peek" },
   { id: "capture-card", title: "CaptureCard", file: "/components/capture-card" },
   { id: "chat-banner", title: "ChatBanner", file: "/components/chat-banner" },
   { id: "suggested-action", title: "SuggestedAction", file: "/components/suggested-action" },

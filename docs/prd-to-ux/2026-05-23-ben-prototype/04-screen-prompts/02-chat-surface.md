@@ -2,32 +2,32 @@
 
 _Each block below is self-contained. Copy one block, paste into Stitch / Figma AI / Pencil / Claude Design._
 
-The chat surface is the home screen of the app. It carries the conversation stream, the composer (voice + text), and the ledger-drawer affordance. Most user time is spent here.
+The chat surface is the home screen of the app. It carries the conversation stream, the composer (voice + text), the active-task peek (a strip above the composer surfacing in-progress tasks), and a small menu affordance in the top bar that opens the menu sidebar.
 
 ---
 
-## Chat screen — Empty (first run, no message history)
+## Chat screen — Empty (first run, no message history, no active tasks)
 
 ````
 **What this screen is for:**
 Welcome a brand-new user and make the primary affordance — press and hold to speak — completely obvious without a tour.
 
 **What's visible:**
-A single Ben message bubble in the upper portion of the chat area: a short friend-tone greeting that names the affordance ("yo. press and hold the mic when you got something — or just type."). The bubble is left-aligned, with a small Ben indicator (his name or a quiet identifying mark). The rest of the chat area is calm, generous whitespace. Anchored at the bottom of the screen is the composer: a horizontal bar containing a text input area on the leading edge and a prominent press-and-hold mic affordance on the trailing edge. Just above the composer, the ledger drawer's collapsed peek strip sits in its empty state — a soft strip with quiet copy ("nothing on deck — Ben's listening") and a subtle drag handle indicating it can be expanded.
+A minimal top bar with a small menu affordance on the leading edge (a quiet icon-style indicator that opens the menu sidebar). The center of the chat area holds a single Ben message bubble: a short friend-tone greeting that names the affordance ("yo. press and hold the mic when you got something — or just type."). Bubble is left-aligned with a small Ben indicator. The rest of the chat area is calm, generous whitespace. Anchored at the bottom of the screen is the composer: a horizontal bar with a text input area on the leading edge and a prominent press-and-hold mic affordance on the trailing edge. Just above the composer, the active-task peek strip sits in its empty state — a soft strip with quiet friend-tone copy ("nothing in progress — Ben's listening") and a subtle indication that the strip is interactive.
 
 **What the user can do:**
 - Primary: press and hold the mic to record a voice message.
 - Secondary: tap the text input area to type.
-- Tertiary: tap or drag the drawer peek to expand it (will reveal empty tabs).
+- Tertiary: tap the menu affordance in the top bar to open the menu sidebar (will reveal empty Tasks, Notes, Reminders views and a Settings entry).
 
 **Feel:**
-Modern and human. Comfortable type, restrained palette of neutrals with one understated accent reserved for the mic affordance — the eye should land on the mic first. Soft rounded corners on bubbles, composer, and peek. Generous breathing room between greeting and composer. The screen feels confident but warm — like opening a well-made tool that happens to have a soul.
+Modern and human. Comfortable type, restrained palette of neutrals with a single saturated, grown-up accent reserved for the mic affordance — the eye should land on the mic first. Soft rounded corners on the bubble, composer, and peek. Generous breathing room between greeting and composer. The screen feels confident but warm — like opening a well-made tool that happens to have a soul. The accent is vivid but not childish; the menu icon is quiet and unobtrusive.
 
 **State context:**
-First-time user, immediately after sign-in. No captures yet, no history beyond Ben's welcome message.
+First-time user, immediately after sign-in. No captures of any kind yet, no active tasks.
 
 **Critical affordances:**
-The mic must be the visually dominant element of the composer — larger or more emphasized than the text input — because press-and-hold is the wedge. The drawer peek must be visible even when empty, so the user understands there's something below — but its empty copy should be quiet, not promotional. The greeting message names the affordance in copy; the copy is doing real work and shouldn't be cut to "Welcome!"
+The mic must be the visually dominant element of the composer — larger or more emphasized than the text input — because press-and-hold is the wedge. The active-task peek must be visible even when empty so the user understands there's a workspace concept below; its empty copy is quiet, not promotional. The menu affordance in the top bar is the *only* nav element on the screen — restrained, low-contrast, doesn't compete with the mic. The greeting message names the affordance in copy; copy is doing real work and shouldn't be cut to "Welcome!"
 ````
 
 ---
@@ -39,21 +39,21 @@ The mic must be the visually dominant element of the composer — larger or more
 Bring a returning user back into their conversation as quickly as possible without a blocking spinner.
 
 **What's visible:**
-The composer renders immediately, fully interactive — the user can start a new capture before history finishes loading. The chat area shows soft skeleton placeholders where the recent message bubbles will appear: a few alternating left-aligned and right-aligned skeleton blocks of varying widths, no text. The drawer peek shows a single-line skeleton where "Up next" content will land. Skeletons fade out and real content fades in as data arrives — no abrupt swap.
+Top bar with menu affordance is fully visible immediately. The composer renders immediately and is fully interactive — the user can start a new capture before history finishes loading. The chat area shows soft skeleton placeholders for message bubbles: a few alternating left-aligned and right-aligned skeleton blocks of varying widths, no text. The active-task peek strip shows a skeleton block where the task count and title will land. Skeletons fade out and real content fades in as data arrives — no abrupt swap.
 
 **What the user can do:**
 - Primary: press and hold the mic — composer is already live.
 - Secondary: tap the text input to type.
-- Tertiary: wait for history to populate.
+- Tertiary: open the menu sidebar via the top-bar affordance.
 
 **Feel:**
-Calm and fast. Skeletons are quiet — soft neutral shapes, no shimmer animation that feels like a casino. The transition from skeleton to real content is gentle (fade or simple opacity, never a slam).
+Calm and fast. Skeletons are quiet — soft neutral shapes, no shimmer that feels like a casino. The transition from skeleton to real content is gentle.
 
 **State context:**
-The user has signed in before and is opening the app to an existing conversation. The model context (last 20 messages) and the ledger are being fetched.
+The user has signed in before and is opening the app to existing conversation history and possibly active tasks. The model context (last 20 messages) and the active-task summary are being fetched.
 
 **Critical affordances:**
-The composer must be live during loading — the user must never be locked out of capturing because history hasn't loaded. The skeleton's job is to set expectation, not to gate input.
+The composer must be live during loading — the user must never be locked out of capturing because history hasn't loaded. Skeletons set expectation; they don't gate input.
 ````
 
 ---
@@ -62,24 +62,24 @@ The composer must be live during loading — the user must never be locked out o
 
 ````
 **What this screen is for:**
-Carry the ongoing conversation between the user and Ben, with the ledger peek always one glance away.
+Carry the ongoing conversation between the user and Ben, with the active-task peek always one glance away.
 
 **What's visible:**
-A chronological message stream filling most of the screen. User messages are right-aligned with a slightly emphasized fill; Ben's messages are left-aligned with a quieter fill and a small Ben indicator. Some of Ben's messages contain inline capture cards (Note, Reminder, or Task — see the inline-capture-cards prompts). The stream scrolls; the latest message is at the bottom by default. Above the composer, the drawer peek displays "Up next: {title} {relative-time}" if there's a near-term reminder, or a quiet count summary ("3 reminders ahead" / "12 notes · 4 tasks · 0 reminders") if not. The composer is anchored at the bottom with the mic dominant and a text input area beside it.
+Top bar with menu affordance on the leading edge. A chronological message stream filling most of the screen. User messages right-aligned with a slightly emphasized fill; Ben's messages left-aligned with a quieter fill and a small Ben indicator. Some of Ben's messages contain inline capture cards (Note, Reminder, or Task — see the inline-capture-cards prompts). The stream scrolls; the latest message is at the bottom by default. Above the composer, the active-task peek strip displays the current active-task summary in a single line: a count (e.g., "3 active") and the title of the most recently touched active task. The exact composition is a design call — possible forms include "3 active · {recent title}" or a count on the leading edge with the title following. If only one active task exists, the line may simplify to just the title with an "active" supporting tag. The composer is anchored at the bottom with the mic dominant and a text input area beside it.
 
 **What the user can do:**
 - Primary: press and hold the mic to add another capture.
-- Secondary: tap the text input to type a message.
-- Tertiary: scroll up to review earlier conversation; tap a capture card to open its detail; tap or drag the drawer peek to expand the ledger.
+- Secondary: tap the text input area to type a message.
+- Tertiary: scroll up to review earlier conversation; tap a capture card (note/reminder) to open its item-detail modal, or tap a task card's Start affordance to open its workspace; tap the active-task peek to open the active-task picker; tap the menu affordance to open the sidebar.
 
 **Feel:**
-The conversation is the foreground; everything else recedes. Type is comfortable to read at length. Bubbles have soft rounded corners and quiet fills — the visual contrast between user and Ben sides is small but legible. Inline capture cards within Ben's messages are clearly differentiated from plain text but live inside the bubble (not separate elements competing for attention). The drawer peek persists, never hides on scroll.
+The conversation is the foreground; everything else recedes. Type is comfortable to read at length. Bubbles have soft rounded corners and quiet fills — the visual contrast between user and Ben sides is small but legible. Inline capture cards within Ben's messages are clearly differentiated from plain text but live inside the bubble (not separate elements competing for attention). The active-task peek persists, never hides on scroll. The menu affordance stays restrained.
 
 **State context:**
-The standard, everyday state of the app. The user has used Ben before and has accumulated captures.
+The standard, everyday state of the app. The user has used Ben before and has accumulated captures and possibly active tasks.
 
 **Critical affordances:**
-The drawer peek must remain visible while scrolling the chat — it's the always-on ledger glance. The composer must always be reachable and always have the mic as its dominant element. Capture cards inside Ben's bubbles must feel like part of his reply, not foreign UI dropped into the conversation.
+The active-task peek must remain visible while scrolling the chat — it's the always-on glance. The composer must always be reachable with the mic as its dominant element. Inline capture cards inside Ben's bubbles must feel like part of his reply, not foreign UI dropped into the conversation. The peek's content must be readable in a single glance — title truncation with ellipsis is fine; multi-line peek defeats the purpose.
 ````
 
 ---
@@ -91,7 +91,7 @@ The drawer peek must remain visible while scrolling the chat — it's the always
 Let the user type a message as a fallback to voice, without ever losing access to voice itself.
 
 **What's visible:**
-The text input area inside the composer is expanded to accommodate typing — the soft keyboard is up (this is mobile web). As soon as any character is in the input, the mic affordance morphs (or yields visual prominence) to a send affordance on the trailing edge of the composer. The drawer peek may compress or hide momentarily because mobile keyboard takes vertical space — this is a tolerated layout concession, not a feature; when the peek can stay visible, it should.
+Top bar with menu affordance still visible. The text input area inside the composer is expanded to accommodate typing — the soft keyboard is up. As soon as any character is in the input, the mic affordance morphs (or yields visual prominence) to a send affordance on the trailing edge of the composer. The active-task peek may compress to its count-only form if the keyboard takes too much vertical space — this is a tolerated layout concession; when the peek can stay in its full form, it should.
 
 **What the user can do:**
 - Primary: type and tap send (or press enter) to submit the message.
@@ -116,21 +116,21 @@ The mic must remain visible (even if visually de-emphasized) — the user should
 Show the user that Ben is listening, give them confidence the audio is being captured, and offer a clear cancel path.
 
 **What's visible:**
-The chat behind dims slightly to focus attention on the composer area. The composer transforms into a recording state: where the mic was, an active mic indicator (held, pulsing, or glowing with the accent color); above the composer, an overlay panel containing a live waveform or audio-level meter responding to the user's voice, an elapsed timer counting up (with the 30-second maximum implied), and a "slide left to cancel" hint with a leftward arrow indicator. The text input area is hidden or de-emphasized while recording.
+The chat behind dims slightly to focus attention on the composer area. The composer transforms into a recording state: where the mic was, an active mic indicator (held, pulsing, or glowing with the accent color); above the composer, an overlay panel containing a live waveform or audio-level meter responding to the user's voice, an elapsed timer counting up (with the 30-second maximum implied), and a "slide left to cancel" hint with a leftward arrow indicator. The text input area is hidden or de-emphasized while recording. The active-task peek hides during recording — the recording overlay takes its vertical space — and restores on release.
 
 **What the user can do:**
 - Primary: hold the mic and speak; release to send.
 - Secondary: slide the finger left past a threshold to cancel — recording discarded, no message sent.
-- Tertiary: lift early without sliding — same as release, sends what was captured.
+- Tertiary: lift early without sliding — same as release.
 
 **Feel:**
-Alive and confident. The waveform / level meter reacts in real time to the user's voice — that responsiveness is the trust signal. Motion is purposeful, not decorative. The recording overlay feels like a small, well-crafted moment — the kind of micro-interaction that rewards attention without demanding it. Calm color, no flashing.
+Alive and confident. The waveform / level meter reacts in real time to the user's voice — that responsiveness is the trust signal. Motion is purposeful, not decorative. The recording overlay feels like a small, well-crafted moment. Calm color, no flashing.
 
 **State context:**
 The user is actively pressing the mic. This state lasts seconds at most and ends on release or cancel.
 
 **Critical affordances:**
-The waveform / level meter must be visibly responsive — a static "recording…" label is not enough; the user needs to see that their voice is being heard. The slide-to-cancel must be discoverable from the visible hint without prior knowledge. The 30-second cap is implicit in the timer; when it's reached, the recording auto-stops with a brief explanatory banner (see the audio-over-30s error state).
+The waveform / level meter must be visibly responsive — a static "recording…" label is not enough. The slide-to-cancel must be discoverable from the visible hint without prior knowledge. The 30-second cap is implicit in the timer; when reached, recording auto-stops with a brief explanatory banner.
 ````
 
 ---
@@ -142,20 +142,20 @@ The waveform / level meter must be visibly responsive — a static "recording…
 Bridge the moment between "user finished speaking" and "user sees their words written down" so the wait doesn't feel empty.
 
 **What's visible:**
-The recording overlay collapses. A pending user-message bubble appears at the bottom of the chat (right-aligned) with a subtle transcribing indicator — a few small dots or a quiet "hearing you…" label inside or adjacent to the bubble. The composer's mic returns to its idle position but is briefly disabled to prevent double-sends. A small cancel affordance is reachable from the pending bubble (tap to discard the in-flight transcription).
+The recording overlay collapses. The active-task peek restores to its previous content. A pending user-message bubble appears at the bottom of the chat (right-aligned) with a subtle transcribing indicator — a few small dots or a quiet "hearing you…" label inside or adjacent to the bubble. The composer's mic returns to its idle position but is briefly disabled to prevent double-sends. A small cancel affordance is reachable from the pending bubble.
 
 **What the user can do:**
 - Primary: wait — transcription typically completes within a second or two.
-- Secondary: tap to cancel the in-flight transcription (rare but possible).
+- Secondary: tap to cancel the in-flight transcription (rare).
 
 **Feel:**
-Quick and quiet. The pending bubble matches the look of a normal user bubble but is clearly in-flight — slightly reduced opacity, or a soft pending indicator. No spinner that dominates.
+Quick and quiet. The pending bubble matches the look of a normal user bubble but is clearly in-flight — slightly reduced opacity, or a soft pending indicator.
 
 **State context:**
-The user has just released the mic; the audio blob is in flight to Whisper. This state is short-lived — under a second in the happy case, a few seconds at worst.
+The user has just released the mic; the audio blob is in flight to Whisper. Short-lived state.
 
 **Critical affordances:**
-The pending bubble must appear immediately on release — even a half-second of "nothing happening" undermines the press-and-hold flow. The cancel affordance must exist but be quiet enough that users don't tap it by accident.
+The pending bubble must appear immediately on release — even a half-second of "nothing happening" undermines the press-and-hold flow.
 ````
 
 ---
@@ -167,20 +167,20 @@ The pending bubble must appear immediately on release — even a half-second of 
 Signal that Ben has heard the user and is composing a reply, while keeping the composer available for follow-up.
 
 **What's visible:**
-The user's message bubble is now finalized with the transcribed text (no longer pending). Below it, a Ben-side typing indicator appears — a small left-aligned bubble with three quiet animated dots (or equivalent typing affordance), styled to match Ben's normal messages. The composer is fully re-enabled — the user can press and hold the mic again or type a follow-up while waiting.
+The user's message bubble is now finalized with the transcribed text (no longer pending). Below it, a Ben-side typing indicator appears — a small left-aligned bubble with three quiet animated dots, styled to match Ben's normal messages. The composer is fully re-enabled. Active-task peek is visible in its current populated state.
 
 **What the user can do:**
-- Primary: wait for Ben's reply — the typing indicator suggests it's imminent.
+- Primary: wait for Ben's reply.
 - Secondary: stack a follow-up message via voice or text — the composer is live.
 
 **Feel:**
-The typing indicator is the friendliest part of the conversation visually — gentle dots, calm animation, no urgency. It feels like a friend gathering their thoughts.
+The typing indicator is the friendliest part of the conversation visually — gentle dots, calm animation. Like a friend gathering their thoughts.
 
 **State context:**
-The user's transcribed message has been sent to the model; the model is composing a reply and possibly calling a tool (save_note / save_reminder / save_task / ask_clarifying_question).
+The user's transcribed message has been sent to the model; the model is composing a reply and possibly calling a tool (save_note / save_reminder / create_task_workspace / ask_clarifying_question).
 
 **Critical affordances:**
-The composer must remain live — blocking the user while Ben replies would break the rapid-fire capture flow the founder explicitly wants. The typing indicator should appear quickly after transcription completes; a perceptible delay between "transcript visible" and "Ben starts typing" feels like a stall.
+The composer must remain live — blocking the user while Ben replies would break the rapid-fire capture flow. The typing indicator should appear quickly after transcription completes.
 ````
 
 ---
@@ -196,26 +196,28 @@ There are five distinct error surfaces, each in its own location:
 
 1. **Mic-record failed** (browser-level mic API error during press-and-hold) — A soft inline toast or banner appears just above the composer with a friend-tone message ("mic glitched — try again or type it"). The pending user-message bubble (if one was rendering) is removed. The composer returns to its idle state with the mic still visible.
 
-2. **Transcription failed** (the audio was captured but Whisper returned an error or empty text) — The pending user-message bubble flips into an error state: a quiet error fill (not red-screaming), friend-tone copy ("couldn't catch that — tap to retry or type it instead"), and a clear retry affordance integrated into the bubble. The original audio is held for one retry.
+2. **Transcription failed** (audio captured but Whisper returned an error or empty text) — The pending user-message bubble flips into an error state: quiet error fill (not red-screaming), friend-tone copy ("couldn't catch that — tap to retry or type it instead"), and a clear retry affordance integrated into the bubble. The original audio is held for one retry.
 
-3. **Ben reply failed** (the model API returned an error) — The Ben typing indicator flips into an error bubble in the same chat position: a soft error fill with friend-tone copy ("brain hiccup — give me a sec") and a tap-to-retry affordance. The user's message remains unchanged.
+3. **Ben reply failed** (model API error) — The Ben typing indicator flips into an error bubble in the same chat position: soft error fill with friend-tone copy ("brain hiccup — give me a sec") and a tap-to-retry affordance. The user's message remains unchanged.
 
-4. **Save failed** (the model classified successfully but the capture didn't persist) — The inline capture card inside Ben's reply shows a small "couldn't save — retry" affordance integrated into the card. The chat continues normally; the missing artifact is the only signal of the failure. The card's retry tap re-attempts the save.
+4. **Save failed** (the model classified successfully but the capture didn't persist) — The inline capture card inside Ben's reply shows a small "couldn't save — retry" affordance integrated into the card. The chat continues normally.
 
 5. **Audio over 30 seconds** — Recording auto-stopped at the cap. A brief banner appears just above the composer ("hit the 30s cap — sent what I got") and fades after a few seconds. The transcribing flow continues normally with the truncated audio.
+
+The active-task peek and the menu affordance remain visible and functional through all error states.
 
 **What the user can do:**
 - Primary: tap the relevant retry affordance for the specific error surface.
 - Secondary: fall back to text input (always available except during recording).
 
 **Feel:**
-Friendly, non-alarming. Error fills are soft and distinguishable from normal bubbles but never aggressive (no red-screen energy). Friend-tone copy carries the recovery — the visual treatment is quiet.
+Friendly, non-alarming. Error fills are soft and distinguishable from normal bubbles but never aggressive. Friend-tone copy carries the recovery.
 
 **State context:**
 One specific stage of the capture pipeline has failed. The rest of the conversation is intact; only the affected element shows an error.
 
 **Critical affordances:**
-Each error must surface in the exact location of the affected element (toast above composer for mic, the user bubble itself for transcription, Ben's typing bubble for reply, the inline card for save) — that locality is the trust signal. The retry must be one tap, not a multi-step recovery. Text fallback must remain reachable through all error states.
+Each error must surface in the exact location of the affected element. The retry must be one tap. Text fallback must remain reachable through all error states.
 ````
 
 ---
@@ -227,21 +229,21 @@ Each error must surface in the exact location of the affected element (toast abo
 Recover from the highest-stakes single moment in the app — the user denied mic access — without losing them.
 
 **What's visible:**
-The recording overlay (if it was open) collapses. The screen returns to the populated chat layout. A persistent, dismissible banner appears just above the composer with a friend-tone message ("Ben can't hear you yet — turn on mic in browser settings") and a tap-target ("show me how") that opens a help sheet or modal explaining how to grant mic access in mobile browser settings. The mic affordance in the composer remains visible but tapping it re-surfaces the banner rather than triggering recording. The text input area in the composer remains fully functional.
+The recording overlay (if it was open) collapses. The screen returns to the populated chat layout. A persistent, dismissible banner appears just above the composer with a friend-tone message ("Ben can't hear you yet — turn on mic in browser settings") and a tap-target ("show me how") that opens a help sheet or modal explaining how to grant mic access in mobile browser settings. The mic affordance in the composer remains visible but tapping it re-surfaces the banner rather than triggering recording. The text input area in the composer remains fully functional. Active-task peek and menu affordance are unchanged.
 
 **What the user can do:**
-- Primary: tap "show me how" to see browser-specific instructions for enabling mic.
+- Primary: tap "show me how" for browser-specific instructions.
 - Secondary: type messages via the text input — text fallback works regardless of mic state.
-- Tertiary: dismiss the banner (it will reappear next time the user taps the mic).
+- Tertiary: dismiss the banner (it reappears next time the user taps the mic).
 
 **Feel:**
-Honest and non-judgmental. The banner is a quiet alert surface, not an angry warning. Copy assumes the user might fix it later and doesn't shame the choice. Text input remains a first-class option, not a punishment.
+Honest and non-judgmental. The banner is a quiet alert surface, not an angry warning. Copy assumes the user might fix it later. Text input remains a first-class option.
 
 **State context:**
-The user denied mic permission via the browser's prompt. Voice capture is unavailable until they change browser settings. This may be permanent if the user doesn't fix it — text fallback is the lifeline.
+The user denied mic permission via the browser's prompt. Voice capture is unavailable until they change browser settings.
 
 **Critical affordances:**
-The help sheet must give clear, browser-specific guidance — many mobile browsers don't allow deep-linking to settings, so the instructions need to be readable and easy to follow. The mic affordance must not silently fail when tapped — it must always re-surface the banner so the user understands why nothing is happening. Text input must work flawlessly.
+The help sheet must give clear, browser-specific guidance. The mic affordance must not silently fail — tapping always re-surfaces the banner. Text input must work flawlessly.
 ````
 
 ---
@@ -253,26 +255,26 @@ The help sheet must give clear, browser-specific guidance — many mobile browse
 Keep the user informed and, where possible, keep capture working when the network is unavailable.
 
 **What's visible:**
-A subtle banner appears at the top of the chat area with a friend-tone message ("offline — Ben's listening but can't reply yet"). The composer remains visible. Two possible behaviors for the composer depending on implementation depth:
+A subtle banner appears at the top of the chat area (below the menu top bar) with a friend-tone message ("offline — Ben's listening but can't reply yet"). The composer remains visible. Two possible behaviors:
 
-- **Queueing supported**: voice and text inputs continue to work; the user-message bubble appears with a "pending" indicator (similar to the transcribing state but distinct) and waits in a local queue. On reconnect, queued messages send in order and Ben's replies stream in.
+- **Queueing supported**: voice and text inputs continue to work; the user-message bubble appears with a "pending" indicator (distinct from the transcribing state) and waits in a local queue. On reconnect, queued messages send in order.
 - **Queueing not supported**: the composer is disabled with the same offline banner; the mic and text input show a quiet non-interactive state.
 
-The drawer peek and existing chat history remain readable — local data is still accessible.
+The active-task peek and prior chat history remain readable — local data is still accessible. The menu sidebar can still be opened to read existing notes / reminders / tasks history.
 
 **What the user can do:**
 - Primary (queueing): record or type — capture is queued for send on reconnect.
-- Primary (no queueing): wait for reconnect; review prior captures via the ledger drawer.
-- Secondary: dismiss the offline banner (it will reappear if still offline on next action).
+- Primary (no queueing): wait for reconnect; review prior captures via the menu sidebar.
+- Secondary: dismiss the offline banner.
 
 **Feel:**
-Calm and informative. The offline banner is the same quiet surface as the error band on sign-in — soft, friendly, not red. The user shouldn't feel locked out of their data, only delayed in sending new captures.
+Calm and informative. The offline banner is the same quiet surface as other error states.
 
 **State context:**
-The browser's online detection returned false, or a recent fetch failed in a network-error way. The user may be in a tunnel, on a plane, or in a spotty area.
+The browser's online detection returned false, or a recent fetch failed in a network-error way.
 
 **Critical affordances:**
-The user must always be able to read existing captures and chat history offline — the local state is intact. The offline banner must be honest about what works and what doesn't; if queueing isn't implemented, don't pretend the input went through.
+The user must always be able to read existing captures, history, and active-task list offline. The offline banner must be honest about what works and what doesn't.
 ````
 
 ---
@@ -286,21 +288,21 @@ Handle the small visual variations that fall outside the primary states cleanly.
 **What's visible:**
 Three edge variations, each a small adjustment of the populated state:
 
-1. **Very long single user message** (a long voice clip transcribed to dense text) — The user bubble grows vertically to accommodate the full transcript; no truncation. The chat auto-pins to the bottom so the latest content stays visible. The bubble's max-width is the same as a normal bubble; only height grows.
+1. **Very long single user message** — The user bubble grows vertically to accommodate the full transcript; no truncation. The chat auto-pins to the bottom so the latest content stays visible. The bubble's max-width is the same as a normal bubble; only height grows.
 
-2. **Rapid-fire captures** (user records two clips back-to-back before Ben replies) — Two user bubbles render in order at the bottom of the chat, each with their own lifecycle (transcribing → final). Ben's replies stream in below in order as they arrive. The composer never blocks between captures.
+2. **Rapid-fire captures** — Two user bubbles render in order at the bottom of the chat, each with their own lifecycle (transcribing → final). Ben's replies stream in below in order as they arrive. The composer never blocks between captures.
 
-3. **Returning from background** (the app was backgrounded mid-recording or mid-transcription) — Any in-flight recording is cancelled; the chat shows the standard error banner for the affected stage. The state is restored to the populated view at the last scroll position.
+3. **Returning from background** — Any in-flight recording is cancelled; the chat shows the standard error banner for the affected stage. The state is restored to the populated view at the last scroll position. Active-task peek refreshes with current state.
 
 **What the user can do:**
 - Primary: continue normally — these are visual edges of the standard populated state.
 
 **Feel:**
-Indistinguishable from the standard populated state except for the specific variation. The app should feel resilient — none of these edges should produce a janky or broken-looking surface.
+Indistinguishable from the standard populated state except for the specific variation.
 
 **State context:**
-Real-life usage patterns that come up during daily dogfooding. None are failures; all are normal variations the surface needs to absorb gracefully.
+Real-life usage patterns that come up during daily dogfooding.
 
 **Critical affordances:**
-Long messages must scroll fully into view, not get cut off. Rapid-fire captures must preserve order — if Ben's replies arrive out of order due to varying model latencies, the UI must still pair each reply with the correct user message. Background return must not leave the user staring at a broken state.
+Long messages must scroll fully into view. Rapid-fire captures must preserve order. Background return must not leave the user staring at a broken state.
 ````

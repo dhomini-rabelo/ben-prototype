@@ -1,3 +1,4 @@
+import { ActiveTaskPeek } from "../../layout/components/ui/active-task-peek";
 import { CaptureCard } from "../../layout/components/ui/capture-card";
 import { ChatInput } from "../../layout/components/ui/chat-input";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
@@ -5,7 +6,16 @@ import { ChatShell } from "./_chat-shell";
 
 export function ChatPopulated() {
   return (
-    <ChatShell footer={<ChatInput />}>
+    <ChatShell
+      peek={
+        <ActiveTaskPeek
+          variant="summary"
+          count={3}
+          title="Draft the Q3 brief"
+        />
+      }
+      footer={<ChatInput />}
+    >
       <section className="flex flex-1 flex-col gap-4 pt-2">
         <MessageBubble from="ben">
           morning. what's on the list today?

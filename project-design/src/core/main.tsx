@@ -42,7 +42,7 @@ import { ChatInputPreview } from "../pages/components/chat-input";
 import { ComposerPreview } from "../pages/components/composer";
 import { DesignTokens } from "../pages/components/design-tokens";
 import { IconButtonPreview } from "../pages/components/icon-button";
-import { LedgerPeekPreview } from "../pages/components/ledger-peek";
+import { ActiveTaskPeekPreview } from "../pages/components/active-task-peek";
 import { MessageBubblePreview } from "../pages/components/message-bubble";
 import { SuggestedActionPreview } from "../pages/components/suggested-action";
 import { TypingIndicatorPreview } from "../pages/components/typing-indicator";
@@ -165,8 +165,8 @@ createRoot(document.getElementById("root")!).render(
           element={<TypingIndicatorPreview />}
         />
         <Route
-          path="/components/ledger-peek"
-          element={<LedgerPeekPreview />}
+          path="/components/active-task-peek"
+          element={<ActiveTaskPeekPreview />}
         />
         <Route
           path="/components/capture-card"

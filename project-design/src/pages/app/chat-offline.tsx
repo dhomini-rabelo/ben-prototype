@@ -1,4 +1,5 @@
 import { CloudOff } from "lucide-react";
+import { ActiveTaskPeek } from "../../layout/components/ui/active-task-peek";
 import { CaptureCard } from "../../layout/components/ui/capture-card";
 import { ChatBanner } from "../../layout/components/ui/chat-banner";
 import { ChatInput } from "../../layout/components/ui/chat-input";
@@ -13,6 +14,13 @@ export function ChatOffline() {
         <ChatBanner tone="warn" icon={CloudOff} dismissible>
           offline — Ben's listening but can't reply yet
         </ChatBanner>
+      }
+      peek={
+        <ActiveTaskPeek
+          variant="summary"
+          count={3}
+          title="Draft the Q3 brief"
+        />
       }
       footer={<ChatInput placeholder="Message Ben (queued)" />}
     >

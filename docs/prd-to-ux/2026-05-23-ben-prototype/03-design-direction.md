@@ -39,7 +39,13 @@ The vividness must serve the friend-tone wrapper without undermining the assista
 
 - **Press-and-hold mic as the dominant composer action.** The mic is the primary, visually-anchored affordance on the composer. The send-arrow / text input is the same composer in a secondary mode — text is always reachable, but never visually competing with voice on the empty state.
 - **Optimistic capture cards.** No spinners between "user finishes speaking" and "Ben's confirmation card is on screen." The pending-save state is a subtle indicator within the card (faded border or tiny pending dot), never a blocker. The user should feel like Ben heard them instantly.
-- **Always-visible ledger peek.** The drawer peek persists above the composer. It does not collapse on chat scroll. The only state in which it may compress or hide is when the soft keyboard is up — and even then, only if vertical-space constraints on mobile Safari force it. "What's coming up" should always be one glance away.
+- **Always-visible active-task peek.** A peek strip persists just above the composer on the main chat surface, surfacing the count of active tasks and the most recent one. It does not collapse on chat scroll. The only state in which it may compress or hide is when the soft keyboard is up — and only if mobile vertical space forces it. "What am I working on?" should always be one glance away.
+
+## Workspace & Diff Treatment
+
+The **task workspace** is Ben's content surface — text drafts, todo lists, future component types. It must feel like a *focused canvas*, not a chat with a panel: the content surface is the visual center; the conversation (sub-thread) is collapsed by default to a single most-recent-reply line; the composer at the bottom mirrors the main chat composer.
+
+The **pending-diff bar** (when Ben proposes content edits) is the workspace's trust mechanism. Treat additive content with a soft positive treatment (gentle warm fill or a leading marker), subtractive content with a quieter retraction treatment (struck-through or muted with a leading marker). Avoid red/green code-diff aesthetics — this is a friend showing edits, not a developer reviewing source. Approve and Reject are equal-weight actions, both reachable in one tap; neither is destructive enough to need confirmation.
 
 ---
 

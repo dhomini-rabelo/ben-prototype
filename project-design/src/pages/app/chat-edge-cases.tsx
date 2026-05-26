@@ -1,3 +1,4 @@
+import { ActiveTaskPeek } from "../../layout/components/ui/active-task-peek";
 import { CaptureCard } from "../../layout/components/ui/capture-card";
 import { ChatInput } from "../../layout/components/ui/chat-input";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
@@ -7,6 +8,13 @@ import { ChatShell } from "./_chat-shell";
 export function ChatEdgeCases() {
   return (
     <ChatShell
+      peek={
+        <ActiveTaskPeek
+          variant="summary"
+          count={4}
+          title="Rewrite Q3 brief positioning"
+        />
+      }
       footer={<ChatInput />}
     >
       <section className="flex flex-1 flex-col justify-end gap-4 pt-2">

@@ -1,3 +1,4 @@
+import { ActiveTaskPeek } from "../../layout/components/ui/active-task-peek";
 import { ChatInput } from "../../layout/components/ui/chat-input";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { TypingIndicator } from "../../layout/components/ui/typing-indicator";
@@ -7,6 +8,13 @@ import { ChatShell } from "./_chat-shell";
 export function ChatAwaitingReply() {
   return (
     <ChatShell
+      peek={
+        <ActiveTaskPeek
+          variant="summary"
+          count={3}
+          title="Draft the Q3 brief"
+        />
+      }
       footer={<ChatInput />}
     >
       <section className="flex flex-1 flex-col justify-end gap-4 pt-2">
