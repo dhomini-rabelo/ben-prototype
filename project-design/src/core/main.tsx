@@ -76,6 +76,31 @@ import { TodoListItemPreview } from "../pages/components/todo-list-item";
 import { WorkspaceTopBarPreview } from "../pages/components/workspace-top-bar";
 import { TypingIndicatorPreview } from "../pages/components/typing-indicator";
 import { TypographyPreview } from "../pages/components/typography";
+import { MenuSidebarPopulated } from "../pages/app/menu-sidebar-populated";
+import { MenuSidebarLoading } from "../pages/app/menu-sidebar-loading";
+import { MenuSidebarError } from "../pages/app/menu-sidebar-error";
+import { MenuTasksEmpty } from "../pages/app/menu-tasks-empty";
+import { MenuTasksPopulated } from "../pages/app/menu-tasks-populated";
+import { MenuTasksLoading } from "../pages/app/menu-tasks-loading";
+import { MenuTasksError } from "../pages/app/menu-tasks-error";
+import { MenuTasksEdgeCases } from "../pages/app/menu-tasks-edge-cases";
+import { MenuNotesEmpty } from "../pages/app/menu-notes-empty";
+import { MenuNotesPopulated } from "../pages/app/menu-notes-populated";
+import { MenuNotesLoading } from "../pages/app/menu-notes-loading";
+import { MenuNotesError } from "../pages/app/menu-notes-error";
+import { MenuNotesEdgeCases } from "../pages/app/menu-notes-edge-cases";
+import { MenuRemindersEmpty } from "../pages/app/menu-reminders-empty";
+import { MenuRemindersPopulated } from "../pages/app/menu-reminders-populated";
+import { MenuRemindersLoading } from "../pages/app/menu-reminders-loading";
+import { MenuRemindersError } from "../pages/app/menu-reminders-error";
+import { MenuRemindersEdgeCases } from "../pages/app/menu-reminders-edge-cases";
+import { MenuSettingsPopulated } from "../pages/app/menu-settings-populated";
+import { MenuSettingsLoading } from "../pages/app/menu-settings-loading";
+import { MenuSettingsError } from "../pages/app/menu-settings-error";
+import { MenuSettingsEdgeCases } from "../pages/app/menu-settings-edge-cases";
+import { MenuSidebarPreview } from "../pages/components/menu-sidebar";
+import { MenuListRowPreview } from "../pages/components/menu-list-row";
+import { SettingsSheetPreview } from "../pages/components/settings-sheet";
 import "./global.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -310,6 +335,31 @@ createRoot(document.getElementById("root")!).render(
           path="/components/task-picker-sheet"
           element={<TaskPickerSheetPreview />}
         />
+        <Route path="/app/menu-sidebar-populated" element={<MenuSidebarPopulated />} />
+        <Route path="/app/menu-sidebar-loading" element={<MenuSidebarLoading />} />
+        <Route path="/app/menu-sidebar-error" element={<MenuSidebarError />} />
+        <Route path="/app/menu-tasks-empty" element={<MenuTasksEmpty />} />
+        <Route path="/app/menu-tasks-populated" element={<MenuTasksPopulated />} />
+        <Route path="/app/menu-tasks-loading" element={<MenuTasksLoading />} />
+        <Route path="/app/menu-tasks-error" element={<MenuTasksError />} />
+        <Route path="/app/menu-tasks-edge-cases" element={<MenuTasksEdgeCases />} />
+        <Route path="/app/menu-notes-empty" element={<MenuNotesEmpty />} />
+        <Route path="/app/menu-notes-populated" element={<MenuNotesPopulated />} />
+        <Route path="/app/menu-notes-loading" element={<MenuNotesLoading />} />
+        <Route path="/app/menu-notes-error" element={<MenuNotesError />} />
+        <Route path="/app/menu-notes-edge-cases" element={<MenuNotesEdgeCases />} />
+        <Route path="/app/menu-reminders-empty" element={<MenuRemindersEmpty />} />
+        <Route path="/app/menu-reminders-populated" element={<MenuRemindersPopulated />} />
+        <Route path="/app/menu-reminders-loading" element={<MenuRemindersLoading />} />
+        <Route path="/app/menu-reminders-error" element={<MenuRemindersError />} />
+        <Route path="/app/menu-reminders-edge-cases" element={<MenuRemindersEdgeCases />} />
+        <Route path="/app/menu-settings-populated" element={<MenuSettingsPopulated />} />
+        <Route path="/app/menu-settings-loading" element={<MenuSettingsLoading />} />
+        <Route path="/app/menu-settings-error" element={<MenuSettingsError />} />
+        <Route path="/app/menu-settings-edge-cases" element={<MenuSettingsEdgeCases />} />
+        <Route path="/components/menu-sidebar" element={<MenuSidebarPreview />} />
+        <Route path="/components/menu-list-row" element={<MenuListRowPreview />} />
+        <Route path="/components/settings-sheet" element={<SettingsSheetPreview />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
