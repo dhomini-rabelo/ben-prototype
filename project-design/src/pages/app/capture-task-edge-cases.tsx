@@ -6,7 +6,7 @@ import { ChatShell } from "./_chat-shell";
 export function CaptureTaskEdgeCases() {
   return (
     <ChatShell footer={<ChatInput />}>
-      <section className="flex flex-1 flex-col gap-4 pt-2">
+      <section className="flex flex-1 flex-col justify-end gap-4 pt-2">
         <MessageBubble from="user">
           add a task — rewrite the q3 positioning paragraph, add integration
           story section, tighten pricing table removing legacy tier, and sync

@@ -79,6 +79,7 @@ Reusable components are **always separated** from screens — they live in their
 - **Use theme tokens over arbitrary values** when one exists. Font-size tokens registered with `tailwind-merge`: `wordmark`, `tagline`, `headline-lg`, `body-md`, `button`, `label-caps`.
 - **Reusable primitives stay generic.** No baked-in `w-full`, `max-w-*`, or page-specific spacing — apply those at the call site via `className`.
 - **No 100% HTML fidelity required.** Earlier screens started as static HTML mockups; React ports may simplify or improve them.
+- **Chat-shell pages anchor messages to the composer.** Any page rendered inside [`_chat-shell.tsx`](../../../project-design/src/pages/app/_chat-shell.tsx) (all `chat-*.tsx` and `capture-*.tsx` states except the special centered `chat-empty` welcome) keeps the message `<section>` close to the chat input — use `flex flex-1 flex-col justify-end gap-4 pt-2` so bubbles and capture cards sit just above the composer rather than floating at the top of the viewport. A tall empty gap between the last bubble and the mic reads as dead air, especially in short exchanges like inline captures.
 
 ## Mandatory project rules (from CLAUDE.md)
 
