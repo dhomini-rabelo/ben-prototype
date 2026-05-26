@@ -1,26 +1,27 @@
-import { useState } from "react";
+import { ActiveTaskPeek } from "../../layout/components/ui/active-task-peek";
 import { CaptureCard } from "../../layout/components/ui/capture-card";
 import { ChatInput } from "../../layout/components/ui/chat-input";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { ChatShell } from "./_chat-shell";
 
-export function CaptureTaskOpen() {
-  const [done, setDone] = useState(false);
-
+export function CaptureTaskNotStarted() {
   return (
-    <ChatShell footer={<ChatInput />}>
+    <ChatShell
+      footer={<ChatInput />}
+      peek={<ActiveTaskPeek variant="summary" count={2} title="Draft the Q3 brief" />}
+    >
       <section className="flex flex-1 flex-col justify-end gap-4 pt-2">
         <MessageBubble from="user">
           add a task to draft the q3 brief by friday
         </MessageBubble>
 
         <MessageBubble from="ben">
-          on it.
+          set up a space for it — tap Start when you're ready.
           <CaptureCard
             kind="task"
-            state={done ? "done" : "default"}
+            state="default"
+            taskShape="text"
             title="Draft the Q3 brief"
-            onToggle={() => setDone((d) => !d)}
           />
         </MessageBubble>
       </section>

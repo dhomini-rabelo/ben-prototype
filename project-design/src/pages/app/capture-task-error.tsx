@@ -12,21 +12,12 @@ export function CaptureTaskError() {
         </MessageBubble>
 
         <MessageBubble from="ben">
-          on it.
+          hit a snag setting that up.
           <CaptureCard
             kind="task"
             state="error"
+            taskShape="text"
             title="Draft the Q3 brief"
-          />
-        </MessageBubble>
-
-        <MessageBubble from="ben">
-          on it.
-          <CaptureCard
-            kind="task"
-            state="error"
-            title="Loop in marketing by Monday"
-            errorMessage="didn't go through — retry"
           />
         </MessageBubble>
       </section>

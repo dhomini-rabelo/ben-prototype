@@ -3,7 +3,7 @@ import { ChatInput } from "../../layout/components/ui/chat-input";
 import { MessageBubble } from "../../layout/components/ui/message-bubble";
 import { ChatShell } from "./_chat-shell";
 
-export function CaptureTaskDone() {
+export function CaptureTaskFinished() {
   return (
     <ChatShell footer={<ChatInput />}>
       <section className="flex flex-1 flex-col justify-end gap-4 pt-2">
@@ -12,11 +12,27 @@ export function CaptureTaskDone() {
         </MessageBubble>
 
         <MessageBubble from="ben">
-          on it.
+          set up a space for it — tap Start when you're ready.
           <CaptureCard
             kind="task"
-            state="done"
+            state="default"
+            taskShape="text"
             title="Draft the Q3 brief"
+          />
+        </MessageBubble>
+
+        <MessageBubble from="user">
+          all done — wrap that one
+        </MessageBubble>
+
+        <MessageBubble from="ben">
+          nicely done — filed under finished.
+          <CaptureCard
+            kind="task"
+            state="finished"
+            taskShape="text"
+            title="Draft the Q3 brief"
+            supportingText="finished 3h ago"
           />
         </MessageBubble>
       </section>

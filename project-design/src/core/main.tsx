@@ -15,11 +15,17 @@ import { CaptureReminderError } from "../pages/app/capture-reminder-error";
 import { CaptureReminderFired } from "../pages/app/capture-reminder-fired";
 import { CaptureReminderLoading } from "../pages/app/capture-reminder-loading";
 import { CaptureReminderUpcoming } from "../pages/app/capture-reminder-upcoming";
-import { CaptureTaskDone } from "../pages/app/capture-task-done";
+import { CaptureTaskActive } from "../pages/app/capture-task-active";
 import { CaptureTaskEdgeCases } from "../pages/app/capture-task-edge-cases";
 import { CaptureTaskError } from "../pages/app/capture-task-error";
+import { CaptureTaskFinished } from "../pages/app/capture-task-finished";
 import { CaptureTaskLoading } from "../pages/app/capture-task-loading";
-import { CaptureTaskOpen } from "../pages/app/capture-task-open";
+import { CaptureTaskNotStarted } from "../pages/app/capture-task-not-started";
+import { ItemDetailEdgeCases } from "../pages/app/item-detail-edge-cases";
+import { ItemDetailError } from "../pages/app/item-detail-error";
+import { ItemDetailLoading } from "../pages/app/item-detail-loading";
+import { ItemDetailNote } from "../pages/app/item-detail-note";
+import { ItemDetailReminder } from "../pages/app/item-detail-reminder";
 import { ChatEdgeCases } from "../pages/app/chat-edge-cases";
 import { ChatEmpty } from "../pages/app/chat-empty";
 import { ChatError } from "../pages/app/chat-error";
@@ -37,6 +43,7 @@ import { LoginPermissionDenied } from "../pages/app/login-permission-denied";
 import { BrandMarkPreview } from "../pages/components/brand-mark";
 import { ButtonPreview } from "../pages/components/button";
 import { CaptureCardPreview } from "../pages/components/capture-card";
+import { ItemDetailSheetPreview } from "../pages/components/item-detail-sheet";
 import { ChatBannerPreview } from "../pages/components/chat-banner";
 import { ChatInputPreview } from "../pages/components/chat-input";
 import { ComposerPreview } from "../pages/components/composer";
@@ -123,12 +130,16 @@ createRoot(document.getElementById("root")!).render(
           element={<CaptureTaskLoading />}
         />
         <Route
-          path="/app/capture-task-open"
-          element={<CaptureTaskOpen />}
+          path="/app/capture-task-not-started"
+          element={<CaptureTaskNotStarted />}
         />
         <Route
-          path="/app/capture-task-done"
-          element={<CaptureTaskDone />}
+          path="/app/capture-task-active"
+          element={<CaptureTaskActive />}
+        />
+        <Route
+          path="/app/capture-task-finished"
+          element={<CaptureTaskFinished />}
         />
         <Route
           path="/app/capture-task-error"
@@ -145,6 +156,20 @@ createRoot(document.getElementById("root")!).render(
         <Route
           path="/app/capture-clarifying-question-edge-cases"
           element={<CaptureClarifyingQuestionEdgeCases />}
+        />
+        <Route path="/app/item-detail-note" element={<ItemDetailNote />} />
+        <Route
+          path="/app/item-detail-reminder"
+          element={<ItemDetailReminder />}
+        />
+        <Route
+          path="/app/item-detail-loading"
+          element={<ItemDetailLoading />}
+        />
+        <Route path="/app/item-detail-error" element={<ItemDetailError />} />
+        <Route
+          path="/app/item-detail-edge-cases"
+          element={<ItemDetailEdgeCases />}
         />
         <Route path="/components/design-tokens" element={<DesignTokens />} />
         <Route path="/components/typography" element={<TypographyPreview />} />
@@ -171,6 +196,10 @@ createRoot(document.getElementById("root")!).render(
         <Route
           path="/components/capture-card"
           element={<CaptureCardPreview />}
+        />
+        <Route
+          path="/components/item-detail-sheet"
+          element={<ItemDetailSheetPreview />}
         />
         <Route
           path="/components/chat-banner"
