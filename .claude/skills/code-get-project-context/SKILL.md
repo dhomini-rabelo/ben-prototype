@@ -11,11 +11,12 @@ description: Gives the AI a quick, accurate picture of what the ben-prototype re
 
 The `ben-prototype` repository is the **v1 prototyping workspace** for this app. It is not a production codebase — its purpose is to design, iterate, and validate Ben's screens and interactions before the real product is built.
 
-The repo contains two separate Vite + React + Tailwind v4 projects:
+The repo contains three separate projects:
 
-- [`project-design/`](../../../project-design/) — Design sandbox and gallery
-- [`project-web/`](../../../project-web/) — Mock web implementation of Ben
-- Comming soon: `project-mobile/` — Real mobile implementation of Ben (not started yet)
+- [`project-design/`](../../../project-design/) — Design sandbox and gallery (Vite + React + Tailwind v4)
+- [`project-web/`](../../../project-web/) — Mock web implementation of Ben (Vite + React + Tailwind v4)
+- [`project-backend/`](../../../project-backend/) — Node.js backend for Ben (Express 5 + TypeScript + Zod)
+- Coming soon: `project-mobile/` — Real mobile implementation of Ben (not started yet)
 
 ---
 
@@ -38,9 +39,25 @@ Vite 8 · React 19 · react-router v7 · Tailwind CSS v4 · `lucide-react`
 
 ## project-web
 
-**Purpose:** The real web implementation of Ben — currently in its earliest stage (essentially a Hello World placeholder).
+**Purpose:** The real web implementation of Ben — early stage with Login page and routing wired up.
 
 It shares the same stack as `project-design` but is a completely separate project. Work here will grow as the design is validated in `project-design`.
+
+---
+
+## project-backend
+
+**Purpose:** The Node.js API server for Ben.
+
+### Key directories
+
+- `src/infra/http/` — Express app, server entry point, and error handler
+- `src/infra/services/` — Infrastructure services (env validation via Zod)
+- `src/modules/domain/` — Domain layer: entities, value objects, aggregate roots, repositories, use cases
+
+### Stack
+
+Node.js · Express 5 · TypeScript · Zod · `tsx` (dev runner)
 
 ---
 
