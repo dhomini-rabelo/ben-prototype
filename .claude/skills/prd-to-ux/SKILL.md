@@ -1,6 +1,7 @@
 ---
 name: prd-to-ux
 description: Use when translating a PRD, feature spec, or raw product idea into screen-level prompts for web UX generators (Google Stitch, Figma AI, Pencil.dev, Claude Design, v0, or similar). Use before creating visual mockups or wireframes.
+disable-model-invocation: true
 ---
 
 # prd-to-ux

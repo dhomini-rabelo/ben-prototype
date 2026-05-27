@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: start-office-hours-prd
 preamble-tier: 3
 version: 2.0.0
