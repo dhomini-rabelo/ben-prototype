@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PROMPT=$(jq -r '.prompt // empty'); DATE=$(date +%Y-%m-%d); TIMESTAMP=$(date +%H-%M-%S); DIR=\"/home/fael/so/repos/ben-prototype/.claude/prompt-history/$DATE\"; mkdir -p \"$DIR\"; echo \"$PROMPT\" > \"$DIR/$TIMESTAMP.md\"",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}
