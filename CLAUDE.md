@@ -1,8 +1,8 @@
 ## Rules
 
-### At the start of every task
+### At the start of every new conversation - if the conversation was already started, skip this step
 
-- Always use the `code-get-project-context` skill to load the project context before doing anything else.
+- Always use the `code-get-project-context` skill to load the project context before starting any work.
 
 ### When performing any task
 
