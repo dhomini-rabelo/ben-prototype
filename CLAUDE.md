@@ -1,5 +1,9 @@
 ## Rules
 
+### At the start of every task
+
+- Always use the `code-get-project-context` skill to load the project context before doing anything else.
+
 ### When performing any task
 
 - **NO GUESSING**: Do not assume workflows, file names, variable names, or business logic if they are not explicitly provided or found via search.

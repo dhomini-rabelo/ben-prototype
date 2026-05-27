@@ -1,7 +1,6 @@
 ---
 name: context-get-project-design-context
 description: Load the intent, purpose, and conventions of the ben-prototype project so the user can write short prompts without re-explaining what the project is, where things live, or how to extend it.
-disable-model-invocation: true
 ---
 
 # Ben Prototype — Project Context
