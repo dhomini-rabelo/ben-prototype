@@ -4,7 +4,7 @@
 
 - UI components are small and foundational components such as buttons, labels, inputs, and so on.
 - Common components compose UI components to build larger parts of the interface such as ListingCard, SupervisorNavigation, LoadingSpinner, and so on.
-- In supervisor web, keep this split under `packages/infra/web/supervisor-app/src/layout/components/ui` and `packages/infra/web/supervisor-app/src/layout/components/common`.
+
 
 ```tsx
 // Correct way
