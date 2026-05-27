@@ -1,5 +1,5 @@
 import { AlertCircle } from "lucide-react";
-import { ChatBanner } from "../../layout/components/ui/chat-banner";
+import { ChatBanner } from "../../layout/components/chat-banner";
 import { MenuListShell } from "./_menu-list-shell";
 
 export function MenuNotesError() {

@@ -1,4 +1,4 @@
-import { ChatInput } from "../../layout/components/ui/chat-input";
+import { ChatInput } from "../../layout/components/chat-input";
 import { Typography } from "../../layout/components/ui/typography";
 import { WorkspaceShell } from "./_workspace-shell";
 

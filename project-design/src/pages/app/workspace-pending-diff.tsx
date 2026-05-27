@@ -1,6 +1,6 @@
-import { ChatInput } from "../../layout/components/ui/chat-input";
-import { DiffBar } from "../../layout/components/ui/diff-bar";
-import { TodoListItem } from "../../layout/components/ui/todo-list-item";
+import { ChatInput } from "../../layout/components/chat-input";
+import { DiffBar } from "../../layout/components/diff-bar";
+import { TodoListItem } from "../../layout/components/todo-list-item";
 import { WorkspaceShell } from "./_workspace-shell";
 
 export function WorkspacePendingDiff() {

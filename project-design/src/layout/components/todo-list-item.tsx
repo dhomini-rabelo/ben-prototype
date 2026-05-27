@@ -1,6 +1,6 @@
 import { Check, Plus } from "lucide-react";
-import { cn } from "../../utils/cn";
-import { Typography } from "./typography";
+import { cn } from "../utils/cn";
+import { Typography } from "./ui/typography";
 
 type TodoListItemProps = {
   title: string;

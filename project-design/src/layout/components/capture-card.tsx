@@ -8,8 +8,8 @@ import {
   Type,
 } from "lucide-react";
 import type { ComponentType } from "react";
-import { cn } from "../../utils/cn";
-import { Typography } from "./typography";
+import { cn } from "../utils/cn";
+import { Typography } from "./ui/typography";
 
 type CaptureKind = "note" | "reminder" | "task";
 type TaskShape = "text" | "list";

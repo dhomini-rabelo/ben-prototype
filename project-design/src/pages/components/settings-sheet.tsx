@@ -1,4 +1,4 @@
-import { SettingsSheet } from "../../layout/components/ui/settings-sheet";
+import { SettingsSheet } from "../../layout/components/settings-sheet";
 import { ComponentPreview } from "./_preview";
 
 export function SettingsSheetPreview() {

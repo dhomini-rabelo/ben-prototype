@@ -1,8 +1,8 @@
 import { Bell, ListTodo, NotebookPen, Settings } from "lucide-react";
 import type { ComponentType } from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../utils/cn";
 import { BrandMark } from "./brand-mark";
-import { Typography } from "./typography";
+import { Typography } from "./ui/typography";
 
 export type MenuEntryId = "tasks" | "notes" | "reminders" | "settings";
 

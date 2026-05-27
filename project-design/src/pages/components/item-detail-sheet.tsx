@@ -1,4 +1,4 @@
-import { ItemDetailSheet } from "../../layout/components/ui/item-detail-sheet";
+import { ItemDetailSheet } from "../../layout/components/item-detail-sheet";
 import { ComponentPreview } from "./_preview";
 
 export function ItemDetailSheetPreview() {

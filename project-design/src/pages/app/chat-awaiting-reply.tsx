@@ -1,6 +1,6 @@
-import { ActiveTaskPeek } from "../../layout/components/ui/active-task-peek";
-import { ChatInput } from "../../layout/components/ui/chat-input";
-import { MessageBubble } from "../../layout/components/ui/message-bubble";
+import { ActiveTaskPeek } from "../../layout/components/active-task-peek";
+import { ChatInput } from "../../layout/components/chat-input";
+import { MessageBubble } from "../../layout/components/message-bubble";
 import { TypingIndicator } from "../../layout/components/ui/typing-indicator";
 import { Typography } from "../../layout/components/ui/typography";
 import { ChatShell } from "./_chat-shell";

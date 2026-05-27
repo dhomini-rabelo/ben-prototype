@@ -1,7 +1,7 @@
 import { ChevronUp, RotateCw } from "lucide-react";
 import type { ReactNode } from "react";
-import { cn } from "../../utils/cn";
-import { Typography } from "./typography";
+import { cn } from "../utils/cn";
+import { Typography } from "./ui/typography";
 
 type SubThreadBannerProps = {
   variant?: "ben-reply" | "user-pending" | "ben-typing" | "error";

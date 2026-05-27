@@ -1,9 +1,9 @@
 import { Menu } from "lucide-react";
 import type { ReactNode } from "react";
 import { BrandMark } from "../../layout/components/brand-mark";
-import { CaptureCard } from "../../layout/components/ui/capture-card";
+import { CaptureCard } from "../../layout/components/capture-card";
 import { IconButton } from "../../layout/components/ui/icon-button";
-import { MessageBubble } from "../../layout/components/ui/message-bubble";
+import { MessageBubble } from "../../layout/components/message-bubble";
 
 type DetailShellProps = {
   sheet: ReactNode;

@@ -1,4 +1,4 @@
-import { Composer } from "../../layout/components/ui/composer";
+import { Composer } from "../../layout/components/composer";
 import { ComponentPreview } from "./_preview";
 
 export function ComposerPreview() {

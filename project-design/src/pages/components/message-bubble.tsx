@@ -1,4 +1,4 @@
-import { MessageBubble } from "../../layout/components/ui/message-bubble";
+import { MessageBubble } from "../../layout/components/message-bubble";
 import { ComponentPreview } from "./_preview";
 
 export function MessageBubblePreview() {

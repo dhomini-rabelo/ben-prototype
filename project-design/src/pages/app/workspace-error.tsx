@@ -1,8 +1,8 @@
 import { AlertTriangle, RotateCw } from "lucide-react";
-import { ChatBanner } from "../../layout/components/ui/chat-banner";
-import { ChatInput } from "../../layout/components/ui/chat-input";
-import { DiffBar } from "../../layout/components/ui/diff-bar";
-import { SubThreadBanner } from "../../layout/components/ui/sub-thread-banner";
+import { ChatBanner } from "../../layout/components/chat-banner";
+import { ChatInput } from "../../layout/components/chat-input";
+import { DiffBar } from "../../layout/components/diff-bar";
+import { SubThreadBanner } from "../../layout/components/sub-thread-banner";
 import { Typography } from "../../layout/components/ui/typography";
 import { WorkspaceShell } from "./_workspace-shell";
 

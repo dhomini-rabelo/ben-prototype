@@ -1,7 +1,7 @@
 import { Bell, NotebookPen, RotateCw, X } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
-import { cn } from "../../utils/cn";
-import { Typography } from "./typography";
+import { cn } from "../utils/cn";
+import { Typography } from "./ui/typography";
 
 type ItemKind = "note" | "reminder";
 

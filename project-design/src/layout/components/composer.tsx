@@ -1,6 +1,6 @@
 import { ChevronUp } from "lucide-react";
-import { cn } from "../../utils/cn";
-import { Typography } from "./typography";
+import { cn } from "../utils/cn";
+import { Typography } from "./ui/typography";
 
 type ComposerProps = {
   contextLabel?: string;

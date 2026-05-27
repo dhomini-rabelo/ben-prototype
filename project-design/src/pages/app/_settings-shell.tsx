@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { MenuSidebar } from "../../layout/components/ui/menu-sidebar";
+import { MenuSidebar } from "../../layout/components/menu-sidebar";
 
 type SettingsShellProps = {
   sheet: ReactNode;

@@ -1,5 +1,5 @@
-import { ChatInput } from "../../layout/components/ui/chat-input";
-import { SubThreadBanner } from "../../layout/components/ui/sub-thread-banner";
+import { ChatInput } from "../../layout/components/chat-input";
+import { SubThreadBanner } from "../../layout/components/sub-thread-banner";
 import { Typography } from "../../layout/components/ui/typography";
 import { WorkspaceShell } from "./_workspace-shell";
 

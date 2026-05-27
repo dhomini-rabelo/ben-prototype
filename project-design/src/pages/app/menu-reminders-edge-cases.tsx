@@ -1,4 +1,4 @@
-import { MenuListRow } from "../../layout/components/ui/menu-list-row";
+import { MenuListRow } from "../../layout/components/menu-list-row";
 import { Typography } from "../../layout/components/ui/typography";
 import { MenuListShell } from "./_menu-list-shell";
 

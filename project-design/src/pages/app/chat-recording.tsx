@@ -1,5 +1,5 @@
 import { ArrowUp, Mic } from "lucide-react";
-import { MessageBubble } from "../../layout/components/ui/message-bubble";
+import { MessageBubble } from "../../layout/components/message-bubble";
 import { Typography } from "../../layout/components/ui/typography";
 import { ChatShell } from "./_chat-shell";
 

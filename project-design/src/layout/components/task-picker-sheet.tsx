@@ -1,7 +1,7 @@
 import { List, RotateCw, Type } from "lucide-react";
 import type { ComponentType } from "react";
-import { cn } from "../../utils/cn";
-import { Typography } from "./typography";
+import { cn } from "../utils/cn";
+import { Typography } from "./ui/typography";
 
 export type TaskPickerRow = {
   id: string;

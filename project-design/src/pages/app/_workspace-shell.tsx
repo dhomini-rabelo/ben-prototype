@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { WorkspaceTopBar } from "../../layout/components/ui/workspace-top-bar";
+import { WorkspaceTopBar } from "../../layout/components/workspace-top-bar";
 import { cn } from "../../layout/utils/cn";
 
 type WorkspaceShellProps = {

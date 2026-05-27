@@ -1,8 +1,8 @@
 import { Menu } from "lucide-react";
 import type { ReactNode } from "react";
 import { BrandMark } from "../../layout/components/brand-mark";
-import { ActiveTaskPeek } from "../../layout/components/ui/active-task-peek";
-import { ChatInput } from "../../layout/components/ui/chat-input";
+import { ActiveTaskPeek } from "../../layout/components/active-task-peek";
+import { ChatInput } from "../../layout/components/chat-input";
 import { IconButton } from "../../layout/components/ui/icon-button";
 
 type PickerShellProps = {

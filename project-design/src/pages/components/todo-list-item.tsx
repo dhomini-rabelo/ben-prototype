@@ -1,4 +1,4 @@
-import { TodoListItem } from "../../layout/components/ui/todo-list-item";
+import { TodoListItem } from "../../layout/components/todo-list-item";
 import { ComponentPreview } from "./_preview";
 
 export function TodoListItemPreview() {
