@@ -1,2 +1,2 @@
-- [ ] Padronizar código projeto design antes de trazer para o project-web
+- [x] Padronizar código projeto design antes de trazer para o project-web
 - [ ] Iniciar project-backend
