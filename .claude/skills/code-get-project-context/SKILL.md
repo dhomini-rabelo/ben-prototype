@@ -51,9 +51,11 @@ It shares the same stack as `project-design` but is a completely separate projec
 
 ### Key directories
 
+- `src/domain/entities/` — Concrete domain entities (e.g. `user.ts`)
+- `src/adapters/repositories/` — Repository implementations (e.g. in-memory repos for prototyping)
 - `src/infra/http/` — Express app, server entry point, and error handler
 - `src/infra/services/` — Infrastructure services (env validation via Zod)
-- `src/modules/domain/` — Domain layer: entities, value objects, aggregate roots, repositories, use cases
+- `src/modules/domain/` — Domain primitives: base `Entity`, `AggregateRoot`, `ValueObject`, `Repository`, `UseCase`, domain errors, query helpers
 
 ### Stack
 
