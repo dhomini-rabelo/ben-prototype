@@ -1,9 +1,12 @@
+import { useGoogleAuth } from "../../core/hooks/use-google-auth";
 import { BrandMark } from "../../layout/components/brand-mark";
 import { GoogleIcon } from "../../layout/components/icons/google-icon";
 import { Button } from "../../layout/components/ui/button";
 import { Typography } from "../../layout/components/ui/typography";
 
 export function Login() {
+  const { signIn, isLoading, error } = useGoogleAuth();
+
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-6 text-on-background">
       <main className="flex w-full max-w-[320px] flex-col items-center gap-8 text-center">
@@ -16,10 +19,23 @@ export function Login() {
             your busy-day brain — say it, Ben files it
           </Typography>
         </div>
-        <Button className="fade-in-up delay-200 w-full">
-          <GoogleIcon className="size-5 opacity-90 transition-opacity group-hover:opacity-100" />
-          Continue with Google
-        </Button>
+
+        <div className="fade-in-up delay-200 flex w-full flex-col gap-3">
+          {error && (
+            <Typography variant="body-md" className="text-error text-center">
+              {error}
+            </Typography>
+          )}
+          <Button
+            className="w-full"
+            onClick={signIn}
+            disabled={isLoading}
+          >
+            <GoogleIcon className="size-5 opacity-90 transition-opacity group-hover:opacity-100" />
+            {isLoading ? "Signing in..." : "Continue with Google"}
+          </Button>
+        </div>
+
         <footer className="fade-in-up delay-200 flex flex-col items-center gap-2 pt-2">
           <Typography
             variant="label-caps"

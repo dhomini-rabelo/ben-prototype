@@ -12,6 +12,9 @@ if (process.env.NODE_ENV === 'test') {
 const envSchema = z.object({
   API_PORT: z.coerce.number(),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('production'),
+  FIREBASE_PROJECT_ID: z.string(),
+  JWT_PRIVATE_KEY: z.string(),
+  JWT_EXPIRATION_TIME_IN_SECONDS: z.coerce.number(),
 })
 
 const schema = envSchema.safeParse(process.env)
