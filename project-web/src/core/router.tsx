@@ -6,7 +6,7 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={ROUTES.index} element={<Login />} />
+        <Route path={ROUTES.login} element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

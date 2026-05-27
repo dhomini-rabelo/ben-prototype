@@ -1,3 +1,3 @@
 export const ROUTES = {
-  index: "/",
+  login: "/",
 } as const;
