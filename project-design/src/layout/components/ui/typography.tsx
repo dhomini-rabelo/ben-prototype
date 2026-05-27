@@ -1,5 +1,5 @@
 import type { ElementType, ReactNode } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 
 export type TypographyVariant =
   | "wordmark"
@@ -34,7 +34,16 @@ type TypographyProps = {
   children: ReactNode;
 };
 
-export function Typography({ variant, as, className, children }: TypographyProps) {
+export function Typography({
+  variant,
+  as,
+  className,
+  children,
+}: TypographyProps) {
   const Component = as ?? defaultElement[variant];
-  return <Component className={cn(variantClasses[variant], className)}>{children}</Component>;
+  return (
+    <Component className={cn(variantClasses[variant], className)}>
+      {children}
+    </Component>
+  );
 }

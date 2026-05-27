@@ -8,7 +8,7 @@ import {
   Type,
 } from "lucide-react";
 import type { ComponentType } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 import { Typography } from "./typography";
 
 type CaptureKind = "note" | "reminder" | "task";
@@ -29,7 +29,10 @@ type CaptureCardProps = {
 
 const KIND_META: Record<
   CaptureKind,
-  { label: string; icon: ComponentType<{ className?: string; strokeWidth?: number }> }
+  {
+    label: string;
+    icon: ComponentType<{ className?: string; strokeWidth?: number }>;
+  }
 > = {
   note: { label: "Note", icon: NotebookPen },
   reminder: { label: "Reminder", icon: Bell },
@@ -188,7 +191,9 @@ export function CaptureCard({
               isPending && "pointer-events-none opacity-60",
             )}
           >
-            {!isFinished && !isActive && <Play className="size-3" strokeWidth={2.5} />}
+            {!isFinished && !isActive && (
+              <Play className="size-3" strokeWidth={2.5} />
+            )}
             {resolvedActionLabel}
             {isFinished && <ChevronRight className="size-3.5" />}
           </button>

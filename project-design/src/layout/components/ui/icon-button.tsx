@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 
 type IconButtonProps = {
   label: string;
@@ -8,7 +8,12 @@ type IconButtonProps = {
   onClick?: () => void;
 };
 
-export function IconButton({ label, children, className, onClick }: IconButtonProps) {
+export function IconButton({
+  label,
+  children,
+  className,
+  onClick,
+}: IconButtonProps) {
   return (
     <button
       aria-label={label}

@@ -1,5 +1,5 @@
 import { ChevronLeft, List, MoreHorizontal, Type } from "lucide-react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 import { Typography } from "./typography";
 
 type WorkspaceTopBarProps = {

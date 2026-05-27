@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 
 type MessageBubbleProps = {
   from: "user" | "ben";
@@ -41,8 +41,7 @@ export function MessageBubble({
             state === "pending" && "opacity-60",
             state === "error" &&
               "border border-text-error/30 bg-surface-error text-text-error",
-            state === "skeleton" &&
-              "h-9 w-40 animate-pulse bg-outline-variant",
+            state === "skeleton" && "h-9 w-40 animate-pulse bg-outline-variant",
           )}
         >
           {state !== "skeleton" && children}

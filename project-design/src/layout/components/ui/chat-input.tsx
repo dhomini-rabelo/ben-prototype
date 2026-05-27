@@ -1,6 +1,6 @@
 import { Mic, Plus, Send } from "lucide-react";
 import type { ChangeEvent } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 
 type ChatInputProps = {
   value?: string;

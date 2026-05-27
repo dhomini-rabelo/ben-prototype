@@ -1,6 +1,6 @@
 import { Bell, List, NotebookPen, Type } from "lucide-react";
 import type { ComponentType } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 import { Typography } from "./typography";
 
 export type MenuListRowKind = "task-text" | "task-list" | "note" | "reminder";

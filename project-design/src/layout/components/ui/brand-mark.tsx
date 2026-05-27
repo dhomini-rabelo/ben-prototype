@@ -1,4 +1,4 @@
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 import { BenLogo } from "../icons/ben-logo";
 import { Typography } from "./typography";
 

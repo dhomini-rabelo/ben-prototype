@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { cn } from "../../core/cn";
 import { WorkspaceTopBar } from "../../layout/components/ui/workspace-top-bar";
+import { cn } from "../../layout/utils/cn";
 
 type WorkspaceShellProps = {
   title: string;

@@ -1,5 +1,5 @@
 import { Check, Plus } from "lucide-react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 import { Typography } from "./typography";
 
 type TodoListItemProps = {

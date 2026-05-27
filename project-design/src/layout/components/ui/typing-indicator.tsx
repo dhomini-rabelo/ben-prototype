@@ -1,4 +1,4 @@
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 
 type TypingIndicatorProps = {
   className?: string;

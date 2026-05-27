@@ -1,6 +1,6 @@
 import { Bell, ListTodo, NotebookPen, Settings } from "lucide-react";
 import type { ComponentType } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 import { BrandMark } from "./brand-mark";
 import { Typography } from "./typography";
 
@@ -76,7 +76,13 @@ export function MenuSidebar({
               >
                 {label}
               </Typography>
-              {showCount && <CountBadge entryId={id} value={value} formatCount={formatCount} />}
+              {showCount && (
+                <CountBadge
+                  entryId={id}
+                  value={value}
+                  formatCount={formatCount}
+                />
+              )}
             </button>
           );
         })}

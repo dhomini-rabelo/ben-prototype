@@ -1,6 +1,6 @@
 import { Bell, NotebookPen, RotateCw, X } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 import { Typography } from "./typography";
 
 type ItemKind = "note" | "reminder";
@@ -23,7 +23,10 @@ type ItemDetailSheetProps = {
 
 const KIND_META: Record<
   ItemKind,
-  { label: string; icon: ComponentType<{ className?: string; strokeWidth?: number }> }
+  {
+    label: string;
+    icon: ComponentType<{ className?: string; strokeWidth?: number }>;
+  }
 > = {
   note: { label: "Note", icon: NotebookPen },
   reminder: { label: "Reminder", icon: Bell },
@@ -63,10 +66,7 @@ export function ItemDetailSheet({
           <span className="flex size-7 items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant">
             <Icon className="size-4" strokeWidth={1.75} />
           </span>
-          <Typography
-            variant="label-caps"
-            className="text-on-surface-variant"
-          >
+          <Typography variant="label-caps" className="text-on-surface-variant">
             {label}
           </Typography>
         </span>

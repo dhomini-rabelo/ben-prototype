@@ -1,6 +1,6 @@
 import { ChevronUp, RotateCw } from "lucide-react";
 import type { ReactNode } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 import { Typography } from "./typography";
 
 type SubThreadBannerProps = {

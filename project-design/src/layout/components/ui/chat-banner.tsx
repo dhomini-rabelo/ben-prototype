@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 import { Typography } from "./typography";
 
 type ChatBannerProps = {

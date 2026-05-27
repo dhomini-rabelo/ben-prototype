@@ -1,5 +1,5 @@
 import { ChevronUp, Hammer } from "lucide-react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 import { Typography } from "./typography";
 
 type ActiveTaskPeekProps = {

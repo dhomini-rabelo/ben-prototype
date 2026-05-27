@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
-import { cn } from "../../../core/cn";
+import { cn } from "../../utils/cn";
 
 type SuggestedActionProps = {
   icon: ComponentType<{ className?: string; strokeWidth?: number }>;
@@ -9,7 +9,12 @@ type SuggestedActionProps = {
   onClick?: () => void;
 };
 
-export function SuggestedAction({ icon: Icon, children, className, onClick }: SuggestedActionProps) {
+export function SuggestedAction({
+  icon: Icon,
+  children,
+  className,
+  onClick,
+}: SuggestedActionProps) {
   return (
     <button
       onClick={onClick}
@@ -22,8 +27,13 @@ export function SuggestedAction({ icon: Icon, children, className, onClick }: Su
         className="size-5 text-on-surface-variant transition-colors group-hover:text-primary"
         strokeWidth={1.75}
       />
-      <span className="flex-1 text-button font-semibold text-on-surface">{children}</span>
-      <ArrowRight className="size-4 text-on-surface-variant" strokeWidth={1.75} />
+      <span className="flex-1 text-button font-semibold text-on-surface">
+        {children}
+      </span>
+      <ArrowRight
+        className="size-4 text-on-surface-variant"
+        strokeWidth={1.75}
+      />
     </button>
   );
 }
