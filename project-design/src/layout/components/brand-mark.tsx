@@ -1,6 +1,6 @@
-import { cn } from "../../utils/cn";
-import { BenLogo } from "../icons/ben-logo";
-import { Typography } from "./typography";
+import { cn } from "../utils/cn";
+import { BenLogo } from "./icons/ben-logo";
+import { Typography } from "./ui/typography";
 
 type BrandMarkProps = {
   orientation?: "row" | "column";
