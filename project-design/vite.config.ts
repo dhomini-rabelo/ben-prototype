@@ -6,7 +6,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    port: 3001,
+    port: 3002,
     allowedHosts: ['dev-dhomini.remktos.com']
   }
 })
