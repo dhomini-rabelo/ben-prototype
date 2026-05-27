@@ -1,4 +1,4 @@
-import { BrandMark } from "../../layout/components/ui/brand-mark";
+import { BrandMark } from "../../layout/components/brand-mark";
 import { Button } from "../../layout/components/ui/button";
 import { Typography } from "../../layout/components/ui/typography";
 

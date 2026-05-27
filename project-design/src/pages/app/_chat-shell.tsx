@@ -1,6 +1,6 @@
 import { Menu } from "lucide-react";
 import type { ReactNode } from "react";
-import { BrandMark } from "../../layout/components/ui/brand-mark";
+import { BrandMark } from "../../layout/components/brand-mark";
 import { IconButton } from "../../layout/components/ui/icon-button";
 
 type ChatShellProps = {

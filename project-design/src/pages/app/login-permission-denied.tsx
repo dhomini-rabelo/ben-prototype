@@ -1,5 +1,5 @@
+import { BrandMark } from "../../layout/components/brand-mark";
 import { GoogleIcon } from "../../layout/components/icons/google-icon";
-import { BrandMark } from "../../layout/components/ui/brand-mark";
 import { Button } from "../../layout/components/ui/button";
 import { Typography } from "../../layout/components/ui/typography";
 

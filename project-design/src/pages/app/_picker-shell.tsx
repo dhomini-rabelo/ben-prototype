@@ -1,9 +1,9 @@
 import { Menu } from "lucide-react";
 import type { ReactNode } from "react";
-import { BrandMark } from "../../layout/components/ui/brand-mark";
-import { IconButton } from "../../layout/components/ui/icon-button";
+import { BrandMark } from "../../layout/components/brand-mark";
 import { ActiveTaskPeek } from "../../layout/components/ui/active-task-peek";
 import { ChatInput } from "../../layout/components/ui/chat-input";
+import { IconButton } from "../../layout/components/ui/icon-button";
 
 type PickerShellProps = {
   sheet: ReactNode;
@@ -34,11 +34,7 @@ export function PickerShell({
       </main>
 
       <div className="fixed bottom-0 left-1/2 z-30 flex w-full max-w-120 -translate-x-1/2 flex-col gap-2 bg-surface px-4 pt-2 pb-6">
-        <ActiveTaskPeek
-          variant="summary"
-          count={peekCount}
-          title={peekTitle}
-        />
+        <ActiveTaskPeek variant="summary" count={peekCount} title={peekTitle} />
         <ChatInput />
       </div>
 
