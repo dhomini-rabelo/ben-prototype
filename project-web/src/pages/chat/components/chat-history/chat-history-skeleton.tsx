@@ -1,4 +1,4 @@
-import { MessageBubble } from "../MessageBubble/MessageBubble";
+import { MessageBubble } from "../message-bubble/message-bubble";
 
 export function ChatHistorySkeleton() {
   return (

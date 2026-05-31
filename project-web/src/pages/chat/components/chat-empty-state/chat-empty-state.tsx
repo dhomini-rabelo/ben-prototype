@@ -1,6 +1,6 @@
 import { Bell, MessageCircle, NotebookPen } from "lucide-react";
 import { Typography } from "../../../../layout/components/ui/typography";
-import { SuggestedAction } from "../SuggestedAction";
+import { SuggestedAction } from "../suggested-action";
 
 export function ChatEmptyState() {
   return (

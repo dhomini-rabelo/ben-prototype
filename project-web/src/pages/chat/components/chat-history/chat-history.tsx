@@ -2,8 +2,8 @@ import type { RefObject } from "react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import type { Message } from "../../../../api/models/message";
 import { CaptureCard } from "../capture-card/capture-card";
-import { MessageBubble } from "../MessageBubble/MessageBubble";
-import { TypingIndicator } from "../TypingIndicator";
+import { MessageBubble } from "../message-bubble/message-bubble";
+import { TypingIndicator } from "../typing-indicator";
 
 type ChatHistoryProps = {
   messages: Message[];

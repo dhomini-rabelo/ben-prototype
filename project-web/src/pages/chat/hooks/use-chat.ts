@@ -7,7 +7,7 @@ import type {
 } from "../../../api/contracts/message";
 import type { Message } from "../../../api/models/message";
 import { API_ROUTES } from "../../../api/routes";
-import { useAPICursorPaginated } from "../../../layout/hooks/useAPICursorPaginated";
+import { useAPICursorPaginated } from "../../../layout/hooks/use-api-cursor-paginated";
 
 interface ChatLocalState {
   draft: string;

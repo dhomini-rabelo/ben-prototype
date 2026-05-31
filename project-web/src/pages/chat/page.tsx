@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { JWT_COOKIE } from "../../api/client";
 import { ROUTES } from "../../core/routes";
-import { ActiveTaskPeek } from "./components/ActiveTaskPeek";
-import { ChatEmptyState } from "./components/ChatEmptyState/ChatEmptyState";
-import { ChatHistory } from "./components/ChatHistory/ChatHistory";
-import { ChatHistorySkeleton } from "./components/ChatHistory/ChatHistorySkeleton";
-import { ChatInput } from "./components/ChatInput/ChatInput";
-import { ChatShell } from "./components/ChatShell/ChatShell";
+import { ActiveTaskPeek } from "./components/active-task-peek";
+import { ChatEmptyState } from "./components/chat-empty-state/chat-empty-state";
+import { ChatHistory } from "./components/chat-history/chat-history";
+import { ChatHistorySkeleton } from "./components/chat-history/chat-history-skeleton";
+import { ChatInput } from "./components/chat-input/chat-input";
+import { ChatShell } from "./components/chat-shell/chat-shell";
 import { useChat } from "./hooks/use-chat";
 
 export function Chat() {
