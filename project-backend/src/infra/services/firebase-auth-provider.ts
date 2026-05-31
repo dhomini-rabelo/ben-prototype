@@ -3,18 +3,23 @@ import {
   GetUserFromTokenPayload,
   GetUserFromTokenResponse,
 } from '@/adapters/auth-provider'
-import { env } from '@/infra/services/env'
 
-import { cert, getApps, initializeApp } from 'firebase-admin/app'
+import { cert, getApp, getApps, initializeApp } from 'firebase-admin/app'
 import { getAuth } from 'firebase-admin/auth'
+import { env } from './env'
 
 function getFirebaseAuth() {
-  if (getApps().length === 0) {
-    initializeApp({
-      credential: cert({ projectId: env.FIREBASE_PROJECT_ID }),
-    })
-  }
-  return getAuth()
+  const app =
+    getApps().length === 0
+      ? initializeApp({
+          credential: cert({
+            clientEmail: env.FIREBASE_CLIENT_EMAIL,
+            privateKey: env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+            projectId: env.FIREBASE_PROJECT_ID,
+          }),
+        })
+      : getApp()
+  return getAuth(app)
 }
 
 export class FirebaseAuthProviderService implements AuthProviderService {
