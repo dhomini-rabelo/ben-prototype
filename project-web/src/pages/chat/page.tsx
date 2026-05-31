@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { JWT_COOKIE } from "../../api/client";
 import { ROUTES } from "../../core/routes";
-import { ActiveTaskPeek } from "./components/active-task-peek";
 import { ChatEmptyState } from "./components/chat-empty-state/chat-empty-state";
 import { ChatHistory } from "./components/chat-history/chat-history";
 import { ChatHistorySkeleton } from "./components/chat-history/chat-history-skeleton";
@@ -23,9 +22,9 @@ export function Chat() {
 
   return (
     <ChatShell
-      peek={
-        <ActiveTaskPeek variant={chat.isLoadingHistory ? "skeleton" : "summary"} />
-      }
+      // peek={
+      //   // <ActiveTaskPeek variant={chat.isLoadingHistory ? "skeleton" : "summary"} />
+      // }
       footer={
         <ChatInput
           value={chat.draft}
@@ -44,7 +43,9 @@ export function Chat() {
         <ChatHistory
           messages={chat.messages}
           isAwaitingReply={chat.isAwaitingReply}
+          isFetchingOlder={chat.isFetchingOlder}
           bottomRef={chat.bottomRef}
+          topRef={chat.topRef}
         />
       )}
     </ChatShell>

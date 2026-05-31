@@ -8,16 +8,28 @@ import { TypingIndicator } from "../typing-indicator";
 type ChatHistoryProps = {
   messages: Message[];
   isAwaitingReply: boolean;
+  isFetchingOlder: boolean;
   bottomRef: RefObject<HTMLDivElement | null>;
+  topRef: RefObject<HTMLDivElement | null>;
 };
 
 export function ChatHistory({
   messages,
   isAwaitingReply,
+  isFetchingOlder,
   bottomRef,
+  topRef,
 }: ChatHistoryProps) {
   return (
-    <section className="flex flex-1 flex-col gap-4 pt-2">
+    <section className="flex flex-1 flex-col justify-end gap-4 pt-2">
+      <div ref={topRef} />
+
+      {isFetchingOlder && (
+        <div className="flex w-full justify-center py-2">
+          <TypingIndicator />
+        </div>
+      )}
+
       {messages.map((message) => (
         <MessageBubble key={message.id} from={message.role}>
           {message.content}

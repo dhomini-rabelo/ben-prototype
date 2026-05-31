@@ -8,6 +8,7 @@ import type {
 import type { Message } from "../../../api/models/message";
 import { API_ROUTES } from "../../../api/routes";
 import { useAPICursorPaginated } from "../../../layout/hooks/use-api-cursor-paginated";
+import { useInfiniteScrollTop } from "./use-infinite-scroll-top";
 
 interface ChatLocalState {
   draft: string;
@@ -27,8 +28,16 @@ export function useChat() {
   const [state, setState] = useState<ChatLocalState>(INITIAL_STATE);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  const { state: historyState } = useAPICursorPaginated<Message>({
-    url: API_ROUTES.messages.list,
+  const { actions: historyActions, state: historyState } =
+    useAPICursorPaginated<Message>({
+      url: API_ROUTES.messages.list,
+    });
+
+  const { topRef } = useInfiniteScrollTop({
+    hasMore: historyState.hasMore,
+    isFetchingNextPage: historyState.isFetchingNextPage,
+    onLoadMore: historyActions.fetchNextPage,
+    itemCount: historyState.items.length,
   });
 
   const createMessageMutation = useMutation({
@@ -52,9 +61,10 @@ export function useChat() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
+  const lastMessageId = messages[messages.length - 1]?.id;
   useEffect(() => {
     scrollToBottom();
-  }, [messages.length, state.isAwaitingReply]);
+  }, [lastMessageId, state.isAwaitingReply]);
 
   function handleDraftChange(value: string) {
     setState((previous) => ({ ...previous, draft: value }));
@@ -115,7 +125,9 @@ export function useChat() {
     draft: state.draft,
     isAwaitingReply: state.isAwaitingReply,
     isEmpty: !historyState.isLoading && messages.length === 0,
+    isFetchingOlder: historyState.isFetchingNextPage,
     bottomRef,
+    topRef,
     handleDraftChange,
     handleSend,
   };
