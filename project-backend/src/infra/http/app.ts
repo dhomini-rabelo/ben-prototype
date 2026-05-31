@@ -1,5 +1,8 @@
-import { errorHandler } from '@/infra/http/error-handler'
-import { loginOrRegister } from '@/infra/http/routes/login-or-register'
+import { authMiddleware } from '@/infra/http/middlewares/auth'
+import { errorHandler } from '@/infra/http/middlewares/error-handler'
+import { loginOrRegister } from '@/infra/http/routes/auth'
+import { createMessage, listMessages } from '@/infra/http/routes/messages'
+import { HttpStatus } from '@/modules/utils/http'
 import cors from 'cors'
 import Express, { json, urlencoded } from 'express'
 
@@ -9,10 +12,13 @@ app.use(cors(), urlencoded({ extended: true, limit: '100mb' }))
 app.use(json({ limit: '100mb' }))
 
 app.get('/health', (_req, res) => {
-  return res.status(200).json({ status: 'ok' })
+  return res.status(HttpStatus.OK).json({ status: 'ok' })
 })
 
 app.post('/auth/login-or-register', loginOrRegister)
+
+app.get('/messages/list', authMiddleware, listMessages)
+app.post('/messages/create', authMiddleware, createMessage)
 
 app.use(errorHandler)
 

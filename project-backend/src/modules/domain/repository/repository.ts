@@ -1,4 +1,4 @@
-import { AnyRecord, Complement, KeyOf } from '@/modules/utils'
+import { AnyRecord, Complement, KeyOf } from '@/modules/utils/types'
 
 import { Entity, EntityWithStatic } from '../entity/entity'
 import { ID } from '../entity/id'
@@ -18,6 +18,7 @@ import { RepeatedResource, ResourceNotFoundError } from './repository-errors'
 
 import { ValueObject } from '../entity/value-object'
 import { cloneDeep } from 'lodash-es'
+import { decodeCursor, encodeCursor } from './cursor'
 
 export type QueryFilters<Props extends AnyRecord> = {
   limit?: number
@@ -26,10 +27,23 @@ export type QueryFilters<Props extends AnyRecord> = {
   order?: 'asc' | 'desc'
 }
 
+export type CursorQueryFilters<Props extends AnyRecord> = {
+  limit?: number
+  cursor?: string | null
+  orderBy?: KeyOf<Props>
+  order?: 'asc' | 'desc'
+}
+
 export type PaginationResponse<Data extends AnyRecord> = {
   items: Data[]
   totalItems: number
   page: number
+}
+
+export type CursorPaginationResponse<Data extends AnyRecord> = {
+  items: Data[]
+  hasMore: boolean
+  nextCursor: string | null
 }
 
 export abstract class Repository<EntityClass extends Entity> {
@@ -66,6 +80,11 @@ export abstract class Repository<EntityClass extends Entity> {
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
     params?: QueryFilters<EntityClass['props']>,
   ): Promise<PaginationResponse<EntityClass>>
+
+  abstract findManyWithCursorPagination(
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
+    params?: CursorQueryFilters<EntityClass['props']>,
+  ): Promise<CursorPaginationResponse<EntityClass>>
 
   abstract count(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
@@ -236,6 +255,34 @@ export abstract class InMemoryRepository<
     return { items: paginatedItems, totalItems, page: currentPage }
   }
 
+  async findManyWithCursorPagination(
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
+    params?: CursorQueryFilters<EntityClass['props']>,
+  ): Promise<CursorPaginationResponse<EntityClass>> {
+    const filtered = this.items.filter((item) => this.compare(item, props))
+    const ordered = await this.applyQueryParams(filtered, {
+      orderBy: params?.orderBy,
+      order: params?.order,
+    })
+
+    const startIndex = this.resolveCursorStartIndex(ordered, params?.cursor)
+    const limit = params?.limit ?? ordered.length
+    const page = ordered.slice(startIndex, startIndex + limit + 1)
+
+    const hasMore = page.length > limit
+    const items = hasMore ? page.slice(0, limit) : page
+    const lastItem = items[items.length - 1]
+
+    return {
+      items,
+      hasMore,
+      nextCursor:
+        hasMore && lastItem
+          ? this.buildCursor(lastItem, params?.orderBy)
+          : null,
+    }
+  }
+
   async count(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
   ): Promise<number> {
@@ -283,6 +330,35 @@ export abstract class InMemoryRepository<
     const limit = params?.limit
     const start = (params?.page ?? 1) - 1
     return limit ? items.slice(start * limit, start * limit + limit) : items
+  }
+
+  private resolveCursorStartIndex(
+    items: EntityClass[],
+    cursor?: string | null,
+  ): number {
+    if (!cursor) return 0
+    const { id } = decodeCursor(cursor)
+    const index = items.findIndex((item) => item.id.toValue() === id)
+    return index === -1 ? 0 : index + 1
+  }
+
+  private buildCursor(
+    item: EntityClass,
+    orderBy?: KeyOf<EntityClass['props']>,
+  ): string {
+    const orderByField = (orderBy as string) ?? 'id'
+    return encodeCursor({
+      orderBy: orderByField,
+      value: this.serializeCursorValue(item.getProp(orderByField)),
+      id: item.id.toValue(),
+    })
+  }
+
+  private serializeCursorValue(value: unknown): string | number {
+    if (value instanceof Date) return value.toISOString()
+    if (value instanceof ID) return value.toValue()
+    if (typeof value === 'number') return value
+    return String(value)
   }
 
   protected compare(

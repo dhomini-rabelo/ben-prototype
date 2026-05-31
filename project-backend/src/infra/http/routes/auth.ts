@@ -4,6 +4,7 @@ import { UserPresenter } from '@/infra/http/presenters/user-presenter'
 import { FirebaseAuthProviderService } from '@/infra/services/firebase-auth-provider'
 import { env } from '@/infra/services/env'
 import { JsonWebTokenJwtService } from '@/infra/services/jwt'
+import { HttpStatus } from '@/modules/utils/http'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 
@@ -33,7 +34,7 @@ export async function loginOrRegister(
     const body = bodySchema.parse(req.body)
     const result = await loginOrRegisterUseCase.execute({ token: body.token })
 
-    return res.status(200).json({
+    return res.status(HttpStatus.OK).json({
       process: result.process,
       user: UserPresenter.toHttp(result.user),
       accessToken: result.accessToken,

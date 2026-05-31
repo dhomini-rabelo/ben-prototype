@@ -1,0 +1,13 @@
+export interface CursorPayload {
+  orderBy: string
+  value: string | number
+  id: string
+}
+
+export function encodeCursor(payload: CursorPayload): string {
+  return Buffer.from(JSON.stringify(payload), 'utf-8').toString('base64url')
+}
+
+export function decodeCursor(cursor: string): CursorPayload {
+  return JSON.parse(Buffer.from(cursor, 'base64url').toString('utf-8'))
+}

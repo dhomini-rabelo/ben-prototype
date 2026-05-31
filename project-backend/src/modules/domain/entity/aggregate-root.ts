@@ -1,4 +1,4 @@
-import { AnyRecord } from '@/modules/utils'
+import { AnyRecord } from '@/modules/utils/types'
 
 import { Entity } from './entity'
 

@@ -1,4 +1,4 @@
-import { CaptureCard } from "../../layout/components/capture-card";
+import { CaptureCard } from "../../layout/components/capture-card/capture-card";
 import { ChatInput } from "../../layout/components/chat-input";
 import { MessageBubble } from "../../layout/components/message-bubble";
 import { ChatShell } from "./_chat-shell";

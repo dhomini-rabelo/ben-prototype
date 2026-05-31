@@ -2,12 +2,11 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import Cookies from 'js-cookie'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { API_ROUTES } from '../../core/api-routes'
+import { JWT_COOKIE, PROVIDER_COOKIE, basicClient } from '../../api/client'
+import { API_ROUTES } from '../../api/routes'
 import { auth } from '../../core/firebase'
 import { ROUTES } from '../../core/routes'
 
-export const JWT_COOKIE = '@ben/jwttoken'
-export const PROVIDER_COOKIE = '@ben/authprovidertoken'
 const COOKIE_MAX_AGE_DAYS = 5
 
 const USER_CANCEL_ERROR_CODES = [
@@ -39,24 +38,13 @@ export function useGoogleAuth() {
       const result = await signInWithPopup(auth, provider)
       const idToken = await result.user.getIdToken()
 
-      const response = await fetch(API_ROUTES.auth.loginOrRegister, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: idToken }),
+      const response = await basicClient.post(API_ROUTES.auth.loginOrRegister, {
+        token: idToken,
       })
 
-      if (!response.ok) {
-        const data = await response.json()
-        setState({
-          status: 'error',
-          error: data.message || 'Authentication failed. Please try again.',
-        })
-        return
-      }
-
-      const data = await response.json()
-
-      Cookies.set(JWT_COOKIE, data.accessToken, { expires: COOKIE_MAX_AGE_DAYS })
+      Cookies.set(JWT_COOKIE, response.data.accessToken, {
+        expires: COOKIE_MAX_AGE_DAYS,
+      })
       Cookies.set(PROVIDER_COOKIE, idToken, { expires: COOKIE_MAX_AGE_DAYS })
 
       navigate(ROUTES.home)

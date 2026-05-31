@@ -1,6 +1,6 @@
 import { CloudOff } from "lucide-react";
 import { ActiveTaskPeek } from "../../layout/components/active-task-peek";
-import { CaptureCard } from "../../layout/components/capture-card";
+import { CaptureCard } from "../../layout/components/capture-card/capture-card";
 import { ChatBanner } from "../../layout/components/chat-banner";
 import { ChatInput } from "../../layout/components/chat-input";
 import { MessageBubble } from "../../layout/components/message-bubble";

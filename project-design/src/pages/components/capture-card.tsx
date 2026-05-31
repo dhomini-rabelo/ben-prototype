@@ -1,4 +1,4 @@
-import { CaptureCard } from "../../layout/components/capture-card";
+import { CaptureCard } from "../../layout/components/capture-card/capture-card";
 import { ComponentPreview } from "./_preview";
 
 export function CaptureCardPreview() {

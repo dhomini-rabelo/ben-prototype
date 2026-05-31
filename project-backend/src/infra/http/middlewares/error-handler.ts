@@ -3,14 +3,15 @@ import {
   DomainError,
   ValidationError,
 } from '@/modules/domain/domain-errors'
+import { HttpStatus } from '@/modules/utils/http'
 import { NextFunction, Request, Response } from 'express'
 import { ZodError, ZodFormattedError } from 'zod'
 
-const domainErrorStatusCodeMap: Record<DangerErrors, number> = {
-  [DangerErrors.NOT_FOUND]: 404,
-  [DangerErrors.DATA_INTEGRITY]: 409,
-  [DangerErrors.FORBIDDEN]: 403,
-  [DangerErrors.UNAUTHORIZED]: 401,
+const domainErrorStatusCodeMap: Record<DangerErrors, HttpStatus> = {
+  [DangerErrors.NOT_FOUND]: HttpStatus.NOT_FOUND,
+  [DangerErrors.DATA_INTEGRITY]: HttpStatus.CONFLICT,
+  [DangerErrors.FORBIDDEN]: HttpStatus.FORBIDDEN,
+  [DangerErrors.UNAUTHORIZED]: HttpStatus.UNAUTHORIZED,
 }
 
 export function formatZodError<Schema>(payload: ZodFormattedError<Schema>) {
@@ -99,24 +100,25 @@ export function errorHandler(
   _next: NextFunction,
 ) {
   const response: { status: number; body: unknown } = {
-    status: 500,
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
     body: { message: 'Internal Server Error' },
   }
 
   console.error(err)
 
   if (err instanceof ZodError) {
-    response.status = 400
+    response.status = HttpStatus.BAD_REQUEST
     response.body = formatZodError(err.format())
   } else if (err instanceof ValidationError) {
-    response.status = 400
+    response.status = HttpStatus.BAD_REQUEST
     response.body = {
       [err.response.errorField]: [
         `${err.response.code}#${err.response.variables?.join(',')}`,
       ],
     }
   } else if (err instanceof DomainError) {
-    response.status = domainErrorStatusCodeMap[err.response.errorType!] || 409
+    response.status =
+      domainErrorStatusCodeMap[err.response.errorType!] || HttpStatus.CONFLICT
     response.body = {
       message: err.response.code,
     }
