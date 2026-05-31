@@ -50,6 +50,13 @@ Casos de uso: carregar histórico + tarefas ativas, ditar/digitar uma captura, v
   - Body: `multipart/form-data` com o áudio. Retorna `{ userMessage, benMessage, capture? }`.
   - Cobre **Transcribing** → **Awaiting Ben reply**. Reuso do mesmo endpoint serve o **retry** do bubble de erro.
 
+- **`POST /chat`** (streaming)
+  - Rota de chat em streaming consumida pelo hook `useChat` do `@ai-sdk/react` no frontend. Escopo v1: **reply-only** e **latest-message-only** — o Ben só responde à última mensagem do usuário, sem classificação de captura e sem contexto multi-turn no request.
+  - **Auth:** mesmos headers das demais rotas (`jwtauthenticationtoken` + `providerauthenticationtoken`), via `authMiddleware`. O `userId` vem do contexto de auth, nunca do body.
+  - **Request body:** o payload que o `useChat` envia (protocolo de mensagens da UI do AI SDK) — uma lista de mensagens em `messages` onde cada item é um `UIMessage` com `role` e `parts[]`. O servidor lê **apenas a última mensagem do usuário** (concatenando suas `parts` de texto) e ignora o histórico anterior. O histórico para semear a conversa continua vindo de `GET /messages/list`.
+  - **Response:** um **stream de mensagens da UI** (não um JSON único), produzido via `result.pipeUIMessageStreamToResponse(res)` do AI SDK e consumido pelo `useChat`. O reply do Ben é persistido (como `Message` com `role: 'ben'`) quando o stream termina (`onFinish`).
+  - **Provider:** Google Gemini Flash Lite via Vercel AI SDK, isolado atrás do port `AgentService` (`src/adapters/agent-provider.ts`) — a rota nunca importa o SDK diretamente. Detalhes de integração em `docs/vercel-ai-sdk.md`.
+
 - **`GET /tasks/list?status=active`**
   - Alimenta o **active-task peek** (contagem + título mais recente) no carregamento do chat.
 

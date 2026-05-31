@@ -7,6 +7,9 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     port: 3001,
-    allowedHosts: ['dev-dhomini.remktos.com']
+    allowedHosts: ['dev-dhomini.remktos.com', 'localhost'],
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+    },
   }
 })

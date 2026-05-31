@@ -47,7 +47,7 @@ export function useGoogleAuth() {
       })
       Cookies.set(PROVIDER_COOKIE, idToken, { expires: COOKIE_MAX_AGE_DAYS })
 
-      navigate(ROUTES.home)
+      navigate(ROUTES.chat)
     } catch (caughtError) {
       const errorCode = (caughtError as { code?: string }).code ?? ''
       const wasCancelledByUser = USER_CANCEL_ERROR_CODES.includes(errorCode)

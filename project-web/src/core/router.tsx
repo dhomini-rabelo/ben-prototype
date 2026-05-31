@@ -8,7 +8,7 @@ export function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path={ROUTES.login} element={<Login />} />
-        <Route path={ROUTES.home} element={<Chat />} />
+        <Route path={ROUTES.chat} element={<Chat />} />
       </Routes>
     </BrowserRouter>
   );

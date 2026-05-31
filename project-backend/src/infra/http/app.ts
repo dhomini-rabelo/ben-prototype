@@ -1,7 +1,8 @@
 import { authMiddleware } from '@/infra/http/middlewares/auth'
 import { errorHandler } from '@/infra/http/middlewares/error-handler'
 import { loginOrRegister } from '@/infra/http/routes/auth'
-import { createMessage, listMessages } from '@/infra/http/routes/messages'
+import { chat } from '@/infra/http/routes/chat'
+import { listMessages } from '@/infra/http/routes/messages'
 import { HttpStatus } from '@/modules/utils/http'
 import cors from 'cors'
 import Express, { json, urlencoded } from 'express'
@@ -24,7 +25,7 @@ app.get('/health', (_req, res) => {
 app.post('/auth/login-or-register', loginOrRegister)
 
 app.get('/messages/list', authMiddleware, listMessages)
-app.post('/messages/create', authMiddleware, createMessage)
+app.post('/chat', authMiddleware, chat)
 
 app.use(errorHandler)
 

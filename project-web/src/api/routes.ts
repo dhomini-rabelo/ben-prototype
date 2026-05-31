@@ -4,6 +4,8 @@ export const API_ROUTES = {
   },
   messages: {
     list: "/messages/list",
-    create: "/messages/create",
+  },
+  chat: {
+    send: "/chat",
   },
 } as const;

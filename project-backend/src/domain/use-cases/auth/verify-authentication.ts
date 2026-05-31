@@ -2,6 +2,7 @@ import { AuthProviderService } from '@/adapters/auth-provider'
 import { JwtService } from '@/adapters/jwt'
 import { UserRepository } from '@/adapters/repositories/user-repository'
 import { getUserFromProviderTokenOrThrow } from '@/domain/utils/auth'
+import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
   jwtToken: string
@@ -13,7 +14,7 @@ interface Response {
   userId: string
 }
 
-export class VerifyAuthenticationUseCase {
+export class VerifyAuthenticationUseCase implements UseCase<Response> {
   constructor(
     private userRepository: UserRepository,
     private authProviderService: AuthProviderService,

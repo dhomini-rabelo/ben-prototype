@@ -1,32 +1,46 @@
-import { useMutation } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
-import { authClient } from "../../../api/client";
-import type {
-  CreateMessageRequestData,
-  CreateMessageResponseData,
-} from "../../../api/contracts/message";
+import { useChat as useAiChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+import Cookies from "js-cookie";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { BASE_URL, JWT_COOKIE, PROVIDER_COOKIE } from "../../../api/client";
 import type { Message } from "../../../api/models/message";
 import { API_ROUTES } from "../../../api/routes";
 import { useAPICursorPaginated } from "../../../layout/hooks/use-api-cursor-paginated";
+import {
+  type BenUiMessage,
+  getMessageText,
+  mapHistoryToUiMessages,
+} from "../utils/chat-messages";
 import { useInfiniteScrollTop } from "./use-infinite-scroll-top";
 
-interface ChatLocalState {
-  draft: string;
-  pendingMessages: Message[];
-  sessionMessages: Message[];
-  isAwaitingReply: boolean;
+function buildChatHeaders() {
+  return {
+    "ngrok-skip-browser-warning": "true",
+    jwtauthenticationtoken: Cookies.get(JWT_COOKIE) ?? "",
+    providerauthenticationtoken: Cookies.get(PROVIDER_COOKIE) ?? "",
+  };
 }
 
-const INITIAL_STATE: ChatLocalState = {
-  draft: "",
-  pendingMessages: [],
-  sessionMessages: [],
-  isAwaitingReply: false,
-};
-
 export function useChat() {
-  const [state, setState] = useState<ChatLocalState>(INITIAL_STATE);
+  const [draft, setDraft] = useState("");
   const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  const transport = useMemo(
+    () =>
+      new DefaultChatTransport<BenUiMessage>({
+        api: `${BASE_URL}${API_ROUTES.chat.send}`,
+        headers: buildChatHeaders,
+      }),
+    [],
+  );
+
+  const {
+    messages: sessionMessages,
+    sendMessage,
+    status,
+  } = useAiChat<BenUiMessage>({
+    transport,
+  });
 
   const { actions: historyActions, state: historyState } =
     useAPICursorPaginated<Message>({
@@ -40,90 +54,45 @@ export function useChat() {
     itemCount: historyState.items.length,
   });
 
-  const createMessageMutation = useMutation({
-    mutationFn: async (request: CreateMessageRequestData) => {
-      const response = await authClient.post<CreateMessageResponseData>(
-        API_ROUTES.messages.create,
-        request,
-      );
-      return response.data;
-    },
-  });
+  const isAwaitingReply = status === "submitted" || status === "streaming";
 
   const historyOldestFirst = [...historyState.items].reverse();
   const messages = [
-    ...historyOldestFirst,
-    ...state.sessionMessages,
-    ...state.pendingMessages,
+    ...mapHistoryToUiMessages(historyOldestFirst),
+    ...sessionMessages,
   ];
 
   function scrollToBottom() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
-  const lastMessageId = messages[messages.length - 1]?.id;
+  const lastMessage = messages[messages.length - 1];
+  const lastMessageId = lastMessage?.id;
+  const lastMessageLength = lastMessage
+    ? getMessageText(lastMessage).length
+    : 0;
   useEffect(() => {
     scrollToBottom();
-  }, [lastMessageId, state.isAwaitingReply]);
+  }, [lastMessageId, lastMessageLength, isAwaitingReply]);
 
   function handleDraftChange(value: string) {
-    setState((previous) => ({ ...previous, draft: value }));
+    setDraft(value);
   }
 
-  async function handleSend() {
-    const content = state.draft.trim();
-    if (!content || state.isAwaitingReply) {
+  function handleSend() {
+    const content = draft.trim();
+    if (!content || isAwaitingReply) {
       return;
     }
-
-    const optimisticUserMessage: Message = {
-      id: `pending-${Date.now()}`,
-      role: "user",
-      content,
-      createdAt: new Date().toISOString(),
-    };
-
-    setState((previous) => ({
-      ...previous,
-      draft: "",
-      isAwaitingReply: true,
-      pendingMessages: [...previous.pendingMessages, optimisticUserMessage],
-    }));
-
-    try {
-      const response = await createMessageMutation.mutateAsync({ content });
-      const benMessage = response.capture
-        ? { ...response.benMessage, capture: response.capture }
-        : response.benMessage;
-
-      setState((previous) => ({
-        ...previous,
-        isAwaitingReply: false,
-        pendingMessages: previous.pendingMessages.filter(
-          (message) => message.id !== optimisticUserMessage.id,
-        ),
-        sessionMessages: [
-          ...previous.sessionMessages,
-          response.userMessage,
-          benMessage,
-        ],
-      }));
-    } catch {
-      setState((previous) => ({
-        ...previous,
-        isAwaitingReply: false,
-        pendingMessages: previous.pendingMessages.filter(
-          (message) => message.id !== optimisticUserMessage.id,
-        ),
-      }));
-    }
+    setDraft("");
+    sendMessage({ text: content });
   }
 
   return {
     isLoadingHistory: historyState.isLoading,
     messages,
-    draft: state.draft,
-    isAwaitingReply: state.isAwaitingReply,
+    draft,
+    isAwaitingReply,
     isEmpty: !historyState.isLoading && messages.length === 0,
     isFetchingOlder: historyState.isFetchingNextPage,
     bottomRef,

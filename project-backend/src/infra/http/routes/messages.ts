@@ -1,7 +1,6 @@
-import { InMemoryMessageRepository } from '@/adapters/repositories/in-memory-message-repository'
-import { CreateMessageUseCase } from '@/domain/use-cases/messages/create-message'
 import { ListMessagesUseCase } from '@/domain/use-cases/messages/list-messages'
 import { MessagePresenter } from '@/infra/http/presenters/message-presenter'
+import { messageRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@/modules/utils/http'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
@@ -11,13 +10,7 @@ const listQuerySchema = z.object({
   cursor: z.string().optional(),
 })
 
-const createBodySchema = z.object({
-  content: z.string().min(1),
-})
-
-const messageRepository = new InMemoryMessageRepository()
 const listMessagesUseCase = new ListMessagesUseCase(messageRepository)
-const createMessageUseCase = new CreateMessageUseCase(messageRepository)
 
 export async function listMessages(
   req: Request,
@@ -37,29 +30,6 @@ export async function listMessages(
       items: result.items.map(MessagePresenter.toHttp),
       hasMore: result.hasMore,
       nextCursor: result.nextCursor,
-    })
-  } catch (err) {
-    next(err)
-  }
-}
-
-export async function createMessage(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  try {
-    const body = createBodySchema.parse(req.body)
-
-    const result = await createMessageUseCase.execute({
-      userId: req.userId,
-      content: body.content,
-    })
-
-    return res.status(HttpStatus.CREATED).json({
-      userMessage: MessagePresenter.toHttp(result.userMessage),
-      benMessage: MessagePresenter.toHttp(result.benMessage),
-      capture: result.capture,
     })
   } catch (err) {
     next(err)

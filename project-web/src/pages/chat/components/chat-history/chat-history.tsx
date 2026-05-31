@@ -1,12 +1,15 @@
 import type { RefObject } from "react";
 import { Typography } from "../../../../layout/components/ui/typography";
-import type { Message } from "../../../../api/models/message";
+import {
+  getMessageText,
+  type BenUiMessage,
+} from "../../utils/chat-messages";
 import { CaptureCard } from "../capture-card/capture-card";
 import { MessageBubble } from "../message-bubble/message-bubble";
 import { TypingIndicator } from "../typing-indicator";
 
 type ChatHistoryProps = {
-  messages: Message[];
+  messages: BenUiMessage[];
   isAwaitingReply: boolean;
   isFetchingOlder: boolean;
   bottomRef: RefObject<HTMLDivElement | null>;
@@ -30,17 +33,19 @@ export function ChatHistory({
         </div>
       )}
 
-      {messages.map((message) => (
-        <MessageBubble key={message.id} from={message.role}>
-          {message.content}
-          {message.role === "ben" && message.capture && (
-            <CaptureCard
-              kind={message.capture.kind}
-              title={message.content}
-            />
-          )}
-        </MessageBubble>
-      ))}
+      {messages.map((message) => {
+        const text = getMessageText(message);
+        const isBen = message.role === "assistant";
+        const capture = message.metadata?.capture;
+        return (
+          <MessageBubble key={message.id} from={isBen ? "ben" : "user"}>
+            {text}
+            {isBen && capture && (
+              <CaptureCard kind={capture.kind} title={text} />
+            )}
+          </MessageBubble>
+        );
+      })}
 
       {isAwaitingReply && (
         <div className="flex w-full justify-start">

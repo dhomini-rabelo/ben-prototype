@@ -39,7 +39,14 @@ Vite 8 · React 19 · react-router v7 · Tailwind CSS v4 · `lucide-react`
 
 ## project-web
 
-**Purpose:** The real web implementation of Ben — early stage with routing and Google/Firebase authentication wired up.
+**Purpose:** The real web implementation of Ben — routing and Google/Firebase authentication are wired up, and it now consumes the `project-backend` API to drive working feature screens.
+
+### Key directories
+
+- `src/api/` — Backend API client layer: HTTP client, route definitions, request/response contracts, and models
+- `src/pages/` — Feature screens (one folder per page, each with its own `components/` and `hooks/`)
+- `src/layout/` — Shared UI primitives and cross-page hooks (e.g. API request / pagination hooks)
+- `src/core/` — App wiring: router, entry point
 
 It shares the same stack as `project-design` but is a completely separate project (with Firebase added for auth). Work here will grow as the design is validated in `project-design`.
 

@@ -8,6 +8,8 @@
     "lint:fix": "eslint ./src --ext .ts --fix"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.80",
+    "ai": "^6.0.193",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",

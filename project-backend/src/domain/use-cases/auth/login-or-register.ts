@@ -3,6 +3,7 @@ import { JwtService } from '@/adapters/jwt'
 import { UserRepository } from '@/adapters/repositories/user-repository'
 import { User } from '@/domain/entities/user'
 import { getUserFromProviderTokenOrThrow } from '@/domain/utils/auth'
+import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
   token: string
@@ -14,7 +15,7 @@ interface Response {
   accessToken: string
 }
 
-export class LoginOrRegisterUseCase {
+export class LoginOrRegisterUseCase implements UseCase<Response> {
   constructor(
     private userRepository: UserRepository,
     private authProviderService: AuthProviderService,
