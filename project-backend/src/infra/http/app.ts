@@ -11,6 +11,7 @@ const app = Express()
 app.use(
   cors({
     origin: ['https://dev-dhomini.remktos.com', 'http://localhost:3001'],
+    exposedHeaders: ['updatedjwtauthenticationtoken'],
   }),
   urlencoded({ extended: true, limit: '100mb' }),
 )

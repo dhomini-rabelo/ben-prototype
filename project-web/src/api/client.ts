@@ -8,9 +8,17 @@ export const BASE_URL = import.meta.env.VITE_BACKEND_URL as string;
 export const JWT_COOKIE = "@ben/jwttoken";
 export const PROVIDER_COOKIE = "@ben/authprovidertoken";
 
-export const basicClient = axios.create({ baseURL: BASE_URL });
+const defaultHeaders = { "ngrok-skip-browser-warning": "true" };
 
-export const authClient = axios.create({ baseURL: BASE_URL });
+export const basicClient = axios.create({
+  baseURL: BASE_URL,
+  headers: defaultHeaders,
+});
+
+export const authClient = axios.create({
+  baseURL: BASE_URL,
+  headers: defaultHeaders,
+});
 
 authClient.interceptors.request.use((config) => {
   config.headers.set("jwtauthenticationtoken", Cookies.get(JWT_COOKIE) ?? "");
