@@ -39,9 +39,9 @@ Vite 8 · React 19 · react-router v7 · Tailwind CSS v4 · `lucide-react`
 
 ## project-web
 
-**Purpose:** The real web implementation of Ben — early stage with Login page and routing wired up.
+**Purpose:** The real web implementation of Ben — early stage with routing and Google/Firebase authentication wired up.
 
-It shares the same stack as `project-design` but is a completely separate project. Work here will grow as the design is validated in `project-design`.
+It shares the same stack as `project-design` but is a completely separate project (with Firebase added for auth). Work here will grow as the design is validated in `project-design`.
 
 ---
 
@@ -52,14 +52,15 @@ It shares the same stack as `project-design` but is a completely separate projec
 ### Key directories
 
 - `src/domain/entities/` — Concrete domain entities (e.g. `user.ts`)
-- `src/adapters/repositories/` — Repository implementations (e.g. in-memory repos for prototyping)
-- `src/infra/http/` — Express app, server entry point, and error handler
-- `src/infra/services/` — Infrastructure services (env validation via Zod)
+- `src/domain/use-cases/` — Application use cases (e.g. `auth/`)
+- `src/adapters/` — Ports and adapter implementations (e.g. auth provider, JWT, repositories)
+- `src/infra/http/` — Express app, server entry point, routes, middlewares, presenters, and error handler
+- `src/infra/services/` — Infrastructure services (env validation via Zod, Firebase auth provider, JWT)
 - `src/modules/domain/` — Domain primitives: base `Entity`, `AggregateRoot`, `ValueObject`, `Repository`, `UseCase`, domain errors, query helpers
 
 ### Stack
 
-Node.js · Express 5 · TypeScript · Zod · `tsx` (dev runner)
+Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · `tsx` (dev runner)
 
 ---
 
