@@ -2,18 +2,18 @@
 
 ## File layout
 
-Each page lives in its own folder under `src/pages/` and follows this structure:
+Each page lives in its own folder under `src/pages/` and follows this structure. **All file and folder names use kebab-case**; only the exported React component identifiers stay PascalCase.
 
 ```
-{PageName}/
+{page-name}/
 ├── page.tsx
 ├── components/
-│   ├── {UniqueComponent}.tsx
-│   └── {MediumBigComponent}/
-│       ├── {ComponentName}.tsx
-│       ├── {SubComponentName}.tsx
-│       └── {MediumBigSubComponent}/
-│           └── {SubSubComponentName}.tsx
+│   ├── {unique-component}.tsx
+│   └── {medium-big-component}/
+│       ├── {component-name}.tsx
+│       ├── {sub-component-name}.tsx
+│       └── {medium-big-sub-component}/
+│           └── {sub-sub-component-name}.tsx
 ├── hooks/
 └── states/
 ```
@@ -23,8 +23,8 @@ Each page lives in its own folder under `src/pages/` and follows this structure:
 The `page.tsx` file is the entry point of the page. It composes layout elements and page-level components.
 
 ```tsx
-import { EmployeeActiveEvents } from "./components/EmployeeActiveEvents/EmployeeActiveEvents";
-import { EmployeeTaskList } from "./components/EmployeeTaskList/EmployeeTaskList";
+import { EmployeeActiveEvents } from "./components/employee-active-events/employee-active-events";
+import { EmployeeTaskList } from "./components/employee-task-list/employee-task-list";
 
 export function EmployeeEvents() {
   return (
@@ -40,26 +40,26 @@ export function EmployeeEvents() {
 
 Contains components scoped to the page. There are two patterns:
 
-- **Small unique component** — a single file: `components/{UniqueComponent}.tsx`
-- **Medium/big component** — a folder: `components/{ComponentName}/{ComponentName}.tsx`
-  - Can have sub-components: `components/{ComponentName}/{SubComponentName}.tsx`
-  - Can have nested folders for medium/big sub-components: `components/{ComponentName}/{SubComponentName}/{SubSubComponentName}.tsx`
+- **Small unique component** — a single file: `components/{unique-component}.tsx`
+- **Medium/big component** — a folder: `components/{component-name}/{component-name}.tsx`
+  - Can have sub-components: `components/{component-name}/{sub-component-name}.tsx`
+  - Can have nested folders for medium/big sub-components: `components/{component-name}/{sub-component-name}/{sub-sub-component-name}.tsx`
 
 Example from `EmployeeEvents`:
 
 ```
 components/
-├── EmployeeActiveEvents/
-│   ├── EmployeeActiveEvents.tsx
-│   └── EventSelection.tsx
-└── EmployeeTaskList/
-    ├── EmployeeTaskList.tsx
-    └── Task.tsx
+├── employee-active-events/
+│   ├── employee-active-events.tsx
+│   └── event-selection.tsx
+└── employee-task-list/
+    ├── employee-task-list.tsx
+    └── task.tsx
 ```
 
 ## hooks/
 
-Contains custom hooks scoped to the page, used to extract reusable logic from `page.tsx` or its components.
+Contains custom hooks scoped to the page, used to extract reusable logic from `page.tsx` or its components. Hook files are kebab-case (e.g. `use-chat.ts`), while the exported hook identifier stays camelCase (e.g. `useChat`).
 
 ## states/
 
