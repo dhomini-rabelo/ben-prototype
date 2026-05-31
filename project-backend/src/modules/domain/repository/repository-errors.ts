@@ -5,8 +5,8 @@ export abstract class DatabaseError extends Error {
 export class ResourceNotFoundError extends DatabaseError {
   public readonly type = 'resource-not-found'
 
-  constructor(description?: string) {
-    super(`Resource not found${description ? `: ${description}` : ''}`)
+  constructor() {
+    super('Resource not found')
   }
 }
 

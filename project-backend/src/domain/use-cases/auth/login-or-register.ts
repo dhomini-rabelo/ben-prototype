@@ -1,7 +1,7 @@
 import { AuthProviderService } from '@/adapters/auth-provider'
 import { JwtService } from '@/adapters/jwt'
 import { UserRepository } from '@/adapters/repositories/user-repository'
-import { User, UserIndexes } from '@/domain/entities/user'
+import { User } from '@/domain/entities/user'
 import { getUserFromProviderTokenOrThrow } from '@/domain/utils/auth'
 
 interface Payload {
@@ -26,10 +26,10 @@ export class LoginOrRegisterUseCase {
       this.authProviderService,
       payload.token,
     )
-    const existingUser = await this.userRepository.findUnique(
-      { providerId: userFromProvider.id },
-      { index: UserIndexes.PROVIDER_ID },
-    )
+
+    const existingUser = await this.userRepository.findUnique({
+      providerId: userFromProvider.id,
+    })
 
     if (existingUser) {
       return {

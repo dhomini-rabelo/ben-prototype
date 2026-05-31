@@ -1,379 +1,293 @@
-import { Complement, isFieldInProps, KeyOf, showObject } from '@/modules/utils'
+import { AnyRecord, Complement, KeyOf } from '@/modules/utils'
 
-import { DangerErrors, DomainError } from '../domain-errors'
 import { Entity, EntityWithStatic } from '../entity/entity'
 import { ID } from '../entity/id'
 import { WithID } from '../types'
-import { Query } from './queries'
-import { ValueQuery } from './query-values'
+import {
+  BetweenQuery,
+  ContainsQuery,
+  GreaterQuery,
+  InQuery,
+  LowerOrEqualQuery,
+  NotEqualQuery,
+  NotInQuery,
+  Query,
+  QueryTypes,
+} from './queries'
+import { RepeatedResource, ResourceNotFoundError } from './repository-errors'
 
-export type RepositoryIndexes<Indexes extends string> = Indexes | 'id'
+import { ValueObject } from '../entity/value-object'
+import { cloneDeep } from 'lodash-es'
 
-export type IndexFieldSet<EntityClass extends Entity> =
-  | [KeyOf<WithID<EntityClass['props']>>]
-  | [KeyOf<WithID<EntityClass['props']>>, KeyOf<WithID<EntityClass['props']>>]
-
-export type QueryFilters<Indexes extends string = ''> = {
-  index?: Indexes
+export type QueryFilters<Props extends AnyRecord> = {
   limit?: number
-  paginationData?: any
-  sortDescending?: boolean
+  page?: number
+  orderBy?: KeyOf<Props>
+  order?: 'asc' | 'desc'
 }
 
-export type QueryResponse<T> = {
-  data: T[]
-  nextPaginationData?: any
+export type PaginationResponse<Data extends AnyRecord> = {
+  items: Data[]
+  totalItems: number
+  page: number
 }
 
-export abstract class Repository<
-  EntityClass extends Entity,
-  Indexes extends string = '',
-> {
-  protected abstract indexes: Record<
-    RepositoryIndexes<Indexes>,
-    IndexFieldSet<EntityClass>
-  >
-
+export abstract class Repository<EntityClass extends Entity> {
   abstract create(props: EntityClass['props']): Promise<EntityClass>
 
-  abstract update<Response extends boolean | undefined = undefined>(
+  abstract update(
     id: ID,
-    newProps: Partial<Complement<EntityClass['props'], ValueQuery>>,
-    options?: { returnUpdated?: Response },
-  ): Promise<Response extends true ? EntityClass : null>
-
-  abstract reuseUpdate(
-    entity: EntityClass,
     newProps: Partial<EntityClass['props']>,
   ): Promise<EntityClass>
 
   abstract updateMany(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
     newProps: Partial<EntityClass['props']>,
-    filters?: Pick<QueryFilters<Indexes>, 'index'>,
   ): Promise<EntityClass[]>
-
-  abstract delete(id: ID): Promise<void>
 
   abstract get(
     props: Partial<WithID<EntityClass['props']>>,
-    filters?: Pick<QueryFilters<Indexes>, 'index'>,
   ): Promise<EntityClass>
 
   abstract findUnique(
     props: Partial<WithID<EntityClass['props']>>,
-    filters?: Pick<QueryFilters<Indexes>, 'index'>,
   ): Promise<EntityClass | null>
 
   abstract findFirst(
     props: Partial<WithID<EntityClass['props']>>,
-    filters?: Pick<QueryFilters<Indexes>, 'index'>,
   ): Promise<EntityClass | null>
 
   abstract findMany(
-    props?: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    filters?: QueryFilters<Indexes>,
-  ): Promise<QueryResponse<EntityClass>>
-
-  abstract findAll(
-    props?: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    filters?: Omit<QueryFilters<Indexes>, 'paginationData' | 'limit'>,
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
+    params?: QueryFilters<EntityClass['props']>,
   ): Promise<EntityClass[]>
 
-  abstract countItems(
-    props: Partial<EntityClass['props']>,
-    filters: Pick<QueryFilters<Indexes>, 'index'>,
+  abstract findManyWithPagination(
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
+    params?: QueryFilters<EntityClass['props']>,
+  ): Promise<PaginationResponse<EntityClass>>
+
+  abstract count(
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
   ): Promise<number>
 
-  abstract reset(): Promise<void>
+  abstract delete(id: ID): Promise<EntityClass>
 
-  protected validateIndex(
+  abstract deleteMany(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    indexName: Indexes | 'id' = 'id',
-  ): void {
-    const indexFields = this.indexes[indexName]
-    if (!indexFields) {
-      throw new DomainError({
-        code: 'INDEX_NOT_DEFINED',
-        errorType: DangerErrors.DATA_INTEGRITY,
-        variables: [
-          `Index "${indexName}" is not defined. ${showObject(props)}`,
-        ],
-      })
-    }
+  ): Promise<void>
 
-    const partitionKey = indexFields[0]
-    if (!isFieldInProps(String(partitionKey), props)) {
-      throw new DomainError({
-        code: 'MISSING_PARTITION_KEY',
-        errorType: DangerErrors.DATA_INTEGRITY,
-        variables: [String(partitionKey), showObject(props)],
-      })
-    }
-  }
+  abstract clone<T = any>(clientRepository?: T): Repository<EntityClass>
 }
 
 export abstract class InMemoryRepository<
   EntityClass extends Entity,
-  Indexes extends string = '',
-> extends Repository<EntityClass, Indexes> {
-  protected abstract entity: EntityWithStatic<EntityClass>
+> implements Repository<EntityClass> {
   protected items: EntityClass[] = []
-  protected defaultQueryValues: Partial<WithID<EntityClass['props']>> = {}
-  protected abstract indexes: Record<
-    RepositoryIndexes<Indexes>,
-    IndexFieldSet<EntityClass>
-  >
+  protected abstract entity: EntityWithStatic<EntityClass>
 
-  async create(props: EntityClass['props']) {
+  private queryHandler: Record<
+    QueryTypes,
+    (query: Query, propValue: any) => boolean
+  > = {
+    [QueryTypes.CONTAINS]: (query, propValue) => {
+      if (!(query instanceof ContainsQuery)) return false
+      return (
+        typeof propValue === 'string' &&
+        propValue.toLowerCase().includes(query.params.input.toLowerCase())
+      )
+    },
+    [QueryTypes.LOWER_OR_EQUAL]: (query, propValue) => {
+      if (!(query instanceof LowerOrEqualQuery)) return false
+      return (
+        (typeof propValue === 'number' &&
+          typeof query.params.input === 'number' &&
+          propValue <= query.params.input) ||
+        (propValue instanceof Date &&
+          query.params.input instanceof Date &&
+          propValue.getTime() <= query.params.input.getTime())
+      )
+    },
+    [QueryTypes.GREATER]: (query, propValue) => {
+      if (!(query instanceof GreaterQuery)) return false
+      return (
+        (typeof propValue === 'number' &&
+          typeof query.params.input === 'number' &&
+          propValue > query.params.input) ||
+        (propValue instanceof Date &&
+          query.params.input instanceof Date &&
+          propValue.getTime() > query.params.input.getTime())
+      )
+    },
+    [QueryTypes.BETWEEN]: (query, propValue) => {
+      if (!(query instanceof BetweenQuery)) return false
+      const { from, to } = query.params
+      return (
+        (typeof propValue === 'number' &&
+          typeof from === 'number' &&
+          typeof to === 'number' &&
+          propValue >= from &&
+          propValue <= to) ||
+        (propValue instanceof Date &&
+          from instanceof Date &&
+          to instanceof Date &&
+          propValue.getTime() >= from.getTime() &&
+          propValue.getTime() <= to.getTime())
+      )
+    },
+    [QueryTypes.IN]: (query, propValue) => {
+      if (!(query instanceof InQuery)) return false
+      return (
+        Array.isArray(query.params.input) &&
+        query.params.input.includes(propValue)
+      )
+    },
+    [QueryTypes.NOT_IN]: (query, propValue) => {
+      if (!(query instanceof NotInQuery)) return false
+      return (
+        Array.isArray(query.params.input) &&
+        !query.params.input.includes(propValue)
+      )
+    },
+    [QueryTypes.NOT_NULL]: (_query, propValue) => propValue !== null,
+    [QueryTypes.NOT_EQUAL]: (query, propValue) => {
+      if (!(query instanceof NotEqualQuery)) return false
+      const { input } = query.params
+      if (input instanceof ID) return propValue !== input.toValue()
+      return propValue !== input
+    },
+  }
+
+  async create(props: EntityClass['props']): Promise<EntityClass> {
     const newItem = this.entity.create(props)
     this.items.push(newItem)
-    return structuredClone(newItem)
+    return cloneDeep(newItem)
   }
 
-  async save(entity: EntityClass) {
-    const itemIndex = this.items.findIndex((item) => item.id.isEqual(entity.id))
-    if (itemIndex === -1) {
-      this.items.push(entity)
-    } else {
-      this.items[itemIndex] = entity
-    }
-    return structuredClone(entity)
-  }
-
-  async update<Response extends boolean | undefined = undefined>(
+  async update(
     id: ID,
-    newProps: Partial<Complement<EntityClass['props'], ValueQuery>>,
-    options: { returnUpdated?: Response } = {},
-  ): Promise<Response extends true ? EntityClass : null> {
-    const item = await this.getInMemory({ id })
-
-    item.props = {
-      ...item.props,
-      ...Object.fromEntries(
-        Object.entries(newProps).map(([key, value]) =>
-          value instanceof ValueQuery
-            ? [key, value.getValue(item.getProp(key))]
-            : [key, value],
-        ),
-      ),
-    }
-
-    return (
-      options.returnUpdated === true ? structuredClone(item) : null
-    ) as Response extends true ? EntityClass : null
-  }
-
-  async reuseUpdate(
-    entity: EntityClass,
     newProps: Partial<EntityClass['props']>,
   ): Promise<EntityClass> {
-    const item = await this.getInMemory({ id: entity.id })
-
-    item.props = {
-      ...item.props,
-      ...Object.fromEntries(
-        Object.entries(newProps).map(([key, value]) =>
-          value instanceof ValueQuery
-            ? [key, value.getValue(item.getProp(key))]
-            : [key, value],
-        ),
-      ),
-    }
-
-    return structuredClone(item)
+    const item = await this.getInMemory({ id })
+    item.props = { ...item.props, ...newProps }
+    return cloneDeep(item)
   }
 
   async updateMany(
-    query: Partial<EntityClass['props']>,
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
     newProps: Partial<EntityClass['props']>,
-    filters: Pick<QueryFilters<Indexes>, 'index'> = {},
   ): Promise<EntityClass[]> {
-    const items = this.items.filter((item) => this.compare(item, query))
-    this.validateIndex(query, filters.index)
-
+    const items = this.items.filter((item) => this.compare(item, props))
     items.forEach((item) => {
-      item.props = {
-        ...item.props,
-        ...newProps,
-      }
+      item.props = { ...item.props, ...newProps }
     })
-
-    return structuredClone(items)
-  }
-
-  async delete(id: ID) {
-    this.items = this.items.filter((item) => !item.id.isEqual(id))
+    return cloneDeep(items)
   }
 
   async get(
     props: Partial<WithID<EntityClass['props']>>,
-    filters: Pick<QueryFilters<Indexes>, 'index'> = {},
   ): Promise<EntityClass> {
-    this.validateIndex(props, filters.index)
-
-    const itemsFound = this.items.filter((item) =>
-      this.compare(item, {
-        ...this.defaultQueryValues,
-        ...props,
-      }),
-    )
-
-    if (itemsFound.length > 1) {
-      const { RepeatedResource } = await import('./repository-errors')
-      throw new RepeatedResource()
-    } else if (itemsFound.length === 0) {
-      const { ResourceNotFoundError } = await import('./repository-errors')
-      throw new ResourceNotFoundError()
-    }
-    return structuredClone(itemsFound[0])
+    const itemsFound = this.items.filter((item) => this.compare(item, props))
+    if (itemsFound.length > 1) throw new RepeatedResource()
+    if (itemsFound.length === 0) throw new ResourceNotFoundError()
+    return cloneDeep(itemsFound[0])
   }
 
-  protected async getInMemory(
+  async getInMemory(
     props: Partial<WithID<EntityClass['props']>>,
-    _filters: Pick<QueryFilters<Indexes>, 'index'> = {},
   ): Promise<EntityClass> {
-    const itemsFound = this.items.filter((item) =>
-      this.compare(item, {
-        ...this.defaultQueryValues,
-        ...props,
-      }),
-    )
-
-    if (itemsFound.length > 1) {
-      const { RepeatedResource } = await import('./repository-errors')
-      throw new RepeatedResource()
-    } else if (itemsFound.length === 0) {
-      const { ResourceNotFoundError } = await import('./repository-errors')
-      throw new ResourceNotFoundError()
-    }
-
+    const itemsFound = this.items.filter((item) => this.compare(item, props))
+    if (itemsFound.length > 1) throw new RepeatedResource()
+    if (itemsFound.length === 0) throw new ResourceNotFoundError()
     return itemsFound[0]
   }
 
   async findUnique(
     props: Partial<WithID<EntityClass['props']>>,
-    filters: Pick<QueryFilters<Indexes>, 'index'> = {},
   ): Promise<EntityClass | null> {
-    this.validateIndex(props, filters.index)
-
-    const itemsFound = this.items.filter((item) =>
-      this.compare(item, {
-        ...this.defaultQueryValues,
-        ...props,
-      }),
-    )
-    if (itemsFound.length > 1) {
-      const { RepeatedResource } = await import('./repository-errors')
-      throw new RepeatedResource()
-    }
-    return itemsFound.length === 1 ? structuredClone(itemsFound[0]) : null
+    const itemsFound = this.items.filter((item) => this.compare(item, props))
+    if (itemsFound.length > 1) throw new RepeatedResource()
+    return itemsFound.length === 1 ? cloneDeep(itemsFound[0]) : null
   }
 
   async findFirst(
     props: Partial<WithID<EntityClass['props']>>,
-    filters: Pick<QueryFilters<Indexes>, 'index'> = {},
   ): Promise<EntityClass | null> {
-    this.validateIndex(props, filters.index)
-
-    const itemsFound = this.items.filter((item) =>
-      this.compare(item, {
-        ...this.defaultQueryValues,
-        ...props,
-      }),
-    )
-
-    return itemsFound.length >= 1 ? structuredClone(itemsFound[0]) : null
+    const itemsFound = this.items.filter((item) => this.compare(item, props))
+    return itemsFound.length >= 1 ? cloneDeep(itemsFound[0]) : null
   }
 
   async findMany(
-    props: Partial<Complement<WithID<EntityClass['props']>, Query>> = {},
-    filters: QueryFilters<Indexes> = {},
-  ): Promise<QueryResponse<EntityClass>> {
-    this.validateIndex(props, filters.index)
-
-    const { limit, paginationData, sortDescending = false, index } = filters
-    let items = this.items.filter((item) =>
-      this.compare(item, {
-        ...this.defaultQueryValues,
-        ...props,
-      }),
-    )
-
-    const sortKey = this.getSortKey(index)
-    if (sortKey) {
-      items = items.sort((firstItem, secondItem) => {
-        const firstValue = firstItem.getProp(sortKey as string)
-        const secondValue = secondItem.getProp(sortKey as string)
-
-        return sortDescending
-          ? secondValue - firstValue
-          : firstValue - secondValue
-      })
-    }
-
-    const paginationDataIndex = items.findIndex(
-      (item) => item.id.toString() === paginationData,
-    )
-
-    items = items.filter(
-      (_, i) => paginationDataIndex === -1 || i > paginationDataIndex,
-    )
-    items = items.filter((_, i) => !limit || i < limit)
-
-    return {
-      data: structuredClone(items),
-      nextPaginationData:
-        limit && items.at(limit - 1)?.id.toValue()
-          ? items.at(limit - 1)?.id.toString()
-          : undefined,
-    }
-  }
-
-  async findAll(
-    props: Partial<Complement<WithID<EntityClass['props']>, Query>> = {},
-    filters: Omit<QueryFilters<Indexes>, 'paginationData' | 'limit'> = {},
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
+    params?: QueryFilters<EntityClass['props']>,
   ): Promise<EntityClass[]> {
-    this.validateIndex(props, filters.index)
+    const items = this.items.filter((item) => this.compare(item, props))
+    return this.applyQueryParams(items, params)
+  }
 
-    const { sortDescending = false, index } = filters
-    let items = this.items.filter((item) =>
-      this.compare(item, {
-        ...this.defaultQueryValues,
-        ...props,
-      }),
-    )
+  async findManyWithPagination(
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
+    params?: QueryFilters<EntityClass['props']>,
+  ): Promise<PaginationResponse<EntityClass>> {
+    const filtered = this.items.filter((item) => this.compare(item, props))
+    const totalItems = filtered.length
+    const currentPage = params?.page ?? 1
+    const paginatedItems = await this.applyQueryParams(filtered, params)
+    return { items: paginatedItems, totalItems, page: currentPage }
+  }
 
-    const sortKey = this.getSortKey(index)
-    if (sortKey) {
-      items = items.sort((firstItem, secondItem) => {
-        const firstValue = firstItem.getProp(sortKey as string)
-        const secondValue = secondItem.getProp(sortKey as string)
+  async count(
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
+  ): Promise<number> {
+    return this.items.filter((item) => this.compare(item, props)).length
+  }
 
-        return sortDescending
-          ? secondValue - firstValue
-          : firstValue - secondValue
+  async delete(id: ID): Promise<EntityClass> {
+    const itemIndex = this.items.findIndex((item) => item.id.isEqual(id))
+    if (itemIndex === -1) throw new ResourceNotFoundError()
+    const [deleted] = this.items.splice(itemIndex, 1)
+    return cloneDeep(deleted)
+  }
+
+  async deleteMany(
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
+  ): Promise<void> {
+    this.items = this.items.filter((item) => !this.compare(item, props))
+  }
+
+  clone(): Repository<EntityClass> {
+    return Object.create(this) as InMemoryRepository<EntityClass>
+  }
+
+  protected async applyQueryParams(
+    items: EntityClass[],
+    params?: QueryFilters<EntityClass['props']>,
+  ): Promise<EntityClass[]> {
+    if (params?.orderBy) {
+      items = items.slice().sort((a, b) => {
+        const dir = params.order === 'asc' ? 1 : -1
+        const va = a.getProp(params.orderBy as string)
+        const vb = b.getProp(params.orderBy as string)
+        if (va === vb) return 0
+        if (typeof va === 'string' && typeof vb === 'string')
+          return va.localeCompare(vb) * dir
+        if (va instanceof Date && vb instanceof Date)
+          return (va.getTime() - vb.getTime()) * dir
+        if (typeof va === 'number' && typeof vb === 'number')
+          return (va - vb) * dir
+        if (va !== null && vb === null) return -1 * dir
+        if (va === null && vb !== null) return 1 * dir
+        return (va > vb ? 1 : -1) * dir
       })
     }
-
-    return structuredClone(items)
-  }
-
-  async countItems(
-    props: Partial<EntityClass['props']>,
-    filters: Pick<QueryFilters<Indexes>, 'index'>,
-  ): Promise<number> {
-    const itemsFound = await this.findMany(props, filters)
-    return itemsFound.data.length
-  }
-
-  async reset() {
-    this.items = []
+    const limit = params?.limit
+    const start = (params?.page ?? 1) - 1
+    return limit ? items.slice(start * limit, start * limit + limit) : items
   }
 
   protected compare(
     item: EntityClass,
-    props: Partial<WithID<EntityClass['props']>>,
+    props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
   ): boolean {
     return Object.entries(props)
       .filter(([, value]) => value !== undefined)
@@ -382,28 +296,19 @@ export abstract class InMemoryRepository<
 
         if (prop instanceof ID && fieldValue instanceof ID) {
           return prop.isEqual(fieldValue)
-        } else if (typeof prop === 'string' && typeof fieldValue === 'string') {
-          return prop.includes(fieldValue)
         }
 
         if (fieldValue instanceof Query) {
-          return fieldValue.runExpression(prop)
+          const handler = this.queryHandler[fieldValue.queryType]
+          return handler(
+            fieldValue,
+            prop instanceof ID || prop instanceof ValueObject
+              ? prop.toValue()
+              : prop,
+          )
         }
 
         return prop === fieldValue
       })
-  }
-
-  protected getSortKey(
-    indexName: Indexes | 'id' = 'id',
-  ): KeyOf<WithID<EntityClass['props']>> | null {
-    const indexFields = this.indexes[indexName]
-    const isCompositeIndex = indexFields && indexFields.length === 2
-
-    if (isCompositeIndex) {
-      return indexFields[1]
-    }
-
-    return null
   }
 }

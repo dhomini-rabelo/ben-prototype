@@ -1,7 +1,6 @@
 import { AuthProviderService } from '@/adapters/auth-provider'
 import { JwtService } from '@/adapters/jwt'
 import { UserRepository } from '@/adapters/repositories/user-repository'
-import { UserIndexes } from '@/domain/entities/user'
 import { getUserFromProviderTokenOrThrow } from '@/domain/utils/auth'
 
 interface Payload {
@@ -33,10 +32,9 @@ export class VerifyAuthenticationUseCase {
       payload.providerToken,
     )
 
-    const user = await this.userRepository.get(
-      { providerId: userFromProvider.id },
-      { index: UserIndexes.PROVIDER_ID },
-    )
+    const user = await this.userRepository.get({
+      providerId: userFromProvider.id,
+    })
 
     const newJwtToken = this.jwtService.generateToken(user.id.toValue())
 
