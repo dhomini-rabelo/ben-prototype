@@ -1,8 +1,8 @@
-import { VerifyAuthenticationUseCase } from '@/domain/use-cases/auth/verify-authentication'
-import { FirebaseAuthProviderService } from '@/infra/services/firebase-auth-provider'
-import { env } from '@/infra/services/env'
-import { JsonWebTokenJwtService } from '@/infra/services/jwt'
 import { InMemoryUserRepository } from '@/adapters/repositories/in-memory-user-repository'
+import { VerifyAuthenticationUseCase } from '@/domain/use-cases/auth/verify-authentication'
+import { env } from '@/infra/services/env'
+import { FirebaseAuthProviderService } from '@/infra/services/firebase-auth-provider'
+import { JsonWebTokenJwtService } from '@/infra/services/jwt'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 

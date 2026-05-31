@@ -2,7 +2,7 @@ import { AuthProviderService } from '@/adapters/auth-provider'
 import { JwtService } from '@/adapters/jwt'
 import { UserRepository } from '@/adapters/repositories/user-repository'
 import { UserIndexes } from '@/domain/entities/user'
-import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
+import { getUserFromProviderTokenOrThrow } from '@/domain/utils/auth'
 
 interface Payload {
   jwtToken: string
@@ -28,16 +28,10 @@ export class VerifyAuthenticationUseCase {
       return { jwtToken: payload.jwtToken, userId: jwtState.userId }
     }
 
-    const userFromProvider = await this.authProviderService.getUserFromToken({
-      token: payload.providerToken,
-    })
-
-    if (!userFromProvider) {
-      throw new DomainError({
-        code: 'INVALID_PROVIDER_TOKEN',
-        errorType: DangerErrors.UNAUTHORIZED,
-      })
-    }
+    const userFromProvider = await getUserFromProviderTokenOrThrow(
+      this.authProviderService,
+      payload.providerToken,
+    )
 
     const user = await this.userRepository.get(
       { providerId: userFromProvider.id },
