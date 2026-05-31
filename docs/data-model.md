@@ -160,6 +160,18 @@ Proposta de edição do Ben, dentro de `Task.pendingDiff`. Escopo de um turn (um
 
 ---
 
+## Estados transientes não persistidos (v1)
+
+Dois estados de erro/carga descritos em `04-screen-prompts/02-chat-surface.md` vivem **só em memória** no v1. Decisão consciente: são edge cases curtos e o custo de modelá-los não se paga para o founder N=1. Documentados aqui para não virarem surpresa no dogfooding.
+
+- **Save failed** (erro 4 da tela) — quando o Ben classifica a captura mas o save na collection (`Note`/`Reminder`/`Task`) falha. `Message.capture` só nasce **depois** do save bem-sucedido (com `refId`), então não há onde persistir uma tentativa que falhou. O retry inline no card é client-side: se o app fechar nesse estado, a falha some e o usuário precisa repetir a captura por conversa. **Quando doer:** adicionar `capture.status: 'saved' | 'failed'` + tornar `refId` opcional, gravando o intent **antes** de tentar persistir.
+
+- **Offline queue** (modo "queueing supported") — mensagens capturadas offline ficam numa fila local (in-memory / localStorage), não na collection `Message`. Não há `sendStatus` no modelo. Se o app fechar com a fila cheia, as mensagens não-enviadas se perdem. **Quando doer:** adicionar `Message.sendStatus: 'queued' | 'sent' | 'failed'` (ausente = `sent`), processando a fila por `createdAt` no reconnect — distinto de `transcriptionStatus` (rede vs. transcrição são ciclos diferentes).
+
+- **Ben reply failed** (erro 3 da tela) — **não é gap.** A bolha de erro do Ben nunca foi persistida porque a resposta não existiu; perdê-la no reload é o comportamento correto.
+
+---
+
 ## Notas de evolução (v1.5 / v2)
 
 - **Vector retrieval de memória** (v2): usar **Atlas Vector Search** sobre `Message`/`Note` — mantém o mesmo banco, sem migração de engine.
