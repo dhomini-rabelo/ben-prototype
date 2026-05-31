@@ -5,8 +5,9 @@ export interface UserProps {
   name: string
   username: string
   email: string
-  photoUrl: string
+  avatarUrl: string
   providerId: string
+  createdAt: Date
 }
 
 export class User extends Entity<UserProps> {

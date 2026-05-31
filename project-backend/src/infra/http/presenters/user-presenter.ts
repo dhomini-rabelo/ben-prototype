@@ -7,7 +7,7 @@ export class UserPresenter {
       name: user.props.name,
       username: user.props.username,
       email: user.props.email,
-      photoUrl: user.props.photoUrl,
+      avatarUrl: user.props.avatarUrl,
       providerId: user.props.providerId,
     }
   }

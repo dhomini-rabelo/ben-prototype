@@ -17,10 +17,11 @@ Conta autenticada via Google OAuth. Único usuário no v1 (founder, N=1), mas mo
 ```ts
 {
   _id: ObjectId
-  googleSub: string    // identificador do Google — índice ÚNICO, usado no login
+  providerId: string   // identificador do provider OAuth — índice ÚNICO, usado no login
   email: string
+  username: string
   name: string
-  avatarUrl?: string   // foto do perfil Google (Settings modal)
+  avatarUrl: string    // foto do perfil (Settings modal)
   createdAt: Date
 }
 ```
@@ -143,7 +144,7 @@ Proposta de edição do Ben, dentro de `Task.pendingDiff`. Escopo de um turn (um
 ## Índices recomendados
 
 - **User**
-  - `{ googleSub: 1 }` único — lookup de login.
+  - `{ providerId: 1 }` único — lookup de login.
 
 - **Message**
   - `{ userId: 1, createdAt: -1 }` — janela das últimas 20 mensagens e scroll do histórico.

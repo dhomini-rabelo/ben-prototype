@@ -6,7 +6,7 @@ export type GetUserFromTokenResponse = {
   id: string
   name: string
   email: string
-  photoURL: string
+  avatarUrl: string
 }
 
 export interface AuthProviderService {

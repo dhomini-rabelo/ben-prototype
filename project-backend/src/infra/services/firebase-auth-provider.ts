@@ -28,7 +28,7 @@ export class FirebaseAuthProviderService implements AuthProviderService {
         id: user.uid,
         name: user.name || '',
         email: user.email || '',
-        photoURL: user.picture || '',
+        avatarUrl: user.picture || '',
       }
     } catch {
       return null

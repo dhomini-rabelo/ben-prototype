@@ -43,8 +43,9 @@ export class LoginOrRegisterUseCase {
       name: userFromProvider.name,
       username: userFromProvider.email.split('@')[0],
       email: userFromProvider.email,
-      photoUrl: userFromProvider.photoURL,
+      avatarUrl: userFromProvider.avatarUrl,
       providerId: userFromProvider.id,
+      createdAt: new Date(),
     })
 
     return {
