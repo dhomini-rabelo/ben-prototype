@@ -1,7 +1,7 @@
+import { AuthProviderService } from '@/adapters/auth-provider'
+import { JwtService } from '@/adapters/jwt'
 import { UserRepository } from '@/adapters/repositories/user-repository'
 import { User, UserIndexes } from '@/domain/entities/user'
-import { AuthProviderService } from '@/domain/services/auth-provider'
-import { JwtService } from '@/domain/services/jwt'
 import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
 
 interface Payload {

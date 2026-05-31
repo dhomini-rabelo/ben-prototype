@@ -2,7 +2,7 @@ import {
   AuthProviderService,
   GetUserFromTokenPayload,
   GetUserFromTokenResponse,
-} from '@/domain/services/auth-provider'
+} from '@/adapters/auth-provider'
 import { env } from '@/infra/services/env'
 
 import { cert, getApps, initializeApp } from 'firebase-admin/app'
