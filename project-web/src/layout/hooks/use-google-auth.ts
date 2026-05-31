@@ -10,20 +10,29 @@ export const JWT_COOKIE = '@ben/jwttoken'
 export const PROVIDER_COOKIE = '@ben/authprovidertoken'
 const COOKIE_MAX_AGE_DAYS = 5
 
+const USER_CANCEL_ERROR_CODES = [
+  'auth/popup-closed-by-user',
+  'auth/cancelled-popup-request',
+  'auth/popup-blocked',
+  'auth/user-cancelled',
+]
+
+type GoogleAuthStatus = 'idle' | 'loading' | 'denied' | 'error'
+
 interface GoogleAuthState {
-  isLoading: boolean
+  status: GoogleAuthStatus
   error: string
 }
 
 export function useGoogleAuth() {
   const [state, setState] = useState<GoogleAuthState>({
-    isLoading: false,
+    status: 'idle',
     error: '',
   })
   const navigate = useNavigate()
 
   async function signIn() {
-    setState({ isLoading: true, error: '' })
+    setState({ status: 'loading', error: '' })
 
     try {
       const provider = new GoogleAuthProvider()
@@ -39,7 +48,7 @@ export function useGoogleAuth() {
       if (!response.ok) {
         const data = await response.json()
         setState({
-          isLoading: false,
+          status: 'error',
           error: data.message || 'Authentication failed. Please try again.',
         })
         return
@@ -51,13 +60,20 @@ export function useGoogleAuth() {
       Cookies.set(PROVIDER_COOKIE, idToken, { expires: COOKIE_MAX_AGE_DAYS })
 
       navigate(ROUTES.home)
-    } catch {
+    } catch (caughtError) {
+      const errorCode = (caughtError as { code?: string }).code ?? ''
+      const wasCancelledByUser = USER_CANCEL_ERROR_CODES.includes(errorCode)
       setState({
-        isLoading: false,
-        error: 'Authentication failed. Please try again.',
+        status: wasCancelledByUser ? 'denied' : 'error',
+        error: wasCancelledByUser ? '' : 'Authentication failed. Please try again.',
       })
     }
   }
 
-  return { signIn, isLoading: state.isLoading, error: state.error }
+  return {
+    signIn,
+    isLoading: state.status === 'loading',
+    isPermissionDenied: state.status === 'denied',
+    error: state.error,
+  }
 }

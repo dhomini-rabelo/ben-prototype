@@ -5,7 +5,7 @@ import { Typography } from "../../layout/components/ui/typography";
 import { useGoogleAuth } from "../../layout/hooks/use-google-auth";
 
 export function Login() {
-  const { signIn, isLoading, error } = useGoogleAuth();
+  const { signIn, isLoading, isPermissionDenied, error } = useGoogleAuth();
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-6 text-on-background">
@@ -21,6 +21,14 @@ export function Login() {
         </div>
 
         <div className="fade-in-up delay-200 flex w-full flex-col gap-3">
+          {isPermissionDenied && (
+            <div
+              role="status"
+              className="fade-in-up w-full rounded-lg border border-outline-variant bg-surface-container-low px-4 py-3 text-left text-body-md text-on-surface-variant"
+            >
+              looks like that didn't go through — want to try again?
+            </div>
+          )}
           {error && (
             <Typography variant="body-md" className="text-error text-center">
               {error}
