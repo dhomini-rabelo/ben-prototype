@@ -8,7 +8,12 @@ import Express, { json, urlencoded } from 'express'
 
 const app = Express()
 
-app.use(cors(), urlencoded({ extended: true, limit: '100mb' }))
+app.use(
+  cors({
+    origin: ['https://dev-dhomini.remktos.com', 'http://localhost:3001'],
+  }),
+  urlencoded({ extended: true, limit: '100mb' }),
+)
 app.use(json({ limit: '100mb' }))
 
 app.get('/health', (_req, res) => {
