@@ -1,8 +1,8 @@
-import { useGoogleAuth } from "../../core/hooks/use-google-auth";
 import { BrandMark } from "../../layout/components/brand-mark";
 import { GoogleIcon } from "../../layout/components/icons/google-icon";
 import { Button } from "../../layout/components/ui/button";
 import { Typography } from "../../layout/components/ui/typography";
+import { useGoogleAuth } from "../../layout/hooks/use-google-auth";
 
 export function Login() {
   const { signIn, isLoading, error } = useGoogleAuth();
@@ -26,11 +26,7 @@ export function Login() {
               {error}
             </Typography>
           )}
-          <Button
-            className="w-full"
-            onClick={signIn}
-            disabled={isLoading}
-          >
+          <Button className="w-full" onClick={signIn} disabled={isLoading}>
             <GoogleIcon className="size-5 opacity-90 transition-opacity group-hover:opacity-100" />
             {isLoading ? "Signing in..." : "Continue with Google"}
           </Button>
