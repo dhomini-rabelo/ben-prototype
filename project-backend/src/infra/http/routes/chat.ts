@@ -1,6 +1,13 @@
 import { PersistBenMessageUseCase } from '@/domain/use-cases/messages/persist-ben-message'
 import { PersistUserMessageUseCase } from '@/domain/use-cases/messages/persist-user-message'
-import { messageRepository } from '@/infra/http/repositories'
+import { BuildTopicIndexUseCase } from '@/domain/use-cases/topics/build-topic-index'
+import { GetHistoryContextUseCase } from '@/domain/use-cases/topics/get-history-context'
+import { PersistTopicSummariesUseCase } from '@/domain/use-cases/topics/persist-topic-summaries'
+import {
+  messageRepository,
+  topicRepository,
+  topicSummaryRepository,
+} from '@/infra/http/repositories'
 import { GeminiAgentProviderService } from '@/infra/services/gemini-agent-provider'
 import { HttpStatus } from '@/modules/utils/http'
 import { NextFunction, Request, Response } from 'express'
@@ -27,6 +34,14 @@ const persistUserMessageUseCase = new PersistUserMessageUseCase(
   messageRepository,
 )
 const persistBenMessageUseCase = new PersistBenMessageUseCase(messageRepository)
+const buildTopicIndexUseCase = new BuildTopicIndexUseCase(topicRepository)
+const getHistoryContextUseCase = new GetHistoryContextUseCase(
+  topicSummaryRepository,
+)
+const persistTopicSummariesUseCase = new PersistTopicSummariesUseCase(
+  topicRepository,
+  topicSummaryRepository,
+)
 
 function extractLatestUserMessageText(
   messages: z.infer<typeof chatBodySchema>['messages'],
@@ -63,13 +78,26 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       content: message,
     })
 
+    const topicIndex = await buildTopicIndexUseCase.execute({
+      userId: req.userId,
+    })
+
     const result = agentService.streamReply({
       userId: req.userId,
       message,
-      onFinish: async ({ text }) => {
-        await persistBenMessageUseCase.execute({
+      topicIndex,
+      resolveHistoryContext: ({ topics }) =>
+        getHistoryContextUseCase.execute({ userId: req.userId, topics }),
+      onFinish: async (reply) => {
+        const benMessage = await persistBenMessageUseCase.execute({
           userId: req.userId,
-          content: text,
+          content: reply.message,
+        })
+
+        await persistTopicSummariesUseCase.execute({
+          userId: req.userId,
+          topics: reply.historyTopics,
+          messageId: benMessage.id.toValue(),
         })
       },
     })

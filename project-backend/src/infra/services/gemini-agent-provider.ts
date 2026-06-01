@@ -1,10 +1,23 @@
 import {
+  AgentReply,
   AgentService,
   AgentStreamResult,
+  ResolveHistoryContext,
   StreamReplyPayload,
+  TopicKey,
 } from '@/adapters/agent-provider'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
-import { streamText } from 'ai'
+import {
+  createUIMessageStream,
+  generateId,
+  generateText,
+  Output,
+  pipeUIMessageStreamToResponse,
+  stepCountIs,
+  tool,
+  UIMessage,
+} from 'ai'
+import { z } from 'zod'
 import { env } from './env'
 
 const google = createGoogleGenerativeAI({
@@ -31,18 +44,124 @@ const BEN_SYSTEM_PROMPT = [
   'Say that you do not know when you do not know the answer, say that you do not have the information, or you are not updated',
 ].join(' ')
 
+const reminderDraftSchema = z.object({
+  title: z.string(),
+  remindAt: z.string().optional(),
+  notes: z.string().optional(),
+})
+
+const noteDraftSchema = z.object({
+  title: z.string(),
+  body: z.string(),
+})
+
+const taskDraftSchema = z.object({
+  title: z.string(),
+  details: z.string().optional(),
+})
+
+const historyTopicSchema = z.object({
+  topic: z.string(),
+  summary: z.string(),
+})
+
+const agentReplySchema = z.object({
+  message: z.string(),
+  newReminders: z.array(reminderDraftSchema),
+  newNotes: z.array(noteDraftSchema),
+  newTasks: z.array(taskDraftSchema),
+  historyTopics: z.array(historyTopicSchema),
+})
+
+type BenDataParts = {
+  reminders: AgentReply['newReminders']
+  notes: AgentReply['newNotes']
+  tasks: AgentReply['newTasks']
+  topics: AgentReply['historyTopics']
+}
+
+type BenUIMessage = UIMessage<unknown, BenDataParts>
+
+const buildSystemPrompt = (topicIndex: TopicKey[]): string => {
+  const renderedIndex =
+    topicIndex.length > 0
+      ? topicIndex.map((topic) => `- ${topic}`).join('\n')
+      : '(nenhum tópico conhecido ainda)'
+
+  const topicSection = [
+    '',
+    '',
+    '# Memória de tópicos',
+    'Estes são os tópicos recorrentes já conhecidos deste usuário (sugestões):',
+    renderedIndex,
+    'Cada tópico segue o formato `kind:category:slug` (ex.: `reminder:work:meeting`).',
+    'Quando a mensagem do usuário combinar com um tópico existente, reutilize exatamente aquela chave.',
+    'Quando nenhum tópico existente combinar, crie uma nova chave no formato `kind:category:slug`.',
+    'Você PODE chamar a ferramenta `get-history-context` UMA ÚNICA VEZ antes de responder, passando os tópicos sobre os quais você precisa de mais contexto. Analise a mensagem do usuário para decidir quais tópicos buscar.',
+    'Preencha `historyTopics` com os tópicos relacionados a este turno, cada um com um resumo curto.',
+    'Proponha `newReminders`, `newNotes` e `newTasks` somente quando a mensagem do usuário pedir ou implicar claramente esses itens; caso contrário, deixe-os como listas vazias.',
+    'O campo `message` é a resposta em linguagem natural para o usuário, seguindo a sua persona.',
+  ].join('\n')
+
+  return `${BEN_SYSTEM_PROMPT}${topicSection}`
+}
+
+const buildHistoryContextTool = (
+  resolveHistoryContext: ResolveHistoryContext,
+) =>
+  tool({
+    description:
+      'Busque o histórico relacionado a um conjunto de tópicos antes de responder. Use no máximo uma vez por mensagem.',
+    inputSchema: z.object({
+      topics: z.array(z.string()),
+    }),
+    execute: ({ topics }) => resolveHistoryContext({ topics }),
+  })
+
+const chunkText = (text: string): string[] => {
+  const chunks = text.match(/\S+\s*/g)
+  return chunks ?? (text.length > 0 ? [text] : [])
+}
+
 export class GeminiAgentProviderService implements AgentService {
   streamReply(payload: StreamReplyPayload): AgentStreamResult {
-    const result = streamText({
-      model,
-      system: BEN_SYSTEM_PROMPT,
-      prompt: payload.message,
-      onFinish: ({ text }) => payload.onFinish?.({ text }),
+    const stream = createUIMessageStream<BenUIMessage>({
+      execute: async ({ writer }) => {
+        const result = await generateText({
+          model,
+          system: buildSystemPrompt(payload.topicIndex),
+          prompt: payload.message,
+          tools: {
+            'get-history-context': buildHistoryContextTool(
+              payload.resolveHistoryContext,
+            ),
+          },
+          toolChoice: 'auto',
+          stopWhen: stepCountIs(2),
+          output: Output.object({ schema: agentReplySchema }),
+        })
+
+        const reply: AgentReply = result.output
+
+        const textId = generateId()
+        writer.write({ type: 'text-start', id: textId })
+        for (const chunk of chunkText(reply.message)) {
+          writer.write({ type: 'text-delta', id: textId, delta: chunk })
+        }
+        writer.write({ type: 'text-end', id: textId })
+
+        writer.write({ type: 'data-reminders', data: reply.newReminders })
+        writer.write({ type: 'data-notes', data: reply.newNotes })
+        writer.write({ type: 'data-tasks', data: reply.newTasks })
+        writer.write({ type: 'data-topics', data: reply.historyTopics })
+
+        await payload.onFinish?.(reply)
+      },
     })
 
     return {
       pipeUIMessageStreamToResponse: (res) =>
-        result.pipeUIMessageStreamToResponse(res),
+        pipeUIMessageStreamToResponse({ response: res, stream }),
     }
   }
 }
