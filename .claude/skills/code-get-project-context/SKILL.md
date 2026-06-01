@@ -60,19 +60,20 @@ It shares the same stack as `project-design` but is a completely separate projec
 
 - `src/domain/entities/` — Concrete domain entities (e.g. `user.ts`)
 - `src/domain/use-cases/` — Application use cases (e.g. `auth/`)
-- `src/adapters/` — Ports and adapter implementations (e.g. auth provider, JWT, repositories)
+- `src/adapters/` — Ports and adapter implementations (e.g. auth provider, JWT, repositories, transcription provider)
 - `src/infra/http/` — Express app, server entry point, routes, middlewares, presenters, and error handler
-- `src/infra/services/` — Infrastructure services (env validation via Zod, Firebase auth provider, JWT)
+- `src/infra/services/` — Infrastructure services (env validation via Zod, Firebase auth provider, JWT, AssemblyAI transcription provider)
 - `src/modules/domain/` — Domain primitives: base `Entity`, `AggregateRoot`, `ValueObject`, `Repository`, `UseCase`, domain errors, query helpers
 
 ### Stack
 
-Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · `tsx` (dev runner)
+Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · AssemblyAI (audio transcription) · `tsx` (dev runner)
 
 ---
 
 ## Source of truth documents
 
 - [`docs/design.md`](../../../docs/design.md) — full design system: color palette, typography, spacing, brand voice, component descriptions.
+- [`docs/assemblyai-transcription.md`](../../../docs/assemblyai-transcription.md) — reference for the AssemblyAI audio transcription integration.
 
 For deeper context on conventions, workflows, and design rules, use the [`context-get-project-design-context`](../context-get-project-design-context/SKILL.md) skill.
