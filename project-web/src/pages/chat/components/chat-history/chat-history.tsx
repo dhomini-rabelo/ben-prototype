@@ -6,12 +6,19 @@ import {
 } from "../../utils/chat-messages";
 import { CaptureCard } from "../capture-card/capture-card";
 import { MessageBubble } from "../message-bubble/message-bubble";
+import { RetryFooter } from "../message-footers/retry-footer";
+import { TranscribingFooter } from "../message-footers/transcribing-footer";
 import { TypingIndicator } from "../typing-indicator";
+
+type VoiceBubble =
+  | { status: "transcribing"; onCancel?: () => void }
+  | { status: "error"; onRetry?: () => void };
 
 type ChatHistoryProps = {
   messages: BenUiMessage[];
   isAwaitingReply: boolean;
   isFetchingOlder: boolean;
+  voiceBubble?: VoiceBubble;
   bottomRef: RefObject<HTMLDivElement | null>;
   topRef: RefObject<HTMLDivElement | null>;
 };
@@ -20,6 +27,7 @@ export function ChatHistory({
   messages,
   isAwaitingReply,
   isFetchingOlder,
+  voiceBubble,
   bottomRef,
   topRef,
 }: ChatHistoryProps) {
@@ -46,6 +54,26 @@ export function ChatHistory({
           </MessageBubble>
         );
       })}
+
+      {voiceBubble?.status === "transcribing" && (
+        <MessageBubble
+          from="user"
+          state="pending"
+          footer={<TranscribingFooter onCancel={voiceBubble.onCancel} />}
+        >
+          <span className="italic text-on-primary/70">…</span>
+        </MessageBubble>
+      )}
+
+      {voiceBubble?.status === "error" && (
+        <MessageBubble
+          from="user"
+          state="error"
+          footer={<RetryFooter onRetry={voiceBubble.onRetry} />}
+        >
+          couldn't catch that — tap to retry or type it instead
+        </MessageBubble>
+      )}
 
       {isAwaitingReply && (
         <div className="flex w-full justify-start">

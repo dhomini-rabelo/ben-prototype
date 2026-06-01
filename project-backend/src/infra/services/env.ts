@@ -18,6 +18,7 @@ const envSchema = z.object({
   JWT_PRIVATE_KEY: z.string(),
   JWT_EXPIRATION_TIME_IN_SECONDS: z.coerce.number(),
   GOOGLE_GENERATIVE_AI_API_KEY: z.string(),
+  ASSEMBLYAI_API_KEY: z.string(),
 })
 
 const schema = envSchema.safeParse(process.env)

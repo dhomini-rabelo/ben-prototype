@@ -8,4 +8,7 @@ export const API_ROUTES = {
   chat: {
     send: "/chat",
   },
+  transcription: {
+    create: "/transcription",
+  },
 } as const;

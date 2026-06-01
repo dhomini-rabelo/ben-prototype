@@ -8,6 +8,8 @@ type ChatInputProps = {
   mode?: "idle" | "composing" | "disabled" | "sending-disabled";
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   onSend?: () => void;
+  onStartRecording?: () => void;
+  canRecord?: boolean;
   className?: string;
 };
 
@@ -17,6 +19,8 @@ export function ChatInput({
   mode = "idle",
   onChange,
   onSend,
+  onStartRecording,
+  canRecord = true,
   className,
 }: ChatInputProps) {
   const hasText = mode === "composing" || value.length > 0;
@@ -69,8 +73,9 @@ export function ChatInput({
       ) : (
         <button
           type="button"
-          aria-label="Voice input (press and hold)"
-          disabled={disabled || mode === "sending-disabled"}
+          aria-label="Voice input"
+          onClick={onStartRecording}
+          disabled={disabled || mode === "sending-disabled" || !canRecord}
           className="ml-2 flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary transition-colors hover:bg-inverse-surface disabled:opacity-60"
         >
           <Mic className="size-5" />
