@@ -49,7 +49,12 @@ export function ChatHistory({
           <MessageBubble key={message.id} from={isBen ? "ben" : "user"}>
             {text}
             {isBen && capture && (
-              <CaptureCard kind={capture.kind} title={text} />
+              <CaptureCard
+                kind={capture.kind}
+                title={capture.title}
+                meta={capture.meta ?? undefined}
+                state="default"
+              />
             )}
           </MessageBubble>
         );

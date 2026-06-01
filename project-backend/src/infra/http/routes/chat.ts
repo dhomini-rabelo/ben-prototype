@@ -1,3 +1,4 @@
+import { PersistCapturesUseCase } from '@/domain/use-cases/captures/persist-captures'
 import { PersistBenMessageUseCase } from '@/domain/use-cases/messages/persist-ben-message'
 import { PersistUserMessageUseCase } from '@/domain/use-cases/messages/persist-user-message'
 import { BuildTopicIndexUseCase } from '@/domain/use-cases/topics/build-topic-index'
@@ -5,6 +6,9 @@ import { GetHistoryContextUseCase } from '@/domain/use-cases/topics/get-history-
 import { PersistTopicSummariesUseCase } from '@/domain/use-cases/topics/persist-topic-summaries'
 import {
   messageRepository,
+  noteRepository,
+  reminderRepository,
+  taskRepository,
   topicRepository,
   topicSummaryRepository,
 } from '@/infra/http/repositories'
@@ -42,6 +46,11 @@ const getHistoryContextUseCase = new GetHistoryContextUseCase(
 const persistTopicSummariesUseCase = new PersistTopicSummariesUseCase(
   topicRepository,
   topicSummaryRepository,
+)
+const persistCapturesUseCase = new PersistCapturesUseCase(
+  noteRepository,
+  reminderRepository,
+  taskRepository,
 )
 
 function extractLatestUserMessageText(
@@ -91,9 +100,21 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
         getHistoryContextUseCase.execute({ userId: req.userId, topics }),
     })
 
+    const captureViews = await persistCapturesUseCase.execute({
+      userId: req.userId,
+      newReminders: reply.newReminders,
+      newNotes: reply.newNotes,
+      newTasks: reply.newTasks,
+    })
+
+    const primaryCapture = captureViews[0] ?? null
+
     const benMessage = await persistBenMessageUseCase.execute({
       userId: req.userId,
       content: reply.message,
+      capture: primaryCapture
+        ? { kind: primaryCapture.kind, itemId: primaryCapture.itemId }
+        : null,
     })
 
     await persistTopicSummariesUseCase.execute({
@@ -102,7 +123,9 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       messageId: benMessage.id.toValue(),
     })
 
-    return res.status(HttpStatus.OK).json(AgentReplyPresenter.toHttp(reply))
+    return res
+      .status(HttpStatus.OK)
+      .json(AgentReplyPresenter.toHttp(reply, primaryCapture))
   } catch (err) {
     next(err)
   }

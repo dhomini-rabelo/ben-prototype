@@ -5,6 +5,8 @@ export type CaptureKind = "note" | "reminder" | "task";
 export interface MessageCapture {
   kind: CaptureKind;
   itemId: string;
+  title: string;
+  meta?: string | null;
 }
 
 export interface Message {

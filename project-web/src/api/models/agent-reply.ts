@@ -1,3 +1,5 @@
+import type { MessageCapture } from "./message";
+
 export interface ReminderDraft {
   title: string;
   remindAt?: string;
@@ -19,10 +21,13 @@ export interface HistoryTopic {
   summary: string;
 }
 
+export type CaptureView = MessageCapture;
+
 export interface AgentReply {
   message: string;
   newReminders: ReminderDraft[];
   newNotes: NoteDraft[];
   newTasks: TaskDraft[];
   historyTopics: HistoryTopic[];
+  capture: CaptureView | null;
 }

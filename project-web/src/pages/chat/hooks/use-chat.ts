@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { sendChatMessage } from "../../../api/chat";
+import type { CaptureView } from "../../../api/models/agent-reply";
 import type { Message } from "../../../api/models/message";
 import { API_ROUTES } from "../../../api/routes";
 import { transcribeAudio } from "../../../api/transcription";
@@ -26,11 +27,15 @@ function buildUserMessage(text: string): BenUiMessage {
   };
 }
 
-function buildBenMessage(text: string): BenUiMessage {
+function buildBenMessage(
+  text: string,
+  capture?: CaptureView | null,
+): BenUiMessage {
   return {
     id: crypto.randomUUID(),
     role: "assistant",
     parts: [{ type: "text", text }],
+    metadata: capture ? { capture } : undefined,
   };
 }
 
@@ -126,7 +131,7 @@ export function useChat() {
 
     try {
       const reply = await sendChatMessage(trimmed);
-      const benMessage = buildBenMessage("");
+      const benMessage = buildBenMessage("", reply.capture);
       setSessionMessages((current) => [...current, benMessage]);
       animateBenReply(benMessage.id, reply.message);
     } catch {
