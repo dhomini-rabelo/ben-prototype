@@ -11,6 +11,8 @@ import { ChatHistorySkeleton } from "./components/chat-history/chat-history-skel
 import { ChatInput } from "./components/chat-input/chat-input";
 import { ChatShell } from "./components/chat-shell/chat-shell";
 import { RecordingBar } from "./components/recording-bar/recording-bar";
+import { ActiveTaskPicker } from "./components/task-picker/active-task-picker";
+import { buildTaskWorkspacePath } from "../../core/routes";
 import { useChat } from "./hooks/use-chat";
 
 export function Chat() {
@@ -90,6 +92,7 @@ export function Chat() {
   return (
     <ChatShell
       topBanner={renderTopBanner()}
+      peek={!isRecording ? <ActiveTaskPicker /> : undefined}
       footer={renderFooter()}
       bodyClassName={chat.isEmpty ? "px-6" : undefined}
     >
@@ -111,6 +114,7 @@ export function Chat() {
           }
           bottomRef={chat.bottomRef}
           topRef={chat.topRef}
+          onOpenTask={(taskId) => navigate(buildTaskWorkspacePath(taskId))}
         />
       )}
     </ChatShell>

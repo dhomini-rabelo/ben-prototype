@@ -3,6 +3,7 @@ import { NoteRepository } from '@/adapters/repositories/note-repository'
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { NoteDraft, ReminderDraft, TaskDraft } from '@/adapters/agent-provider'
+import { ID } from '@/modules/domain/entity/id'
 import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
@@ -43,11 +44,29 @@ export class PersistCapturesUseCase implements UseCase<CaptureView[]> {
     }
 
     for (const draft of payload.newTasks) {
+      const todoItems =
+        draft.contentType === 'todo'
+          ? (draft.todoItems ?? []).map((title, index) => ({
+              id: new ID().toValue(),
+              title,
+              done: false,
+              order: index,
+            }))
+          : null
+
       const task = await this.taskRepository.create({
         userId: payload.userId,
+        messageId: null,
         title: draft.title,
-        details: draft.details ?? null,
-        status: 'pending',
+        contentType: draft.contentType,
+        textContent:
+          draft.contentType === 'text' ? (draft.textContent ?? '') : null,
+        todoItems,
+        pendingDiff: null,
+        summary: '',
+        status: 'created',
+        lastActivityAt: now,
+        finishedAt: null,
         createdAt: now,
       })
       taskViews.push({

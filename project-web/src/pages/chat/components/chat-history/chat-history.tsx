@@ -21,6 +21,7 @@ type ChatHistoryProps = {
   voiceBubble?: VoiceBubble;
   bottomRef: RefObject<HTMLDivElement | null>;
   topRef: RefObject<HTMLDivElement | null>;
+  onOpenTask?: (taskId: string) => void;
 };
 
 export function ChatHistory({
@@ -30,6 +31,7 @@ export function ChatHistory({
   voiceBubble,
   bottomRef,
   topRef,
+  onOpenTask,
 }: ChatHistoryProps) {
   return (
     <section className="flex flex-1 flex-col justify-end gap-4 pt-2">
@@ -54,6 +56,11 @@ export function ChatHistory({
                 title={capture.title}
                 meta={capture.meta ?? undefined}
                 state="default"
+                onAction={
+                  capture.kind === "task"
+                    ? () => onOpenTask?.(capture.itemId)
+                    : undefined
+                }
               />
             )}
           </MessageBubble>

@@ -3,6 +3,17 @@ import { errorHandler } from '@/infra/http/middlewares/error-handler'
 import { loginOrRegister } from '@/infra/http/routes/auth'
 import { chat } from '@/infra/http/routes/chat'
 import { listMessages } from '@/infra/http/routes/messages'
+import {
+  approveTaskDiff,
+  createTaskMessage,
+  finishTask,
+  getTaskDetail,
+  listTasks,
+  rejectTaskDiff,
+  reopenTask,
+  updateTaskContent,
+  updateTaskTodos,
+} from '@/infra/http/routes/tasks'
 import { transcription } from '@/infra/http/routes/transcription'
 import { HttpStatus } from '@/modules/utils/http'
 import cors from 'cors'
@@ -39,6 +50,16 @@ app.post(
   upload.single('audio'),
   transcription,
 )
+
+app.get('/tasks/list', authMiddleware, listTasks)
+app.get('/tasks/:id/detail', authMiddleware, getTaskDetail)
+app.post('/tasks/:id/messages/create', authMiddleware, createTaskMessage)
+app.post('/tasks/:id/diff/approve', authMiddleware, approveTaskDiff)
+app.post('/tasks/:id/diff/reject', authMiddleware, rejectTaskDiff)
+app.post('/tasks/:id/content/update', authMiddleware, updateTaskContent)
+app.post('/tasks/:id/todos/update', authMiddleware, updateTaskTodos)
+app.post('/tasks/:id/finish', authMiddleware, finishTask)
+app.post('/tasks/:id/reopen', authMiddleware, reopenTask)
 
 app.use(errorHandler)
 

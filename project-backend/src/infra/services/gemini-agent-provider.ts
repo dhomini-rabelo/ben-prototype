@@ -2,7 +2,9 @@ import {
   AgentReply,
   AgentService,
   GenerateReplyPayload,
+  GenerateTaskTurnPayload,
   ResolveHistoryContext,
+  TaskTurnReply,
   TopicKey,
 } from '@/adapters/agent-provider'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
@@ -47,7 +49,9 @@ const noteDraftSchema = z.object({
 
 const taskDraftSchema = z.object({
   title: z.string(),
-  details: z.string().optional(),
+  contentType: z.enum(['text', 'todo']),
+  textContent: z.string().optional(),
+  todoItems: z.array(z.string()).optional(),
 })
 
 const historyTopicSchema = z.object({
@@ -81,6 +85,7 @@ const buildSystemPrompt = (topicIndex: TopicKey[]): string => {
     'Você PODE chamar a ferramenta `get-history-context` UMA ÚNICA VEZ antes de responder, passando os tópicos sobre os quais você precisa de mais contexto. Analise a mensagem do usuário para decidir quais tópicos buscar.',
     'Preencha `historyTopics` com os tópicos relacionados a este turno, cada um com um resumo curto.',
     'Proponha `newReminders`, `newNotes` e `newTasks` somente quando a mensagem do usuário pedir ou implicar claramente esses itens; caso contrário, deixe-os como listas vazias.',
+    'Para cada item em `newTasks` defina `contentType`: use `todo` quando a intenção for uma lista de itens (preencha `todoItems` com os títulos) e `text` quando for um rascunho/texto corrido (preencha `textContent`, pode ser vazio).',
     'O campo `message` é a resposta em linguagem natural para o usuário, seguindo a sua persona.',
   ].join('\n')
 
@@ -99,6 +104,67 @@ const buildHistoryContextTool = (
     execute: ({ topics }) => resolveHistoryContext({ topics }),
   })
 
+const proposedTodoItemSchema = z.object({
+  id: z.string().optional(),
+  title: z.string(),
+  done: z.boolean(),
+  order: z.number(),
+  diff: z.enum(['added', 'removed', 'unchanged']),
+})
+
+const proposedTaskChangesSchema = z.union([
+  z.object({
+    contentType: z.literal('text'),
+    after: z.string(),
+  }),
+  z.object({
+    contentType: z.literal('todo'),
+    items: z.array(proposedTodoItemSchema),
+  }),
+])
+
+const taskTurnReplySchema = z.object({
+  message: z.string(),
+  proposedChanges: proposedTaskChangesSchema.nullable(),
+  updatedSummary: z.string(),
+})
+
+const buildTaskTurnSystemPrompt = (
+  payload: GenerateTaskTurnPayload,
+): string => {
+  const renderedContent =
+    payload.contentType === 'todo'
+      ? (payload.todoItems ?? [])
+          .map(
+            (item) => `- [${item.done ? 'x' : ' '}] (${item.id}) ${item.title}`,
+          )
+          .join('\n') || '(lista vazia)'
+      : payload.textContent || '(sem conteúdo ainda)'
+
+  const taskSection = [
+    '',
+    '',
+    '# Workspace de task',
+    'Você está colaborando com o usuário dentro de uma task focada.',
+    `Título da task: ${payload.title}`,
+    `Tipo de conteúdo: ${payload.contentType}`,
+    'Conteúdo atual:',
+    renderedContent,
+    '',
+    '# Resumo da conversa desta task',
+    payload.summary || '(ainda não há resumo)',
+    '',
+    '# Como responder',
+    'O campo `message` é a sua resposta curta para o usuário, na sua persona.',
+    'Preencha `proposedChanges` somente quando o usuário pedir ou implicar uma edição no conteúdo; caso contrário, use `null`.',
+    'Quando `contentType` for `text`, `proposedChanges` deve ter `contentType: "text"` e `after` com o texto completo proposto.',
+    'Quando `contentType` for `todo`, `proposedChanges` deve ter `contentType: "todo"` e `items` com a lista completa resultante: reaproveite o `id` dos itens existentes, marque `diff: "unchanged"` nos mantidos, `diff: "removed"` nos que devem sair (mantenha o `id`) e `diff: "added"` nos novos (sem `id`). Use `order` sequencial.',
+    'Atualize `updatedSummary` com um resumo curto e completo da conversa da task até aqui, incorporando este turno.',
+  ].join('\n')
+
+  return `${BEN_SYSTEM_PROMPT}${taskSection}`
+}
+
 export class GeminiAgentProviderService implements AgentService {
   async generateReply(payload: GenerateReplyPayload): Promise<AgentReply> {
     const result = await generateText({
@@ -113,6 +179,19 @@ export class GeminiAgentProviderService implements AgentService {
       toolChoice: 'auto',
       stopWhen: stepCountIs(2),
       output: Output.object({ schema: agentReplySchema }),
+    })
+
+    return result.output
+  }
+
+  async generateTaskTurn(
+    payload: GenerateTaskTurnPayload,
+  ): Promise<TaskTurnReply> {
+    const result = await generateText({
+      model,
+      system: buildTaskTurnSystemPrompt(payload),
+      prompt: payload.message,
+      output: Output.object({ schema: taskTurnReplySchema }),
     })
 
     return result.output
