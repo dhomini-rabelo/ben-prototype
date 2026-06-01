@@ -39,7 +39,7 @@ Vite 8 · React 19 · react-router v7 · Tailwind CSS v4 · `lucide-react`
 
 ## project-web
 
-**Purpose:** The real web implementation of Ben — routing and Google/Firebase authentication are wired up, and it now consumes the `project-backend` API to drive working feature screens.
+**Purpose:** The real web implementation of Ben — routing and Google/Firebase authentication are wired up, and it consumes the `project-backend` API to drive working feature screens, including a working chat experience with the Ben agent.
 
 ### Key directories
 
@@ -58,22 +58,26 @@ It shares the same stack as `project-design` but is a completely separate projec
 
 ### Key directories
 
-- `src/domain/entities/` — Concrete domain entities (e.g. `user.ts`)
-- `src/domain/use-cases/` — Application use cases (e.g. `auth/`)
-- `src/adapters/` — Ports and adapter implementations (e.g. auth provider, JWT, repositories, transcription provider)
+- `src/domain/entities/` — Concrete domain entities (e.g. `user`, `message`, `topic`, `topic-summary`)
+- `src/domain/use-cases/` — Application use cases (`auth/`, `messages/`, `topics/`, `transcription/`)
+- `src/adapters/` — Ports and adapter implementations (auth provider, JWT, agent provider, transcription provider, in-memory repositories)
 - `src/infra/http/` — Express app, server entry point, routes, middlewares, presenters, and error handler
-- `src/infra/services/` — Infrastructure services (env validation via Zod, Firebase auth provider, JWT, AssemblyAI transcription provider)
+- `src/infra/services/` — Infrastructure services (env validation via Zod, Firebase auth provider, JWT, AssemblyAI transcription provider, Gemini agent provider)
 - `src/modules/domain/` — Domain primitives: base `Entity`, `AggregateRoot`, `ValueObject`, `Repository`, `UseCase`, domain errors, query helpers
 
 ### Stack
 
-Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · AssemblyAI (audio transcription) · `tsx` (dev runner)
+Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · AssemblyAI (audio transcription) · Vercel AI SDK + Google Gemini (Ben agent) · multer (uploads) · `tsx` (dev runner)
 
 ---
 
 ## Source of truth documents
 
 - [`docs/design.md`](../../../docs/design.md) — full design system: color palette, typography, spacing, brand voice, component descriptions.
+- [`docs/data-model.md`](../../../docs/data-model.md) — domain data model for Ben.
+- [`docs/api-endpoints.md`](../../../docs/api-endpoints.md) — backend API endpoint reference.
 - [`docs/assemblyai-transcription.md`](../../../docs/assemblyai-transcription.md) — reference for the AssemblyAI audio transcription integration.
+- [`docs/vercel-ai-sdk.md`](../../../docs/vercel-ai-sdk.md) — reference for the Vercel AI SDK + Gemini agent integration.
+- [`docs/google-auth.md`](../../../docs/google-auth.md) — reference for the Google/Firebase authentication flow.
 
 For deeper context on conventions, workflows, and design rules, use the [`context-get-project-design-context`](../context-get-project-design-context/SKILL.md) skill.
