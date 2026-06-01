@@ -31,9 +31,9 @@ The flow has seven stages:
 All plan files live under a single task folder. Use **two-digit, zero-padded** indexes (`01`, `02`, ...) and **kebab-case** names that describe the action.
 
 ```
-.claude/current-tasks/{task-name}/plans/
+.claude/current-tasks/{task-name}/
   {index}-{plan-name}/
-    briefing.md                          ← Stage 1: the high-level brief for this plan
+    start-briefing.md                    ← Stage 1: the high-level brief for this plan
     briefing/
       {plan-index}-{plan-name}.md        ← Stage 3: the simple plan (task-simple-plan-lvl1)
     {plan-index}-{plan-name}.md          ← Stage 5: the deep plan (Claude Code plan structure)
@@ -54,7 +54,7 @@ All plan files live under a single task folder. Use **two-digit, zero-padded** i
 4. Sequence dependent plans by giving them **increasing plan numbers** (lower numbers run first).
 5. Ensure plans that run in parallel **never touch the same files**. When parallel work produces pieces that must be combined (e.g. new routes), add a final **synchronous plan** with a higher number whose only job is to merge them.
 6. Under each plan line, add a bullet with the **justification** for why it runs synchronously or in parallel (which plans it depends on, and which files it owns).
-7. Save each plan's brief to its own folder at `.claude/current-tasks/{task-name}/plans/{index}-{plan-name}/briefing.md`. The brief contains the plan line (number, side, parallel/sync) and a short paragraph describing its goal and the files it owns.
+7. Save each plan's brief to its own folder at `.claude/current-tasks/{task-name}/{index}-{plan-name}/start-briefing.md`. The brief contains the plan line (number, side, parallel/sync) and a short paragraph describing its goal and the files it owns.
 
 #### Plan format
 
@@ -92,11 +92,11 @@ All plan files live under a single task folder. Use **two-digit, zero-padded** i
 
 ### Stage 3 — Detail each plan as a simple plan
 
-1. For each plan, spawn a **sub-agent** to produce its **simple plan** using `.claude/skills/task-simple-plan-lvl1/SKILL.md`. Give the sub-agent the plan's `briefing.md` as input.
+1. For each plan, spawn a **sub-agent** to produce its **simple plan** using `.claude/skills/task-simple-plan-lvl1/SKILL.md`. Give the sub-agent the plan's `start-briefing.md` as input.
 2. Run sub-agents according to the plan numbers:
    - Plans with the **same number** run **in parallel** (one sub-agent each, launched together).
    - Plans with **higher numbers** run **after** lower-numbered plans finish.
-3. Each sub-agent saves its simple plan at `.claude/current-tasks/{task-name}/plans/{index}-{plan-name}/briefing/{plan-index}-{plan-name}.md`.
+3. Each sub-agent saves its simple plan at `.claude/current-tasks/{task-name}/{index}-{plan-name}/briefing/{plan-index}-{plan-name}.md`.
 4. After each simple plan is produced, ask the user to approve it with the `AskUserQuestion` tool before moving on.
 5. Do **not** start a dependent (higher-numbered) plan until the plans it depends on are approved.
 
@@ -109,9 +109,9 @@ All plan files live under a single task folder. Use **two-digit, zero-padded** i
 
 ### Stage 5 — Create the deep plans with sub-agents
 
-1. For each plan, spawn a **sub-agent** to produce its **deep plan**, passing the prompt below with the plan's specification (its `briefing.md` and the approved simple plan from Stage 3).
+1. For each plan, spawn a **sub-agent** to produce its **deep plan**, passing the prompt below with the plan's specification (its `start-briefing.md` and the approved simple plan from Stage 3).
 2. Run sub-agents according to the plan numbers (same number → parallel, higher number → after).
-3. Each sub-agent saves its deep plan at `.claude/current-tasks/{task-name}/plans/{index}-{plan-name}/{plan-index}-{plan-name}.md`.
+3. Each sub-agent saves its deep plan at `.claude/current-tasks/{task-name}/{index}-{plan-name}/{plan-index}-{plan-name}.md`.
 4. After each deep plan is produced, ask the user to approve it with the `AskUserQuestion` tool before moving on.
 5. Do **not** start a dependent (higher-numbered) plan until the plans it depends on are approved.
 
