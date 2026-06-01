@@ -1,9 +1,3 @@
-import { Response } from 'express'
-
-export interface AgentStreamResult {
-  pipeUIMessageStreamToResponse(res: Response): void
-}
-
 /**
  * Identifies a recurring subject for a user.
  * Documented shape: `kind:category:slug` (e.g. `reminder:work:meeting`).
@@ -43,14 +37,13 @@ export type AgentReply = {
   historyTopics: Array<{ topic: TopicKey; summary: string }>
 }
 
-export type StreamReplyPayload = {
+export type GenerateReplyPayload = {
   userId: string
   message: string
   topicIndex: TopicKey[]
   resolveHistoryContext: ResolveHistoryContext
-  onFinish?: (reply: AgentReply) => void | Promise<void>
 }
 
 export interface AgentService {
-  streamReply(payload: StreamReplyPayload): AgentStreamResult
+  generateReply(payload: GenerateReplyPayload): Promise<AgentReply>
 }

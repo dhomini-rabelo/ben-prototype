@@ -1,22 +1,12 @@
 import {
   AgentReply,
   AgentService,
-  AgentStreamResult,
+  GenerateReplyPayload,
   ResolveHistoryContext,
-  StreamReplyPayload,
   TopicKey,
 } from '@/adapters/agent-provider'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
-import {
-  createUIMessageStream,
-  generateId,
-  generateText,
-  Output,
-  pipeUIMessageStreamToResponse,
-  stepCountIs,
-  tool,
-  UIMessage,
-} from 'ai'
+import { generateText, Output, stepCountIs, tool } from 'ai'
 import { z } from 'zod'
 import { env } from './env'
 
@@ -73,15 +63,6 @@ const agentReplySchema = z.object({
   historyTopics: z.array(historyTopicSchema),
 })
 
-type BenDataParts = {
-  reminders: AgentReply['newReminders']
-  notes: AgentReply['newNotes']
-  tasks: AgentReply['newTasks']
-  topics: AgentReply['historyTopics']
-}
-
-type BenUIMessage = UIMessage<unknown, BenDataParts>
-
 const buildSystemPrompt = (topicIndex: TopicKey[]): string => {
   const renderedIndex =
     topicIndex.length > 0
@@ -118,50 +99,22 @@ const buildHistoryContextTool = (
     execute: ({ topics }) => resolveHistoryContext({ topics }),
   })
 
-const chunkText = (text: string): string[] => {
-  const chunks = text.match(/\S+\s*/g)
-  return chunks ?? (text.length > 0 ? [text] : [])
-}
-
 export class GeminiAgentProviderService implements AgentService {
-  streamReply(payload: StreamReplyPayload): AgentStreamResult {
-    const stream = createUIMessageStream<BenUIMessage>({
-      execute: async ({ writer }) => {
-        const result = await generateText({
-          model,
-          system: buildSystemPrompt(payload.topicIndex),
-          prompt: payload.message,
-          tools: {
-            'get-history-context': buildHistoryContextTool(
-              payload.resolveHistoryContext,
-            ),
-          },
-          toolChoice: 'auto',
-          stopWhen: stepCountIs(2),
-          output: Output.object({ schema: agentReplySchema }),
-        })
-
-        const reply: AgentReply = result.output
-
-        const textId = generateId()
-        writer.write({ type: 'text-start', id: textId })
-        for (const chunk of chunkText(reply.message)) {
-          writer.write({ type: 'text-delta', id: textId, delta: chunk })
-        }
-        writer.write({ type: 'text-end', id: textId })
-
-        writer.write({ type: 'data-reminders', data: reply.newReminders })
-        writer.write({ type: 'data-notes', data: reply.newNotes })
-        writer.write({ type: 'data-tasks', data: reply.newTasks })
-        writer.write({ type: 'data-topics', data: reply.historyTopics })
-
-        await payload.onFinish?.(reply)
+  async generateReply(payload: GenerateReplyPayload): Promise<AgentReply> {
+    const result = await generateText({
+      model,
+      system: buildSystemPrompt(payload.topicIndex),
+      prompt: payload.message,
+      tools: {
+        'get-history-context': buildHistoryContextTool(
+          payload.resolveHistoryContext,
+        ),
       },
+      toolChoice: 'auto',
+      stopWhen: stepCountIs(2),
+      output: Output.object({ schema: agentReplySchema }),
     })
 
-    return {
-      pipeUIMessageStreamToResponse: (res) =>
-        pipeUIMessageStreamToResponse({ response: res, stream }),
-    }
+    return result.output
   }
 }

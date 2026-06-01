@@ -8,6 +8,7 @@ import {
   topicRepository,
   topicSummaryRepository,
 } from '@/infra/http/repositories'
+import { AgentReplyPresenter } from '@/infra/http/presenters/agent-reply-presenter'
 import { GeminiAgentProviderService } from '@/infra/services/gemini-agent-provider'
 import { HttpStatus } from '@/modules/utils/http'
 import { NextFunction, Request, Response } from 'express'
@@ -82,27 +83,26 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       userId: req.userId,
     })
 
-    const result = agentService.streamReply({
+    const reply = await agentService.generateReply({
       userId: req.userId,
       message,
       topicIndex,
       resolveHistoryContext: ({ topics }) =>
         getHistoryContextUseCase.execute({ userId: req.userId, topics }),
-      onFinish: async (reply) => {
-        const benMessage = await persistBenMessageUseCase.execute({
-          userId: req.userId,
-          content: reply.message,
-        })
-
-        await persistTopicSummariesUseCase.execute({
-          userId: req.userId,
-          topics: reply.historyTopics,
-          messageId: benMessage.id.toValue(),
-        })
-      },
     })
 
-    result.pipeUIMessageStreamToResponse(res)
+    const benMessage = await persistBenMessageUseCase.execute({
+      userId: req.userId,
+      content: reply.message,
+    })
+
+    await persistTopicSummariesUseCase.execute({
+      userId: req.userId,
+      topics: reply.historyTopics,
+      messageId: benMessage.id.toValue(),
+    })
+
+    return res.status(HttpStatus.OK).json(AgentReplyPresenter.toHttp(reply))
   } catch (err) {
     next(err)
   }

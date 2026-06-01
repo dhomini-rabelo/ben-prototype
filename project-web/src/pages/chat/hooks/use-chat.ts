@@ -1,8 +1,5 @@
-import { useChat as useAiChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
-import Cookies from "js-cookie";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { BASE_URL, JWT_COOKIE, PROVIDER_COOKIE } from "../../../api/client";
+import { useEffect, useRef, useState } from "react";
+import { sendChatMessage } from "../../../api/chat";
 import type { Message } from "../../../api/models/message";
 import { API_ROUTES } from "../../../api/routes";
 import { transcribeAudio } from "../../../api/transcription";
@@ -18,42 +15,40 @@ import { useMediaRecorder } from "./use-media-recorder";
 
 type VoiceStatus = "idle" | "recording" | "transcribing" | "error";
 
-function buildChatHeaders() {
+const TYPING_STEP_MS = 24;
+const TYPING_CHARS_PER_STEP = 3;
+
+function buildUserMessage(text: string): BenUiMessage {
   return {
-    "ngrok-skip-browser-warning": "true",
-    jwtauthenticationtoken: Cookies.get(JWT_COOKIE) ?? "",
-    providerauthenticationtoken: Cookies.get(PROVIDER_COOKIE) ?? "",
+    id: crypto.randomUUID(),
+    role: "user",
+    parts: [{ type: "text", text }],
+  };
+}
+
+function buildBenMessage(text: string): BenUiMessage {
+  return {
+    id: crypto.randomUUID(),
+    role: "assistant",
+    parts: [{ type: "text", text }],
   };
 }
 
 export function useChat() {
   const [draft, setDraft] = useState("");
+  const [sessionMessages, setSessionMessages] = useState<BenUiMessage[]>([]);
+  const [isAwaitingReply, setIsAwaitingReply] = useState(false);
+  const [sendError, setSendError] = useState(false);
   const [transcription, setTranscription] = useState<
     "idle" | "pending" | "error"
   >("idle");
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const transcriptionRunIdRef = useRef(0);
   const processedBlobRef = useRef<Blob | null>(null);
+  const typingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const recorder = useMediaRecorder();
   const { isOffline } = useConnectivity();
-
-  const transport = useMemo(
-    () =>
-      new DefaultChatTransport<BenUiMessage>({
-        api: `${BASE_URL}${API_ROUTES.chat.send}`,
-        headers: buildChatHeaders,
-      }),
-    [],
-  );
-
-  const {
-    messages: sessionMessages,
-    sendMessage,
-    status,
-  } = useAiChat<BenUiMessage>({
-    transport,
-  });
 
   const { actions: historyActions, state: historyState } =
     useAPICursorPaginated<Message>({
@@ -66,8 +61,6 @@ export function useChat() {
     onLoadMore: historyActions.fetchNextPage,
     itemCount: historyState.items.length,
   });
-
-  const isAwaitingReply = status === "submitted" || status === "streaming";
 
   const historyOldestFirst = [...historyState.items].reverse();
   const messages = [
@@ -88,20 +81,63 @@ export function useChat() {
     scrollToBottom();
   }, [lastMessageId, lastMessageLength, isAwaitingReply]);
 
+  function stopTyping() {
+    if (typingIntervalRef.current !== null) {
+      clearInterval(typingIntervalRef.current);
+      typingIntervalRef.current = null;
+    }
+  }
+
+  useEffect(() => stopTyping, []);
+
+  function animateBenReply(messageId: string, fullText: string) {
+    stopTyping();
+    let revealed = 0;
+    typingIntervalRef.current = setInterval(() => {
+      revealed = Math.min(revealed + TYPING_CHARS_PER_STEP, fullText.length);
+      const nextText = fullText.slice(0, revealed);
+      setSessionMessages((current) =>
+        current.map((message) =>
+          message.id === messageId
+            ? { ...message, parts: [{ type: "text", text: nextText }] }
+            : message,
+        ),
+      );
+      if (revealed >= fullText.length) {
+        stopTyping();
+      }
+    }, TYPING_STEP_MS);
+  }
+
   function handleDraftChange(value: string) {
     setDraft(value);
   }
 
-  function sendText(content: string) {
+  async function sendText(content: string) {
     const trimmed = content.trim();
     if (!trimmed || isAwaitingReply || isOffline) {
       return;
     }
-    sendMessage({ text: trimmed });
+
+    setSendError(false);
+    stopTyping();
+    setSessionMessages((current) => [...current, buildUserMessage(trimmed)]);
+    setIsAwaitingReply(true);
+
+    try {
+      const reply = await sendChatMessage(trimmed);
+      const benMessage = buildBenMessage("");
+      setSessionMessages((current) => [...current, benMessage]);
+      animateBenReply(benMessage.id, reply.message);
+    } catch {
+      setSendError(true);
+    } finally {
+      setIsAwaitingReply(false);
+    }
   }
 
   function handleSend() {
-    sendText(draft);
+    void sendText(draft);
     setDraft("");
   }
 
@@ -159,7 +195,7 @@ export function useChat() {
         if (transcriptionRunIdRef.current !== runId) {
           return;
         }
-        sendText(text);
+        void sendText(text);
         recorder.reset();
         setTranscription("idle");
       })
@@ -187,6 +223,7 @@ export function useChat() {
     messages,
     draft,
     isAwaitingReply,
+    sendError,
     isEmpty: !historyState.isLoading && messages.length === 0,
     isFetchingOlder: historyState.isFetchingNextPage,
     bottomRef,
