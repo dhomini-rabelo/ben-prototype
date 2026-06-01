@@ -58,8 +58,8 @@ It shares the same stack as `project-design` but is a completely separate projec
 
 ### Key directories
 
-- `src/domain/entities/` — Concrete domain entities (e.g. `user`, `message`, `topic`, `topic-summary`)
-- `src/domain/use-cases/` — Application use cases (`auth/`, `messages/`, `topics/`, `transcription/`)
+- `src/domain/entities/` — Concrete domain entities (e.g. `user`, `message`, `topic`, `topic-summary`, and the capture entities `note`, `reminder`, `task`)
+- `src/domain/use-cases/` — Application use cases (`auth/`, `messages/`, `topics/`, `transcription/`, `captures/`)
 - `src/adapters/` — Ports and adapter implementations (auth provider, JWT, agent provider, transcription provider, in-memory repositories)
 - `src/infra/http/` — Express app, server entry point, routes, middlewares, presenters, and error handler
 - `src/infra/services/` — Infrastructure services (env validation via Zod, Firebase auth provider, JWT, AssemblyAI transcription provider, Gemini agent provider)
