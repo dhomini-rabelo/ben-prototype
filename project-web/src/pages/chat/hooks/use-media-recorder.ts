@@ -19,12 +19,22 @@ function resolveMimeType(): string | undefined {
   return undefined;
 }
 
+interface MediaRecorderState {
+  permission: MicPermission;
+  isRecording: boolean;
+  elapsedSeconds: number;
+  audioBlob: Blob | null;
+  error: string | null;
+}
+
 export function useMediaRecorder() {
-  const [permission, setPermission] = useState<MicPermission>("prompt");
-  const [isRecording, setIsRecording] = useState(false);
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState<MediaRecorderState>({
+    permission: "prompt",
+    isRecording: false,
+    elapsedSeconds: 0,
+    audioBlob: null,
+    error: null,
+  });
 
   const recorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -46,9 +56,12 @@ export function useMediaRecorder() {
   }
 
   function reset() {
-    setAudioBlob(null);
-    setError(null);
-    setElapsedSeconds(0);
+    setState((previousState) => ({
+      ...previousState,
+      audioBlob: null,
+      error: null,
+      elapsedSeconds: 0,
+    }));
   }
 
   async function start() {
@@ -59,14 +72,17 @@ export function useMediaRecorder() {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (caughtError) {
       if (isPermissionDeniedError(caughtError)) {
-        setPermission("denied");
+        setState((previousState) => ({ ...previousState, permission: "denied" }));
       } else {
-        setError("Could not access the microphone.");
+        setState((previousState) => ({
+          ...previousState,
+          error: "Could not access the microphone.",
+        }));
       }
       return;
     }
 
-    setPermission("granted");
+    setState((previousState) => ({ ...previousState, permission: "granted" }));
     streamRef.current = stream;
     chunksRef.current = [];
 
@@ -84,17 +100,26 @@ export function useMediaRecorder() {
 
     recorder.onstop = () => {
       const blob = new Blob(chunksRef.current, { type: recorder.mimeType });
-      setAudioBlob(blob);
       clearTimer();
       releaseStream();
-      setIsRecording(false);
+      setState((previousState) => ({
+        ...previousState,
+        audioBlob: blob,
+        isRecording: false,
+      }));
     };
 
     recorder.start();
-    setIsRecording(true);
-    setElapsedSeconds(0);
+    setState((previousState) => ({
+      ...previousState,
+      isRecording: true,
+      elapsedSeconds: 0,
+    }));
     intervalRef.current = setInterval(() => {
-      setElapsedSeconds((current) => current + 1);
+      setState((previousState) => ({
+        ...previousState,
+        elapsedSeconds: previousState.elapsedSeconds + 1,
+      }));
     }, 1000);
   }
 
@@ -114,9 +139,12 @@ export function useMediaRecorder() {
     }
     clearTimer();
     releaseStream();
-    setIsRecording(false);
-    setElapsedSeconds(0);
-    setAudioBlob(null);
+    setState((previousState) => ({
+      ...previousState,
+      isRecording: false,
+      elapsedSeconds: 0,
+      audioBlob: null,
+    }));
   }
 
   useEffect(() => {
@@ -128,7 +156,8 @@ export function useMediaRecorder() {
 
     function handleChange() {
       if (permissionStatus) {
-        setPermission(permissionStatus.state as MicPermission);
+        const nextState = permissionStatus.state as MicPermission;
+        setState((previousState) => ({ ...previousState, permission: nextState }));
       }
     }
 
@@ -136,7 +165,10 @@ export function useMediaRecorder() {
       .query({ name: "microphone" as PermissionName })
       .then((status) => {
         permissionStatus = status;
-        setPermission(status.state as MicPermission);
+        setState((previousState) => ({
+          ...previousState,
+          permission: status.state as MicPermission,
+        }));
         status.addEventListener("change", handleChange);
       })
       .catch(() => undefined);
@@ -154,11 +186,11 @@ export function useMediaRecorder() {
   }, []);
 
   return {
-    permission,
-    isRecording,
-    elapsedSeconds,
-    audioBlob,
-    error,
+    permission: state.permission,
+    isRecording: state.isRecording,
+    elapsedSeconds: state.elapsedSeconds,
+    audioBlob: state.audioBlob,
+    error: state.error,
     start,
     stop,
     cancel,
