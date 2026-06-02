@@ -1,7 +1,7 @@
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { Task, TodoItem } from '@/domain/entities/task'
 import { loadOwnedTask } from '@/domain/utils/tasks'
-import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
+import { ensureTaskContentType } from '@/domain/validation/tasks'
 import { ItemResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
@@ -21,20 +21,11 @@ export class UpdateTaskTodosUseCase implements UseCase<ItemResponse<Task>> {
       payload.userId,
     )
 
-    this.ensureTaskHoldsTodoItems(task)
+    ensureTaskContentType(task, 'todo')
 
     const item = await this.applyTodoItems(task, payload.todoItems)
 
     return { item }
-  }
-
-  private ensureTaskHoldsTodoItems(task: Task): void {
-    if (task.props.contentType !== 'todo') {
-      throw new DomainError({
-        code: 'TASK_CONTENT_TYPE_MISMATCH',
-        errorType: DangerErrors.DATA_INTEGRITY,
-      })
-    }
   }
 
   private async applyTodoItems(

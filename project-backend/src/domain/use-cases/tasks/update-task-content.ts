@@ -1,7 +1,7 @@
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { Task } from '@/domain/entities/task'
 import { loadOwnedTask } from '@/domain/utils/tasks'
-import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
+import { ensureTaskContentType } from '@/domain/validation/tasks'
 import { ItemResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
@@ -21,20 +21,11 @@ export class UpdateTaskContentUseCase implements UseCase<ItemResponse<Task>> {
       payload.userId,
     )
 
-    this.ensureTaskHoldsTextContent(task)
+    ensureTaskContentType(task, 'text')
 
     const item = await this.applyTextContent(task, payload.textContent)
 
     return { item }
-  }
-
-  private ensureTaskHoldsTextContent(task: Task): void {
-    if (task.props.contentType !== 'text') {
-      throw new DomainError({
-        code: 'TASK_CONTENT_TYPE_MISMATCH',
-        errorType: DangerErrors.DATA_INTEGRITY,
-      })
-    }
   }
 
   private async applyTextContent(

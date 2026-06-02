@@ -4,22 +4,18 @@ How the `project-backend` domain layer is organized. **All file and folder names
 
 ## Folder layout
 
-The domain layer lives under `src/domain/` and is split into three siblings:
+The domain layer lives under `src/domain/` and is split into these siblings:
 
 ```
 src/domain/
-├── entities/        # concrete domain entities (user, message, task, ...)
-├── use-cases/       # application use cases, grouped by feature
-│   ├── auth/
-│   ├── captures/
-│   ├── messages/
-│   ├── tasks/
-│   ├── topics/
-│   └── transcription/
-├── utils/           # util functions shared by many use-cases
-│   ├── auth.ts
-│   └── tasks.ts
-└── validation/      # validation functions shared by many use-cases (none yet)
+├── entities/                  # concrete domain entities
+├── use-cases/                 # application use cases, grouped by feature
+│   └── {feature}/
+│       └── {use-case-name}.ts
+├── utils/                     # util functions shared by many use-cases
+│   └── {entity}.ts
+└── validation/                # validation functions shared by many use-cases
+    └── {entity}.ts
 ```
 
 ## use-cases/
@@ -49,7 +45,7 @@ export class ListMessagesUseCase implements UseCase<Response> {
 
 ## utils/
 
-`utils/` holds **util functions that are reused by many use-cases**. There is one file per subject (`utils/{subject}.ts`, e.g. `auth.ts`, `tasks.ts`), exporting plain functions — not classes.
+`utils/` holds **util functions that are reused by many use-cases**. There is one file per entity, named after it (`utils/{entity}.ts`, e.g. `tasks.ts`, `auth.ts`), exporting plain functions — not classes.
 
 Use this folder only when the helper is shared across multiple use-cases. Logic used by a single use-case stays inside that use-case file.
 
@@ -77,7 +73,7 @@ export async function loadOwnedTask(
 }
 ```
 
-Use-cases import these helpers with the `@/domain/utils/{subject}` alias:
+Use-cases import these helpers with the `@/domain/utils/{entity}` alias:
 
 ```ts
 import { loadOwnedTask } from '@/domain/utils/tasks'
@@ -85,6 +81,29 @@ import { loadOwnedTask } from '@/domain/utils/tasks'
 
 ## validation/
 
-`validation/` mirrors `utils/` but holds **validation functions that are reused by many use-cases**. Same rules: one file per subject (`validation/{subject}.ts`), exporting plain functions, used only when the validation is shared across multiple use-cases.
+`validation/` mirrors `utils/` but holds **validation functions that are reused by many use-cases** — guards that assert a domain invariant and throw a `DomainError`/`ValidationError` when it is broken. Same rules: one file per entity, named after it (`validation/{entity}.ts`), exporting plain functions, used only when the validation is shared across multiple use-cases.
 
-This folder is empty for now — create it the first time a validation helper needs to be shared.
+```ts
+import { Task, TaskContentType } from '@/domain/entities/task'
+import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
+
+export function ensureTaskContentType(
+  task: Task,
+  contentType: TaskContentType,
+): void {
+  if (task.props.contentType !== contentType) {
+    throw new DomainError({
+      code: 'TASK_CONTENT_TYPE_MISMATCH',
+      errorType: DangerErrors.DATA_INTEGRITY,
+    })
+  }
+}
+```
+
+Use-cases call these guards directly in `execute`, keeping the flow reading as `load → ensure → apply`:
+
+```ts
+import { ensureTaskContentType } from '@/domain/validation/tasks'
+
+ensureTaskContentType(task, 'text')
+```
