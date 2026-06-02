@@ -1,8 +1,8 @@
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { Task } from '@/domain/entities/task'
+import { loadOwnedTask } from '@/domain/utils/tasks'
 import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
 import { UseCase } from '@/modules/domain/use-case'
-import { loadOwnedTask } from './load-owned-task'
 
 interface Payload {
   userId: string

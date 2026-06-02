@@ -10,9 +10,9 @@ import {
   TaskDiffChanges,
   TodoItemWithDiff,
 } from '@/domain/entities/task'
+import { loadOwnedTask } from '@/domain/utils/tasks'
 import { ID } from '@/modules/domain/entity/id'
 import { UseCase } from '@/modules/domain/use-case'
-import { loadOwnedTask } from './load-owned-task'
 
 interface Payload {
   userId: string
