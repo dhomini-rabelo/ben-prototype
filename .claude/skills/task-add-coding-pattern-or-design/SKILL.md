@@ -39,6 +39,8 @@ If it is unclear whether a pattern is small enough for `general-coding-practices
 
 ## Step 3 — Write the content
 
+**Document the generic idea, not the current state.** Describe how the convention should work in general — the reusable shape, rule, or structure — using placeholders (e.g. `{service-name}`, `{operation}`) instead of real names from the project. Do not narrate what a specific file currently looks like or dump a large example from the codebase. A short, minimal illustration is fine only when it clarifies the rule; keep it small and generic so the convention reads as a reusable standard, not a snapshot.
+
 Match the existing files:
 
 - Coding design files describe layout and composition with headings, fenced directory trees, and `tsx` examples (see [`page-structure.md`](../code-get-coding-designs/designs/page-structure.md)).
