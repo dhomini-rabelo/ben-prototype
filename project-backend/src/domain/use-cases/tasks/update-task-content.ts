@@ -2,6 +2,7 @@ import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { Task } from '@/domain/entities/task'
 import { loadOwnedTask } from '@/domain/utils/tasks'
 import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
+import { ItemResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
@@ -10,10 +11,10 @@ interface Payload {
   textContent: string
 }
 
-export class UpdateTaskContentUseCase implements UseCase<Task> {
+export class UpdateTaskContentUseCase implements UseCase<ItemResponse<Task>> {
   constructor(private taskRepository: TaskRepository) {}
 
-  async execute(payload: Payload): Promise<Task> {
+  async execute(payload: Payload): Promise<ItemResponse<Task>> {
     const task = await loadOwnedTask(
       this.taskRepository,
       payload.taskId,
@@ -22,7 +23,9 @@ export class UpdateTaskContentUseCase implements UseCase<Task> {
 
     this.ensureTaskHoldsTextContent(task)
 
-    return this.applyTextContent(task, payload.textContent)
+    const item = await this.applyTextContent(task, payload.textContent)
+
+    return { item }
   }
 
   private ensureTaskHoldsTextContent(task: Task): void {

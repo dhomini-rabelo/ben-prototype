@@ -12,6 +12,7 @@ import {
 } from '@/domain/entities/task'
 import { loadOwnedTask } from '@/domain/utils/tasks'
 import { ID } from '@/modules/domain/entity/id'
+import { ItemResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
@@ -20,8 +21,7 @@ interface Payload {
   message: string
 }
 
-interface Response {
-  task: Task
+type Response = ItemResponse<Task> & {
   benMessage: string
 }
 
@@ -39,9 +39,9 @@ export class CreateTaskMessageUseCase implements UseCase<Response> {
     )
 
     const reply = await this.generateAgentReply(payload, task)
-    const updatedTask = await this.applyReplyToTask(task, reply)
+    const item = await this.applyReplyToTask(task, reply)
 
-    return { task: updatedTask, benMessage: reply.message }
+    return { item, benMessage: reply.message }
   }
 
   private generateAgentReply(payload: Payload, task: Task) {

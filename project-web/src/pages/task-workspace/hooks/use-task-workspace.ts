@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import type { Task, TodoItem } from "../../../api/models/task";
 import { API_ROUTES } from "../../../api/routes";
+import type { ItemResponse } from "../../../api/types";
 import {
   approveTaskDiff,
   finishTask,
@@ -54,11 +55,13 @@ export function useTaskWorkspace() {
   const recorder = useMediaRecorder();
   const { isOffline } = useConnectivity();
 
-  const { actions: detailActions, state: detailState } = useAPIRequest<Task>({
+  const { actions: detailActions, state: detailState } = useAPIRequest<
+    ItemResponse<Task>
+  >({
     url: API_ROUTES.tasks.detail(taskId),
   });
 
-  const task = state.taskOverride ?? detailState.data ?? null;
+  const task = state.taskOverride ?? detailState.data?.item ?? null;
 
   function setTask(updated: Task) {
     setState((current) => ({ ...current, taskOverride: updated }));
@@ -80,7 +83,7 @@ export function useTaskWorkspace() {
       const reply = await sendTaskMessage(taskId, trimmed);
       setState((current) => ({
         ...current,
-        task: reply.task,
+        taskOverride: reply.task,
         lastBenReply: reply.benMessage,
       }));
     } catch {

@@ -63,14 +63,14 @@ export async function listTasks(
   try {
     const query = listQuerySchema.parse(req.query)
 
-    const tasks = await listTasksUseCase.execute({
+    const result = await listTasksUseCase.execute({
       userId: req.userId,
       status: query.status ?? 'active',
     })
 
-    return res
-      .status(HttpStatus.OK)
-      .json({ items: tasks.map((task) => TaskPresenter.toListItemHttp(task)) })
+    return res.status(HttpStatus.OK).json({
+      items: result.items.map((task) => TaskPresenter.toListItemHttp(task)),
+    })
   } catch (err) {
     next(err)
   }
@@ -82,12 +82,14 @@ export async function getTaskDetail(
   next: NextFunction,
 ) {
   try {
-    const task = await getTaskDetailUseCase.execute({
+    const result = await getTaskDetailUseCase.execute({
       userId: req.userId,
       taskId: taskParamsSchema.parse(req.params).id,
     })
 
-    return res.status(HttpStatus.OK).json(TaskPresenter.toHttp(task))
+    return res
+      .status(HttpStatus.OK)
+      .json({ item: TaskPresenter.toHttp(result.item) })
   } catch (err) {
     next(err)
   }
@@ -101,15 +103,15 @@ export async function createTaskMessage(
   try {
     const body = messageBodySchema.parse(req.body)
 
-    const { task, benMessage } = await createTaskMessageUseCase.execute({
+    const result = await createTaskMessageUseCase.execute({
       userId: req.userId,
       taskId: taskParamsSchema.parse(req.params).id,
       message: body.content,
     })
 
     return res.status(HttpStatus.OK).json({
-      benMessage,
-      task: TaskPresenter.toHttp(task),
+      item: TaskPresenter.toHttp(result.item),
+      benMessage: result.benMessage,
     })
   } catch (err) {
     next(err)
@@ -122,12 +124,14 @@ export async function approveTaskDiff(
   next: NextFunction,
 ) {
   try {
-    const task = await approveTaskDiffUseCase.execute({
+    const result = await approveTaskDiffUseCase.execute({
       userId: req.userId,
       taskId: taskParamsSchema.parse(req.params).id,
     })
 
-    return res.status(HttpStatus.OK).json(TaskPresenter.toHttp(task))
+    return res
+      .status(HttpStatus.OK)
+      .json({ item: TaskPresenter.toHttp(result.item) })
   } catch (err) {
     next(err)
   }
@@ -139,12 +143,14 @@ export async function rejectTaskDiff(
   next: NextFunction,
 ) {
   try {
-    const task = await rejectTaskDiffUseCase.execute({
+    const result = await rejectTaskDiffUseCase.execute({
       userId: req.userId,
       taskId: taskParamsSchema.parse(req.params).id,
     })
 
-    return res.status(HttpStatus.OK).json(TaskPresenter.toHttp(task))
+    return res
+      .status(HttpStatus.OK)
+      .json({ item: TaskPresenter.toHttp(result.item) })
   } catch (err) {
     next(err)
   }
@@ -158,13 +164,15 @@ export async function updateTaskContent(
   try {
     const body = contentBodySchema.parse(req.body)
 
-    const task = await updateTaskContentUseCase.execute({
+    const result = await updateTaskContentUseCase.execute({
       userId: req.userId,
       taskId: taskParamsSchema.parse(req.params).id,
       textContent: body.textContent,
     })
 
-    return res.status(HttpStatus.OK).json(TaskPresenter.toHttp(task))
+    return res
+      .status(HttpStatus.OK)
+      .json({ item: TaskPresenter.toHttp(result.item) })
   } catch (err) {
     next(err)
   }
@@ -178,13 +186,15 @@ export async function updateTaskTodos(
   try {
     const body = todosBodySchema.parse(req.body)
 
-    const task = await updateTaskTodosUseCase.execute({
+    const result = await updateTaskTodosUseCase.execute({
       userId: req.userId,
       taskId: taskParamsSchema.parse(req.params).id,
       todoItems: body.todoItems,
     })
 
-    return res.status(HttpStatus.OK).json(TaskPresenter.toHttp(task))
+    return res
+      .status(HttpStatus.OK)
+      .json({ item: TaskPresenter.toHttp(result.item) })
   } catch (err) {
     next(err)
   }
@@ -196,12 +206,14 @@ export async function finishTask(
   next: NextFunction,
 ) {
   try {
-    const task = await finishTaskUseCase.execute({
+    const result = await finishTaskUseCase.execute({
       userId: req.userId,
       taskId: taskParamsSchema.parse(req.params).id,
     })
 
-    return res.status(HttpStatus.OK).json(TaskPresenter.toHttp(task))
+    return res
+      .status(HttpStatus.OK)
+      .json({ item: TaskPresenter.toHttp(result.item) })
   } catch (err) {
     next(err)
   }
@@ -213,12 +225,14 @@ export async function reopenTask(
   next: NextFunction,
 ) {
   try {
-    const task = await reopenTaskUseCase.execute({
+    const result = await reopenTaskUseCase.execute({
       userId: req.userId,
       taskId: taskParamsSchema.parse(req.params).id,
     })
 
-    return res.status(HttpStatus.OK).json(TaskPresenter.toHttp(task))
+    return res
+      .status(HttpStatus.OK)
+      .json({ item: TaskPresenter.toHttp(result.item) })
   } catch (err) {
     next(err)
   }

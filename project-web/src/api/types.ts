@@ -4,12 +4,16 @@ export interface Pagination<T> {
   totalItems: number;
 }
 
-export interface CursorPagination<T> {
+export interface CursorPaginationResponse<T> {
   items: T[];
   hasMore: boolean;
   nextCursor: string | null;
 }
 
-export interface ItemAPIResponse<T> {
+export interface ItemResponse<T> {
   item: T;
+}
+
+export interface ListingResponse<T> {
+  items: T[];
 }

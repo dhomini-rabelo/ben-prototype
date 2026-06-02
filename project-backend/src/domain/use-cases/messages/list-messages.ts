@@ -1,5 +1,6 @@
 import { MessageRepository } from '@/adapters/repositories/message-repository'
 import { Message } from '@/domain/entities/message'
+import { CursorPaginationResponse } from '@/modules/domain/repository/repository'
 import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
@@ -8,11 +9,7 @@ interface Payload {
   cursor?: string | null
 }
 
-interface Response {
-  items: Message[]
-  hasMore: boolean
-  nextCursor: string | null
-}
+type Response = CursorPaginationResponse<Message>
 
 const DEFAULT_LIMIT = 20
 

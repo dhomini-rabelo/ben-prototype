@@ -1,6 +1,7 @@
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { Task } from '@/domain/entities/task'
 import { NotEqualQuery } from '@/modules/domain/repository/queries'
+import { ListingResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
 export type ListTasksFilter = 'active' | 'finished'
@@ -10,17 +11,19 @@ interface Payload {
   status: ListTasksFilter
 }
 
-export class ListTasksUseCase implements UseCase<Task[]> {
+export class ListTasksUseCase implements UseCase<ListingResponse<Task>> {
   constructor(private taskRepository: TaskRepository) {}
 
-  async execute(payload: Payload): Promise<Task[]> {
-    return this.taskRepository.findMany(
+  async execute(payload: Payload): Promise<ListingResponse<Task>> {
+    const items = await this.taskRepository.findMany(
       {
         userId: payload.userId,
         status: this.buildStatusQuery(payload.status),
       },
       { orderBy: 'lastActivityAt', order: 'desc' },
     )
+
+    return { items }
   }
 
   private buildStatusQuery(filter: ListTasksFilter) {

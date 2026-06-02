@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { authClient } from "../../api/client";
-import type { CursorPagination } from "../../api/types";
+import type { CursorPaginationResponse } from "../../api/types";
 
 interface UseAPICursorPaginatedProps {
   url: string;
@@ -20,10 +20,10 @@ export function useAPICursorPaginated<T>({
     hasNextPage,
     isFetchingNextPage,
     refetch,
-  } = useInfiniteQuery<CursorPagination<T>>({
+  } = useInfiniteQuery<CursorPaginationResponse<T>>({
     queryKey: [url, limit],
     queryFn: async ({ pageParam }) => {
-      const response = await authClient.get<CursorPagination<T>>(url, {
+      const response = await authClient.get<CursorPaginationResponse<T>>(url, {
         params: { limit, cursor: pageParam ?? undefined },
       });
       return response.data;

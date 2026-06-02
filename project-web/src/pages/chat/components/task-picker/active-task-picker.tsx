@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import type { TaskListItem } from "../../../../api/models/task";
 import { API_ROUTES } from "../../../../api/routes";
+import type { ListingResponse } from "../../../../api/types";
 import { buildTaskWorkspacePath } from "../../../../core/routes";
 import { useAPIRequest } from "../../../../layout/hooks/use-api-request";
 import { ActiveTaskPeek } from "../active-task-peek";
@@ -26,7 +27,7 @@ export function ActiveTaskPicker() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { actions, state } = useAPIRequest<{ items: TaskListItem[] }>({
+  const { actions, state } = useAPIRequest<ListingResponse<TaskListItem>>({
     url: API_ROUTES.tasks.list,
     params: { status: "active" },
   });
