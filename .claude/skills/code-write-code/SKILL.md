@@ -51,3 +51,8 @@ When writing code, it's important to follow established coding patterns to ensur
 
 - When to Use: Whenever you create or refactor a use case class and want `execute` to read as a clear summary of smaller, well-named private steps (guards, branch resolvers, build/apply methods).
 - Coding pattern: [Use case structure](./coding-patterns/use-case-structure.md)
+
+#### Use Case Response Structure
+
+- When to Use: Whenever you type the `Response` of a use case — wrapping a single object in `{ item }`, returning cursor pagination as `{ items, hasMore, nextCursor }`, or a non-paginated listing as `{ items }`.
+- Coding pattern: [Use case response structure](./coding-patterns/use-case-response-structure.md)
