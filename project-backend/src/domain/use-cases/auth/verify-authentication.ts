@@ -28,9 +28,15 @@ export class VerifyAuthenticationUseCase implements UseCase<Response> {
       return { jwtToken: payload.jwtToken, userId: jwtState.userId }
     }
 
+    return this.reissueAuthenticationFromProvider(payload.providerToken)
+  }
+
+  private async reissueAuthenticationFromProvider(
+    providerToken: string,
+  ): Promise<Response> {
     const userFromProvider = await getUserFromProviderTokenOrThrow(
       this.authProviderService,
-      payload.providerToken,
+      providerToken,
     )
 
     const user = await this.userRepository.get({

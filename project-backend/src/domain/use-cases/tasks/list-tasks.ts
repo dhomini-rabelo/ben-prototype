@@ -17,12 +17,15 @@ export class ListTasksUseCase implements UseCase<Task[]> {
     return this.taskRepository.findMany(
       {
         userId: payload.userId,
-        status:
-          payload.status === 'finished'
-            ? 'finished'
-            : new NotEqualQuery({ input: 'finished' }),
+        status: this.buildStatusQuery(payload.status),
       },
       { orderBy: 'lastActivityAt', order: 'desc' },
     )
+  }
+
+  private buildStatusQuery(filter: ListTasksFilter) {
+    return filter === 'finished'
+      ? 'finished'
+      : new NotEqualQuery({ input: 'finished' })
   }
 }

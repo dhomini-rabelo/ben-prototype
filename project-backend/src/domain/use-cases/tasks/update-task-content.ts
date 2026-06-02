@@ -20,15 +20,26 @@ export class UpdateTaskContentUseCase implements UseCase<Task> {
       payload.userId,
     )
 
+    this.ensureTaskHoldsTextContent(task)
+
+    return this.applyTextContent(task, payload.textContent)
+  }
+
+  private ensureTaskHoldsTextContent(task: Task): void {
     if (task.props.contentType !== 'text') {
       throw new DomainError({
         code: 'TASK_CONTENT_TYPE_MISMATCH',
         errorType: DangerErrors.DATA_INTEGRITY,
       })
     }
+  }
 
+  private async applyTextContent(
+    task: Task,
+    textContent: string,
+  ): Promise<Task> {
     return this.taskRepository.update(task.id, {
-      textContent: payload.textContent,
+      textContent,
       pendingDiff: null,
       status: 'active',
       lastActivityAt: new Date(),

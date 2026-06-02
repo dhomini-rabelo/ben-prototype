@@ -1,4 +1,7 @@
-import { AuthProviderService } from '@/adapters/auth-provider'
+import {
+  AuthProviderService,
+  GetUserFromTokenResponse,
+} from '@/adapters/auth-provider'
 import { JwtService } from '@/adapters/jwt'
 import { UserRepository } from '@/adapters/repositories/user-repository'
 import { User } from '@/domain/entities/user'
@@ -33,13 +36,23 @@ export class LoginOrRegisterUseCase implements UseCase<Response> {
     })
 
     if (existingUser) {
-      return {
-        process: 'login',
-        user: existingUser,
-        accessToken: this.jwtService.generateToken(existingUser.id.toValue()),
-      }
+      return this.buildLoginResponse(existingUser)
     }
 
+    return this.registerUser(userFromProvider)
+  }
+
+  private buildLoginResponse(existingUser: User): Response {
+    return {
+      process: 'login',
+      user: existingUser,
+      accessToken: this.jwtService.generateToken(existingUser.id.toValue()),
+    }
+  }
+
+  private async registerUser(
+    userFromProvider: GetUserFromTokenResponse,
+  ): Promise<Response> {
     const newUser = await this.userRepository.create({
       name: userFromProvider.name,
       username: userFromProvider.email.split('@')[0],

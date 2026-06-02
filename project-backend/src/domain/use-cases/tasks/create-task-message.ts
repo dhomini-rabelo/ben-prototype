@@ -1,4 +1,8 @@
-import { AgentService, ProposedTaskChanges } from '@/adapters/agent-provider'
+import {
+  AgentService,
+  ProposedTaskChanges,
+  TaskTurnReply,
+} from '@/adapters/agent-provider'
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import {
   PendingDiff,
@@ -34,7 +38,14 @@ export class CreateTaskMessageUseCase implements UseCase<Response> {
       payload.userId,
     )
 
-    const reply = await this.agentService.generateTaskTurn({
+    const reply = await this.generateAgentReply(payload, task)
+    const updatedTask = await this.applyReplyToTask(task, reply)
+
+    return { task: updatedTask, benMessage: reply.message }
+  }
+
+  private generateAgentReply(payload: Payload, task: Task) {
+    return this.agentService.generateTaskTurn({
       userId: payload.userId,
       title: task.props.title,
       contentType: task.props.contentType,
@@ -43,19 +54,19 @@ export class CreateTaskMessageUseCase implements UseCase<Response> {
       summary: task.props.summary,
       message: payload.message,
     })
+  }
 
+  private applyReplyToTask(task: Task, reply: TaskTurnReply): Promise<Task> {
     const pendingDiff = reply.proposedChanges
       ? this.buildPendingDiff(task, reply.proposedChanges)
       : null
 
-    const updatedTask = await this.taskRepository.update(task.id, {
+    return this.taskRepository.update(task.id, {
       summary: reply.updatedSummary,
       pendingDiff,
       status: 'active',
       lastActivityAt: new Date(),
     })
-
-    return { task: updatedTask, benMessage: reply.message }
   }
 
   private buildPendingDiff(

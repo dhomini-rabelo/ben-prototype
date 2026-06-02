@@ -11,20 +11,30 @@ export class GetHistoryContextUseCase implements UseCase<HistoryContextResult> {
   constructor(private topicSummaryRepository: TopicSummaryRepository) {}
 
   async execute(payload: Payload): Promise<HistoryContextResult> {
-    const result: HistoryContextResult = {}
+    const historyContext: HistoryContextResult = {}
 
     for (const topic of payload.topics) {
-      const summaries = await this.topicSummaryRepository.findMany({
-        userId: payload.userId,
-        topicKey: topic,
-      })
-
-      result[topic] = summaries.map((summary) => ({
-        id: summary.id.toValue(),
-        summary: summary.props.summary,
-      }))
+      historyContext[topic] = await this.collectTopicSummaries(
+        payload.userId,
+        topic,
+      )
     }
 
-    return result
+    return historyContext
+  }
+
+  private async collectTopicSummaries(
+    userId: string,
+    topicKey: string,
+  ): Promise<HistoryContextResult[string]> {
+    const summaries = await this.topicSummaryRepository.findMany({
+      userId,
+      topicKey,
+    })
+
+    return summaries.map((summary) => ({
+      id: summary.id.toValue(),
+      summary: summary.props.summary,
+    }))
   }
 }

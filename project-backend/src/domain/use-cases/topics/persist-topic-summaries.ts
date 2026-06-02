@@ -15,27 +15,44 @@ export class PersistTopicSummariesUseCase implements UseCase<void> {
   ) {}
 
   async execute(payload: Payload): Promise<void> {
-    for (const { topic, summary } of payload.topics) {
-      const existingTopic = await this.topicRepository.findFirst({
-        userId: payload.userId,
-        key: topic,
-      })
+    for (const topicSummary of payload.topics) {
+      await this.ensureTopicExists(payload.userId, topicSummary.topic)
+      await this.recordTopicSummary(
+        payload.userId,
+        topicSummary.topic,
+        topicSummary.summary,
+        payload.messageId ?? null,
+      )
+    }
+  }
 
-      if (!existingTopic) {
-        await this.topicRepository.create({
-          userId: payload.userId,
-          key: topic,
-          createdAt: new Date(),
-        })
-      }
+  private async ensureTopicExists(userId: string, key: string): Promise<void> {
+    const existingTopic = await this.topicRepository.findFirst({
+      userId,
+      key,
+    })
 
-      await this.topicSummaryRepository.create({
-        userId: payload.userId,
-        topicKey: topic,
-        summary,
-        messageId: payload.messageId ?? null,
+    if (!existingTopic) {
+      await this.topicRepository.create({
+        userId,
+        key,
         createdAt: new Date(),
       })
     }
+  }
+
+  private async recordTopicSummary(
+    userId: string,
+    topicKey: string,
+    summary: string,
+    messageId: string | null,
+  ): Promise<void> {
+    await this.topicSummaryRepository.create({
+      userId,
+      topicKey,
+      summary,
+      messageId,
+      createdAt: new Date(),
+    })
   }
 }

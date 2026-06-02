@@ -20,19 +20,20 @@ export class ListMessagesUseCase implements UseCase<Response> {
   constructor(private messageRepository: MessageRepository) {}
 
   async execute(payload: Payload): Promise<Response> {
-    const limit = payload.limit ?? DEFAULT_LIMIT
+    const page = await this.messageRepository.findManyWithCursorPagination(
+      { userId: payload.userId },
+      {
+        orderBy: 'createdAt',
+        order: 'desc',
+        limit: payload.limit ?? DEFAULT_LIMIT,
+        cursor: payload.cursor,
+      },
+    )
 
-    const { items, hasMore, nextCursor } =
-      await this.messageRepository.findManyWithCursorPagination(
-        { userId: payload.userId },
-        {
-          orderBy: 'createdAt',
-          order: 'desc',
-          limit,
-          cursor: payload.cursor,
-        },
-      )
-
-    return { items, hasMore, nextCursor }
+    return {
+      items: page.items,
+      hasMore: page.hasMore,
+      nextCursor: page.nextCursor,
+    }
   }
 }

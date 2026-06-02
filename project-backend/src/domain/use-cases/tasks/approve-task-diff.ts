@@ -1,5 +1,5 @@
 import { TaskRepository } from '@/adapters/repositories/task-repository'
-import { Task } from '@/domain/entities/task'
+import { PendingDiff, Task } from '@/domain/entities/task'
 import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
 import { UseCase } from '@/modules/domain/use-case'
 import { loadOwnedTask } from './load-owned-task'
@@ -19,6 +19,18 @@ export class ApproveTaskDiffUseCase implements UseCase<Task> {
       payload.userId,
     )
 
+    const pendingDiff = this.requirePendingDiff(task)
+    const approvedContentProps = this.buildApprovedContentProps(pendingDiff)
+
+    return this.taskRepository.update(task.id, {
+      ...approvedContentProps,
+      pendingDiff: null,
+      status: 'active',
+      lastActivityAt: new Date(),
+    })
+  }
+
+  private requirePendingDiff(task: Task): PendingDiff {
     const pendingDiff = task.props.pendingDiff
 
     if (!pendingDiff) {
@@ -28,27 +40,25 @@ export class ApproveTaskDiffUseCase implements UseCase<Task> {
       })
     }
 
+    return pendingDiff
+  }
+
+  private buildApprovedContentProps(pendingDiff: PendingDiff) {
     const changes = pendingDiff.changes
 
-    const newProps =
-      changes.contentType === 'text'
-        ? { textContent: changes.after }
-        : {
-            todoItems: changes.items
-              .filter((item) => item.diff !== 'removed')
-              .map(({ id, title, done, order }) => ({
-                id,
-                title,
-                done,
-                order,
-              })),
-          }
+    if (changes.contentType === 'text') {
+      return { textContent: changes.after }
+    }
 
-    return this.taskRepository.update(task.id, {
-      ...newProps,
-      pendingDiff: null,
-      status: 'active',
-      lastActivityAt: new Date(),
-    })
+    return {
+      todoItems: changes.items
+        .filter((item) => item.diff !== 'removed')
+        .map(({ id, title, done, order }) => ({
+          id,
+          title,
+          done,
+          order,
+        })),
+    }
   }
 }
