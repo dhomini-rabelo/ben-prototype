@@ -4,6 +4,7 @@ import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { NoteDraft, ReminderDraft, TaskDraft } from '@/adapters/agent-provider'
 import { ID } from '@/modules/domain/entity/id'
+import { ListingResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
@@ -13,14 +14,16 @@ interface Payload {
   newTasks: TaskDraft[]
 }
 
-export class PersistCapturesUseCase implements UseCase<CaptureView[]> {
+export class PersistCapturesUseCase implements UseCase<
+  ListingResponse<CaptureView>
+> {
   constructor(
     private noteRepository: NoteRepository,
     private reminderRepository: ReminderRepository,
     private taskRepository: TaskRepository,
   ) {}
 
-  async execute(payload: Payload): Promise<CaptureView[]> {
+  async execute(payload: Payload): Promise<ListingResponse<CaptureView>> {
     const now = new Date()
 
     const reminderViews = await this.createReminderViews(
@@ -39,7 +42,7 @@ export class PersistCapturesUseCase implements UseCase<CaptureView[]> {
       now,
     )
 
-    return [...reminderViews, ...taskViews, ...noteViews]
+    return { items: [...reminderViews, ...taskViews, ...noteViews] }
   }
 
   private async createReminderViews(

@@ -40,9 +40,11 @@ export async function listMessages(
     const items = await Promise.all(
       result.items.map(async (message) => {
         const capture = message.props.capture
-          ? await resolveCaptureUseCase.execute({
-              capture: message.props.capture,
-            })
+          ? (
+              await resolveCaptureUseCase.execute({
+                capture: message.props.capture,
+              })
+            ).item
           : null
         return MessagePresenter.toHttp(message, capture)
       }),

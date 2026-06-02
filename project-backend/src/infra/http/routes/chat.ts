@@ -100,16 +100,16 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
         getHistoryContextUseCase.execute({ userId: req.userId, topics }),
     })
 
-    const captureViews = await persistCapturesUseCase.execute({
+    const capturesResult = await persistCapturesUseCase.execute({
       userId: req.userId,
       newReminders: reply.newReminders,
       newNotes: reply.newNotes,
       newTasks: reply.newTasks,
     })
 
-    const primaryCapture = captureViews[0] ?? null
+    const primaryCapture = capturesResult.items[0] ?? null
 
-    const benMessage = await persistBenMessageUseCase.execute({
+    const benMessageResult = await persistBenMessageUseCase.execute({
       userId: req.userId,
       content: reply.message,
       capture: primaryCapture
@@ -120,7 +120,7 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
     await persistTopicSummariesUseCase.execute({
       userId: req.userId,
       topics: reply.historyTopics,
-      messageId: benMessage.id.toValue(),
+      messageId: benMessageResult.item.id.toValue(),
     })
 
     return res

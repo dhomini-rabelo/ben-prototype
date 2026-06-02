@@ -4,31 +4,42 @@ import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { MessageCapture } from '@/domain/entities/message'
 import { ID } from '@/modules/domain/entity/id'
+import { ItemResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
   capture: MessageCapture
 }
 
-export class ResolveCaptureUseCase implements UseCase<CaptureView | null> {
+export class ResolveCaptureUseCase implements UseCase<
+  ItemResponse<CaptureView | null>
+> {
   constructor(
     private noteRepository: NoteRepository,
     private reminderRepository: ReminderRepository,
     private taskRepository: TaskRepository,
   ) {}
 
-  async execute(payload: Payload): Promise<CaptureView | null> {
-    const id = new ID(payload.capture.itemId)
+  async execute(payload: Payload): Promise<ItemResponse<CaptureView | null>> {
+    const item = await this.resolveCaptureView(payload.capture)
 
-    if (payload.capture.kind === 'reminder') {
-      return this.resolveReminderView(id, payload.capture.itemId)
+    return { item }
+  }
+
+  private resolveCaptureView(
+    capture: MessageCapture,
+  ): Promise<CaptureView | null> {
+    const id = new ID(capture.itemId)
+
+    if (capture.kind === 'reminder') {
+      return this.resolveReminderView(id, capture.itemId)
     }
 
-    if (payload.capture.kind === 'task') {
-      return this.resolveTaskView(id, payload.capture.itemId)
+    if (capture.kind === 'task') {
+      return this.resolveTaskView(id, capture.itemId)
     }
 
-    return this.resolveNoteView(id, payload.capture.itemId)
+    return this.resolveNoteView(id, capture.itemId)
   }
 
   private async resolveReminderView(
