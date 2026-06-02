@@ -46,3 +46,8 @@ When writing code, it's important to follow established coding patterns to ensur
 
 - When to Use: Whenever you need to create many components that may require sharing many states or actions.
 - Coding pattern: [Minimum props strategies](./coding-patterns/minimum-props-strategies.md)
+
+#### Use Case Structure
+
+- When to Use: Whenever you create or refactor a use case class and want `execute` to read as a clear summary of smaller, well-named private steps (guards, branch resolvers, build/apply methods).
+- Coding pattern: [Use case structure](./coding-patterns/use-case-structure.md)
