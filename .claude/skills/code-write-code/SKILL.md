@@ -54,5 +54,5 @@ When writing code, it's important to follow established coding patterns to ensur
 
 #### Use Case Response Structure
 
-- When to Use: Whenever you type the `Response` of a use case — wrapping a single object in `{ item }`, returning cursor pagination as `{ items, hasMore, nextCursor }`, or a non-paginated listing as `{ items }`.
+- When to Use: Whenever you type the `Response` of a use case. Use the shared types instead of inline shapes: `ItemResponse<T>` (`{ item }`) and `ListingResponse<T>` (`{ items }`) from `@/modules/domain/responses`, and `CursorPaginationResponse<T>` (`{ items, hasMore, nextCursor }`) and `PaginationResponse<T>` (`{ items, totalItems, page }`) from `@/modules/domain/repository/repository`.
 - Coding pattern: [Use case response structure](./coding-patterns/use-case-response-structure.md)
