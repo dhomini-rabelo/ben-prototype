@@ -22,14 +22,37 @@ export class PersistCapturesUseCase implements UseCase<CaptureView[]> {
 
   async execute(payload: Payload): Promise<CaptureView[]> {
     const now = new Date()
-    const reminderViews: CaptureView[] = []
-    const taskViews: CaptureView[] = []
-    const noteViews: CaptureView[] = []
 
-    for (const draft of payload.newReminders) {
+    const reminderViews = await this.createReminderViews(
+      payload.userId,
+      payload.newReminders,
+      now,
+    )
+    const taskViews = await this.createTaskViews(
+      payload.userId,
+      payload.newTasks,
+      now,
+    )
+    const noteViews = await this.createNoteViews(
+      payload.userId,
+      payload.newNotes,
+      now,
+    )
+
+    return [...reminderViews, ...taskViews, ...noteViews]
+  }
+
+  private async createReminderViews(
+    userId: string,
+    drafts: ReminderDraft[],
+    now: Date,
+  ): Promise<CaptureView[]> {
+    const reminderViews: CaptureView[] = []
+
+    for (const draft of drafts) {
       const remindAt = draft.remindAt ?? null
       const reminder = await this.reminderRepository.create({
-        userId: payload.userId,
+        userId,
         title: draft.title,
         remindAt,
         notes: draft.notes ?? null,
@@ -43,7 +66,17 @@ export class PersistCapturesUseCase implements UseCase<CaptureView[]> {
       })
     }
 
-    for (const draft of payload.newTasks) {
+    return reminderViews
+  }
+
+  private async createTaskViews(
+    userId: string,
+    drafts: TaskDraft[],
+    now: Date,
+  ): Promise<CaptureView[]> {
+    const taskViews: CaptureView[] = []
+
+    for (const draft of drafts) {
       const todoItems =
         draft.contentType === 'todo'
           ? (draft.todoItems ?? []).map((title, index) => ({
@@ -55,7 +88,7 @@ export class PersistCapturesUseCase implements UseCase<CaptureView[]> {
           : null
 
       const task = await this.taskRepository.create({
-        userId: payload.userId,
+        userId,
         messageId: null,
         title: draft.title,
         contentType: draft.contentType,
@@ -77,9 +110,19 @@ export class PersistCapturesUseCase implements UseCase<CaptureView[]> {
       })
     }
 
-    for (const draft of payload.newNotes) {
+    return taskViews
+  }
+
+  private async createNoteViews(
+    userId: string,
+    drafts: NoteDraft[],
+    now: Date,
+  ): Promise<CaptureView[]> {
+    const noteViews: CaptureView[] = []
+
+    for (const draft of drafts) {
       const note = await this.noteRepository.create({
-        userId: payload.userId,
+        userId,
         title: draft.title,
         body: draft.body,
         createdAt: now,
@@ -92,6 +135,6 @@ export class PersistCapturesUseCase implements UseCase<CaptureView[]> {
       })
     }
 
-    return [...reminderViews, ...taskViews, ...noteViews]
+    return noteViews
   }
 }

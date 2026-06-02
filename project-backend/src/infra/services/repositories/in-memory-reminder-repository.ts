@@ -2,7 +2,7 @@ import { EntityWithStatic } from '@/modules/domain/entity/entity'
 import { InMemoryRepository } from '@/modules/domain/repository/repository'
 
 import { Reminder } from '@/domain/entities/reminder'
-import { ReminderRepository } from './reminder-repository'
+import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
 
 export class InMemoryReminderRepository
   extends InMemoryRepository<Reminder>

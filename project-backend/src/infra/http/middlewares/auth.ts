@@ -1,8 +1,8 @@
-import { InMemoryUserRepository } from '@/adapters/repositories/in-memory-user-repository'
 import { VerifyAuthenticationUseCase } from '@/domain/use-cases/auth/verify-authentication'
 import { env } from '@/infra/services/env'
 import { FirebaseAuthProviderService } from '@/infra/services/firebase-auth-provider'
 import { JsonWebTokenJwtService } from '@/infra/services/jwt'
+import { InMemoryUserRepository } from '@/infra/services/repositories/in-memory-user-repository'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 

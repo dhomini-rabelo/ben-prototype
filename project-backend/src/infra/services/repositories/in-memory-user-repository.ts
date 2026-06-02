@@ -2,7 +2,7 @@ import { EntityWithStatic } from '@/modules/domain/entity/entity'
 import { InMemoryRepository } from '@/modules/domain/repository/repository'
 
 import { User } from '@/domain/entities/user'
-import { UserRepository } from './user-repository'
+import { UserRepository } from '@/adapters/repositories/user-repository'
 
 export class InMemoryUserRepository
   extends InMemoryRepository<User>

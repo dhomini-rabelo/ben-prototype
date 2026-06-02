@@ -2,7 +2,7 @@ import { EntityWithStatic } from '@/modules/domain/entity/entity'
 import { InMemoryRepository } from '@/modules/domain/repository/repository'
 
 import { Message } from '@/domain/entities/message'
-import { MessageRepository } from './message-repository'
+import { MessageRepository } from '@/adapters/repositories/message-repository'
 
 export class InMemoryMessageRepository
   extends InMemoryRepository<Message>
