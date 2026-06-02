@@ -1,6 +1,7 @@
 ---
 name: task-add-coding-pattern-or-design
 description: Create one or more new coding designs or coding patterns and register them in the right skill. Use when the user wants to capture a structural/architectural convention (coding design) or a code-level convention (coding pattern) so future work stays consistent.
+disable-model-invocation: true
 ---
 
 # Add Coding Pattern or Design Skill
