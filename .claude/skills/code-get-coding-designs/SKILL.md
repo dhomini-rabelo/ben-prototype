@@ -7,3 +7,8 @@ description: Use when you need to create/edit a feature that requires writing co
   - Purpose: Define the page-level file organization and composition pattern for frontend pages, including `page.tsx`, scoped components, hooks, and states.
   - When to Use: Use when creating or refactoring frontend pages to keep folder hierarchy and component boundaries consistent.
   - Coding structures: `${PROJECT_ROOT}/.claude/skills/get-coding-designs/designs/page-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
+
+- **Backend Domain Structure**:
+  - Purpose: Define how the `project-backend` domain layer is organized — where use-cases, shared util functions, and shared validation functions live.
+  - When to Use: Use when creating or refactoring domain code in `project-backend` (adding a use-case, or a helper shared across many use-cases).
+  - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/backend-domain-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
