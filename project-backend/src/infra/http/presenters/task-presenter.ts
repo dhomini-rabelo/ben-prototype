@@ -1,7 +1,14 @@
-import { PendingDiff, Task } from '@/domain/entities/task'
+import { PendingDiff, Task, TaskProps } from '@/domain/entities/task'
+import { Serialize, WithID } from '@/modules/domain/types'
+import { OverWrite } from '@/modules/utils/types'
 
 export class TaskPresenter {
-  static toHttp(task: Task) {
+  static toHttp(
+    task: Task,
+  ): OverWrite<
+    Omit<Serialize<WithID<TaskProps>>, 'userId' | 'messageId'>,
+    { pendingDiff: Serialize<PendingDiff> | null }
+  > {
     return {
       id: task.id.toValue(),
       title: task.props.title,
@@ -19,7 +26,12 @@ export class TaskPresenter {
     }
   }
 
-  static toListItemHttp(task: Task) {
+  static toListItemHttp(
+    task: Task,
+  ): Pick<
+    Serialize<WithID<TaskProps>>,
+    'id' | 'title' | 'contentType' | 'status' | 'lastActivityAt' | 'createdAt'
+  > & { hasPendingDiff: boolean } {
     return {
       id: task.id.toValue(),
       title: task.props.title,
@@ -31,7 +43,9 @@ export class TaskPresenter {
     }
   }
 
-  private static pendingDiffToHttp(pendingDiff: PendingDiff | null) {
+  private static pendingDiffToHttp(
+    pendingDiff: PendingDiff | null,
+  ): Serialize<PendingDiff> | null {
     if (!pendingDiff) {
       return null
     }
