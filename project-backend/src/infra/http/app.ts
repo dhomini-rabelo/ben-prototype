@@ -1,19 +1,17 @@
 import { authMiddleware } from '@/infra/http/middlewares/auth'
 import { errorHandler } from '@/infra/http/middlewares/error-handler'
-import { loginOrRegister } from '@/infra/http/routes/auth'
+import { loginOrRegister } from '@/infra/http/routes/auth/login-or-register'
 import { chat } from '@/infra/http/routes/chat'
-import { listMessages } from '@/infra/http/routes/messages'
-import {
-  approveTaskDiff,
-  createTaskMessage,
-  finishTask,
-  getTaskDetail,
-  listTasks,
-  rejectTaskDiff,
-  reopenTask,
-  updateTaskContent,
-  updateTaskTodos,
-} from '@/infra/http/routes/tasks'
+import { listMessages } from '@/infra/http/routes/messages/list-messages'
+import { approveTaskDiff } from '@/infra/http/routes/tasks/approve-task-diff'
+import { createTaskMessage } from '@/infra/http/routes/tasks/create-task-message'
+import { finishTask } from '@/infra/http/routes/tasks/finish-task'
+import { getTaskDetail } from '@/infra/http/routes/tasks/get-task-detail'
+import { listTasks } from '@/infra/http/routes/tasks/list-tasks'
+import { rejectTaskDiff } from '@/infra/http/routes/tasks/reject-task-diff'
+import { reopenTask } from '@/infra/http/routes/tasks/reopen-task'
+import { updateTaskContent } from '@/infra/http/routes/tasks/update-task-content'
+import { updateTaskTodos } from '@/infra/http/routes/tasks/update-task-todos'
 import { transcription } from '@/infra/http/routes/transcription'
 import { HttpStatus } from '@/modules/utils/http'
 import cors from 'cors'
