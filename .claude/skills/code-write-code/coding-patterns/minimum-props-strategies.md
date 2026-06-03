@@ -108,18 +108,57 @@ Examples:
 ## 7 Composition with children
 
 Prefer composition over configuration-heavy props when defining layout/content structures.
+A configuration-heavy component (one `tone`, `icon`, `action`, `dismissible`, `onDismiss`, `children` API) becomes a set of focused parts the caller composes, passing only what each part needs:
 
 ```tsx
-export function ListingCardRoot({ className, children }: ListingCardRootProps) {
-  return <div className={twMerge("...", className)}>{children}</div>;
-}
-
-<ListingCard.Root>
-  <ListingCard.Icon icon={User} />
-  <ListingCard.Title>{item.supervisor.name}</ListingCard.Title>
-  <ListingCard.Subtitle>Setor: {item.sector.title}</ListingCard.Subtitle>
-</ListingCard.Root>
+<ChatBanner.Root tone="error">
+  <ChatBanner.Icon icon={AlertCircle} />
+  <ChatBanner.Text>mic glitched — try again or type it</ChatBanner.Text>
+  <ChatBanner.Action label="Retry" onClick={retryVoice} />
+  <ChatBanner.Dismiss onClick={dismissError} />
+</ChatBanner.Root>
 ```
+
+### File organization
+
+Give each compound component its own folder, one file per part, and expose the namespace from `index.tsx`. Callers keep importing the folder (`.../chat-banner`), so `index.tsx` resolves automatically.
+
+```
+chat-banner/
+  index.tsx              # builds and exports the ChatBanner namespace object
+  chat-banner-root.tsx   # ChatBannerRoot — container, owns shared state
+  chat-banner-icon.tsx   # ChatBannerIcon
+  chat-banner-text.tsx   # ChatBannerText
+  chat-banner-action.tsx # ChatBannerAction
+  chat-banner-dismiss.tsx# ChatBannerDismiss
+  contexts/
+    tone.ts              # shared state context + hook consumed by the parts
+```
+
+Rules:
+- One part per file. The file is named after the part in kebab-case (`chat-banner-action.tsx`), and exports a single named function component (`ChatBannerAction`).
+- State shared across parts (here the `tone`) lives in a `contexts/` file as a React context plus a `use…` hook. `Root` provides it; the other parts consume it instead of receiving it as a prop.
+- `index.tsx` only imports the parts and assembles the namespace — it declares no components:
+
+```tsx
+import { ChatBannerAction } from "./chat-banner-action";
+import { ChatBannerDismiss } from "./chat-banner-dismiss";
+import { ChatBannerIcon } from "./chat-banner-icon";
+import { ChatBannerRoot } from "./chat-banner-root";
+import { ChatBannerText } from "./chat-banner-text";
+
+export const ChatBanner = {
+  Root: ChatBannerRoot,
+  Icon: ChatBannerIcon,
+  Text: ChatBannerText,
+  Action: ChatBannerAction,
+  Dismiss: ChatBannerDismiss,
+};
+```
+
+Keeping the namespace object alone in `index.tsx` (no component declarations beside it) also satisfies `react-refresh/only-export-components` without a disable directive.
+
+For a small compound component that does not need shared state, a single file that declares the parts and exports the namespace object is acceptable — split into a folder once it grows or needs a shared context.
 
 ## Quick mapping: pattern to props eliminated
 
