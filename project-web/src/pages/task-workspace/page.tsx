@@ -17,8 +17,8 @@ import { WorkspaceShell } from "./components/workspace-shell/workspace-shell";
 import { WorkspaceTopBar } from "./components/workspace-top-bar/workspace-top-bar";
 import { useTaskWorkspace } from "./hooks/use-task-workspace";
 
-function diffSummary(task: Task): string {
-  const changes = task.pendingDiff?.changes;
+function diffSummary(task: Task | null): string {
+  const changes = task?.pendingDiff?.changes;
   if (!changes) {
     return "";
   }
