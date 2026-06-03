@@ -30,6 +30,7 @@ export function ActiveTaskPicker() {
   const { actions, state } = useAPIRequest<ListingResponse<TaskListItem>>({
     url: API_ROUTES.tasks.list,
     params: { status: "active" },
+    enabled: isOpen,
   });
 
   const tasks = state.data?.items ?? [];
