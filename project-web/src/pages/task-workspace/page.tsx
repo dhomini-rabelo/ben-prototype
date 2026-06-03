@@ -87,29 +87,33 @@ export function TaskWorkspace() {
   function renderTopBanner() {
     if (workspace.isOffline) {
       return (
-        <ChatBanner tone="warn" icon={WifiOff}>
-          You're offline. Sending is paused until you're back online.
-        </ChatBanner>
+        <ChatBanner.Root tone="warn">
+          <ChatBanner.Icon icon={WifiOff} />
+          <ChatBanner.Text>
+            You're offline. Sending is paused until you're back online.
+          </ChatBanner.Text>
+        </ChatBanner.Root>
       );
     }
     if (workspace.voiceStatus === "error") {
       return (
-        <ChatBanner
-          tone="error"
-          icon={AlertCircle}
-          action={{ label: "Retry", onClick: workspace.retryVoice }}
-          dismissible
-          onDismiss={workspace.dismissError}
-        >
-          mic glitched — try again or type it
-        </ChatBanner>
+        <ChatBanner.Root tone="error">
+          <ChatBanner.Icon icon={AlertCircle} />
+          <ChatBanner.Text>mic glitched — try again or type it</ChatBanner.Text>
+          <ChatBanner.Action label="Retry" onClick={workspace.retryVoice} />
+          <ChatBanner.Dismiss onClick={workspace.dismissError} />
+        </ChatBanner.Root>
       );
     }
     if (workspace.micPermission === "denied") {
       return (
-        <ChatBanner tone="warn" icon={TriangleAlert} dismissible>
-          Ben can't hear you yet — turn on mic in browser settings.
-        </ChatBanner>
+        <ChatBanner.Root tone="warn">
+          <ChatBanner.Icon icon={TriangleAlert} />
+          <ChatBanner.Text>
+            Ben can't hear you yet — turn on mic in browser settings.
+          </ChatBanner.Text>
+          <ChatBanner.Dismiss />
+        </ChatBanner.Root>
       );
     }
     return undefined;
