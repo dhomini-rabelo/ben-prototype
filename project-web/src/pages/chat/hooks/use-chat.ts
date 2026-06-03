@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { CaptureView } from "../../../api/responses/agent-reply";
-import type { Message } from "../../../api/models/message";
 import { requestSendChatMessage } from "../../../api/requests/chat";
 import { requestTranscribeAudio } from "../../../api/requests/transcription";
-import { API_ROUTES } from "../../../api/routes";
-import { useAPICursorPaginated } from "../../../layout/hooks/use-api-cursor-paginated";
+import { useMessageListData } from "../../../layout/hooks/api/use-message-list-data";
 import {
   type BenUiMessage,
   getMessageText,
@@ -55,10 +53,7 @@ export function useChat() {
   const recorder = useMediaRecorder();
   const { isOffline } = useConnectivity();
 
-  const { actions: historyActions, state: historyState } =
-    useAPICursorPaginated<Message>({
-      url: API_ROUTES.messages.list,
-    });
+  const { actions: historyActions, state: historyState } = useMessageListData();
 
   const { topRef } = useInfiniteScrollTop({
     hasMore: historyState.hasMore,

@@ -3,7 +3,6 @@ import { AlertCircle, TriangleAlert, WifiOff } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { JWT_COOKIE } from "../../api/client";
-import type { Task } from "../../api/models/task";
 import { ROUTES } from "../../core/routes";
 import { ChatBanner } from "../../layout/components/chat-banner";
 import { Typography } from "../../layout/components/ui/typography";
@@ -16,20 +15,6 @@ import { TodoContent } from "./components/todo-content/todo-content";
 import { WorkspaceShell } from "./components/workspace-shell/workspace-shell";
 import { WorkspaceTopBar } from "./components/workspace-top-bar/workspace-top-bar";
 import { useTaskWorkspace } from "./hooks/use-task-workspace";
-
-function diffSummary(task: Task | null): string {
-  const changes = task?.pendingDiff?.changes;
-  if (!changes) {
-    return "";
-  }
-  if (changes.contentType === "todo") {
-    const count = changes.items.filter(
-      (item) => item.diff !== "unchanged",
-    ).length;
-    return `Ben suggested ${count} change${count === 1 ? "" : "s"}`;
-  }
-  return "Ben revised the draft";
-}
 
 export function TaskWorkspace() {
   const navigate = useNavigate();
@@ -147,7 +132,6 @@ export function TaskWorkspace() {
     }
     return (
       <DiffBar
-        summary={diffSummary(task)}
         disabled={workspace.isMutating}
         onApprove={workspace.handleApproveDiff}
         onReject={workspace.handleRejectDiff}
@@ -189,9 +173,6 @@ export function TaskWorkspace() {
     <WorkspaceShell
       topBar={
         <WorkspaceTopBar
-          title={task.title}
-          contentType={task.contentType}
-          status={task.status}
           onBack={workspace.handleBack}
           onFinish={workspace.handleFinish}
           onReopen={workspace.handleReopen}
@@ -204,14 +185,12 @@ export function TaskWorkspace() {
     >
       {task.contentType === "todo" ? (
         <TodoContent
-          task={task}
           readOnly={isFinished}
           onToggle={workspace.handleToggleTodo}
           onAdd={workspace.handleAddTodo}
         />
       ) : (
         <TextContent
-          task={task}
           readOnly={isFinished || hasPendingDiff}
           onEdit={workspace.handleTextEdit}
         />

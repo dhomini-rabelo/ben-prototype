@@ -1,20 +1,20 @@
-import type { Task } from "../../../../api/models/task";
+import { useWorkspaceTask } from "../../hooks/use-workspace-task";
 import { AddTodoRow } from "./add-todo-row";
 import { TodoListItem } from "./todo-list-item";
 
 type TodoContentProps = {
-  task: Task;
   readOnly?: boolean;
   onToggle?: (itemId: string) => void;
   onAdd?: (title: string) => void;
 };
 
-export function TodoContent({
-  task,
-  readOnly,
-  onToggle,
-  onAdd,
-}: TodoContentProps) {
+export function TodoContent({ readOnly, onToggle, onAdd }: TodoContentProps) {
+  const task = useWorkspaceTask();
+
+  if (!task) {
+    return null;
+  }
+
   const diff =
     task.pendingDiff?.changes.contentType === "todo"
       ? task.pendingDiff.changes

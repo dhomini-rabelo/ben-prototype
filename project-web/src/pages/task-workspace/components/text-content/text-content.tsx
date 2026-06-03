@@ -1,14 +1,19 @@
 import type { FocusEvent } from "react";
 import { Typography } from "../../../../layout/components/ui/typography";
-import type { Task } from "../../../../api/models/task";
+import { useWorkspaceTask } from "../../hooks/use-workspace-task";
 
 type TextContentProps = {
-  task: Task;
   readOnly?: boolean;
   onEdit?: (value: string) => void;
 };
 
-export function TextContent({ task, readOnly, onEdit }: TextContentProps) {
+export function TextContent({ readOnly, onEdit }: TextContentProps) {
+  const task = useWorkspaceTask();
+
+  if (!task) {
+    return null;
+  }
+
   const diff =
     task.pendingDiff?.changes.contentType === "text"
       ? task.pendingDiff.changes

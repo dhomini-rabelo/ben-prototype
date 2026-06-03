@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "../../api/client";
 
 interface UseAPIRequestProps {
@@ -8,6 +8,7 @@ interface UseAPIRequestProps {
 }
 
 export function useAPIRequest<T>({ url, params, enabled }: UseAPIRequestProps) {
+  const queryClient = useQueryClient();
   const { data, isLoading, isError, error, refetch } = useQuery<T>({
     queryKey: [url, params],
     queryFn: async () => {
@@ -22,6 +23,7 @@ export function useAPIRequest<T>({ url, params, enabled }: UseAPIRequestProps) {
   return {
     actions: {
       refetch,
+      invalidate: () => queryClient.invalidateQueries({ queryKey: [url, params] }),
     },
     state: {
       data,

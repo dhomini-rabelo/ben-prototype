@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import type { Task, TodoItem } from "../../../api/models/task";
+import type { TodoItem } from "../../../api/models/task";
 import {
     requestApproveTaskDiff,
     requestFinishTask,
@@ -11,17 +11,14 @@ import {
     requestUpdateTaskTodos,
 } from "../../../api/requests/tasks";
 import { requestTranscribeAudio } from "../../../api/requests/transcription";
-import { API_ROUTES } from "../../../api/routes";
-import type { ItemResponse } from "../../../api/types";
 import { ROUTES } from "../../../core/routes";
-import { useAPIRequest } from "../../../layout/hooks/use-api-request";
+import { useTaskDetailData } from "../../../layout/hooks/api/use-task-detail-data";
 import { useConnectivity } from "../../chat/hooks/use-connectivity";
 import { useMediaRecorder } from "../../chat/hooks/use-media-recorder";
 
 type VoiceStatus = "idle" | "recording" | "transcribing" | "error";
 
 interface WorkspaceState {
-  taskOverride: Task | null;
   draft: string;
   isAwaitingReply: boolean;
   lastBenReply: string | null;
@@ -38,7 +35,6 @@ export function useTaskWorkspace() {
   const { taskId = "" } = useParams<{ taskId: string }>();
 
   const [state, setState] = useState<WorkspaceState>({
-    taskOverride: null,
     draft: "",
     isAwaitingReply: false,
     lastBenReply: null,
@@ -55,17 +51,10 @@ export function useTaskWorkspace() {
   const recorder = useMediaRecorder();
   const { isOffline } = useConnectivity();
 
-  const { actions: detailActions, state: detailState } = useAPIRequest<
-    ItemResponse<Task>
-  >({
-    url: API_ROUTES.tasks.detail(taskId),
-  });
+  const { actions: detailActions, state: detailState } =
+    useTaskDetailData(taskId);
 
-  const task = state.taskOverride ?? detailState.data?.item ?? null;
-
-  function setTask(updated: Task) {
-    setState((current) => ({ ...current, taskOverride: updated }));
-  }
+  const task = detailState.data?.item ?? null;
 
   async function sendMessageText(content: string) {
     const trimmed = content.trim();
@@ -81,9 +70,9 @@ export function useTaskWorkspace() {
 
     try {
       const reply = await requestSendTaskMessage(taskId, trimmed);
+      await detailActions.invalidate();
       setState((current) => ({
         ...current,
-        taskOverride: reply.task,
         lastBenReply: reply.benMessage,
       }));
     } catch {
@@ -142,7 +131,8 @@ export function useTaskWorkspace() {
     }
     setState((current) => ({ ...current, isMutating: true }));
     try {
-      setTask(await requestApproveTaskDiff(taskId));
+      await requestApproveTaskDiff(taskId);
+      await detailActions.invalidate();
     } finally {
       setState((current) => ({ ...current, isMutating: false }));
     }
@@ -154,7 +144,8 @@ export function useTaskWorkspace() {
     }
     setState((current) => ({ ...current, isMutating: true }));
     try {
-      setTask(await requestRejectTaskDiff(taskId));
+      await requestRejectTaskDiff(taskId);
+      await detailActions.invalidate();
     } finally {
       setState((current) => ({ ...current, isMutating: false }));
     }
@@ -164,7 +155,8 @@ export function useTaskWorkspace() {
     if (!taskId) {
       return;
     }
-    setTask(await requestUpdateTaskTodos(taskId, todoItems));
+    await requestUpdateTaskTodos(taskId, todoItems);
+    await detailActions.invalidate();
   }
 
   function handleToggleTodo(itemId: string) {
@@ -200,7 +192,9 @@ export function useTaskWorkspace() {
     if (!taskId || value === (task?.textContent ?? "")) {
       return;
     }
-    void requestUpdateTaskContent(taskId, value).then(setTask);
+    void requestUpdateTaskContent(taskId, value).then(() =>
+      detailActions.invalidate(),
+    );
   }
 
   async function handleFinish() {
@@ -222,7 +216,8 @@ export function useTaskWorkspace() {
     }
     setState((current) => ({ ...current, isMutating: true }));
     try {
-      setTask(await requestReopenTask(taskId));
+      await requestReopenTask(taskId);
+      await detailActions.invalidate();
     } finally {
       setState((current) => ({ ...current, isMutating: false }));
     }

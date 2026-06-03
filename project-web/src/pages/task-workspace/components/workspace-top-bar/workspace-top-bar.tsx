@@ -2,28 +2,28 @@ import { CheckCircle2, ChevronLeft, List, MoreHorizontal, RotateCcw, Type } from
 import { useState } from "react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { cn } from "../../../../layout/utils/styles";
-import type { TaskContentType, TaskStatus } from "../../../../api/models/task";
+import { useWorkspaceTask } from "../../hooks/use-workspace-task";
 
 type WorkspaceTopBarProps = {
-  title: string;
-  contentType: TaskContentType;
-  status: TaskStatus;
   onBack?: () => void;
   onFinish?: () => void;
   onReopen?: () => void;
 };
 
 export function WorkspaceTopBar({
-  title,
-  contentType,
-  status,
   onBack,
   onFinish,
   onReopen,
 }: WorkspaceTopBarProps) {
+  const task = useWorkspaceTask();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const TypeIcon = contentType === "todo" ? List : Type;
-  const isFinished = status === "finished";
+
+  if (!task) {
+    return null;
+  }
+
+  const TypeIcon = task.contentType === "todo" ? List : Type;
+  const isFinished = task.status === "finished";
 
   function handleFinish() {
     setIsMenuOpen(false);
@@ -54,7 +54,7 @@ export function WorkspaceTopBar({
           variant="body-md"
           className="truncate font-semibold text-on-surface"
         >
-          {title}
+          {task.title}
         </Typography>
         {isFinished && (
           <span className="rounded-full bg-surface-container-high px-1.5 py-px font-mono text-[10px] uppercase tracking-wider text-on-surface-variant">

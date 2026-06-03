@@ -1,14 +1,32 @@
 import { Check, X } from "lucide-react";
+import type { Task } from "../../../../api/models/task";
 import { Typography } from "../../../../layout/components/ui/typography";
+import { useWorkspaceTask } from "../../hooks/use-workspace-task";
 
 type DiffBarProps = {
-  summary: string;
   disabled?: boolean;
   onApprove?: () => void;
   onReject?: () => void;
 };
 
-export function DiffBar({ summary, disabled, onApprove, onReject }: DiffBarProps) {
+function diffSummary(task: Task | null): string {
+  const changes = task?.pendingDiff?.changes;
+  if (!changes) {
+    return "";
+  }
+  if (changes.contentType === "todo") {
+    const count = changes.items.filter(
+      (item) => item.diff !== "unchanged",
+    ).length;
+    return `Ben suggested ${count} change${count === 1 ? "" : "s"}`;
+  }
+  return "Ben revised the draft";
+}
+
+export function DiffBar({ disabled, onApprove, onReject }: DiffBarProps) {
+  const task = useWorkspaceTask();
+  const summary = diffSummary(task);
+
   return (
     <div className="flex flex-col gap-2 rounded-2xl border border-diff-added-outline/70 bg-diff-added px-3 py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
       <Typography
