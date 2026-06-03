@@ -10,7 +10,7 @@ export function AppRouter() {
       <Routes>
         <Route path={ROUTES.login} element={<Login />} />
         <Route path={ROUTES.chat} element={<Chat />} />
-        <Route path={ROUTES.taskWorkspace} element={<TaskWorkspace />} />
+        <Route path={ROUTES.taskWorkspace()} element={<TaskWorkspace />} />
       </Routes>
     </BrowserRouter>
   );

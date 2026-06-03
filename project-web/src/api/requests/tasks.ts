@@ -1,14 +1,10 @@
-import { authClient } from "./client";
-import type {
-  Task,
-  TaskListItem,
-  TaskMessageReply,
-  TodoItem,
-} from "./models/task";
-import { API_ROUTES } from "./routes";
-import type { ItemResponse, ListingResponse } from "./types";
+import { authClient } from "../client";
+import type { Task, TodoItem } from "../models/task";
+import type { TaskListItem, TaskMessageReply } from "../responses/task";
+import { API_ROUTES } from "../routes";
+import type { ItemResponse, ListingResponse } from "../types";
 
-export async function listActiveTasks(): Promise<TaskListItem[]> {
+export async function requestListActiveTasks(): Promise<TaskListItem[]> {
   const response = await authClient.get<ListingResponse<TaskListItem>>(
     API_ROUTES.tasks.list,
     { params: { status: "active" } },
@@ -17,7 +13,7 @@ export async function listActiveTasks(): Promise<TaskListItem[]> {
   return response.data.items;
 }
 
-export async function getTaskDetail(taskId: string): Promise<Task> {
+export async function requestGetTaskDetail(taskId: string): Promise<Task> {
   const response = await authClient.get<ItemResponse<Task>>(
     API_ROUTES.tasks.detail(taskId),
   );
@@ -25,7 +21,7 @@ export async function getTaskDetail(taskId: string): Promise<Task> {
   return response.data.item;
 }
 
-export async function sendTaskMessage(
+export async function requestSendTaskMessage(
   taskId: string,
   content: string,
 ): Promise<TaskMessageReply> {
@@ -37,7 +33,7 @@ export async function sendTaskMessage(
   return { task: response.data.item, benMessage: response.data.benMessage };
 }
 
-export async function approveTaskDiff(taskId: string): Promise<Task> {
+export async function requestApproveTaskDiff(taskId: string): Promise<Task> {
   const response = await authClient.post<ItemResponse<Task>>(
     API_ROUTES.tasks.approveDiff(taskId),
   );
@@ -45,7 +41,7 @@ export async function approveTaskDiff(taskId: string): Promise<Task> {
   return response.data.item;
 }
 
-export async function rejectTaskDiff(taskId: string): Promise<Task> {
+export async function requestRejectTaskDiff(taskId: string): Promise<Task> {
   const response = await authClient.post<ItemResponse<Task>>(
     API_ROUTES.tasks.rejectDiff(taskId),
   );
@@ -53,7 +49,7 @@ export async function rejectTaskDiff(taskId: string): Promise<Task> {
   return response.data.item;
 }
 
-export async function updateTaskContent(
+export async function requestUpdateTaskContent(
   taskId: string,
   textContent: string,
 ): Promise<Task> {
@@ -65,7 +61,7 @@ export async function updateTaskContent(
   return response.data.item;
 }
 
-export async function updateTaskTodos(
+export async function requestUpdateTaskTodos(
   taskId: string,
   todoItems: TodoItem[],
 ): Promise<Task> {
@@ -77,7 +73,7 @@ export async function updateTaskTodos(
   return response.data.item;
 }
 
-export async function finishTask(taskId: string): Promise<Task> {
+export async function requestFinishTask(taskId: string): Promise<Task> {
   const response = await authClient.post<ItemResponse<Task>>(
     API_ROUTES.tasks.finish(taskId),
   );
@@ -85,7 +81,7 @@ export async function finishTask(taskId: string): Promise<Task> {
   return response.data.item;
 }
 
-export async function reopenTask(taskId: string): Promise<Task> {
+export async function requestReopenTask(taskId: string): Promise<Task> {
   const response = await authClient.post<ItemResponse<Task>>(
     API_ROUTES.tasks.reopen(taskId),
   );

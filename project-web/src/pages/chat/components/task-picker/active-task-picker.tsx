@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import type { TaskListItem } from "../../../../api/models/task";
+import type { TaskListItem } from "../../../../api/responses/task";
 import { API_ROUTES } from "../../../../api/routes";
 import type { ListingResponse } from "../../../../api/types";
-import { buildTaskWorkspacePath } from "../../../../core/routes";
+import { ROUTES } from "../../../../core/routes";
 import { useAPIRequest } from "../../../../layout/hooks/use-api-request";
 import { ActiveTaskPeek } from "../active-task-peek";
 import { TaskPickerSheet } from "./task-picker-sheet";
@@ -47,7 +47,7 @@ export function ActiveTaskPicker() {
         : "empty";
 
   function handleSelect(taskId: string) {
-    navigate(buildTaskWorkspacePath(taskId));
+    navigate(ROUTES.taskWorkspace(taskId));
   }
 
   return (

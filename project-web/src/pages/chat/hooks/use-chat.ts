@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { sendChatMessage } from "../../../api/chat";
-import type { CaptureView } from "../../../api/models/agent-reply";
+import type { CaptureView } from "../../../api/responses/agent-reply";
 import type { Message } from "../../../api/models/message";
+import { requestSendChatMessage } from "../../../api/requests/chat";
+import { requestTranscribeAudio } from "../../../api/requests/transcription";
 import { API_ROUTES } from "../../../api/routes";
-import { transcribeAudio } from "../../../api/transcription";
 import { useAPICursorPaginated } from "../../../layout/hooks/use-api-cursor-paginated";
 import {
   type BenUiMessage,
@@ -130,7 +130,7 @@ export function useChat() {
     setIsAwaitingReply(true);
 
     try {
-      const reply = await sendChatMessage(trimmed);
+      const reply = await requestSendChatMessage(trimmed);
       const benMessage = buildBenMessage("", reply.capture);
       setSessionMessages((current) => [...current, benMessage]);
       animateBenReply(benMessage.id, reply.message);
@@ -195,7 +195,7 @@ export function useChat() {
     const runId = transcriptionRunIdRef.current + 1;
     transcriptionRunIdRef.current = runId;
 
-    transcribeAudio(blob)
+    requestTranscribeAudio(blob)
       .then(({ text }) => {
         if (transcriptionRunIdRef.current !== runId) {
           return;

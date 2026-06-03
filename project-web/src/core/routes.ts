@@ -1,9 +1,5 @@
 export const ROUTES = {
   login: "/",
   chat: "/chat",
-  taskWorkspace: "/tasks/:taskId",
+  taskWorkspace: (taskId = ":taskId") => `/tasks/${taskId}`,
 } as const;
-
-export function buildTaskWorkspacePath(taskId: string): string {
-  return `/tasks/${taskId}`;
-}

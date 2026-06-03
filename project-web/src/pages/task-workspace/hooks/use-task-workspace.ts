@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import type { Task, TodoItem } from "../../../api/models/task";
+import {
+    requestApproveTaskDiff,
+    requestFinishTask,
+    requestRejectTaskDiff,
+    requestReopenTask,
+    requestSendTaskMessage,
+    requestUpdateTaskContent,
+    requestUpdateTaskTodos,
+} from "../../../api/requests/tasks";
+import { requestTranscribeAudio } from "../../../api/requests/transcription";
 import { API_ROUTES } from "../../../api/routes";
 import type { ItemResponse } from "../../../api/types";
-import {
-  approveTaskDiff,
-  finishTask,
-  rejectTaskDiff,
-  reopenTask,
-  sendTaskMessage,
-  updateTaskContent,
-  updateTaskTodos,
-} from "../../../api/tasks";
-import { transcribeAudio } from "../../../api/transcription";
-import { useAPIRequest } from "../../../layout/hooks/use-api-request";
 import { ROUTES } from "../../../core/routes";
+import { useAPIRequest } from "../../../layout/hooks/use-api-request";
 import { useConnectivity } from "../../chat/hooks/use-connectivity";
 import { useMediaRecorder } from "../../chat/hooks/use-media-recorder";
 
@@ -80,7 +80,7 @@ export function useTaskWorkspace() {
     }));
 
     try {
-      const reply = await sendTaskMessage(taskId, trimmed);
+      const reply = await requestSendTaskMessage(taskId, trimmed);
       setState((current) => ({
         ...current,
         taskOverride: reply.task,
@@ -142,7 +142,7 @@ export function useTaskWorkspace() {
     }
     setState((current) => ({ ...current, isMutating: true }));
     try {
-      setTask(await approveTaskDiff(taskId));
+      setTask(await requestApproveTaskDiff(taskId));
     } finally {
       setState((current) => ({ ...current, isMutating: false }));
     }
@@ -154,7 +154,7 @@ export function useTaskWorkspace() {
     }
     setState((current) => ({ ...current, isMutating: true }));
     try {
-      setTask(await rejectTaskDiff(taskId));
+      setTask(await requestRejectTaskDiff(taskId));
     } finally {
       setState((current) => ({ ...current, isMutating: false }));
     }
@@ -164,7 +164,7 @@ export function useTaskWorkspace() {
     if (!taskId) {
       return;
     }
-    setTask(await updateTaskTodos(taskId, todoItems));
+    setTask(await requestUpdateTaskTodos(taskId, todoItems));
   }
 
   function handleToggleTodo(itemId: string) {
@@ -200,7 +200,7 @@ export function useTaskWorkspace() {
     if (!taskId || value === (task?.textContent ?? "")) {
       return;
     }
-    void updateTaskContent(taskId, value).then(setTask);
+    void requestUpdateTaskContent(taskId, value).then(setTask);
   }
 
   async function handleFinish() {
@@ -209,7 +209,7 @@ export function useTaskWorkspace() {
     }
     setState((current) => ({ ...current, isMutating: true }));
     try {
-      await finishTask(taskId);
+      await requestFinishTask(taskId);
       navigate(ROUTES.chat);
     } finally {
       setState((current) => ({ ...current, isMutating: false }));
@@ -222,7 +222,7 @@ export function useTaskWorkspace() {
     }
     setState((current) => ({ ...current, isMutating: true }));
     try {
-      setTask(await reopenTask(taskId));
+      setTask(await requestReopenTask(taskId));
     } finally {
       setState((current) => ({ ...current, isMutating: false }));
     }
@@ -244,7 +244,7 @@ export function useTaskWorkspace() {
     const runId = transcriptionRunIdRef.current + 1;
     transcriptionRunIdRef.current = runId;
 
-    transcribeAudio(blob)
+    requestTranscribeAudio(blob)
       .then(({ text }) => {
         if (transcriptionRunIdRef.current !== runId) {
           return;
