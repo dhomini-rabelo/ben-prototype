@@ -7,10 +7,8 @@ import { Typography } from "../../layout/components/ui/typography";
 import { useTaskDetailData } from "../../layout/hooks/api/use-task-detail-data";
 import { useConnectivity } from "../chat/hooks/use-connectivity";
 import { DiffBar } from "./components/diff-bar/diff-bar";
-import {
-  WorkspaceSubThreadBanner,
-  WorkspaceTopBanner,
-} from "./components/workspace-banner/workspace-banner";
+import { WorkspaceSubThreadBanner } from "./components/workspace-sub-thread-banner";
+import { WorkspaceTopBanner } from "./components/workspace-top-banner";
 import { WorkspaceFooter } from "./components/workspace-footer/workspace-footer";
 import { TextContent } from "./components/text-content/text-content";
 import { TodoContent } from "./components/todo-content/todo-content";

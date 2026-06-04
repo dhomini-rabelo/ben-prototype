@@ -1,13 +1,8 @@
 import { AlertCircle, TriangleAlert, WifiOff } from "lucide-react";
-import { useAtomValue } from "jotai";
 import { memo } from "react";
-import { ChatBanner } from "../../../../layout/components/chat-banner";
-import { useConnectivityStore } from "../../../chat/stores/connectivity-store";
-import { useWorkspaceTask } from "../../hooks/use-workspace-task";
-import { taskDraftAtom } from "../../states/task-workspace-state";
-import { useTaskStore } from "../../stores/task-store";
-import { selectVoiceStatus, useVoiceStore } from "../../stores/voice-store";
-import { SubThreadBanner } from "../sub-thread-banner/sub-thread-banner";
+import { ChatBanner } from "../../../layout/components/chat-banner";
+import { useConnectivityStore } from "../../chat/stores/connectivity-store";
+import { selectVoiceStatus, useVoiceStore } from "../stores/voice-store";
 
 function WorkspaceTopBannerComponent() {
   const isOffline = useConnectivityStore((store) => store.isOffline);
@@ -52,34 +47,4 @@ function WorkspaceTopBannerComponent() {
   );
 }
 
-function WorkspaceSubThreadBannerComponent() {
-  const task = useWorkspaceTask();
-  const isAwaitingReply = useTaskStore((store) => store.isAwaitingReply);
-  const sendError = useTaskStore((store) => store.sendError);
-  const lastBenReply = useTaskStore((store) => store.lastBenReply);
-  const sendText = useTaskStore((store) => store.sendText);
-  const draft = useAtomValue(taskDraftAtom);
-
-  if (task?.pendingDiff) {
-    return null;
-  }
-  if (isAwaitingReply) {
-    return <SubThreadBanner variant="ben-typing" />;
-  }
-  if (sendError) {
-    return (
-      <SubThreadBanner
-        variant="error"
-        text="Ben didn't reply — tap to retry"
-        onRetry={() => void sendText(draft)}
-      />
-    );
-  }
-  if (lastBenReply) {
-    return <SubThreadBanner text={lastBenReply} />;
-  }
-  return null;
-}
-
 export const WorkspaceTopBanner = memo(WorkspaceTopBannerComponent);
-export const WorkspaceSubThreadBanner = memo(WorkspaceSubThreadBannerComponent);
