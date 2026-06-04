@@ -1,6 +1,7 @@
 import { ChevronRight, Play } from "lucide-react";
 import { cn } from "../../../../layout/utils/styles";
-import type { CaptureCardState } from "./capture-card.types";
+import { useCaptureCard } from "./contexts/capture-card-context";
+import type { CaptureCardState } from "./types";
 
 const DEFAULT_TASK_ACTION_LABEL: Record<CaptureCardState, string> = {
   default: "Start",
@@ -12,16 +13,20 @@ const DEFAULT_TASK_ACTION_LABEL: Record<CaptureCardState, string> = {
 };
 
 type CaptureCardActionButtonProps = {
-  state: CaptureCardState;
   actionLabel?: string;
   onAction?: () => void;
 };
 
 export function CaptureCardActionButton({
-  state,
   actionLabel,
   onAction,
 }: CaptureCardActionButtonProps) {
+  const { kind, state } = useCaptureCard();
+
+  if (kind !== "task" || state === "error") {
+    return null;
+  }
+
   const isPending = state === "pending";
   const isActive = state === "active";
   const isFinished = state === "finished";
@@ -40,7 +45,9 @@ export function CaptureCardActionButton({
         isPending && "pointer-events-none opacity-60",
       )}
     >
-      {!isFinished && !isActive && <Play className="size-3" strokeWidth={2.5} />}
+      {!isFinished && !isActive && (
+        <Play className="size-3" strokeWidth={2.5} />
+      )}
       {resolvedActionLabel}
       {isFinished && <ChevronRight className="size-3.5" />}
     </button>

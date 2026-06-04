@@ -1,5 +1,6 @@
 import { Typography } from "../../../../layout/components/ui/typography";
-import type { CaptureKind } from "./capture-card.types";
+import { useCaptureCard } from "./contexts/capture-card-context";
+import type { CaptureKind } from "./types";
 
 const KIND_LABEL: Record<CaptureKind, string> = {
   note: "Note",
@@ -7,19 +8,12 @@ const KIND_LABEL: Record<CaptureKind, string> = {
   task: "Task",
 };
 
-type CaptureCardHeaderProps = {
-  kind: CaptureKind;
-  isError: boolean;
-  isFired: boolean;
-  isActive: boolean;
-};
+export function CaptureCardHeader() {
+  const { kind, state } = useCaptureCard();
+  const isError = state === "error";
+  const isFired = state === "fired";
+  const isActive = state === "active";
 
-export function CaptureCardHeader({
-  kind,
-  isError,
-  isFired,
-  isActive,
-}: CaptureCardHeaderProps) {
   return (
     <div className="flex items-center gap-1.5">
       <Typography

@@ -7,7 +7,7 @@ import { useInfiniteScrollTop } from "../../hooks/use-infinite-scroll-top";
 import { useScrollToBottom } from "../../hooks/use-scroll-to-bottom";
 import { selectVoiceStatus, useChatStore } from "../../states/chat-store";
 import { getMessageText } from "../../utils/chat-messages";
-import { CaptureCard } from "../capture-card/capture-card";
+import { CaptureCard } from "../capture-card";
 import { MessageBubble } from "../message-bubble/message-bubble";
 import { RetryFooter } from "../message-footers/retry-footer";
 import { TranscribingFooter } from "../message-footers/transcribing-footer";
@@ -46,17 +46,21 @@ export function ChatHistory() {
           <MessageBubble key={message.id} from={isBen ? "ben" : "user"}>
             {text}
             {isBen && capture && (
-              <CaptureCard
-                kind={capture.kind}
-                title={capture.title}
-                meta={capture.meta ?? undefined}
-                state="default"
-                onAction={
-                  capture.kind === "task"
-                    ? () => navigate(ROUTES.taskWorkspace(capture.itemId))
-                    : undefined
-                }
-              />
+              <CaptureCard.Root kind={capture.kind}>
+                <CaptureCard.Icon />
+                <CaptureCard.Body>
+                  <CaptureCard.Header />
+                  <CaptureCard.Title>{capture.title}</CaptureCard.Title>
+                  {capture.meta && (
+                    <CaptureCard.Meta>{capture.meta}</CaptureCard.Meta>
+                  )}
+                  <CaptureCard.Action
+                    onAction={() =>
+                      navigate(ROUTES.taskWorkspace(capture.itemId))
+                    }
+                  />
+                </CaptureCard.Body>
+              </CaptureCard.Root>
             )}
           </MessageBubble>
         );

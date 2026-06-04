@@ -1,5 +1,6 @@
 import { RotateCw } from "lucide-react";
-import type { CaptureKind } from "./capture-card.types";
+import { useCaptureCard } from "./contexts/capture-card-context";
+import type { CaptureKind } from "./types";
 
 const DEFAULT_ERROR_MESSAGES: Record<CaptureKind, string> = {
   note: "couldn't save this note — retry",
@@ -8,16 +9,20 @@ const DEFAULT_ERROR_MESSAGES: Record<CaptureKind, string> = {
 };
 
 type CaptureCardErrorButtonProps = {
-  kind: CaptureKind;
   errorMessage?: string;
   onAction?: () => void;
 };
 
 export function CaptureCardErrorButton({
-  kind,
   errorMessage,
   onAction,
 }: CaptureCardErrorButtonProps) {
+  const { kind, state } = useCaptureCard();
+
+  if (state !== "error") {
+    return null;
+  }
+
   return (
     <button
       type="button"

@@ -1,6 +1,7 @@
 import { Bell, List, NotebookPen, Type } from "lucide-react";
 import { cn } from "../../../../layout/utils/styles";
-import type { CaptureCardIcon, CaptureKind, TaskShape } from "./capture-card.types";
+import { useCaptureCard } from "./contexts/capture-card-context";
+import type { CaptureCardIcon, CaptureKind, TaskShape } from "./types";
 
 const KIND_ICON: Record<CaptureKind, CaptureCardIcon> = {
   note: NotebookPen,
@@ -13,19 +14,10 @@ const TASK_SHAPE_ICON: Record<TaskShape, CaptureCardIcon> = {
   list: List,
 };
 
-type CaptureCardIconProps = {
-  kind: CaptureKind;
-  taskShape: TaskShape;
-  isError: boolean;
-  isMuted: boolean;
-};
-
-export function CaptureCardIcon({
-  kind,
-  taskShape,
-  isError,
-  isMuted,
-}: CaptureCardIconProps) {
+export function CaptureCardIcon() {
+  const { kind, state, taskShape } = useCaptureCard();
+  const isError = state === "error";
+  const isMuted = state === "fired" || state === "finished";
   const Icon = kind === "task" ? TASK_SHAPE_ICON[taskShape] : KIND_ICON[kind];
 
   return (
