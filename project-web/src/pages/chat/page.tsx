@@ -1,12 +1,10 @@
-import { Menu } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { BrandMark } from "../../layout/components/brand-mark";
-import { IconButton } from "../../layout/components/ui/icon-button";
 import { ChatEmptyState } from "./components/chat-empty-state/chat-empty-state";
 import { ChatFooter } from "./components/chat-footer/chat-footer";
 import { ChatHistory } from "./components/chat-history/chat-history";
 import { ChatHistorySkeleton } from "./components/chat-history/chat-history-skeleton";
 import { ChatTopBanner } from "./components/chat-top-banner/chat-top-banner";
+import { ChatTopBar } from "./components/chat-top-bar/chat-top-bar";
 import { ActiveTaskPicker } from "./components/task-picker/active-task-picker";
 import { useChatMessages } from "./hooks/use-chat-messages";
 import { useConnectivity } from "../../layout/hooks/use-connectivity";
@@ -54,12 +52,7 @@ export function Chat() {
   return (
     <div className="relative flex min-h-dvh flex-col items-center bg-surface text-on-surface">
       <header className="fixed top-0 left-1/2 z-50 flex h-16 w-full max-w-120 -translate-x-1/2 flex-col bg-surface">
-        <div className="flex h-16 items-center justify-between px-6">
-          <BrandMark logoWidth={28} logoHeight={22} />
-          <IconButton label="Menu">
-            <Menu className="size-6" />
-          </IconButton>
-        </div>
+        <ChatTopBar />
         <ChatTopBanner />
       </header>
 
