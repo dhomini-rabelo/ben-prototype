@@ -14,7 +14,9 @@ import { requestTranscribeAudio } from "../../../api/requests/transcription";
 import { ROUTES } from "../../../core/routes";
 import { useTaskDetailData } from "../../../layout/hooks/api/use-task-detail-data";
 import { useConnectivity } from "../../chat/hooks/use-connectivity";
+import { useElapsedTimer } from "../../chat/hooks/use-elapsed-timer";
 import { useMediaRecorder } from "../../chat/hooks/use-media-recorder";
+import { useMicrophonePermission } from "../../chat/hooks/use-microphone-permission";
 
 type VoiceStatus = "idle" | "recording" | "transcribing" | "error";
 
@@ -48,7 +50,9 @@ export function useTaskWorkspace() {
   const transcriptionRunIdRef = useRef(0);
   const processedBlobRef = useRef<Blob | null>(null);
 
-  const recorder = useMediaRecorder();
+  const { permission: micPermission, setPermission } = useMicrophonePermission();
+  const recorder = useMediaRecorder({ onPermissionResult: setPermission });
+  const recordingSeconds = useElapsedTimer(recorder.isRecording);
   const { isOffline } = useConnectivity();
 
   const { actions: detailActions, state: detailState } =
@@ -92,7 +96,7 @@ export function useTaskWorkspace() {
   }
 
   async function startRecording() {
-    if (recorder.permission === "denied" || isOffline) {
+    if (micPermission === "denied" || isOffline) {
       return;
     }
     setTranscription("idle");
@@ -277,9 +281,9 @@ export function useTaskWorkspace() {
     isMutating: state.isMutating,
     voiceStatus,
     isOffline,
-    micPermission: recorder.permission,
-    recordingSeconds: recorder.elapsedSeconds,
-    canRecord: recorder.permission !== "denied" && !isOffline,
+    micPermission,
+    recordingSeconds,
+    canRecord: micPermission !== "denied" && !isOffline,
     handleDraftChange,
     handleSend,
     startRecording,

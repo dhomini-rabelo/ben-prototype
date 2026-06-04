@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
-export type MicPermission = "granted" | "denied" | "prompt";
+import type { MicPermission } from "./use-microphone-permission";
 
 const PREFERRED_MIME_TYPE = "audio/webm";
 
@@ -20,18 +19,18 @@ function resolveMimeType(): string | undefined {
 }
 
 interface MediaRecorderState {
-  permission: MicPermission;
   isRecording: boolean;
-  elapsedSeconds: number;
   audioBlob: Blob | null;
   error: string | null;
 }
 
-export function useMediaRecorder() {
+interface UseMediaRecorderOptions {
+  onPermissionResult?: (permission: MicPermission) => void;
+}
+
+export function useMediaRecorder(options: UseMediaRecorderOptions = {}) {
   const [state, setState] = useState<MediaRecorderState>({
-    permission: "prompt",
     isRecording: false,
-    elapsedSeconds: 0,
     audioBlob: null,
     error: null,
   });
@@ -39,14 +38,11 @@ export function useMediaRecorder() {
   const recorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const onPermissionResultRef = useRef(options.onPermissionResult);
 
-  function clearTimer() {
-    if (intervalRef.current !== null) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  }
+  useEffect(() => {
+    onPermissionResultRef.current = options.onPermissionResult;
+  });
 
   function releaseStream() {
     streamRef.current?.getTracks().forEach((track) => track.stop());
@@ -60,7 +56,6 @@ export function useMediaRecorder() {
       ...previousState,
       audioBlob: null,
       error: null,
-      elapsedSeconds: 0,
     }));
   }
 
@@ -72,7 +67,7 @@ export function useMediaRecorder() {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (caughtError) {
       if (isPermissionDeniedError(caughtError)) {
-        setState((previousState) => ({ ...previousState, permission: "denied" }));
+        onPermissionResultRef.current?.("denied");
       } else {
         setState((previousState) => ({
           ...previousState,
@@ -82,7 +77,7 @@ export function useMediaRecorder() {
       return;
     }
 
-    setState((previousState) => ({ ...previousState, permission: "granted" }));
+    onPermissionResultRef.current?.("granted");
     streamRef.current = stream;
     chunksRef.current = [];
 
@@ -100,7 +95,6 @@ export function useMediaRecorder() {
 
     recorder.onstop = () => {
       const blob = new Blob(chunksRef.current, { type: recorder.mimeType });
-      clearTimer();
       releaseStream();
       setState((previousState) => ({
         ...previousState,
@@ -110,17 +104,7 @@ export function useMediaRecorder() {
     };
 
     recorder.start();
-    setState((previousState) => ({
-      ...previousState,
-      isRecording: true,
-      elapsedSeconds: 0,
-    }));
-    intervalRef.current = setInterval(() => {
-      setState((previousState) => ({
-        ...previousState,
-        elapsedSeconds: previousState.elapsedSeconds + 1,
-      }));
-    }, 1000);
+    setState((previousState) => ({ ...previousState, isRecording: true }));
   }
 
   function stop() {
@@ -137,58 +121,22 @@ export function useMediaRecorder() {
         recorder.stop();
       }
     }
-    clearTimer();
     releaseStream();
     setState((previousState) => ({
       ...previousState,
       isRecording: false,
-      elapsedSeconds: 0,
       audioBlob: null,
     }));
   }
 
   useEffect(() => {
-    if (typeof navigator === "undefined" || !navigator.permissions?.query) {
-      return;
-    }
-
-    let permissionStatus: PermissionStatus | null = null;
-
-    function handleChange() {
-      if (permissionStatus) {
-        const nextState = permissionStatus.state as MicPermission;
-        setState((previousState) => ({ ...previousState, permission: nextState }));
-      }
-    }
-
-    navigator.permissions
-      .query({ name: "microphone" as PermissionName })
-      .then((status) => {
-        permissionStatus = status;
-        setState((previousState) => ({
-          ...previousState,
-          permission: status.state as MicPermission,
-        }));
-        status.addEventListener("change", handleChange);
-      })
-      .catch(() => undefined);
-
     return () => {
-      permissionStatus?.removeEventListener("change", handleChange);
-    };
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      clearTimer();
       releaseStream();
     };
   }, []);
 
   return {
-    permission: state.permission,
     isRecording: state.isRecording,
-    elapsedSeconds: state.elapsedSeconds,
     audioBlob: state.audioBlob,
     error: state.error,
     start,
