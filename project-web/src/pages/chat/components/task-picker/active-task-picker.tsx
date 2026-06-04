@@ -3,45 +3,22 @@ import { useNavigate } from "react-router";
 import { ROUTES } from "../../../../core/routes";
 import { useTaskListData } from "../../../../layout/hooks/api/use-task-list-data";
 import { ActiveTaskPeek } from "../active-task-peek";
+import { TaskPickerEmpty } from "./task-picker-empty";
+import { TaskPickerError } from "./task-picker-error";
+import { TaskPickerList } from "./task-picker-list";
 import { TaskPickerSheet } from "./task-picker-sheet";
-
-function relativeTime(iso: string): string {
-  const minutes = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
-  if (minutes < 1) {
-    return "just now";
-  }
-  if (minutes < 60) {
-    return `active · ${minutes}m ago`;
-  }
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) {
-    return `active · ${hours}h ago`;
-  }
-  return `active · ${Math.floor(hours / 24)}d ago`;
-}
+import { TaskPickerSkeleton } from "./task-picker-skeleton";
 
 export function ActiveTaskPicker() {
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-
   const { actions, state } = useTaskListData({ status: "active" });
+
+  const navigate = useNavigate();
 
   const tasks = state.data?.items ?? [];
 
   if (!isOpen && (state.isLoading || tasks.length === 0)) {
     return null;
-  }
-
-  const variant = state.isLoading
-    ? "loading"
-    : state.isError
-      ? "error"
-      : tasks.length > 0
-        ? "populated"
-        : "empty";
-
-  function handleSelect(taskId: string) {
-    navigate(ROUTES.taskWorkspace(taskId));
   }
 
   return (
@@ -60,17 +37,20 @@ export function ActiveTaskPicker() {
             onClick={() => setIsOpen(false)}
           />
           <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-120 -translate-x-1/2">
-            <TaskPickerSheet
-              variant={variant}
-              tasks={tasks.map((task) => ({
-                id: task.id,
-                title: task.title,
-                contentType: task.contentType,
-                supporting: relativeTime(task.lastActivityAt),
-              }))}
-              onSelect={handleSelect}
-              onRetry={() => actions.refetch()}
-            />
+            <TaskPickerSheet count={tasks.length}>
+              {state.isLoading ? (
+                <TaskPickerSkeleton />
+              ) : state.isError ? (
+                <TaskPickerError onRetry={() => actions.refetch()} />
+              ) : tasks.length === 0 ? (
+                <TaskPickerEmpty />
+              ) : (
+                <TaskPickerList
+                  tasks={tasks}
+                  onSelect={(taskId) => navigate(ROUTES.taskWorkspace(taskId))}
+                />
+              )}
+            </TaskPickerSheet>
           </div>
         </>
       )}
