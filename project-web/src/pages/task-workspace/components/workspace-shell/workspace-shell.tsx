@@ -39,7 +39,7 @@ export function WorkspaceShell({
     <div className="relative flex min-h-dvh flex-col items-center bg-surface text-on-surface">
       <header className="fixed top-0 left-1/2 z-50 flex w-full max-w-120 -translate-x-1/2 flex-col bg-surface">
         {topBar}
-        {topBanner && <div className="px-4 pb-2">{topBanner}</div>}
+        {topBanner}
       </header>
 
       <main

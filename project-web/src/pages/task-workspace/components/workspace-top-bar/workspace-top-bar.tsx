@@ -1,21 +1,18 @@
 import { CheckCircle2, ChevronLeft, List, MoreHorizontal, RotateCcw, Type } from "lucide-react";
-import { useState } from "react";
+import { memo, useState } from "react";
+import { useNavigate } from "react-router";
+import { ROUTES } from "../../../../core/routes";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { cn } from "../../../../layout/utils/styles";
 import { useWorkspaceTask } from "../../hooks/use-workspace-task";
+import { useTaskStore } from "../../stores/task-store";
 
-type WorkspaceTopBarProps = {
-  onBack?: () => void;
-  onFinish?: () => void;
-  onReopen?: () => void;
-};
-
-export function WorkspaceTopBar({
-  onBack,
-  onFinish,
-  onReopen,
-}: WorkspaceTopBarProps) {
+function WorkspaceTopBarComponent() {
+  const navigate = useNavigate();
   const task = useWorkspaceTask();
+  const finish = useTaskStore((store) => store.finish);
+  const reopen = useTaskStore((store) => store.reopen);
+  const isMutating = useTaskStore((store) => store.isMutating);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (!task) {
@@ -25,14 +22,16 @@ export function WorkspaceTopBar({
   const TypeIcon = task.contentType === "todo" ? List : Type;
   const isFinished = task.status === "finished";
 
-  function handleFinish() {
+  async function handleFinish() {
     setIsMenuOpen(false);
-    onFinish?.();
+    if (await finish()) {
+      navigate(ROUTES.chat);
+    }
   }
 
   function handleReopen() {
     setIsMenuOpen(false);
-    onReopen?.();
+    void reopen();
   }
 
   return (
@@ -40,7 +39,7 @@ export function WorkspaceTopBar({
       <button
         type="button"
         aria-label="Back to chat"
-        onClick={onBack}
+        onClick={() => navigate(ROUTES.chat)}
         className="flex size-10 shrink-0 items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low"
       >
         <ChevronLeft className="size-5" strokeWidth={2} />
@@ -82,7 +81,8 @@ export function WorkspaceTopBar({
             <button
               type="button"
               onClick={handleReopen}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-body-md text-on-surface hover:bg-surface-container-low"
+              disabled={isMutating}
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-body-md text-on-surface hover:bg-surface-container-low disabled:opacity-60"
             >
               <RotateCcw className="size-4" strokeWidth={2} />
               Reopen task
@@ -91,7 +91,8 @@ export function WorkspaceTopBar({
             <button
               type="button"
               onClick={handleFinish}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-body-md text-on-surface hover:bg-surface-container-low"
+              disabled={isMutating}
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-body-md text-on-surface hover:bg-surface-container-low disabled:opacity-60"
             >
               <CheckCircle2 className="size-4" strokeWidth={2} />
               Finish task
@@ -102,3 +103,5 @@ export function WorkspaceTopBar({
     </div>
   );
 }
+
+export const WorkspaceTopBar = memo(WorkspaceTopBarComponent);

@@ -1,15 +1,16 @@
 import { useWorkspaceTask } from "../../hooks/use-workspace-task";
+import { useTaskStore } from "../../stores/task-store";
+import { sortByOrder } from "../../utils/todo-order";
 import { AddTodoRow } from "./add-todo-row";
 import { TodoListItem } from "./todo-list-item";
 
 type TodoContentProps = {
   readOnly?: boolean;
-  onToggle?: (itemId: string) => void;
-  onAdd?: (title: string) => void;
 };
 
-export function TodoContent({ readOnly, onToggle, onAdd }: TodoContentProps) {
+export function TodoContent({ readOnly }: TodoContentProps) {
   const task = useWorkspaceTask();
+  const toggleTodo = useTaskStore((s) => s.toggleTodo);
 
   if (!task) {
     return null;
@@ -35,9 +36,7 @@ export function TodoContent({ readOnly, onToggle, onAdd }: TodoContentProps) {
     );
   }
 
-  const todoItems = [...(task.todoItems ?? [])].sort(
-    (a, b) => a.order - b.order,
-  );
+  const todoItems = sortByOrder(task.todoItems ?? []);
 
   return (
     <section className="flex flex-1 flex-col gap-1 pt-2">
@@ -46,10 +45,10 @@ export function TodoContent({ readOnly, onToggle, onAdd }: TodoContentProps) {
           key={item.id}
           title={item.title}
           done={item.done}
-          onToggle={readOnly ? undefined : () => onToggle?.(item.id)}
+          onToggle={readOnly ? undefined : () => void toggleTodo(item.id)}
         />
       ))}
-      {!readOnly && <AddTodoRow onAdd={onAdd} />}
+      {!readOnly && <AddTodoRow />}
     </section>
   );
 }

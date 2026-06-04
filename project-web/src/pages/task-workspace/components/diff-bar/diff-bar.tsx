@@ -1,30 +1,20 @@
 import { Check, X } from "lucide-react";
-import type { Task } from "../../../../api/models/task";
+import { memo } from "react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { useWorkspaceTask } from "../../hooks/use-workspace-task";
+import { useTaskStore } from "../../stores/task-store";
+import { diffSummary } from "../../utils/diff-summary";
 
-type DiffBarProps = {
-  disabled?: boolean;
-  onApprove?: () => void;
-  onReject?: () => void;
-};
-
-function diffSummary(task: Task | null): string {
-  const changes = task?.pendingDiff?.changes;
-  if (!changes) {
-    return "";
-  }
-  if (changes.contentType === "todo") {
-    const count = changes.items.filter(
-      (item) => item.diff !== "unchanged",
-    ).length;
-    return `Ben suggested ${count} change${count === 1 ? "" : "s"}`;
-  }
-  return "Ben revised the draft";
-}
-
-export function DiffBar({ disabled, onApprove, onReject }: DiffBarProps) {
+function DiffBarComponent() {
   const task = useWorkspaceTask();
+  const isMutating = useTaskStore((store) => store.isMutating);
+  const approveDiff = useTaskStore((store) => store.approveDiff);
+  const rejectDiff = useTaskStore((store) => store.rejectDiff);
+
+  if (!task?.pendingDiff) {
+    return null;
+  }
+
   const summary = diffSummary(task);
 
   return (
@@ -38,8 +28,8 @@ export function DiffBar({ disabled, onApprove, onReject }: DiffBarProps) {
       <div className="flex gap-2">
         <button
           type="button"
-          onClick={onReject}
-          disabled={disabled}
+          onClick={rejectDiff}
+          disabled={isMutating}
           className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-surface-container-lowest px-3 py-2 text-button font-semibold text-on-surface ring-1 ring-outline-variant/60 hover:bg-surface-container-low disabled:opacity-60"
         >
           <X className="size-4" strokeWidth={2} />
@@ -47,8 +37,8 @@ export function DiffBar({ disabled, onApprove, onReject }: DiffBarProps) {
         </button>
         <button
           type="button"
-          onClick={onApprove}
-          disabled={disabled}
+          onClick={approveDiff}
+          disabled={isMutating}
           className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-primary px-3 py-2 text-button font-semibold text-on-primary hover:bg-surface-tint disabled:opacity-60"
         >
           <Check className="size-4" strokeWidth={2} />
@@ -58,3 +48,5 @@ export function DiffBar({ disabled, onApprove, onReject }: DiffBarProps) {
     </div>
   );
 }
+
+export const DiffBar = memo(DiffBarComponent);

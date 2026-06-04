@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { memo } from "react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { cn } from "../../../../layout/utils/styles";
 import type { TodoItemDiff } from "../../../../api/models/task";
@@ -10,7 +11,12 @@ type TodoListItemProps = {
   onToggle?: () => void;
 };
 
-export function TodoListItem({ title, done, diff, onToggle }: TodoListItemProps) {
+function TodoListItemComponent({
+  title,
+  done,
+  diff,
+  onToggle,
+}: TodoListItemProps) {
   const isAdded = diff === "added";
   const isRemoved = diff === "removed";
   const isDiff = isAdded || isRemoved;
@@ -53,3 +59,5 @@ export function TodoListItem({ title, done, diff, onToggle }: TodoListItemProps)
     </div>
   );
 }
+
+export const TodoListItem = memo(TodoListItemComponent);

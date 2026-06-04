@@ -1,4 +1,5 @@
 import { RotateCw } from "lucide-react";
+import { memo } from "react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { cn } from "../../../../layout/utils/styles";
 
@@ -8,7 +9,7 @@ type SubThreadBannerProps = {
   onRetry?: () => void;
 };
 
-export function SubThreadBanner({
+function SubThreadBannerComponent({
   variant = "ben-reply",
   text,
   onRetry,
@@ -65,3 +66,5 @@ export function SubThreadBanner({
     </div>
   );
 }
+
+export const SubThreadBanner = memo(SubThreadBannerComponent);

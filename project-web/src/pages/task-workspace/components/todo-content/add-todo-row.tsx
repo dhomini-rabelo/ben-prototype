@@ -1,11 +1,9 @@
 import { Plus } from "lucide-react";
 import { useState, type KeyboardEvent } from "react";
+import { useTaskStore } from "../../stores/task-store";
 
-type AddTodoRowProps = {
-  onAdd?: (title: string) => void;
-};
-
-export function AddTodoRow({ onAdd }: AddTodoRowProps) {
+export function AddTodoRow() {
+  const addTodo = useTaskStore((s) => s.addTodo);
   const [value, setValue] = useState("");
 
   function commit() {
@@ -13,7 +11,7 @@ export function AddTodoRow({ onAdd }: AddTodoRowProps) {
     if (!trimmed) {
       return;
     }
-    onAdd?.(trimmed);
+    void addTodo(trimmed);
     setValue("");
   }
 

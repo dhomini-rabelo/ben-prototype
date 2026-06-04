@@ -1,14 +1,28 @@
-import type { FocusEvent } from "react";
+import { useState, type FocusEvent } from "react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { useWorkspaceTask } from "../../hooks/use-workspace-task";
+import { useTaskStore } from "../../stores/task-store";
 
 type TextContentProps = {
   readOnly?: boolean;
-  onEdit?: (value: string) => void;
 };
 
-export function TextContent({ readOnly, onEdit }: TextContentProps) {
+export function TextContent({ readOnly }: TextContentProps) {
   const task = useWorkspaceTask();
+  const editText = useTaskStore((s) => s.editText);
+
+  const content = task?.textContent ?? "";
+
+  // Controlled textarea seeded from the server content. We re-sync during render
+  // (React's "adjust state when a prop changes" pattern) whenever the task or its
+  // persisted content changes, instead of remounting via `key` or a state-in-effect.
+  const syncKey = `${task?.id ?? ""}:${content}`;
+  const [value, setValue] = useState(content);
+  const [syncedKey, setSyncedKey] = useState(syncKey);
+  if (syncKey !== syncedKey) {
+    setSyncedKey(syncKey);
+    setValue(content);
+  }
 
   if (!task) {
     return null;
@@ -40,21 +54,19 @@ export function TextContent({ readOnly, onEdit }: TextContentProps) {
     );
   }
 
-  const content = task.textContent ?? "";
-
   function handleBlur(event: FocusEvent<HTMLTextAreaElement>) {
     if (event.target.value !== content) {
-      onEdit?.(event.target.value);
+      void editText(event.target.value);
     }
   }
 
   return (
     <section className="flex flex-1 flex-col pt-2">
       <textarea
-        key={`${task.id}:${content}`}
-        defaultValue={content}
+        value={value}
         readOnly={readOnly}
         placeholder="tell Ben what to put here…"
+        onChange={(event) => setValue(event.target.value)}
         onBlur={handleBlur}
         className="min-h-60 flex-1 resize-none border-none bg-transparent text-body-md leading-relaxed text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-0"
       />
