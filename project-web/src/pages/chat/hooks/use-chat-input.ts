@@ -1,11 +1,11 @@
-import { useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { useCallback } from "react";
 import { draftAtom } from "../states/chat-state";
 import { useMessagesStore } from "../states/messages-store";
 
 export function useChatInput() {
-  const setDraft = useSetAtom(draftAtom);
+  const [draft, setDraft] = useAtom(draftAtom);
   const sendText = useMessagesStore((store) => store.sendText);
 
   const handleDraftChange = useCallback(
@@ -28,5 +28,5 @@ export function useChatInput() {
     ),
   );
 
-  return { handleDraftChange, handleSend };
+  return { draft, handleDraftChange, handleSend };
 }
