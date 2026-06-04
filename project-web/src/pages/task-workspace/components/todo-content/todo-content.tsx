@@ -1,5 +1,5 @@
 import { useWorkspaceTask } from "../../hooks/use-workspace-task";
-import { useTaskStore } from "../../stores/task-store";
+import { useTaskTodosStore } from "../../stores/task-todos-store";
 import { sortByOrder } from "../../utils/todo-order";
 import { AddTodoRow } from "./add-todo-row";
 import { TodoListItem } from "./todo-list-item";
@@ -10,7 +10,7 @@ type TodoContentProps = {
 
 export function TodoContent({ readOnly }: TodoContentProps) {
   const task = useWorkspaceTask();
-  const toggleTodo = useTaskStore((s) => s.toggleTodo);
+  const toggleTodo = useTaskTodosStore((s) => s.toggleTodo);
 
   if (!task) {
     return null;

@@ -2,15 +2,15 @@ import { useAtomValue } from "jotai";
 import { memo } from "react";
 import { useWorkspaceTask } from "../hooks/use-workspace-task";
 import { taskDraftAtom } from "../states/task-workspace-state";
-import { useTaskStore } from "../stores/task-store";
+import { useTaskChatStore } from "../stores/task-chat-store";
 import { SubThreadBanner } from "./sub-thread-banner/sub-thread-banner";
 
 function WorkspaceSubThreadBannerComponent() {
   const task = useWorkspaceTask();
-  const isAwaitingReply = useTaskStore((store) => store.isAwaitingReply);
-  const sendError = useTaskStore((store) => store.sendError);
-  const lastBenReply = useTaskStore((store) => store.lastBenReply);
-  const sendText = useTaskStore((store) => store.sendText);
+  const isAwaitingReply = useTaskChatStore((store) => store.isAwaitingReply);
+  const sendError = useTaskChatStore((store) => store.sendError);
+  const lastBenReply = useTaskChatStore((store) => store.lastBenReply);
+  const sendText = useTaskChatStore((store) => store.sendText);
   const draft = useAtomValue(taskDraftAtom);
 
   if (task?.pendingDiff) {

@@ -12,6 +12,7 @@ import { TextContent } from "./components/text-content/text-content";
 import { TodoContent } from "./components/todo-content/todo-content";
 import { WorkspaceTopBar } from "./components/workspace-top-bar/workspace-top-bar";
 import { useWorkspaceTask } from "./hooks/use-workspace-task";
+import { useTaskChatStore } from "./stores/task-chat-store";
 import { useTaskStore } from "./stores/task-store";
 import { useVoiceStore } from "../../layout/stores/voice-store";
 
@@ -31,7 +32,7 @@ export function TaskWorkspace() {
 
   useEffect(() => {
     useVoiceStore.getState().setTranscriptHandler((text) => {
-      void useTaskStore.getState().sendText(text);
+      void useTaskChatStore.getState().sendText(text);
     });
   }, []);
 

@@ -1,9 +1,9 @@
 import { Plus } from "lucide-react";
 import { useState, type KeyboardEvent } from "react";
-import { useTaskStore } from "../../stores/task-store";
+import { useTaskTodosStore } from "../../stores/task-todos-store";
 
 export function AddTodoRow() {
-  const addTodo = useTaskStore((s) => s.addTodo);
+  const addTodo = useTaskTodosStore((s) => s.addTodo);
   const [value, setValue] = useState("");
 
   function commit() {

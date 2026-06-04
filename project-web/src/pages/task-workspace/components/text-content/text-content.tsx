@@ -1,7 +1,7 @@
 import { useState, type FocusEvent } from "react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { useWorkspaceTask } from "../../hooks/use-workspace-task";
-import { useTaskStore } from "../../stores/task-store";
+import { useTaskContentStore } from "../../stores/task-content-store";
 
 type TextContentProps = {
   readOnly?: boolean;
@@ -9,7 +9,7 @@ type TextContentProps = {
 
 export function TextContent({ readOnly }: TextContentProps) {
   const task = useWorkspaceTask();
-  const editText = useTaskStore((s) => s.editText);
+  const editText = useTaskContentStore((s) => s.editText);
 
   const content = task?.textContent ?? "";
 

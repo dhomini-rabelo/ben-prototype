@@ -5,14 +5,14 @@ import { ROUTES } from "../../../../core/routes";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { cn } from "../../../../layout/utils/styles";
 import { useWorkspaceTask } from "../../hooks/use-workspace-task";
-import { useTaskStore } from "../../stores/task-store";
+import { useTaskLifecycleStore } from "../../stores/task-lifecycle-store";
 
 function WorkspaceTopBarComponent() {
   const navigate = useNavigate();
   const task = useWorkspaceTask();
-  const finish = useTaskStore((store) => store.finish);
-  const reopen = useTaskStore((store) => store.reopen);
-  const isMutating = useTaskStore((store) => store.isMutating);
+  const finish = useTaskLifecycleStore((store) => store.finish);
+  const reopen = useTaskLifecycleStore((store) => store.reopen);
+  const isMutating = useTaskLifecycleStore((store) => store.isMutating);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (!task) {

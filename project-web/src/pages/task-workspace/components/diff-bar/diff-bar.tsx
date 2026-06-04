@@ -2,14 +2,14 @@ import { Check, X } from "lucide-react";
 import { memo } from "react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { useWorkspaceTask } from "../../hooks/use-workspace-task";
-import { useTaskStore } from "../../stores/task-store";
+import { useTaskDiffStore } from "../../stores/task-diff-store";
 import { diffSummary } from "../../utils/diff-summary";
 
 function DiffBarComponent() {
   const task = useWorkspaceTask();
-  const isMutating = useTaskStore((store) => store.isMutating);
-  const approveDiff = useTaskStore((store) => store.approveDiff);
-  const rejectDiff = useTaskStore((store) => store.rejectDiff);
+  const isMutating = useTaskDiffStore((store) => store.isMutating);
+  const approveDiff = useTaskDiffStore((store) => store.approveDiff);
+  const rejectDiff = useTaskDiffStore((store) => store.rejectDiff);
 
   if (!task?.pendingDiff) {
     return null;
