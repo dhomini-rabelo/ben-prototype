@@ -1,20 +1,14 @@
 import type { KeyboardEvent } from "react";
-import { useChatInputDisabled } from "./contexts/disabled";
+import { useChatInputContext } from "./contexts/chat-input";
 
 type ChatInputInputProps = {
-  value: string;
-  onChange: (value: string) => void;
-  onSend: () => void;
   placeholder?: string;
 };
 
 export function ChatInputInput({
-  value,
-  onChange,
-  onSend,
   placeholder = "Message Ben...",
 }: ChatInputInputProps) {
-  const disabled = useChatInputDisabled();
+  const { draft, onDraftChange, onSend, disabled } = useChatInputContext();
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter" && !disabled) {
@@ -27,8 +21,8 @@ export function ChatInputInput({
     <input
       type="text"
       placeholder={placeholder}
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
+      value={draft}
+      onChange={(event) => onDraftChange(event.target.value)}
       onKeyDown={handleKeyDown}
       disabled={disabled}
       className="min-w-0 flex-1 border-none bg-transparent px-2 text-body-md text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-0"

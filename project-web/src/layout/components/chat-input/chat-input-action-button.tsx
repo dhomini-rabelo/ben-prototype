@@ -2,28 +2,20 @@ import { Mic, Send } from "lucide-react";
 import { useCanRecord } from "../../hooks/use-can-record";
 import { useConnectivityStore } from "../../stores/connectivity-store";
 import { selectVoiceStatus, useVoiceStore } from "../../stores/voice-store";
-import { useChatInputDisabled } from "./contexts/disabled";
+import { useChatInputContext } from "./contexts/chat-input";
 
-type ChatInputActionButtonProps = {
-  value: string;
-  onSend: () => void;
-};
-
-export function ChatInputActionButton({
-  value,
-  onSend,
-}: ChatInputActionButtonProps) {
+export function ChatInputActionButton() {
   const startRecording = useVoiceStore((store) => store.startRecording);
   const voiceStatus = useVoiceStore(selectVoiceStatus);
   const isOffline = useConnectivityStore((store) => store.isOffline);
 
   const canRecord = useCanRecord();
 
-  const isChatDisabled = useChatInputDisabled();
+  const { draft, onSend, disabled } = useChatInputContext();
 
   const isTranscribing = voiceStatus === "transcribing";
-  const isSendingDisabled = !isChatDisabled && (isOffline || isTranscribing);
-  const hasText = value.length > 0;
+  const isSendingDisabled = !disabled && (isOffline || isTranscribing);
+  const hasText = draft.length > 0;
 
   if (hasText) {
     return (
@@ -31,7 +23,7 @@ export function ChatInputActionButton({
         type="button"
         aria-label="Send"
         onClick={onSend}
-        disabled={isChatDisabled || isSendingDisabled}
+        disabled={disabled || isSendingDisabled}
         className="ml-2 flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary transition-colors hover:bg-inverse-surface disabled:opacity-60"
       >
         <Send className="size-5" strokeWidth={2} />
@@ -44,7 +36,7 @@ export function ChatInputActionButton({
       type="button"
       aria-label="Voice input"
       onClick={startRecording}
-      disabled={isChatDisabled || !canRecord}
+      disabled={disabled || !canRecord}
       className="ml-2 flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary transition-colors hover:bg-inverse-surface disabled:opacity-60"
     >
       <Mic className="size-5" />

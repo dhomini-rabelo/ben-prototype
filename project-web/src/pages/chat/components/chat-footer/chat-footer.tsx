@@ -18,14 +18,15 @@ function ChatFooterComponent() {
   }
 
   return (
-    <ChatInput.Root disabled={historyState.isLoading}>
+    <ChatInput.Root
+      draft={draft}
+      onDraftChange={handleDraftChange}
+      onSend={handleSend}
+      disabled={historyState.isLoading}
+    >
       <ChatInput.AttachButton />
-      <ChatInput.Input
-        value={draft}
-        onChange={handleDraftChange}
-        onSend={handleSend}
-      />
-      <ChatInput.ActionButton value={draft} onSend={handleSend} />
+      <ChatInput.Input />
+      <ChatInput.ActionButton />
     </ChatInput.Root>
   );
 }

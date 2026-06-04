@@ -1,12 +1,12 @@
 import { Plus } from "lucide-react";
-import { useChatInputDisabled } from "./contexts/disabled";
+import { useChatInputContext } from "./contexts/chat-input";
 
 type ChatInputAttachButtonProps = {
   onClick?: () => void;
 };
 
 export function ChatInputAttachButton({ onClick }: ChatInputAttachButtonProps) {
-  const disabled = useChatInputDisabled();
+  const { disabled } = useChatInputContext();
 
   return (
     <button

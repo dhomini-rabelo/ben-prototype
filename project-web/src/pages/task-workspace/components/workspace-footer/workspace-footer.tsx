@@ -18,15 +18,15 @@ function WorkspaceFooterComponent() {
   }
 
   return (
-    <ChatInput.Root disabled={task?.status === "finished"}>
+    <ChatInput.Root
+      draft={draft}
+      onDraftChange={handleDraftChange}
+      onSend={handleSend}
+      disabled={task?.status === "finished"}
+    >
       <ChatInput.AttachButton />
-      <ChatInput.Input
-        value={draft}
-        onChange={handleDraftChange}
-        onSend={handleSend}
-        placeholder="Ask Ben to edit…"
-      />
-      <ChatInput.ActionButton value={draft} onSend={handleSend} />
+      <ChatInput.Input placeholder="Ask Ben to edit…" />
+      <ChatInput.ActionButton />
     </ChatInput.Root>
   );
 }
