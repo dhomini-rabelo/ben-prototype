@@ -53,16 +53,6 @@ export function Chat() {
   const hasVoiceBubble =
     voiceStatus === "transcribing" || voiceStatus === "error";
 
-  function renderBody() {
-    if (isLoadingHistory) {
-      return <ChatHistorySkeleton />;
-    }
-    if (isEmpty && !hasVoiceBubble) {
-      return <ChatEmptyState />;
-    }
-    return <ChatHistory />;
-  }
-
   return (
     <div className="relative flex min-h-dvh flex-col items-center bg-surface text-on-surface">
       <header className="fixed top-0 left-1/2 z-50 flex h-16 w-full max-w-120 -translate-x-1/2 flex-col bg-surface">
@@ -82,7 +72,13 @@ export function Chat() {
         }
         style={{ paddingBottom: footerHeight + FOOTER_GAP }}
       >
-        {renderBody()}
+        {isLoadingHistory ? (
+          <ChatHistorySkeleton />
+        ) : isEmpty && !hasVoiceBubble ? (
+          <ChatEmptyState />
+        ) : (
+          <ChatHistory />
+        )}
       </main>
 
       <footer
