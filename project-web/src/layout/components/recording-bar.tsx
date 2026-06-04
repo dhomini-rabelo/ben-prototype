@@ -1,6 +1,7 @@
 import { ArrowUp, Mic } from "lucide-react";
-import { Typography } from "../ui/typography";
-import { cn } from "../../utils/styles";
+import { useVoiceStore } from "../stores/voice-store";
+import { cn } from "../utils/styles";
+import { Typography } from "./ui/typography";
 
 const WAVEFORM_BARS = [
   10, 18, 28, 22, 32, 14, 26, 36, 20, 30, 16, 24, 34, 18, 28,
@@ -13,21 +14,15 @@ function formatTime(totalSeconds: number) {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
-type RecordingBarDesignProps = {
-  elapsedSeconds: number;
-  maxSeconds?: number;
-  onStop?: () => void;
-  onCancel?: () => void;
+type RecordingBarProps = {
   className?: string;
 };
 
-export function RecordingBarDesign({
-  elapsedSeconds,
-  maxSeconds,
-  onStop,
-  onCancel,
-  className,
-}: RecordingBarDesignProps) {
+export function RecordingBar({ className }: RecordingBarProps) {
+  const elapsedSeconds = useVoiceStore((store) => store.recordingSeconds);
+  const stopRecording = useVoiceStore((store) => store.stopRecording);
+  const cancelRecording = useVoiceStore((store) => store.cancelRecording);
+
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <div className="flex flex-1 flex-col gap-2 rounded-2xl border border-outline-variant/40 bg-surface-container-lowest px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
@@ -43,7 +38,6 @@ export function RecordingBarDesign({
             className="font-mono normal-case text-on-surface-variant"
           >
             {formatTime(elapsedSeconds)}
-            {maxSeconds !== undefined && ` / ${formatTime(maxSeconds)}`}
           </Typography>
         </div>
         <div className="flex h-8 items-center justify-center gap-1">
@@ -61,7 +55,7 @@ export function RecordingBarDesign({
         <button
           type="button"
           aria-label="Cancel recording"
-          onClick={onCancel}
+          onClick={cancelRecording}
           className="flex items-center justify-center gap-2 text-on-surface-variant"
         >
           <ArrowUp className="size-3.5" />
@@ -72,7 +66,7 @@ export function RecordingBarDesign({
       <button
         type="button"
         aria-label="Stop recording"
-        onClick={onStop}
+        onClick={stopRecording}
         className="flex size-12 shrink-0 items-center justify-center rounded-full bg-text-error text-on-primary ring-4 ring-text-error/20"
       >
         <Mic className="size-5" />
