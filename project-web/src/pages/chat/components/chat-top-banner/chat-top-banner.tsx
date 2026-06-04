@@ -11,29 +11,30 @@ function ChatTopBannerComponent() {
   const micPermission = useVoiceStore((store) => store.micPermission);
   const isOffline = useConnectivityStore((store) => store.isOffline);
 
-  function renderBanner() {
-    if (isOffline) {
-      return (
+  const isVoiceError = voiceStatus === "error";
+  const isMicDenied = micPermission === "denied";
+
+  if (!isOffline && !isVoiceError && !isMicDenied) {
+    return null;
+  }
+
+  return (
+    <div className="px-4 pb-2">
+      {isOffline ? (
         <ChatBanner.Root tone="warn">
           <ChatBanner.Icon icon={WifiOff} />
           <ChatBanner.Text>
             You're offline. Sending is paused until you're back online.
           </ChatBanner.Text>
         </ChatBanner.Root>
-      );
-    }
-    if (voiceStatus === "error") {
-      return (
+      ) : isVoiceError ? (
         <ChatBanner.Root tone="error">
           <ChatBanner.Icon icon={AlertCircle} />
           <ChatBanner.Text>mic glitched — try again or type it</ChatBanner.Text>
           <ChatBanner.Action label="Retry" onClick={retryVoice} />
           <ChatBanner.Dismiss onClick={dismissError} />
         </ChatBanner.Root>
-      );
-    }
-    if (micPermission === "denied") {
-      return (
+      ) : isMicDenied ? (
         <ChatBanner.Root tone="warn">
           <ChatBanner.Icon icon={TriangleAlert} />
           <ChatBanner.Text>
@@ -41,17 +42,9 @@ function ChatTopBannerComponent() {
           </ChatBanner.Text>
           <ChatBanner.Dismiss />
         </ChatBanner.Root>
-      );
-    }
-    return null;
-  }
-
-  const banner = renderBanner();
-  if (!banner) {
-    return null;
-  }
-
-  return <div className="px-4 pb-2">{banner}</div>;
+      ) : null}
+    </div>
+  );
 }
 
 export const ChatTopBanner = memo(ChatTopBannerComponent);
