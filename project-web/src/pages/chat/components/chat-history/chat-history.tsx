@@ -1,43 +1,38 @@
-import type { RefObject } from "react";
+import { useNavigate } from "react-router";
+import { ROUTES } from "../../../../core/routes";
 import { Typography } from "../../../../layout/components/ui/typography";
-import {
-  getMessageText,
-  type BenUiMessage,
-} from "../../utils/chat-messages";
+import { useChatActions } from "../../contexts/chat-actions";
+import { useChatMessages } from "../../hooks/use-chat-messages";
+import { useInfiniteScrollTop } from "../../hooks/use-infinite-scroll-top";
+import { useScrollToBottom } from "../../hooks/use-scroll-to-bottom";
+import { selectVoiceStatus, useChatStore } from "../../states/chat-store";
+import { getMessageText } from "../../utils/chat-messages";
 import { CaptureCard } from "../capture-card/capture-card";
 import { MessageBubble } from "../message-bubble/message-bubble";
 import { RetryFooter } from "../message-footers/retry-footer";
 import { TranscribingFooter } from "../message-footers/transcribing-footer";
 import { TypingIndicator } from "../typing-indicator";
 
-type VoiceBubble =
-  | { status: "transcribing"; onCancel?: () => void }
-  | { status: "error"; onRetry?: () => void };
+export function ChatHistory() {
+  const navigate = useNavigate();
+  const { cancelTranscribing, retryVoice } = useChatActions();
+  const { messages, historyState, historyActions } = useChatMessages();
+  const isAwaitingReply = useChatStore((store) => store.isAwaitingReply);
+  const voiceStatus = useChatStore(selectVoiceStatus);
 
-type ChatHistoryProps = {
-  messages: BenUiMessage[];
-  isAwaitingReply: boolean;
-  isFetchingOlder: boolean;
-  voiceBubble?: VoiceBubble;
-  bottomRef: RefObject<HTMLDivElement | null>;
-  topRef: RefObject<HTMLDivElement | null>;
-  onOpenTask?: (taskId: string) => void;
-};
+  const { bottomRef } = useScrollToBottom({ messages, isAwaitingReply });
+  const { topRef } = useInfiniteScrollTop({
+    hasMore: historyState.hasMore,
+    isFetchingNextPage: historyState.isFetchingNextPage,
+    onLoadMore: historyActions.fetchNextPage,
+    itemCount: historyState.items.length,
+  });
 
-export function ChatHistory({
-  messages,
-  isAwaitingReply,
-  isFetchingOlder,
-  voiceBubble,
-  bottomRef,
-  topRef,
-  onOpenTask,
-}: ChatHistoryProps) {
   return (
     <section className="flex flex-1 flex-col justify-end gap-4 pt-2">
       <div ref={topRef} />
 
-      {isFetchingOlder && (
+      {historyState.isFetchingNextPage && (
         <div className="flex w-full justify-center py-2">
           <TypingIndicator />
         </div>
@@ -58,7 +53,7 @@ export function ChatHistory({
                 state="default"
                 onAction={
                   capture.kind === "task"
-                    ? () => onOpenTask?.(capture.itemId)
+                    ? () => navigate(ROUTES.taskWorkspace(capture.itemId))
                     : undefined
                 }
               />
@@ -67,21 +62,21 @@ export function ChatHistory({
         );
       })}
 
-      {voiceBubble?.status === "transcribing" && (
+      {voiceStatus === "transcribing" && (
         <MessageBubble
           from="user"
           state="pending"
-          footer={<TranscribingFooter onCancel={voiceBubble.onCancel} />}
+          footer={<TranscribingFooter onCancel={cancelTranscribing} />}
         >
           <span className="italic text-on-primary/70">…</span>
         </MessageBubble>
       )}
 
-      {voiceBubble?.status === "error" && (
+      {voiceStatus === "error" && (
         <MessageBubble
           from="user"
           state="error"
-          footer={<RetryFooter onRetry={voiceBubble.onRetry} />}
+          footer={<RetryFooter onRetry={retryVoice} />}
         >
           couldn't catch that — tap to retry or type it instead
         </MessageBubble>

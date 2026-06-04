@@ -45,7 +45,7 @@ export function ChatShell({
             <Menu className="size-6" />
           </IconButton>
         </div>
-        {topBanner && <div className="px-4 pb-2">{topBanner}</div>}
+        {topBanner}
       </header>
 
       <main
