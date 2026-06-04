@@ -10,9 +10,9 @@ import { ChatTopBanner } from "./components/chat-top-banner/chat-top-banner";
 import { ActiveTaskPicker } from "./components/task-picker/active-task-picker";
 import { useChatMessages } from "./hooks/use-chat-messages";
 import { useConnectivity } from "./hooks/use-connectivity";
-import { useConnectivityStore } from "./states/connectivity-store";
-import { useMessagesStore } from "./states/messages-store";
-import { selectVoiceStatus, useVoiceStore } from "./states/voice-store";
+import { useConnectivityStore } from "./stores/connectivity-store";
+import { useMessagesStore } from "./stores/messages-store";
+import { selectVoiceStatus, useVoiceStore } from "./stores/voice-store";
 
 const FOOTER_GAP = 16;
 

@@ -1,8 +1,8 @@
 import { AlertCircle, TriangleAlert, WifiOff } from "lucide-react";
 import { memo } from "react";
 import { ChatBanner } from "../../../../layout/components/chat-banner";
-import { useConnectivityStore } from "../../states/connectivity-store";
-import { selectVoiceStatus, useVoiceStore } from "../../states/voice-store";
+import { useConnectivityStore } from "../../stores/connectivity-store";
+import { selectVoiceStatus, useVoiceStore } from "../../stores/voice-store";
 
 function ChatTopBannerComponent() {
   const retryVoice = useVoiceStore((store) => store.retryVoice);

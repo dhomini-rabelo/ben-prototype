@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useMessageListData } from "../../../../layout/hooks/api/use-message-list-data";
-import { selectVoiceStatus, useVoiceStore } from "../../states/voice-store";
+import { selectVoiceStatus, useVoiceStore } from "../../stores/voice-store";
 import { ChatInput } from "../chat-input";
 import { RecordingBar } from "../recording-bar/recording-bar";
 

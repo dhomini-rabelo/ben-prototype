@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { useCallback } from "react";
 import { draftAtom } from "../states/chat-state";
-import { useMessagesStore } from "../states/messages-store";
+import { useMessagesStore } from "../stores/messages-store";
 
 export function useChatInput() {
   const [draft, setDraft] = useAtom(draftAtom);

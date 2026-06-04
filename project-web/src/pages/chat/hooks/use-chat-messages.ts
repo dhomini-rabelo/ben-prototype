@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useMessageListData } from "../../../layout/hooks/api/use-message-list-data";
-import { useMessagesStore } from "../states/messages-store";
+import { useMessagesStore } from "../stores/messages-store";
 import { mapHistoryToUiMessages } from "../utils/chat-messages";
 
 export function useChatMessages() {

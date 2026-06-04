@@ -1,8 +1,8 @@
 import { Mic, Send } from "lucide-react";
 import { useCanRecord } from "../../hooks/use-can-record";
 import { useChatInput } from "../../hooks/use-chat-input";
-import { useConnectivityStore } from "../../states/connectivity-store";
-import { selectVoiceStatus, useVoiceStore } from "../../states/voice-store";
+import { useConnectivityStore } from "../../stores/connectivity-store";
+import { selectVoiceStatus, useVoiceStore } from "../../stores/voice-store";
 import { useChatInputDisabled } from "./contexts/disabled";
 
 export function ChatInputActionButton() {

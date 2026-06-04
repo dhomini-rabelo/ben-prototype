@@ -1,5 +1,5 @@
-import { useConnectivityStore } from "../states/connectivity-store";
-import { useVoiceStore } from "../states/voice-store";
+import { useConnectivityStore } from "../stores/connectivity-store";
+import { useVoiceStore } from "../stores/voice-store";
 
 export function useCanRecord(): boolean {
   const micPermission = useVoiceStore((store) => store.micPermission);
