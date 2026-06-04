@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import { ROUTES } from "../../../../core/routes";
 import { Typography } from "../../../../layout/components/ui/typography";
-import { useChatActions } from "../../contexts/chat-actions";
 import { useChatMessages } from "../../hooks/use-chat-messages";
 import { useInfiniteScrollTop } from "../../hooks/use-infinite-scroll-top";
 import { useScrollToBottom } from "../../hooks/use-scroll-to-bottom";
-import { selectVoiceStatus, useChatStore } from "../../states/chat-store";
+import { useMessagesStore } from "../../states/messages-store";
+import { selectVoiceStatus, useVoiceStore } from "../../states/voice-store";
 import { getMessageText } from "../../utils/chat-messages";
 import { CaptureCard } from "../capture-card";
 import { MessageBubble } from "../message-bubble/message-bubble";
@@ -14,11 +14,10 @@ import { TranscribingFooter } from "../message-footers/transcribing-footer";
 import { TypingIndicator } from "../typing-indicator";
 
 export function ChatHistory() {
-  const navigate = useNavigate();
-  const { cancelTranscribing, retryVoice } = useChatActions();
+  const voiceStatus = useVoiceStore(selectVoiceStatus);
+  const isAwaitingReply = useMessagesStore((store) => store.isAwaitingReply);
+
   const { messages, historyState, historyActions } = useChatMessages();
-  const isAwaitingReply = useChatStore((store) => store.isAwaitingReply);
-  const voiceStatus = useChatStore(selectVoiceStatus);
 
   const { bottomRef } = useScrollToBottom({ messages, isAwaitingReply });
   const { topRef } = useInfiniteScrollTop({
@@ -54,11 +53,9 @@ export function ChatHistory() {
                   {capture.meta && (
                     <CaptureCard.Meta>{capture.meta}</CaptureCard.Meta>
                   )}
-                  <CaptureCard.Action
-                    onAction={() =>
-                      navigate(ROUTES.taskWorkspace(capture.itemId))
-                    }
-                  />
+                  <Link to={ROUTES.taskWorkspace(capture.itemId)}>
+                    <CaptureCard.Action />
+                  </Link>
                 </CaptureCard.Body>
               </CaptureCard.Root>
             )}
@@ -70,18 +67,14 @@ export function ChatHistory() {
         <MessageBubble
           from="user"
           state="pending"
-          footer={<TranscribingFooter onCancel={cancelTranscribing} />}
+          footer={<TranscribingFooter />}
         >
           <span className="italic text-on-primary/70">…</span>
         </MessageBubble>
       )}
 
       {voiceStatus === "error" && (
-        <MessageBubble
-          from="user"
-          state="error"
-          footer={<RetryFooter onRetry={retryVoice} />}
-        >
+        <MessageBubble from="user" state="error" footer={<RetryFooter />}>
           couldn't catch that — tap to retry or type it instead
         </MessageBubble>
       )}

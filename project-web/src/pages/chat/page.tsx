@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { JWT_COOKIE } from "../../api/client";
 import { ROUTES } from "../../core/routes";
-import { ChatProvider } from "./components/chat-provider";
 import { ChatScreen } from "./components/chat-screen";
 
 export function Chat() {
@@ -15,9 +14,5 @@ export function Chat() {
     }
   }, [navigate]);
 
-  return (
-    <ChatProvider>
-      <ChatScreen />
-    </ChatProvider>
-  );
+  return <ChatScreen />;
 }

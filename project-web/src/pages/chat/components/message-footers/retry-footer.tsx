@@ -1,17 +1,19 @@
 import { RotateCw } from "lucide-react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { cn } from "../../../../layout/utils/styles";
+import { useVoiceStore } from "../../states/voice-store";
 
 type RetryFooterProps = {
-  onRetry?: () => void;
   className?: string;
 };
 
-export function RetryFooter({ onRetry, className }: RetryFooterProps) {
+export function RetryFooter({ className }: RetryFooterProps) {
+  const retryVoice = useVoiceStore((store) => store.retryVoice);
+
   return (
     <button
       type="button"
-      onClick={onRetry}
+      onClick={retryVoice}
       className={cn(
         "mt-1 inline-flex items-center gap-1.5 pr-2 text-text-error",
         className,

@@ -1,5 +1,9 @@
+import { useEffect } from "react";
 import { useChatMessages } from "../hooks/use-chat-messages";
-import { selectVoiceStatus, useChatStore } from "../states/chat-store";
+import { useConnectivity } from "../hooks/use-connectivity";
+import { useConnectivityStore } from "../states/connectivity-store";
+import { useMessagesStore } from "../states/messages-store";
+import { selectVoiceStatus, useVoiceStore } from "../states/voice-store";
 import { ChatEmptyState } from "./chat-empty-state/chat-empty-state";
 import { ChatFooter } from "./chat-footer/chat-footer";
 import { ChatHistory } from "./chat-history/chat-history";
@@ -10,7 +14,18 @@ import { ActiveTaskPicker } from "./task-picker/active-task-picker";
 
 export function ChatScreen() {
   const { messages, historyState } = useChatMessages();
-  const voiceStatus = useChatStore(selectVoiceStatus);
+  const voiceStatus = useVoiceStore(selectVoiceStatus);
+  const { isOffline } = useConnectivity();
+  const setOffline = useConnectivityStore((store) => store.setOffline);
+  const stopTyping = useMessagesStore((store) => store.stopTyping);
+
+  useEffect(() => {
+    setOffline(isOffline);
+  }, [isOffline, setOffline]);
+
+  useEffect(() => stopTyping, [stopTyping]);
+
+  useEffect(() => useVoiceStore.getState().subscribeMicPermission(), []);
 
   const isLoadingHistory = historyState.isLoading;
   const isEmpty = !isLoadingHistory && messages.length === 0;

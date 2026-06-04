@@ -1,16 +1,15 @@
 import { X } from "lucide-react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { cn } from "../../../../layout/utils/styles";
+import { useVoiceStore } from "../../states/voice-store";
 
 type TranscribingFooterProps = {
-  onCancel?: () => void;
   className?: string;
 };
 
-export function TranscribingFooter({
-  onCancel,
-  className,
-}: TranscribingFooterProps) {
+export function TranscribingFooter({ className }: TranscribingFooterProps) {
+  const cancelTranscribing = useVoiceStore((store) => store.cancelTranscribing);
+
   return (
     <div className={cn("flex items-center gap-1.5 pr-2", className)}>
       <Typography variant="label-caps" className="text-on-surface-variant">
@@ -24,7 +23,7 @@ export function TranscribingFooter({
       <button
         type="button"
         aria-label="Cancel transcription"
-        onClick={onCancel}
+        onClick={cancelTranscribing}
         className="ml-1 flex size-4 items-center justify-center rounded-full text-on-surface-variant hover:text-text-error"
       >
         <X className="size-3" />

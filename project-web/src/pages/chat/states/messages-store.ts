@@ -1,11 +1,8 @@
 import { create, type StateCreator } from "zustand";
 import { requestSendChatMessage } from "../../../api/requests/chat";
 import type { CaptureView } from "../../../api/responses/agent-reply";
-import type { MicPermission } from "../hooks/use-media-recorder";
 import type { BenUiMessage } from "../utils/chat-messages";
-
-export type TranscriptionStatus = "idle" | "pending" | "error";
-export type VoiceStatus = "idle" | "recording" | "transcribing" | "error";
+import { useConnectivityStore } from "./connectivity-store";
 
 const TYPING_STEP_MS = 24;
 const TYPING_CHARS_PER_STEP = 3;
@@ -30,55 +27,21 @@ function buildBenMessage(
   };
 }
 
-interface RecorderSnapshot {
-  isRecording: boolean;
-  error: string | null;
-  permission: MicPermission;
-  elapsedSeconds: number;
-}
-
-interface ChatStore {
+interface MessagesStore {
   sessionMessages: BenUiMessage[];
   isAwaitingReply: boolean;
   sendError: boolean;
-  transcription: TranscriptionStatus;
-  isRecording: boolean;
-  recorderError: string | null;
-  micPermission: MicPermission;
-  recordingSeconds: number;
-  isOffline: boolean;
   typingIntervalId: ReturnType<typeof setInterval> | null;
 
-  setOffline: (value: boolean) => void;
-  setTranscription: (status: TranscriptionStatus) => void;
-  syncRecorder: (snapshot: RecorderSnapshot) => void;
   stopTyping: () => void;
   sendText: (content: string) => Promise<boolean>;
 }
 
-export const useChatStore = create<ChatStore>((set, get) => ({
+export const useMessagesStore = create<MessagesStore>((set, get) => ({
   sessionMessages: [],
   isAwaitingReply: false,
   sendError: false,
-  transcription: "idle",
-  isRecording: false,
-  recorderError: null,
-  micPermission: "prompt",
-  recordingSeconds: 0,
-  isOffline: false,
   typingIntervalId: null,
-
-  setOffline: (value) => set({ isOffline: value }),
-
-  setTranscription: (status) => set({ transcription: status }),
-
-  syncRecorder: (snapshot) =>
-    set({
-      isRecording: snapshot.isRecording,
-      recorderError: snapshot.error,
-      micPermission: snapshot.permission,
-      recordingSeconds: snapshot.elapsedSeconds,
-    }),
 
   stopTyping: () => {
     const intervalId = get().typingIntervalId;
@@ -90,7 +53,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   sendText: async (content) => {
     const trimmed = content.trim();
-    if (!trimmed || get().isAwaitingReply || get().isOffline) {
+    if (
+      !trimmed ||
+      get().isAwaitingReply ||
+      useConnectivityStore.getState().isOffline
+    ) {
       return false;
     }
 
@@ -118,8 +85,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   },
 }));
 
-type StoreSet = Parameters<StateCreator<ChatStore>>[0];
-type StoreGet = Parameters<StateCreator<ChatStore>>[1];
+type StoreSet = Parameters<StateCreator<MessagesStore>>[0];
+type StoreGet = Parameters<StateCreator<MessagesStore>>[1];
 
 function animateReply(
   set: StoreSet,
@@ -144,21 +111,4 @@ function animateReply(
     }
   }, TYPING_STEP_MS);
   set({ typingIntervalId: intervalId });
-}
-
-export function selectVoiceStatus(state: ChatStore): VoiceStatus {
-  if (state.isRecording) {
-    return "recording";
-  }
-  if (state.transcription === "pending") {
-    return "transcribing";
-  }
-  if (state.transcription === "error" || state.recorderError) {
-    return "error";
-  }
-  return "idle";
-}
-
-export function selectCanRecord(state: ChatStore): boolean {
-  return state.micPermission !== "denied" && !state.isOffline;
 }

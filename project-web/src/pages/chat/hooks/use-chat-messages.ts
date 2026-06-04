@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { useMessageListData } from "../../../layout/hooks/api/use-message-list-data";
-import { useChatStore } from "../states/chat-store";
+import { useMessagesStore } from "../states/messages-store";
 import { mapHistoryToUiMessages } from "../utils/chat-messages";
 
 export function useChatMessages() {
   const { state: historyState, actions: historyActions } = useMessageListData();
-  const sessionMessages = useChatStore((store) => store.sessionMessages);
+  const sessionMessages = useMessagesStore((store) => store.sessionMessages);
 
   const messages = useMemo(() => {
     const historyOldestFirst = [...historyState.items].reverse();

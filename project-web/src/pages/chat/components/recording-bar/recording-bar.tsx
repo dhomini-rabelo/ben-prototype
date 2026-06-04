@@ -1,10 +1,10 @@
 import { RecordingBarDesign } from "../../../../layout/components/recording-bar-design/recording-bar-design";
-import { useChatActions } from "../../contexts/chat-actions";
-import { useChatStore } from "../../states/chat-store";
+import { useVoiceStore } from "../../states/voice-store";
 
 export function RecordingBar() {
-  const { stopRecording, cancelRecording } = useChatActions();
-  const recordingSeconds = useChatStore((store) => store.recordingSeconds);
+  const stopRecording = useVoiceStore((store) => store.stopRecording);
+  const cancelRecording = useVoiceStore((store) => store.cancelRecording);
+  const recordingSeconds = useVoiceStore((store) => store.recordingSeconds);
 
   return (
     <RecordingBarDesign

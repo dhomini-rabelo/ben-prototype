@@ -1,10 +1,10 @@
 import { memo } from "react";
-import { selectVoiceStatus, useChatStore } from "../../states/chat-store";
+import { selectVoiceStatus, useVoiceStore } from "../../states/voice-store";
 import { ChatInput } from "../chat-input/chat-input";
 import { RecordingBar } from "../recording-bar/recording-bar";
 
 function ChatFooterComponent() {
-  const voiceStatus = useChatStore(selectVoiceStatus);
+  const voiceStatus = useVoiceStore(selectVoiceStatus);
 
   if (voiceStatus === "recording") {
     return <RecordingBar />;

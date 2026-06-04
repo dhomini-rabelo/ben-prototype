@@ -1,14 +1,15 @@
 import { AlertCircle, TriangleAlert, WifiOff } from "lucide-react";
 import { memo } from "react";
 import { ChatBanner } from "../../../../layout/components/chat-banner";
-import { useChatActions } from "../../contexts/chat-actions";
-import { selectVoiceStatus, useChatStore } from "../../states/chat-store";
+import { useConnectivityStore } from "../../states/connectivity-store";
+import { selectVoiceStatus, useVoiceStore } from "../../states/voice-store";
 
 export const ChatTopBanner = memo(function ChatTopBanner() {
-  const { retryVoice, dismissError } = useChatActions();
-  const isOffline = useChatStore((store) => store.isOffline);
-  const voiceStatus = useChatStore(selectVoiceStatus);
-  const micPermission = useChatStore((store) => store.micPermission);
+  const retryVoice = useVoiceStore((store) => store.retryVoice);
+  const dismissError = useVoiceStore((store) => store.dismissError);
+  const isOffline = useConnectivityStore((store) => store.isOffline);
+  const voiceStatus = useVoiceStore(selectVoiceStatus);
+  const micPermission = useVoiceStore((store) => store.micPermission);
 
   function renderBanner() {
     if (isOffline) {

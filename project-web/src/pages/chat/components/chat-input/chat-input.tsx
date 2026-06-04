@@ -1,20 +1,19 @@
 import { useAtomValue } from "jotai";
 import { ChatInputDesign } from "../../../../layout/components/chat-input-design/chat-input-design";
 import { useMessageListData } from "../../../../layout/hooks/api/use-message-list-data";
-import { useChatActions } from "../../contexts/chat-actions";
+import { useChatInput } from "../../hooks/use-chat-input";
+import { useCanRecord } from "../../hooks/use-can-record";
+import { useConnectivityStore } from "../../states/connectivity-store";
 import { draftAtom } from "../../states/chat-state";
-import {
-  selectCanRecord,
-  selectVoiceStatus,
-  useChatStore,
-} from "../../states/chat-store";
+import { selectVoiceStatus, useVoiceStore } from "../../states/voice-store";
 
 export function ChatInput() {
-  const { handleDraftChange, handleSend, startRecording } = useChatActions();
+  const { handleDraftChange, handleSend } = useChatInput();
+  const startRecording = useVoiceStore((store) => store.startRecording);
   const draft = useAtomValue(draftAtom);
-  const canRecord = useChatStore(selectCanRecord);
-  const isOffline = useChatStore((store) => store.isOffline);
-  const voiceStatus = useChatStore(selectVoiceStatus);
+  const canRecord = useCanRecord();
+  const isOffline = useConnectivityStore((store) => store.isOffline);
+  const voiceStatus = useVoiceStore(selectVoiceStatus);
   const { state: historyState } = useMessageListData();
 
   const isTranscribing = voiceStatus === "transcribing";
