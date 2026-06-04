@@ -6,8 +6,8 @@ import { JWT_COOKIE } from "../../api/client";
 import { ROUTES } from "../../core/routes";
 import { ChatBanner } from "../../layout/components/chat-banner";
 import { Typography } from "../../layout/components/ui/typography";
-import { ChatInput } from "../chat/components/chat-input/chat-input";
-import { RecordingBar } from "../chat/components/recording-bar/recording-bar";
+import { ChatInputDesign } from "../../layout/components/chat-input-design/chat-input-design";
+import { RecordingBarDesign } from "../../layout/components/recording-bar-design/recording-bar-design";
 import { DiffBar } from "./components/diff-bar/diff-bar";
 import { SubThreadBanner } from "./components/sub-thread-banner/sub-thread-banner";
 import { TextContent } from "./components/text-content/text-content";
@@ -142,7 +142,7 @@ export function TaskWorkspace() {
   function renderFooter() {
     if (isRecording) {
       return (
-        <RecordingBar
+        <RecordingBarDesign
           elapsedSeconds={workspace.recordingSeconds}
           onStop={workspace.stopRecording}
           onCancel={workspace.cancelRecording}
@@ -151,7 +151,7 @@ export function TaskWorkspace() {
     }
 
     return (
-      <ChatInput
+      <ChatInputDesign
         value={workspace.draft}
         placeholder="Ask Ben to edit…"
         mode={
