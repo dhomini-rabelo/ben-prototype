@@ -17,10 +17,17 @@ export const buildSystemPrompt = (topicIndex: TopicKey[]): string => {
     'Quando a mensagem do usuário combinar com um tópico existente, reutilize exatamente aquela chave.',
     'Quando nenhum tópico existente combinar, crie uma nova chave no formato `kind:category:slug`.',
     'Você PODE chamar a ferramenta `get-history-context` UMA ÚNICA VEZ antes de responder, passando os tópicos sobre os quais você precisa de mais contexto. Analise a mensagem do usuário para decidir quais tópicos buscar.',
-    'Preencha `historyTopics` com os tópicos relacionados a este turno, cada um com um resumo curto.',
-    'Proponha `newReminders`, `newNotes` e `newTasks` somente quando a mensagem do usuário pedir ou implicar claramente esses itens; caso contrário, deixe-os como listas vazias.',
-    'Para cada item em `newTasks` defina `contentType`: use `todo` quando a intenção for uma lista de itens (preencha `todoItems` com os títulos) e `text` quando for um rascunho/texto corrido (preencha `textContent`, pode ser vazio).',
-    'O campo `message` é a resposta em linguagem natural para o usuário, seguindo a sua persona.',
+    '',
+    '',
+    '# Formato de saída esperado',
+    'A sua resposta será convertida posteriormente em um objeto com os campos abaixo, então deixe TODAS essas informações explícitas no seu texto:',
+    '- `message`: a resposta em linguagem natural para o usuário, seguindo a sua persona.',
+    '- `historyTopics`: os tópicos relacionados a este turno, cada um com um resumo curto.',
+    '- `newReminders`: lembretes, cada um com `title` e, opcionalmente, `remindAt` e `notes`.',
+    '- `newNotes`: notas, cada uma com `title` e `body`.',
+    '- `newTasks`: tarefas, cada uma com `title` e `contentType` — use `todo` quando a intenção for uma lista de itens (liste os itens) e `text` quando for um rascunho/texto corrido (inclua o texto, pode ser vazio).',
+    'Proponha lembretes, notas e tarefas somente quando a mensagem do usuário pedir ou implicar claramente esses itens; caso contrário, indique explicitamente que não há itens desse tipo.',
+    'Estruture o seu texto deixando claro qual parte é a `message` para o usuário e quais são os lembretes, notas, tarefas e tópicos identificados.',
   ].join('\n')
 
   return `${BEN_SYSTEM_PROMPT}${topicSection}`

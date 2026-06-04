@@ -26,7 +26,7 @@ export function useChatMessages() {
     messages,
     historyState: {
       ...historyState,
-      isEmpty: historyState.isLoading ? null : historyState.items.length === 0,
+      isEmpty: historyState.isLoading ? null : messages.length === 0,
     },
     historyActions,
   };

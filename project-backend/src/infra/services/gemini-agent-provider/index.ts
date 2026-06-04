@@ -8,6 +8,7 @@ import {
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { generateText, Output, stepCountIs } from 'ai'
 import { env } from '../env'
+import { buildFormatSystemPrompt } from './generate-reply/format-system-prompt'
 import { buildHistoryContextTool } from './generate-reply/history-context-tool'
 import { agentReplySchema } from './generate-reply/schemas'
 import { buildSystemPrompt } from './generate-reply/system-prompt'
@@ -22,7 +23,7 @@ const model = google('gemini-2.5-flash-lite')
 
 export class GeminiAgentProviderService implements AgentService {
   async generateReply(payload: GenerateReplyPayload): Promise<AgentReply> {
-    const result = await generateText({
+    const contextResult = await generateText({
       model,
       system: buildSystemPrompt(payload.topicIndex),
       prompt: payload.message,
@@ -33,6 +34,12 @@ export class GeminiAgentProviderService implements AgentService {
       },
       toolChoice: 'auto',
       stopWhen: stepCountIs(2),
+    })
+
+    const result = await generateText({
+      model,
+      system: buildFormatSystemPrompt(),
+      prompt: contextResult.text,
       output: Output.object({ schema: agentReplySchema }),
     })
 
