@@ -22,5 +22,12 @@ export function useChatMessages() {
     return [...mapHistoryToUiMessages(historyOldestFirst), ...sessionMessages];
   }, [historyState.items, sessionMessages]);
 
-  return { messages, historyState, historyActions };
+  return {
+    messages,
+    historyState: {
+      ...historyState,
+      isEmpty: historyState.isLoading ? null : historyState.items.length === 0,
+    },
+    historyActions,
+  };
 }

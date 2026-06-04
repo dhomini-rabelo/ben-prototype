@@ -10,25 +10,19 @@ import { ChatTopBanner } from "./components/chat-top-banner/chat-top-banner";
 import { ActiveTaskPicker } from "./components/task-picker/active-task-picker";
 import { useChatMessages } from "./hooks/use-chat-messages";
 import { useConnectivity } from "./hooks/use-connectivity";
-import { useConnectivityStore } from "./stores/connectivity-store";
 import { useMessagesStore } from "./stores/messages-store";
 import { selectVoiceStatus, useVoiceStore } from "./stores/voice-store";
 
 const FOOTER_GAP = 16;
 
 export function Chat() {
-  const { messages, historyState } = useChatMessages();
+  const { historyState } = useChatMessages();
   const voiceStatus = useVoiceStore(selectVoiceStatus);
-  const { isOffline } = useConnectivity();
-  const setOffline = useConnectivityStore((store) => store.setOffline);
+  useConnectivity();
   const stopTyping = useMessagesStore((store) => store.stopTyping);
 
   const footerRef = useRef<HTMLElement | null>(null);
   const [footerHeight, setFooterHeight] = useState(0);
-
-  useEffect(() => {
-    setOffline(isOffline);
-  }, [isOffline, setOffline]);
 
   useEffect(() => stopTyping, [stopTyping]);
 
@@ -47,8 +41,6 @@ export function Chat() {
     return () => observer.disconnect();
   }, []);
 
-  const isLoadingHistory = historyState.isLoading;
-  const isEmpty = !isLoadingHistory && messages.length === 0;
   const isRecording = voiceStatus === "recording";
   const hasVoiceBubble =
     voiceStatus === "transcribing" || voiceStatus === "error";
@@ -68,13 +60,13 @@ export function Chat() {
       <main
         className={
           "flex w-full max-w-120 flex-1 flex-col px-4 pt-20 " +
-          (isEmpty ? "px-6" : "")
+          (historyState.isEmpty ? "px-6" : "")
         }
         style={{ paddingBottom: footerHeight + FOOTER_GAP }}
       >
-        {isLoadingHistory ? (
+        {historyState.isLoading ? (
           <ChatHistorySkeleton />
-        ) : isEmpty && !hasVoiceBubble ? (
+        ) : historyState.isEmpty && !hasVoiceBubble ? (
           <ChatEmptyState />
         ) : (
           <ChatHistory />

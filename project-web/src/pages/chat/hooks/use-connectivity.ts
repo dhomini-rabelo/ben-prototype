@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useConnectivityStore } from "../stores/connectivity-store";
 
 export function useConnectivity() {
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const setOffline = useConnectivityStore((store) => store.setOffline);
 
   useEffect(() => {
     function handleOnline() {
@@ -20,6 +22,10 @@ export function useConnectivity() {
       window.removeEventListener("offline", handleOffline);
     };
   }, []);
+
+  useEffect(() => {
+    setOffline(isOffline);
+  }, [isOffline, setOffline]);
 
   return {
     isOffline,
