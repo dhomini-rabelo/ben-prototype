@@ -1,10 +1,10 @@
 import { useAtomValue } from "jotai";
 import { ChatInputDesign } from "../../../../layout/components/chat-input-design/chat-input-design";
 import { useMessageListData } from "../../../../layout/hooks/api/use-message-list-data";
-import { useChatInput } from "../../hooks/use-chat-input";
 import { useCanRecord } from "../../hooks/use-can-record";
-import { useConnectivityStore } from "../../states/connectivity-store";
+import { useChatInput } from "../../hooks/use-chat-input";
 import { draftAtom } from "../../states/chat-state";
+import { useConnectivityStore } from "../../states/connectivity-store";
 import { selectVoiceStatus, useVoiceStore } from "../../states/voice-store";
 
 export function ChatInput() {
