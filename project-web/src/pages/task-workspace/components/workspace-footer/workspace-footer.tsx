@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import { memo } from "react";
 import { ChatInputDesign } from "../../../../layout/components/chat-input-design/chat-input-design";
 import { RecordingBarDesign } from "../../../../layout/components/recording-bar-design/recording-bar-design";
-import { useConnectivityStore } from "../../../chat/stores/connectivity-store";
+import { useConnectivityStore } from "../../../../layout/stores/connectivity-store";
 import { useWorkspaceTask } from "../../hooks/use-workspace-task";
 import { taskDraftAtom } from "../../states/task-workspace-state";
 import { useTaskStore } from "../../stores/task-store";

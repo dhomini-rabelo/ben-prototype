@@ -9,7 +9,7 @@ import { ChatHistorySkeleton } from "./components/chat-history/chat-history-skel
 import { ChatTopBanner } from "./components/chat-top-banner/chat-top-banner";
 import { ActiveTaskPicker } from "./components/task-picker/active-task-picker";
 import { useChatMessages } from "./hooks/use-chat-messages";
-import { useConnectivity } from "./hooks/use-connectivity";
+import { useConnectivity } from "../../layout/hooks/use-connectivity";
 import { useMessagesStore } from "./stores/messages-store";
 import { selectVoiceStatus, useVoiceStore } from "./stores/voice-store";
 

@@ -1,4 +1,4 @@
-import { useConnectivityStore } from "../stores/connectivity-store";
+import { useConnectivityStore } from "../../../layout/stores/connectivity-store";
 import { useVoiceStore } from "../stores/voice-store";
 
 export function useCanRecord(): boolean {

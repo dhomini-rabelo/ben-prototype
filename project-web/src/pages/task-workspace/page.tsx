@@ -5,7 +5,7 @@ import { JWT_COOKIE } from "../../api/client";
 import { ROUTES } from "../../core/routes";
 import { Typography } from "../../layout/components/ui/typography";
 import { useTaskDetailData } from "../../layout/hooks/api/use-task-detail-data";
-import { useConnectivity } from "../chat/hooks/use-connectivity";
+import { useConnectivity } from "../../layout/hooks/use-connectivity";
 import { DiffBar } from "./components/diff-bar/diff-bar";
 import { WorkspaceSubThreadBanner } from "./components/workspace-sub-thread-banner";
 import { WorkspaceTopBanner } from "./components/workspace-top-banner";

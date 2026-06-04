@@ -12,7 +12,7 @@ import {
 } from "../../../../api/requests/tasks";
 import { API_ROUTES } from "../../../../api/routes";
 import type { ItemResponse } from "../../../../api/types";
-import { useConnectivityStore } from "../../../chat/stores/connectivity-store";
+import { useConnectivityStore } from "../../../../layout/stores/connectivity-store";
 import { nextOrder } from "../../utils/todo-order";
 import type { TaskStore } from "./types";
 
