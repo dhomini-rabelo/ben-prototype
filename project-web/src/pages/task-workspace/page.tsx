@@ -16,7 +16,7 @@ import { WorkspaceShell } from "./components/workspace-shell/workspace-shell";
 import { WorkspaceTopBar } from "./components/workspace-top-bar/workspace-top-bar";
 import { useWorkspaceTask } from "./hooks/use-workspace-task";
 import { useTaskStore } from "./stores/task-store";
-import { useVoiceStore } from "./stores/voice-store";
+import { useVoiceStore } from "../../layout/stores/voice-store";
 
 export function TaskWorkspace() {
   const navigate = useNavigate();
@@ -32,6 +32,12 @@ export function TaskWorkspace() {
       navigate(ROUTES.login);
     }
   }, [navigate]);
+
+  useEffect(() => {
+    useVoiceStore.getState().setTranscriptHandler((text) => {
+      void useTaskStore.getState().sendText(text);
+    });
+  }, []);
 
   useEffect(() => useVoiceStore.getState().subscribeMicPermission(), []);
 

@@ -5,7 +5,7 @@ import { useChatMessages } from "../../hooks/use-chat-messages";
 import { useInfiniteScrollTop } from "../../hooks/use-infinite-scroll-top";
 import { useScrollToBottom } from "../../hooks/use-scroll-to-bottom";
 import { useMessagesStore } from "../../stores/messages-store";
-import { selectVoiceStatus, useVoiceStore } from "../../stores/voice-store";
+import { selectVoiceStatus, useVoiceStore } from "../../../../layout/stores/voice-store";
 import { getMessageText } from "../../utils/chat-messages";
 import { CaptureCard } from "../capture-card";
 import { MessageBubble } from "../message-bubble/message-bubble";

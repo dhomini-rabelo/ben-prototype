@@ -16,4 +16,10 @@ export interface VoiceStore {
   retryVoice: () => void;
   dismissError: () => void;
   subscribeMicPermission: () => () => void;
+  /**
+   * Registers where a finished transcription is delivered. Each page sets this
+   * on mount (e.g. the chat or task message sender), since the recording
+   * lifecycle is shared but the destination is page-specific.
+   */
+  setTranscriptHandler: (handler: (text: string) => void) => void;
 }

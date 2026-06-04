@@ -1,7 +1,7 @@
 import { RotateCw } from "lucide-react";
 import { Typography } from "../../../../layout/components/ui/typography";
 import { cn } from "../../../../layout/utils/styles";
-import { useVoiceStore } from "../../stores/voice-store";
+import { useVoiceStore } from "../../../../layout/stores/voice-store";
 
 type RetryFooterProps = {
   className?: string;

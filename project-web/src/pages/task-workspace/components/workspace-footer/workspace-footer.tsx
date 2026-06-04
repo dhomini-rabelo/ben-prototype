@@ -6,7 +6,7 @@ import { useConnectivityStore } from "../../../../layout/stores/connectivity-sto
 import { useWorkspaceTask } from "../../hooks/use-workspace-task";
 import { taskDraftAtom } from "../../states/task-workspace-state";
 import { useTaskStore } from "../../stores/task-store";
-import { selectVoiceStatus, useVoiceStore } from "../../stores/voice-store";
+import { selectVoiceStatus, useVoiceStore } from "../../../../layout/stores/voice-store";
 
 function WorkspaceFooterComponent() {
   const voiceStatus = useVoiceStore(selectVoiceStatus);

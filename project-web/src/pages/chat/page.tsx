@@ -11,7 +11,7 @@ import { ActiveTaskPicker } from "./components/task-picker/active-task-picker";
 import { useChatMessages } from "./hooks/use-chat-messages";
 import { useConnectivity } from "../../layout/hooks/use-connectivity";
 import { useMessagesStore } from "./stores/messages-store";
-import { selectVoiceStatus, useVoiceStore } from "./stores/voice-store";
+import { selectVoiceStatus, useVoiceStore } from "../../layout/stores/voice-store";
 
 const FOOTER_GAP = 16;
 
@@ -25,6 +25,12 @@ export function Chat() {
   const [footerHeight, setFooterHeight] = useState(0);
 
   useEffect(() => stopTyping, [stopTyping]);
+
+  useEffect(() => {
+    useVoiceStore.getState().setTranscriptHandler((text) => {
+      void useMessagesStore.getState().sendText(text);
+    });
+  }, []);
 
   useEffect(() => useVoiceStore.getState().subscribeMicPermission(), []);
 

@@ -2,7 +2,7 @@ import { AlertCircle, TriangleAlert, WifiOff } from "lucide-react";
 import { memo } from "react";
 import { ChatBanner } from "../../../layout/components/chat-banner";
 import { useConnectivityStore } from "../../../layout/stores/connectivity-store";
-import { selectVoiceStatus, useVoiceStore } from "../stores/voice-store";
+import { selectVoiceStatus, useVoiceStore } from "../../../layout/stores/voice-store";
 
 function WorkspaceTopBannerComponent() {
   const isOffline = useConnectivityStore((store) => store.isOffline);

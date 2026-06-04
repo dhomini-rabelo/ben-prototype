@@ -1,5 +1,5 @@
 import { RecordingBarDesign } from "../../../../layout/components/recording-bar-design/recording-bar-design";
-import { useVoiceStore } from "../../stores/voice-store";
+import { useVoiceStore } from "../../../../layout/stores/voice-store";
 
 export function RecordingBar() {
   const stopRecording = useVoiceStore((store) => store.stopRecording);
