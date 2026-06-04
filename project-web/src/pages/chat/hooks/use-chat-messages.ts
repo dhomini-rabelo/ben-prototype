@@ -1,7 +1,17 @@
 import { useMemo } from "react";
+import type { Message } from "../../../api/models/message";
 import { useMessageListData } from "../../../layout/hooks/api/use-message-list-data";
 import { useMessagesStore } from "../stores/messages-store";
-import { mapHistoryToUiMessages } from "../utils/chat-messages";
+import type { BenUiMessage } from "../utils/chat-messages";
+
+export function mapHistoryToUiMessages(history: Message[]): BenUiMessage[] {
+  return history.map((message) => ({
+    id: message.id,
+    role: message.role === "ben" ? "assistant" : "user",
+    parts: [{ type: "text", text: message.content }],
+    metadata: message.capture ? { capture: message.capture } : undefined,
+  }));
+}
 
 export function useChatMessages() {
   const { state: historyState, actions: historyActions } = useMessageListData();
