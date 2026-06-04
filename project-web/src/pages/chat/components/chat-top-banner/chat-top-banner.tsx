@@ -4,12 +4,12 @@ import { ChatBanner } from "../../../../layout/components/chat-banner";
 import { useConnectivityStore } from "../../states/connectivity-store";
 import { selectVoiceStatus, useVoiceStore } from "../../states/voice-store";
 
-export const ChatTopBanner = memo(function ChatTopBanner() {
+function ChatTopBannerComponent() {
   const retryVoice = useVoiceStore((store) => store.retryVoice);
   const dismissError = useVoiceStore((store) => store.dismissError);
-  const isOffline = useConnectivityStore((store) => store.isOffline);
   const voiceStatus = useVoiceStore(selectVoiceStatus);
   const micPermission = useVoiceStore((store) => store.micPermission);
+  const isOffline = useConnectivityStore((store) => store.isOffline);
 
   function renderBanner() {
     if (isOffline) {
@@ -52,4 +52,6 @@ export const ChatTopBanner = memo(function ChatTopBanner() {
   }
 
   return <div className="px-4 pb-2">{banner}</div>;
-});
+}
+
+export const ChatTopBanner = memo(ChatTopBannerComponent);
