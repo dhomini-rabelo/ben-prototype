@@ -39,7 +39,7 @@ Vite 8 · React 19 · react-router v7 · Tailwind CSS v4 · `lucide-react`
 
 ## project-web
 
-**Purpose:** The real web implementation of Ben — routing and Google/Firebase authentication are wired up, and it consumes the `project-backend` API to drive working feature screens, including a working chat experience with the Ben agent.
+**Purpose:** The real web implementation of Ben — routing and Google/Firebase authentication are wired up, and it consumes the `project-backend` API to drive working feature screens, including a working chat experience with the Ben agent and a collaborative task workspace.
 
 ### Key directories
 
@@ -59,7 +59,7 @@ It shares the same stack as `project-design` but is a completely separate projec
 ### Key directories
 
 - `src/domain/entities/` — Concrete domain entities (e.g. `user`, `message`, `topic`, `topic-summary`, and the capture entities `note`, `reminder`, `task`)
-- `src/domain/use-cases/` — Application use cases (`auth/`, `messages/`, `topics/`, `transcription/`, `captures/`)
+- `src/domain/use-cases/` — Application use cases (`auth/`, `messages/`, `topics/`, `transcription/`, `captures/`, `tasks/`)
 - `src/adapters/` — Ports and adapter implementations (auth provider, JWT, agent provider, transcription provider, in-memory repositories)
 - `src/infra/http/` — Express app, server entry point, routes, middlewares, presenters, and error handler
 - `src/infra/services/` — Infrastructure services (env validation via Zod, Firebase auth provider, JWT, AssemblyAI transcription provider, Gemini agent provider)
