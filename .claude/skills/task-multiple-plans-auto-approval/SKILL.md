@@ -178,7 +178,9 @@ This runs in auto-approval mode. Implement the plan fully and proceed without as
 ### Stage 7 — Review the diff against standards
 
 1. Once the task is complete, invoke the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill to review the resulting git diff against the project's conventions and design patterns.
-2. That skill orchestrates its own review sub-agents and produces the `diff-review-report.md` decision document, then asks the user with `AskUserQuestion` which improvements to apply. This is an intentional final review gate — let it run as the skill defines, even though the rest of this flow is auto-approval.
+2. The main agent stays a **pure orchestrator** here — exactly as in the rest of this flow, it does **not** review or edit code itself. It **delegates** the work to sub-agents, either **spawning new sub-agents** or **reusing the sub-agents from earlier stages**, whichever it judges best (e.g. reuse the sub-agent that owns a file so it carries its context).
+3. That skill orchestrates the review sub-agents and produces the `diff-review-report.md` decision document, then asks the user with `AskUserQuestion` which improvements to apply. This is an intentional final review gate — let it run as the skill defines, even though the rest of this flow is auto-approval.
+4. Once the user picks the improvements, the main agent **dispatches the actual code changes to sub-agents** (new or reused) — never implementing them itself — then runs the formatting and type-check once across the affected projects.
 
 ## Rules
 
@@ -192,4 +194,5 @@ This runs in auto-approval mode. Implement the plan fully and proceed without as
 - Sub-agents must **never** run formatting (`npm run lint:fix`) during parallel work — it can conflict. Formatting runs once in Stage 6.
 - Use the **same sub-agent** to create the deep plan (Stage 4) and implement it (Stage 5).
 - After the task is complete (Stage 7), always run the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill on the resulting diff.
+- In Stage 7 the main agent acts **only as an orchestrator** — it never reviews or edits code itself. It delegates both the review and the approved improvements to sub-agents (new ones or the ones reused from earlier stages), whichever it judges best.
 - Do **not** include a "Summary" or "Conclusion" section.
