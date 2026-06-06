@@ -1,7 +1,7 @@
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { PendingDiff, Task } from '@/domain/entities/task'
-import { loadOwnedTask } from '@/domain/utils/tasks'
 import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
+import { createID } from '@/modules/domain/entity/id'
 import { ItemResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
@@ -14,11 +14,10 @@ export class ApproveTaskDiffUseCase implements UseCase<ItemResponse<Task>> {
   constructor(private taskRepository: TaskRepository) {}
 
   async execute(payload: Payload): Promise<ItemResponse<Task>> {
-    const task = await loadOwnedTask(
-      this.taskRepository,
-      payload.taskId,
-      payload.userId,
-    )
+    const task = await this.taskRepository.get({
+      id: createID(payload.taskId),
+      userId: createID(payload.userId),
+    })
 
     const pendingDiff = this.requirePendingDiff(task)
     const approvedContentProps = this.buildApprovedContentProps(pendingDiff)

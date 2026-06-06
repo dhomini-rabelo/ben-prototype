@@ -22,4 +22,12 @@ export const API_ROUTES = {
     finish: (id: string) => `/tasks/${id}/finish`,
     reopen: (id: string) => `/tasks/${id}/reopen`,
   },
+  notes: {
+    list: "/notes/list",
+    detail: (id: string) => `/notes/${id}/detail`,
+  },
+  reminders: {
+    list: "/reminders/list",
+    detail: (id: string) => `/reminders/${id}/detail`,
+  },
 } as const;

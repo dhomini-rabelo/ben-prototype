@@ -7,6 +7,7 @@ import { ChatTopBanner } from "./components/chat-top-banner/chat-top-banner";
 import { ChatTopBar } from "./components/chat-top-bar/chat-top-bar";
 import { ActiveTaskPicker } from "./components/task-picker/active-task-picker";
 import { useChatMessages } from "./hooks/use-chat-messages";
+import { MenuOverlay } from "@/layout/components/menu";
 import { useConnectivity } from "@/layout/hooks/use-connectivity";
 import { useMessagesStore } from "./stores/messages-store";
 import { selectVoiceStatus, useVoiceStore } from "@/layout/stores/voice-store";
@@ -21,6 +22,7 @@ export function Chat() {
 
   const footerRef = useRef<HTMLElement | null>(null);
   const [footerHeight, setFooterHeight] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => stopTyping, [stopTyping]);
 
@@ -52,7 +54,7 @@ export function Chat() {
   return (
     <div className="relative flex min-h-dvh flex-col items-center bg-surface text-on-surface">
       <header className="fixed top-0 left-1/2 z-50 flex h-16 w-full max-w-120 -translate-x-1/2 flex-col bg-surface">
-        <ChatTopBar />
+        <ChatTopBar onMenu={() => setIsMenuOpen(true)} />
         <ChatTopBanner />
       </header>
 
@@ -79,6 +81,8 @@ export function Chat() {
         {!isRecording && <ActiveTaskPicker />}
         <ChatFooter />
       </footer>
+
+      {isMenuOpen && <MenuOverlay onClose={() => setIsMenuOpen(false)} />}
     </div>
   );
 }

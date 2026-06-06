@@ -3,7 +3,7 @@ import { NoteRepository } from '@/adapters/repositories/note-repository'
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { NoteDraft, ReminderDraft, TaskDraft } from '@/adapters/agent-provider'
-import { ID } from '@/modules/domain/entity/id'
+import { ID, createID } from '@/modules/domain/entity/id'
 import { ListingResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
@@ -25,28 +25,21 @@ export class PersistCapturesUseCase implements UseCase<
 
   async execute(payload: Payload): Promise<ListingResponse<CaptureView>> {
     const now = new Date()
+    const userId = createID(payload.userId)
 
     const reminderViews = await this.createReminderViews(
-      payload.userId,
+      userId,
       payload.newReminders,
       now,
     )
-    const taskViews = await this.createTaskViews(
-      payload.userId,
-      payload.newTasks,
-      now,
-    )
-    const noteViews = await this.createNoteViews(
-      payload.userId,
-      payload.newNotes,
-      now,
-    )
+    const taskViews = await this.createTaskViews(userId, payload.newTasks, now)
+    const noteViews = await this.createNoteViews(userId, payload.newNotes, now)
 
     return { items: [...reminderViews, ...taskViews, ...noteViews] }
   }
 
   private async createReminderViews(
-    userId: string,
+    userId: ID,
     drafts: ReminderDraft[],
     now: Date,
   ): Promise<CaptureView[]> {
@@ -73,7 +66,7 @@ export class PersistCapturesUseCase implements UseCase<
   }
 
   private async createTaskViews(
-    userId: string,
+    userId: ID,
     drafts: TaskDraft[],
     now: Date,
   ): Promise<CaptureView[]> {
@@ -83,7 +76,7 @@ export class PersistCapturesUseCase implements UseCase<
       const todoItems =
         draft.contentType === 'todo'
           ? (draft.todoItems ?? []).map((title, index) => ({
-              id: new ID().toValue(),
+              id: createID().toValue(),
               title,
               done: false,
               order: index,
@@ -117,7 +110,7 @@ export class PersistCapturesUseCase implements UseCase<
   }
 
   private async createNoteViews(
-    userId: string,
+    userId: ID,
     drafts: NoteDraft[],
     now: Date,
   ): Promise<CaptureView[]> {

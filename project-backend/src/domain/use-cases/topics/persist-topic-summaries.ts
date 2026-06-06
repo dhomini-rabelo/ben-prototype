@@ -1,5 +1,6 @@
 import { TopicRepository } from '@/adapters/repositories/topic-repository'
 import { TopicSummaryRepository } from '@/adapters/repositories/topic-summary-repository'
+import { createID } from '@/modules/domain/entity/id'
 import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
@@ -28,13 +29,13 @@ export class PersistTopicSummariesUseCase implements UseCase<void> {
 
   private async ensureTopicExists(userId: string, key: string): Promise<void> {
     const existingTopic = await this.topicRepository.findFirst({
-      userId,
+      userId: createID(userId),
       key,
     })
 
     if (!existingTopic) {
       await this.topicRepository.create({
-        userId,
+        userId: createID(userId),
         key,
         createdAt: new Date(),
       })
@@ -48,10 +49,10 @@ export class PersistTopicSummariesUseCase implements UseCase<void> {
     messageId: string | null,
   ): Promise<void> {
     await this.topicSummaryRepository.create({
-      userId,
+      userId: createID(userId),
       topicKey,
       summary,
-      messageId,
+      messageId: messageId ? createID(messageId) : null,
       createdAt: new Date(),
     })
   }

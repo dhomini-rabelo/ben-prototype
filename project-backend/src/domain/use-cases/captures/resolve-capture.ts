@@ -29,17 +29,17 @@ export class ResolveCaptureUseCase implements UseCase<
   private resolveCaptureView(
     capture: MessageCapture,
   ): Promise<CaptureView | null> {
-    const id = new ID(capture.itemId)
+    const id = capture.itemId
 
     if (capture.kind === 'reminder') {
-      return this.resolveReminderView(id, capture.itemId)
+      return this.resolveReminderView(id, capture.itemId.toValue())
     }
 
     if (capture.kind === 'task') {
-      return this.resolveTaskView(id, capture.itemId)
+      return this.resolveTaskView(id, capture.itemId.toValue())
     }
 
-    return this.resolveNoteView(id, capture.itemId)
+    return this.resolveNoteView(id, capture.itemId.toValue())
   }
 
   private async resolveReminderView(

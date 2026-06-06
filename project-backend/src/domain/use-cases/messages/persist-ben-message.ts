@@ -1,5 +1,6 @@
 import { MessageRepository } from '@/adapters/repositories/message-repository'
 import { Message, MessageCapture } from '@/domain/entities/message'
+import { createID } from '@/modules/domain/entity/id'
 import { ItemResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
@@ -16,7 +17,7 @@ export class PersistBenMessageUseCase implements UseCase<
 
   async execute(payload: Payload): Promise<ItemResponse<Message>> {
     const item = await this.messageRepository.create({
-      userId: payload.userId,
+      userId: createID(payload.userId),
       role: 'ben',
       content: payload.content,
       capture: payload.capture ?? null,

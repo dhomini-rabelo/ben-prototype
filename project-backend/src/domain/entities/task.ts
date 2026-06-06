@@ -30,8 +30,8 @@ export interface PendingDiff {
 }
 
 export interface TaskProps {
-  userId: string
-  messageId: string | null
+  userId: ID
+  messageId: ID | null
   title: string
   contentType: TaskContentType
   textContent: string | null

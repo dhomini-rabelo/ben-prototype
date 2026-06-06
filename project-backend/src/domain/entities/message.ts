@@ -7,11 +7,11 @@ export type MessageCaptureKind = 'note' | 'reminder' | 'task'
 
 export interface MessageCapture {
   kind: MessageCaptureKind
-  itemId: string
+  itemId: ID
 }
 
 export interface MessageProps {
-  userId: string
+  userId: ID
   role: MessageRole
   content: string
   capture: MessageCapture | null

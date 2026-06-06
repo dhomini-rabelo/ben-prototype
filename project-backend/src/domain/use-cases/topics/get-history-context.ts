@@ -1,5 +1,6 @@
 import { TopicSummaryRepository } from '@/adapters/repositories/topic-summary-repository'
 import { HistoryContextResult } from '@/adapters/agent-provider'
+import { createID } from '@/modules/domain/entity/id'
 import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
@@ -28,7 +29,7 @@ export class GetHistoryContextUseCase implements UseCase<HistoryContextResult> {
     topicKey: string,
   ): Promise<HistoryContextResult[string]> {
     const summaries = await this.topicSummaryRepository.findMany({
-      userId,
+      userId: createID(userId),
       topicKey,
     })
 

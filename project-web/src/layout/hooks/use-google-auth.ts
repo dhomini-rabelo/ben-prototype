@@ -6,6 +6,7 @@ import { JWT_COOKIE, PROVIDER_COOKIE, basicClient } from '@/api/client'
 import { API_ROUTES } from '@/api/routes'
 import { auth } from '@/core/firebase'
 import { ROUTES } from '@/core/routes'
+import { useAuthStore } from '@/layout/stores/auth-store'
 
 const COOKIE_MAX_AGE_DAYS = 5
 
@@ -46,6 +47,10 @@ export function useGoogleAuth() {
         expires: COOKIE_MAX_AGE_DAYS,
       })
       Cookies.set(PROVIDER_COOKIE, idToken, { expires: COOKIE_MAX_AGE_DAYS })
+
+      if (response.data.user) {
+        useAuthStore.getState().setUser(response.data.user)
+      }
 
       navigate(ROUTES.chat)
     } catch (caughtError) {

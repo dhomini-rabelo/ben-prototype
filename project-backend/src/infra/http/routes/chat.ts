@@ -14,6 +14,7 @@ import {
 } from '@/infra/http/repositories'
 import { AgentReplyPresenter } from '@/infra/http/presenters/agent-reply-presenter'
 import { BenAgentProviderService } from '@/infra/services/ben-agent-provider'
+import { createID } from '@/modules/domain/entity/id'
 import { openRouterModel } from '@/infra/services/ben-agent-provider/models'
 import { HttpStatus } from '@/modules/utils/http'
 import { NextFunction, Request, Response } from 'express'
@@ -114,7 +115,7 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       userId: req.userId,
       content: reply.message,
       capture: primaryCapture
-        ? { kind: primaryCapture.kind, itemId: primaryCapture.itemId }
+        ? { kind: primaryCapture.kind, itemId: createID(primaryCapture.itemId) }
         : null,
     })
 

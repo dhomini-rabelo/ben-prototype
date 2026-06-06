@@ -3,6 +3,10 @@ import { errorHandler } from '@/infra/http/middlewares/error-handler'
 import { loginOrRegister } from '@/infra/http/routes/auth/login-or-register'
 import { chat } from '@/infra/http/routes/chat'
 import { listMessages } from '@/infra/http/routes/messages/list-messages'
+import { getNoteDetail } from '@/infra/http/routes/notes/get-note-detail'
+import { listNotes } from '@/infra/http/routes/notes/list-notes'
+import { getReminderDetail } from '@/infra/http/routes/reminders/get-reminder-detail'
+import { listReminders } from '@/infra/http/routes/reminders/list-reminders'
 import { approveTaskDiff } from '@/infra/http/routes/tasks/approve-task-diff'
 import { createTaskMessage } from '@/infra/http/routes/tasks/create-task-message'
 import { finishTask } from '@/infra/http/routes/tasks/finish-task'
@@ -58,6 +62,12 @@ app.post('/tasks/:id/content/update', authMiddleware, updateTaskContent)
 app.post('/tasks/:id/todos/update', authMiddleware, updateTaskTodos)
 app.post('/tasks/:id/finish', authMiddleware, finishTask)
 app.post('/tasks/:id/reopen', authMiddleware, reopenTask)
+
+app.get('/notes/list', authMiddleware, listNotes)
+app.get('/notes/:id/detail', authMiddleware, getNoteDetail)
+
+app.get('/reminders/list', authMiddleware, listReminders)
+app.get('/reminders/:id/detail', authMiddleware, getReminderDetail)
 
 app.use(errorHandler)
 

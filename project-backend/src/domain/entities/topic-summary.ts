@@ -2,10 +2,10 @@ import { Entity } from '@/modules/domain/entity/entity'
 import { ID } from '@/modules/domain/entity/id'
 
 export interface TopicSummaryProps {
-  userId: string
+  userId: ID
   topicKey: string
   summary: string
-  messageId: string | null
+  messageId: ID | null
   createdAt: Date
 }
 

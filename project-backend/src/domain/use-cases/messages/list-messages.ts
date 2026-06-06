@@ -1,5 +1,6 @@
 import { MessageRepository } from '@/adapters/repositories/message-repository'
 import { Message } from '@/domain/entities/message'
+import { createID } from '@/modules/domain/entity/id'
 import { CursorPaginationResponse } from '@/modules/domain/repository/repository'
 import { UseCase } from '@/modules/domain/use-case'
 
@@ -18,7 +19,7 @@ export class ListMessagesUseCase implements UseCase<Response> {
 
   async execute(payload: Payload): Promise<Response> {
     const page = await this.messageRepository.findManyWithCursorPagination(
-      { userId: payload.userId },
+      { userId: createID(payload.userId) },
       {
         orderBy: 'createdAt',
         order: 'desc',

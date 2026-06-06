@@ -1,4 +1,4 @@
-import { ID } from '@/modules/domain/entity/id'
+import { ID, createID } from '@/modules/domain/entity/id'
 
 export abstract class Entity<Props extends Record<string, any> = any> {
   private _id: ID
@@ -10,7 +10,7 @@ export abstract class Entity<Props extends Record<string, any> = any> {
 
   protected constructor(props: Props, id?: ID) {
     this.props = props
-    this._id = id ?? new ID()
+    this._id = id ?? createID()
   }
 
   public getProp(propName: string) {

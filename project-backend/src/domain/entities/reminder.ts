@@ -2,7 +2,7 @@ import { Entity } from '@/modules/domain/entity/entity'
 import { ID } from '@/modules/domain/entity/id'
 
 export interface ReminderProps {
-  userId: string
+  userId: ID
   title: string
   remindAt: string | null
   notes: string | null

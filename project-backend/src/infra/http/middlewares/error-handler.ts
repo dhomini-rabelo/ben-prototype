@@ -3,6 +3,7 @@ import {
   DomainError,
   ValidationError,
 } from '@/modules/domain/domain-errors'
+import { ResourceNotFoundError } from '@/modules/domain/repository/repository-errors'
 import { HttpStatus } from '@/modules/utils/http'
 import { NextFunction, Request, Response } from 'express'
 import { ZodError, ZodFormattedError } from 'zod'
@@ -121,6 +122,11 @@ export function errorHandler(
       domainErrorStatusCodeMap[err.response.errorType!] || HttpStatus.CONFLICT
     response.body = {
       message: err.response.code,
+    }
+  } else if (err instanceof ResourceNotFoundError) {
+    response.status = HttpStatus.NOT_FOUND
+    response.body = {
+      message: 'RESOURCE_NOT_FOUND',
     }
   }
 

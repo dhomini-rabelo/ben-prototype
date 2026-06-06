@@ -2,7 +2,7 @@ import { Entity } from '@/modules/domain/entity/entity'
 import { ID } from '@/modules/domain/entity/id'
 
 export interface TopicProps {
-  userId: string
+  userId: ID
   key: string
   createdAt: Date
 }

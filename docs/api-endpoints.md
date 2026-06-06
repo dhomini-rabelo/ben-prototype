@@ -68,10 +68,13 @@ Casos de uso: abrir o detalhe de uma note/reminder a partir do card no chat. (Ta
 
 - **`GET /notes/:id/detail`**
   - Detalhe completo da nota (modal Item detail — estado **Populated (Note detail)**).
+  - Resposta: `{ item: Note }` (convenção `ItemResponse<T>`), onde `Note = { id: string, title: string, body: string, capturedAt: string (ISO) }`.
   - Edge case **item deletado em outra sessão** → 404, UI fecha com "this one's gone".
 
 - **`GET /reminders/:id/detail`**
   - Detalhe do reminder (`firesAt` absoluto/relativo, status upcoming/fired).
+  - Resposta: `{ item: Reminder }`, onde `Reminder = { id: string, title: string, firesAt: string | null (ISO), body: string | null, status: "upcoming" | "fired", capturedAt: string (ISO) }`.
+  - Mapeamento a partir da entity: `remindAt → firesAt`, `notes → body`, `createdAt → capturedAt`. `status` é **derivado** no presenter: `"upcoming"` se `firesAt` for nulo ou futuro, `"fired"` se passado.
 
 > Cards são criados pela resposta do `POST /messages/create` / `POST /messages/create-audio` — não há endpoint de criação dedicado. No v1, notes e reminders são read-only (correções via conversa), então não há rotas de update aqui.
 
@@ -81,22 +84,21 @@ Casos de uso: abrir o detalhe de uma note/reminder a partir do card no chat. (Ta
 
 Casos de uso: navegar o histórico completo, ver contagens, abrir cada item.
 
-- **`GET /sidebar/counts`**
-  - Badges do painel: `{ activeTasks, notesTotal, remindersUpcoming }`. Estado **Loading** mostra skeleton só nos badges.
-  - Opcional — pode ser derivado das listas abaixo se preferir menos rotas.
+- **`GET /sidebar/counts`** — **não implementado no v1**. As contagens dos badges (tasks ativas, total de notes, total de reminders) são **derivadas no cliente** a partir das três listas abaixo. Mantido aqui apenas como referência futura.
 
 - **`GET /tasks/list?status=active|finished`**
   - Tasks view: retorna ativas + finalizadas (cliente separa nas seções **Active** / **Finished**).
-  - Query opcional para carregar uma seção por vez.
+  - Já implementado. Resposta: `{ items: TaskListItem[] }` (`ListingResponse<T>`, ver `task-presenter.toListItemHttp`).
 
-- **`GET /notes/list?before={cursor}`**
-  - Notes view (reverse-chronological), com preview truncado por linha.
+- **`GET /notes/list`**
+  - Notes view (reverse-chronological por `createdAt`), com preview truncado por linha no cliente.
+  - Resposta: `{ items: NoteListItem[] }` (`ListingResponse<T>`), onde `NoteListItem = { id, title, body, capturedAt }` (mesma shape de `Note`; `body` serve de preview na lista).
 
-- **`GET /reminders/list?before={cursor}`**
-  - Reminders view: upcoming (asc por `firesAt`) + fired (desc). Cliente separa as seções.
+- **`GET /reminders/list`**
+  - Reminders view: retorna todos; o cliente separa as seções **Upcoming** / **Fired** por `status`.
+  - Resposta: `{ items: ReminderListItem[] }` (`ListingResponse<T>`), onde `ReminderListItem = { id, title, firesAt, body, status, capturedAt }` (mesma shape de `Reminder`).
 
-- **`GET /me/detail`**
-  - Perfil do Settings modal: `{ name, email, avatarUrl }`. Fallback de erro mostra só o email do contexto de auth.
+- **`GET /me/detail`** — **não implementado neste bloco**. O Settings sheet usa os dados do `user` já retornados por `POST /auth/login-or-register` e mantidos no cliente. Fallback de erro mostra só o email do contexto de auth.
 
 ---
 

@@ -10,8 +10,7 @@ import {
   TaskDiffChanges,
   TodoItemWithDiff,
 } from '@/domain/entities/task'
-import { loadOwnedTask } from '@/domain/utils/tasks'
-import { ID } from '@/modules/domain/entity/id'
+import { createID } from '@/modules/domain/entity/id'
 import { ItemResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
 
@@ -32,11 +31,10 @@ export class CreateTaskMessageUseCase implements UseCase<Response> {
   ) {}
 
   async execute(payload: Payload): Promise<Response> {
-    const task = await loadOwnedTask(
-      this.taskRepository,
-      payload.taskId,
-      payload.userId,
-    )
+    const task = await this.taskRepository.get({
+      id: createID(payload.taskId),
+      userId: createID(payload.userId),
+    })
 
     const reply = await this.generateAgentReply(payload, task)
     const item = await this.applyReplyToTask(task, reply)
@@ -83,7 +81,7 @@ export class CreateTaskMessageUseCase implements UseCase<Response> {
         : {
             contentType: 'todo',
             items: proposedChanges.items.map<TodoItemWithDiff>((item) => ({
-              id: item.id ?? new ID().toValue(),
+              id: item.id ?? createID().toValue(),
               title: item.title,
               done: item.done,
               order: item.order,
@@ -92,7 +90,7 @@ export class CreateTaskMessageUseCase implements UseCase<Response> {
           }
 
     return {
-      turnId: new ID().toValue(),
+      turnId: createID().toValue(),
       proposedBy: 'ben',
       changes,
       createdAt: new Date(),

@@ -2,7 +2,7 @@ import { Entity } from '@/modules/domain/entity/entity'
 import { ID } from '@/modules/domain/entity/id'
 
 export interface NoteProps {
-  userId: string
+  userId: ID
   title: string
   body: string
   createdAt: Date
