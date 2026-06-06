@@ -2,7 +2,7 @@
 
 Avaliação do que **já está pronto** versus **o que falta construir**, comparando a especificação de design (`project-design`) com a implementação real (`project-web`).
 
-> Data: 2026-06-04
+> Data: 2026-06-06
 
 ## Como a avaliação foi feita
 
@@ -29,10 +29,10 @@ Uma tela/componente é considerado **pronto** quando existe e está roteado/usad
 | --- | --- | --- | --- |
 | **Login** (`Sign in`) | 5 — empty, loading, error, permission-denied, extended-wait | `/` → `pages/login/page.tsx` | ✅ Pronto |
 | **Chat** | 11 — empty, loading, populated, composing, recording, transcribing, awaiting-reply, error, permission-denied, offline, edge-cases | `/chat` → `pages/chat/` | ✅ Pronto |
-| **Inline Capture Cards** | 16 — note/reminder/task (loading, populated, error, edge) + clarifying-question | `pages/chat/components/capture-card/` (note, reminder, task) | ⚠️ Parcial |
+| **Inline Capture Cards** | 17 — note/reminder/task (loading, populated, error, edge) + clarifying-question (+ edge-cases) | `pages/chat/components/capture-card/` (note, reminder, task) | ⚠️ Parcial |
 | **Active-task picker** | 5 — empty, loading, populated, error, edge-cases | `pages/chat/components/task-picker/` | ✅ Pronto |
 | **Task workspace** | 12 — empty, text/list populated, composing, recording, transcribing, pending-diff, error, permission-denied, offline, finished, edge | `/tasks/:taskId` → `pages/task-workspace/` | ✅ Pronto |
-| **Menu sidebar** | 23 — sidebar + Tasks + Notes + Reminders + Settings (cada um com empty/populated/loading/error/edge) | — | ❌ A construir |
+| **Menu sidebar** | 22 — sidebar + Tasks + Notes + Reminders + Settings (cada um com empty/populated/loading/error/edge) | — | ❌ A construir |
 | **Item detail modal** | 5 — note, reminder, loading, error, edge-cases | — | ❌ A construir |
 
 ### Observação sobre os Capture Cards (parcial)
@@ -68,7 +68,7 @@ O componente de capture card no `project-web` cobre os três tipos (`note`, `rem
 
 ### Componentes extras no project-web (fora da galeria)
 
-O `project-web` decompôs a UI em peças estruturais que não constam como entradas separadas na galeria, mas dão suporte às telas prontas: `chat-empty-state`, `chat-footer`, `chat-history` (+ skeleton), `chat-top-bar`, `chat-top-banner`, `message-footers` (retry / transcribing), `recording-bar`, `text-content`, `todo-content` (+ `add-todo-row`), `workspace-footer`, `workspace-top-banner` e `workspace-sub-thread-banner`.
+O `project-web` decompôs a UI em peças estruturais que não constam como entradas separadas na galeria, mas dão suporte às telas prontas: `chat-empty-state`, `chat-footer`, `chat-history` (+ skeleton), `chat-top-bar`, `chat-top-banner`, `message-footers` (retry / transcribing), `recording-bar`, `text-content`, `todo-content` (+ `add-todo-row`), `workspace-shell`, `workspace-footer`, `workspace-top-banner` e `workspace-sub-thread-banner`.
 
 ## O que falta construir
 
