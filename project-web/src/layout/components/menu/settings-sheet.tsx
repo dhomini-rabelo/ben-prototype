@@ -1,6 +1,7 @@
 import { LogOut, RotateCw, User } from "lucide-react";
 import { Typography } from "@/layout/components/ui/typography";
 import { cn } from "@/layout/utils/styles";
+import { MenuSheet } from "./menu-sheet";
 
 type SettingsSheetProps = {
   variant?: "populated" | "loading" | "error";
@@ -24,15 +25,7 @@ export function SettingsSheet({
   onRetry,
 }: SettingsSheetProps) {
   return (
-    <div
-      className={cn(
-        "flex w-full flex-col rounded-t-3xl bg-surface-container-lowest pb-6 shadow-[0_-8px_32px_rgba(0,0,0,0.08)]",
-        className,
-      )}
-    >
-      <div className="flex items-center justify-center px-5 pt-3 pb-2">
-        <span className="h-1 w-10 rounded-full bg-outline-variant/60" />
-      </div>
+    <MenuSheet className={className}>
       <div className="flex items-center justify-between px-5 pt-1 pb-3">
         <Typography variant="label-caps" className="text-on-surface-variant">
           Settings
@@ -124,6 +117,6 @@ export function SettingsSheet({
           </div>
         )}
       </div>
-    </div>
+    </MenuSheet>
   );
 }

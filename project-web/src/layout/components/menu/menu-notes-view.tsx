@@ -1,11 +1,9 @@
-import { AlertCircle } from "lucide-react";
-import { ChatBanner } from "@/layout/components/chat-banner";
-import { Typography } from "@/layout/components/ui/typography";
 import { useNoteListData } from "@/layout/hooks/api/use-note-list-data";
-import { relativeTime } from "@/layout/utils/format-time";
-import { MenuListRow } from "./menu-list-row";
+import { MenuListEmpty } from "./menu-list-empty";
+import { MenuListError } from "./menu-list-error";
+import { MenuListLoading } from "./menu-list-loading";
 import { MenuListShell } from "./menu-list-shell";
-import { MenuListLoading } from "./menu-tasks-view";
+import { MenuNotesList } from "./menu-notes-list";
 
 type MenuNotesViewProps = {
   onBack: () => void;
@@ -21,35 +19,17 @@ export function MenuNotesView({ onBack, onSelect }: MenuNotesViewProps) {
       {state.isLoading ? (
         <MenuListLoading />
       ) : state.isError ? (
-        <div className="pt-4">
-          <ChatBanner.Root tone="error">
-            <ChatBanner.Icon icon={AlertCircle} />
-            <ChatBanner.Text>couldn't load your notes</ChatBanner.Text>
-            <ChatBanner.Action label="retry" onClick={() => actions.refetch()} />
-          </ChatBanner.Root>
-        </div>
+        <MenuListError
+          message="couldn't load your notes"
+          onRetry={() => actions.refetch()}
+        />
       ) : notes.length === 0 ? (
-        <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
-          <Typography variant="body-md" className="text-on-surface">
-            no notes yet
-          </Typography>
-          <Typography variant="body-md" className="mt-1 text-on-surface-variant">
-            talk to Ben — he'll save the keepers.
-          </Typography>
-        </div>
+        <MenuListEmpty
+          title="no notes yet"
+          description="talk to Ben — he'll save the keepers."
+        />
       ) : (
-        <div className="flex flex-col pt-2">
-          {notes.map((note) => (
-            <MenuListRow
-              key={note.id}
-              kind="note"
-              title={note.title}
-              bodyPreview={note.body}
-              trailing={relativeTime(note.capturedAt)}
-              onClick={() => onSelect(note.id)}
-            />
-          ))}
-        </div>
+        <MenuNotesList notes={notes} onSelect={onSelect} />
       )}
     </MenuListShell>
   );
