@@ -1,10 +1,10 @@
 # Relatório de Funcionalidades Testáveis — Ben Prototype
 
-> **Snapshot:** 2026-06-04 · branch `main`
+> **Snapshot:** 2026-06-06 · branch `main`
 >
 > Este documento é um **levantamento do que já está implementado e pode ser testado hoje** nos sistemas do `ben-prototype`, com o comportamento esperado de cada funcionalidade descrito em detalhe.
 >
-> Ele reflete o **estado atual do código** (não o plano de produto). Onde o código diverge dos documentos de planejamento em [docs/](docs/), isso está sinalizado na seção [Divergências em relação aos docs](#9-divergências-em-relação-aos-docs-de-planejamento).
+> Ele reflete o **estado atual do código** (não o plano de produto). Onde o código diverge dos documentos de planejamento em [docs/](docs/), isso está sinalizado na seção [Divergências em relação aos docs](#10-divergências-em-relação-aos-docs-de-planejamento).
 
 ---
 
@@ -34,7 +34,8 @@ Variáveis de ambiente obrigatórias (validadas por Zod em [project-backend/src/
 - `NODE_ENV` — `development` carrega `.env.development`.
 - `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` — credenciais do Firebase Admin (validação do token Google).
 - `JWT_PRIVATE_KEY`, `JWT_EXPIRATION_TIME_IN_SECONDS` — emissão/validação do JWT da própria API.
-- `GOOGLE_GENERATIVE_AI_API_KEY` — chave do **Google Gemini** (agente do Ben).
+- `OPENROUTER_API_KEY` — chave do **OpenRouter** (modelo atualmente usado pelo agente do Ben).
+- `GOOGLE_GENERATIVE_AI_API_KEY` — chave do **Google Gemini** (modelo alternativo, ainda configurado mas não usado nas rotas).
 - `ASSEMBLYAI_API_KEY` — chave do **AssemblyAI** (transcrição de áudio).
 
 Rodar:
@@ -71,18 +72,19 @@ cd project-web && npm run dev
    - se já existe `User` com aquele `providerId` → **login**;
    - se não existe → **register** (cria o usuário; `username` = parte antes do `@` do e-mail).
 5. A resposta é `{ process: 'login' | 'register', user, accessToken }`. O `accessToken` é o **JWT** da API.
-6. O front grava dois cookies (validade 5 dias): `@ben/jwttoken` (o JWT) e `@ben/authprovidertoken` (o token do Google), e redireciona para `/chat`.
+6. O front grava três cookies (validade 5 dias): `@ben/jwttoken` (o JWT), `@ben/authprovidertoken` (o token do Google) e `@ben/user` (o objeto `user`, via [auth-store](project-web/src/layout/stores/auth-store.ts)), e redireciona para `/chat`.
 
 ### Detalhes e estados
 
 - **Sessão / guarda de rota:** o componente [Auth](project-web/src/core/auth.tsx) protege `/chat` e `/tasks/:taskId`. Se o cookie do JWT não existir, redireciona para login.
 - **Headers em toda requisição autenticada:** o Axios injeta automaticamente `jwtauthenticationtoken` e `providerauthenticationtoken` ([client.ts](project-web/src/api/client.ts)).
+- **Usuário em memória:** o `auth-store` reidrata o `user` do cookie `@ben/user` no boot — usado pelo Settings sheet (ver seção 7.4).
 - **Renovação de token:** se o middleware do backend renova o JWT, devolve no header `updatedjwtauthenticationtoken`; o front substitui o cookie automaticamente.
 - **Expiração / 401:** qualquer resposta `401` limpa os cookies e joga o usuário de volta para o login.
 - **Cancelamento do popup:** se o usuário fecha o popup, a tela mostra *"looks like that didn't go through — want to try again?"*; outros erros mostram *"Authentication failed. Please try again."*.
-- **Não há signout no servidor** — o logout é só descartar o cookie no cliente (auth stateless por JWT).
+- **Sign out:** o Settings sheet descarta os três cookies (`@ben/jwttoken`, `@ben/authprovidertoken`, `@ben/user`), limpa o `auth-store` e volta para `/` — não há signout no servidor (auth stateless por JWT).
 
-> ⚠️ **Limitação conhecida (ver seção 10):** o `UserRepository` é instanciado **separadamente** no login e no middleware de auth. Enquanto o JWT estiver válido, tudo funciona; a **reemissão de JWT por expiração** tentaria buscar o usuário num repositório vazio e falharia.
+> ⚠️ **Limitação conhecida (ver seção 11):** o `UserRepository` é instanciado **separadamente** no login e no middleware de auth. Enquanto o JWT estiver válido, tudo funciona; a **reemissão de JWT por expiração** tentaria buscar o usuário num repositório vazio e falharia.
 
 ---
 
@@ -90,7 +92,7 @@ cd project-web && npm run dev
 
 **Tela:** [project-web/src/pages/chat/page.tsx](project-web/src/pages/chat/page.tsx) (rota `/chat`).
 
-É a funcionalidade mais completa. Reúne: envio de mensagem, resposta do agente, classificação automática em capturas, memória de tópicos, histórico paginado e captura por voz.
+É a funcionalidade mais completa. Reúne: envio de mensagem, resposta do agente, classificação automática em capturas, memória de tópicos, histórico paginado, captura por voz e o acesso ao menu lateral (ver seção 7).
 
 ### 4.1 Envio de mensagem de texto
 
@@ -108,18 +110,18 @@ Regras de bloqueio do envio:
 - Texto vazio (após `trim`) → ignorado.
 - Já há uma resposta em andamento (`isAwaitingReply`) → ignorado.
 - **Offline** → ignorado (ver 4.7).
-- Em caso de erro de rede, `sendError` é marcado (estado de erro do envio).
+- Em caso de erro de rede, `sendError` é marcado (estado de erro do envio, com retry no footer da bolha).
 
-> ⚠️ **A resposta de `/chat` é JSON, não streaming.** Os documentos descrevem uma rota de streaming com `useChat`; o código atual responde um objeto `AgentReply` completo. Ver seção 9.
+> ⚠️ **A resposta de `/chat` é JSON, não streaming.** Os documentos descrevem uma rota de streaming com `useChat`; o código atual responde um objeto `AgentReply` completo. Ver seção 10.
 
 ### 4.2 Geração da resposta do agente (pipeline de 2 etapas + memória)
 
-**Provider:** Google **Gemini `gemini-2.5-flash-lite`** via Vercel AI SDK, isolado em [project-backend/src/infra/services/gemini-agent-provider/index.ts](project-backend/src/infra/services/gemini-agent-provider/index.ts).
+**Provider:** **OpenRouter** com o modelo **`openai/gpt-oss-120b`** via Vercel AI SDK, isolado em [project-backend/src/infra/services/ben-agent-provider/index.ts](project-backend/src/infra/services/ben-agent-provider/index.ts). O modelo é configurado em [models.ts](project-backend/src/infra/services/ben-agent-provider/models.ts) com `provider.sort: 'throughput'` (escolhe o provider de maior throughput, ignorando `cerebras`, exigindo `require_parameters`). A rota [chat.ts](project-backend/src/infra/http/routes/chat.ts) injeta o `openRouterModel`. Há também um `geminiModel` (`gemini-2.5-flash-lite`) definido no mesmo arquivo, mas **não usado** nas rotas hoje.
 
 A geração tem **duas chamadas ao modelo**:
 
-1. **Etapa de raciocínio/contexto** — `generateText` com o **system prompt do Ben** + a **memória de tópicos** ([system-prompt.ts](project-backend/src/infra/services/gemini-agent-provider/generate-reply/system-prompt.ts)). O agente recebe o índice de tópicos conhecidos e **pode chamar uma única vez** a ferramenta `get-history-context` ([history-context-tool.ts](project-backend/src/infra/services/gemini-agent-provider/generate-reply/history-context-tool.ts)) para buscar resumos de tópicos relevantes antes de responder (limite de 2 passos).
-2. **Etapa de formatação** — `generateText` com o **format prompt** ([format-system-prompt.ts](project-backend/src/infra/services/gemini-agent-provider/generate-reply/format-system-prompt.ts)) que converte o texto livre da etapa 1 em um **objeto estruturado** validado pelo schema ([schemas.ts](project-backend/src/infra/services/gemini-agent-provider/generate-reply/schemas.ts)):
+1. **Etapa de raciocínio/contexto** — `generateText` com o **system prompt do Ben** + a **memória de tópicos** ([system-prompt.ts](project-backend/src/infra/services/ben-agent-provider/generate-reply/system-prompt.ts)). O agente recebe o índice de tópicos conhecidos e **pode chamar uma única vez** a ferramenta `get-history-context` ([history-context-tool.ts](project-backend/src/infra/services/ben-agent-provider/generate-reply/history-context-tool.ts)) para buscar resumos de tópicos relevantes antes de responder (limite de 2 passos).
+2. **Etapa de formatação** — `generateText` com o **format prompt** ([format-system-prompt.ts](project-backend/src/infra/services/ben-agent-provider/generate-reply/format-system-prompt.ts)) e `Output.object`, que converte o texto livre da etapa 1 em um **objeto estruturado** validado pelo schema ([schemas.ts](project-backend/src/infra/services/ben-agent-provider/generate-reply/schemas.ts)):
 
 ```ts
 {
@@ -154,9 +156,8 @@ A geração tem **duas chamadas ao modelo**:
 **Componentes:** [capture-card/](project-web/src/pages/chat/components/capture-card/), renderizados em [chat-history.tsx](project-web/src/pages/chat/components/chat-history/chat-history.tsx).
 
 - Quando a resposta do Ben traz uma captura, aparece um **card** dentro da bolha com ícone por tipo, título e (quando houver) `meta`.
-- O card tem um botão de **ação** que navega para a **task workspace** (`/tasks/{itemId}`).
-
-> ⚠️ **Limitação:** o link de ação aponta para a workspace de task para **qualquer tipo** de captura. Para **task** funciona. Para **note/reminder** leva a `/tasks/{id}`, que tenta carregar uma task inexistente e cai na tela de erro *"couldn't load this one"* — **não existe tela de detalhe de note/reminder hoje**.
+- O **botão de ação** só é renderizado para capturas do tipo **task** ([capture-card-action-button.tsx](project-web/src/pages/chat/components/capture-card/capture-card-action-button.tsx) retorna `null` quando `kind !== "task"`). Para task, ele navega para a **task workspace** (`/tasks/{itemId}`) com rótulo dependente do estado (`Start` / `Continue` / `View`).
+- Cards de **note/reminder** aparecem sem botão de ação — o detalhe desses itens é acessado pelo **menu lateral** (ver seção 7), não pelo card do chat.
 
 ### 4.5 Histórico de mensagens + paginação
 
@@ -227,8 +228,8 @@ Comportamento esperado:
 
 Comportamento esperado:
 
-1. O usuário manda uma mensagem no contexto da task. O backend chama `generateTaskTurn` do Gemini com o estado atual da task (título, conteúdo, summary).
-2. O agente devolve `{ message, proposedChanges, updatedSummary }` ([schema](project-backend/src/infra/services/gemini-agent-provider/generate-task-turn/schemas.ts)).
+1. O usuário manda uma mensagem no contexto da task. O backend chama `generateTaskTurn` do Ben agent provider (OpenRouter) com o estado atual da task (título, conteúdo, summary).
+2. O agente devolve `{ message, proposedChanges, updatedSummary }` ([schema](project-backend/src/infra/services/ben-agent-provider/generate-task-turn/schemas.ts)).
 3. Se houver `proposedChanges`, o backend monta um **`pendingDiff`** (embutido na task) e move o status para `active`. A resposta traz a task atualizada + `benMessage`.
 4. O `updatedSummary` é salvo na task (memória curta da workspace).
 
@@ -263,7 +264,50 @@ Comportamento esperado:
 
 ---
 
-## 7. Tabela de endpoints disponíveis (backend)
+## 7. Menu lateral — listas e detalhe de item
+
+**Acesso:** botão de menu na top bar do chat ([chat-top-bar.tsx](project-web/src/pages/chat/components/chat-top-bar/chat-top-bar.tsx)) abre o **overlay** [MenuOverlay](project-web/src/layout/components/menu/menu-overlay.tsx). O menu **não é uma rota** — é uma camada sobreposta ao `/chat`, controlada pela store [menu-store.ts](project-web/src/layout/stores/menu-store.ts) (`view`: `menu | tasks | notes | reminders`, mais `detailTarget` e `isSettingsOpen`).
+
+### 7.1 Sidebar de navegação
+
+**Componente:** [menu-sidebar.tsx](project-web/src/layout/components/menu/menu-sidebar.tsx).
+
+- Lista as entradas **Tasks**, **Notes**, **Reminders** e **Settings**. Selecionar Tasks/Notes/Reminders troca a `view` do overlay; Settings abre o sheet de configurações (7.4).
+
+### 7.2 Lista de Notes
+
+**Endpoint:** **`GET /notes/list`** ([list-notes.ts](project-backend/src/domain/use-cases/captures/list-notes.ts), [list-notes route](project-backend/src/infra/http/routes/notes/list-notes.ts)). **View:** [menu-notes-view.tsx](project-web/src/layout/components/menu-notes/menu-notes-view.tsx) + [menu-notes-list.tsx](project-web/src/layout/components/menu-notes/menu-notes-list.tsx). **Hook:** [use-note-list-data.ts](project-web/src/layout/hooks/api/use-note-list-data.ts).
+
+- Retorna as notas do usuário ordenadas por `createdAt` desc. Resposta `{ items: NoteListItem[] }` (`{ id, title, body, capturedAt }`).
+- Estados pela shell genérica [menu-list-shell](project-web/src/layout/components/menu-list/menu-list-shell.tsx): **loading**, **error**, **empty** e **populated** (linhas via [menu-list-row](project-web/src/layout/components/menu-list/menu-list-row.tsx)).
+- Tocar numa nota abre o **detalhe** (7.5) via `openDetail({ kind: 'note', id })`.
+
+### 7.3 Lista de Reminders
+
+**Endpoint:** **`GET /reminders/list`** ([list-reminders.ts](project-backend/src/domain/use-cases/captures/list-reminders.ts), [list-reminders route](project-backend/src/infra/http/routes/reminders/list-reminders.ts)). **View:** [menu-reminders-view.tsx](project-web/src/layout/components/menu-reminders/menu-reminders-view.tsx) + [menu-reminders-list.tsx](project-web/src/layout/components/menu-reminders/menu-reminders-list.tsx). **Hook:** [use-reminder-list-data.ts](project-web/src/layout/hooks/api/use-reminder-list-data.ts).
+
+- Retorna todos os reminders; cada item traz `status` (`upcoming` | `fired`) **derivado no presenter** ([reminder-presenter.ts](project-backend/src/infra/http/presenters/reminder-presenter.ts)): `upcoming` se `remindAt` for nulo ou futuro, `fired` se passado. Mapeamento `remindAt → firesAt`, `notes → body`, `createdAt → capturedAt`.
+- O cliente separa em duas seções: **Upcoming** e **Fired**.
+- Mesmos estados (loading/error/empty/populated). Tocar abre o detalhe (7.5) com `kind: 'reminder'`.
+
+### 7.4 Lista de Tasks e Settings
+
+- **Tasks:** [menu-tasks-view.tsx](project-web/src/layout/components/menu-tasks/menu-tasks-view.tsx) consome **`GET /tasks/list`** (via [use-task-list-data.ts](project-web/src/layout/hooks/api/use-task-list-data.ts)) e exibe a lista; selecionar uma task navega para `/tasks/{id}`.
+- **Settings:** [settings-view.tsx](project-web/src/layout/components/menu-settings/settings-view.tsx) + [settings-sheet.tsx](project-web/src/layout/components/menu-settings/settings-sheet.tsx). Usa o `user` do [auth-store](project-web/src/layout/stores/auth-store.ts) (nome, e-mail, avatar). Estado **error** se não houver `user`. Tem ação de **Sign out** (descarta cookies + limpa store + volta para `/`). Não há `GET /me/detail` — os dados vêm do login.
+
+### 7.5 Detalhe de item (note/reminder)
+
+**Endpoints:** **`GET /notes/:id/detail`** ([get-note-detail.ts](project-backend/src/domain/use-cases/captures/get-note-detail.ts)) e **`GET /reminders/:id/detail`** ([get-reminder-detail.ts](project-backend/src/domain/use-cases/captures/get-reminder-detail.ts)). **Componentes:** [menu-detail/](project-web/src/layout/components/menu-detail/) — [note-detail.tsx](project-web/src/layout/components/menu-detail/note-detail.tsx), [reminder-detail.tsx](project-web/src/layout/components/menu-detail/reminder-detail.tsx), [item-detail-root.tsx](project-web/src/layout/components/menu-detail/item-detail-root.tsx). **Hooks:** [use-note-detail-data.ts](project-web/src/layout/hooks/api/use-note-detail-data.ts), [use-reminder-detail-data.ts](project-web/src/layout/hooks/api/use-reminder-detail-data.ts).
+
+- Abre um **sheet inferior** com o detalhe completo do item. Resposta `{ item }` (`ItemResponse<T>`), com validação de posse pelo `userId`.
+- Estados: **loading** ([item-detail-loading](project-web/src/layout/components/menu-detail/item-detail-loading.tsx)), **error** ([item-detail-error](project-web/src/layout/components/menu-detail/item-detail-error.tsx)) e **gone** (item não encontrado / 404 — [item-detail-gone](project-web/src/layout/components/menu-detail/item-detail-gone.tsx)).
+- Note exibe título + corpo + `capturedAt`; Reminder exibe título + corpo + meta de `firesAt`/`status`.
+
+> Notes e reminders são **read-only** no v1 — não há rota de edição; correções acontecem via conversa com o Ben.
+
+---
+
+## 8. Tabela de endpoints disponíveis (backend)
 
 Fonte de verdade: [project-backend/src/infra/http/app.ts](project-backend/src/infra/http/app.ts). Todas exigem os dois headers de auth, **exceto** `/health` e `/auth/login-or-register`.
 
@@ -283,10 +327,14 @@ Fonte de verdade: [project-backend/src/infra/http/app.ts](project-backend/src/in
 | `POST` | `/tasks/:id/todos/update` | Edita a lista de todos |
 | `POST` | `/tasks/:id/finish` | Marca como finalizada |
 | `POST` | `/tasks/:id/reopen` | Reabre task finalizada |
+| `GET` | `/notes/list` | Lista as notas do usuário (desc por `createdAt`) |
+| `GET` | `/notes/:id/detail` | Detalhe da nota → `{ item }` |
+| `GET` | `/reminders/list` | Lista os reminders (com `status` derivado) |
+| `GET` | `/reminders/:id/detail` | Detalhe do reminder → `{ item }` |
 
 ---
 
-## 8. Telas disponíveis (web)
+## 9. Telas disponíveis (web)
 
 Fonte: [project-web/src/core/router.tsx](project-web/src/core/router.tsx).
 
@@ -296,34 +344,37 @@ Fonte: [project-web/src/core/router.tsx](project-web/src/core/router.tsx).
 | `/chat` | Chat com o Ben | Protegida |
 | `/tasks/:taskId` | Task workspace | Protegida |
 
+> O **menu lateral** (Tasks / Notes / Reminders / Settings) e os **detalhes de item** (seção 7) **não têm rota própria** — são overlays/sheets renderizados sobre `/chat`, controlados pela `menu-store`.
+
 ---
 
-## 9. Divergências em relação aos docs de planejamento
+## 10. Divergências em relação aos docs de planejamento
 
 Os documentos em [docs/api-endpoints.md](docs/api-endpoints.md) e [docs/data-model.md](docs/data-model.md) descrevem o **plano v1**. O código atual já evoluiu/diverge em pontos importantes:
 
 1. **`/chat` é JSON, não streaming.** Os docs descrevem streaming com `useChat`; o código persiste a mensagem, gera resposta e capturas, e responde um `AgentReply` único.
 2. **`/chat` faz classificação de captura e memória.** Os docs marcam `/chat` como "reply-only"; na prática ele **cria notes/reminders/tasks** e mantém **memória de tópicos** persistida.
 3. **Não existem** `POST /messages/create` nem `POST /messages/create-audio`. A criação acontece via `/chat`; a transcrição é a rota separada `/transcription`.
-4. **Não existem** rotas de detalhe/listagem de **notes** e **reminders** (`/notes/...`, `/reminders/...`), nem `/sidebar/counts`, nem `/me/detail`. Logo, **não há menu sidebar, Notes view, Reminders view nem Settings** no web hoje.
-5. **Persistência:** o modelo de dados fala em MongoDB; a implementação atual é **100% em memória** (perde tudo no restart).
-6. **Sistema de tópicos/memória** (`topic`, `topic-summary`) existe no código, mas **não consta** como collection no `docs/data-model.md`.
+4. **Provider do agente:** os docs/`docs/vercel-ai-sdk.md` falam em Google Gemini; o código hoje usa **OpenRouter (`openai/gpt-oss-120b`)** via Vercel AI SDK (o `geminiModel` segue configurado, mas não é usado pelas rotas).
+5. **Listagem/detalhe de notes e reminders já existem** (`GET /notes/list`, `GET /notes/:id/detail`, `GET /reminders/list`, `GET /reminders/:id/detail`) e o **menu lateral** (Tasks/Notes/Reminders/Settings) + **detalhe de item** estão implementados no web. Ainda **não existem** `GET /sidebar/counts` (contagens derivadas no cliente) nem `GET /me/detail` (Settings usa o `user` do login).
+6. **Persistência:** o modelo de dados fala em MongoDB; a implementação atual é **100% em memória** (perde tudo no restart).
+7. **Sistema de tópicos/memória** (`topic`, `topic-summary`) existe no código, mas **não consta** como collection no `docs/data-model.md`.
 
 ---
 
-## 10. Limitações conhecidas que afetam os testes
+## 11. Limitações conhecidas que afetam os testes
 
 1. **Dados voláteis:** repositórios em memória — reiniciar o backend zera mensagens, capturas, tasks e tópicos.
 2. **`UserRepository` duplicado:** instanciado separadamente em [login-or-register.ts](project-backend/src/infra/http/routes/auth/login-or-register.ts) e no [auth middleware](project-backend/src/infra/http/middlewares/auth.ts). Funciona enquanto o JWT é válido; a **reemissão por expiração** não acharia o usuário (repositório vazio) e falharia.
-3. **Capture cards de note/reminder levam à workspace de task** e caem em erro — não há tela de detalhe própria para esses tipos.
-4. **Reminders não disparam** — o alarme é mockado; `remindAt`/`status` são apenas dados.
-5. **Dependência de chaves externas:** sem `GOOGLE_GENERATIVE_AI_API_KEY` (Gemini) e `ASSEMBLYAI_API_KEY` (transcrição), o chat e a voz não funcionam.
+3. **Detalhe de note/reminder só pelo menu:** os capture cards de note/reminder no chat não têm botão de ação (só tasks navegam). Para abrir o detalhe de uma nota/lembrete, use o **menu lateral** (seção 7).
+4. **Reminders não disparam** — o alarme é mockado; `remindAt`/`status` são apenas dados (status é derivado no presenter).
+5. **Dependência de chaves externas:** sem `OPENROUTER_API_KEY` (agente) e `ASSEMBLYAI_API_KEY` (transcrição), o chat e a voz não funcionam. `GOOGLE_GENERATIVE_AI_API_KEY` ainda é obrigatória para o boot, embora o modelo Gemini não seja usado nas rotas.
 6. **CORS restrito:** o web precisa rodar em `http://localhost:3001`.
 7. **Determinismo do agente:** como o Ben é um LLM, a classificação e as propostas de diff **variam entre execuções** — testes de conteúdo devem considerar essa variabilidade.
 
 ---
 
-## 11. Referências
+## 12. Referências
 
 - Endpoints planejados: [docs/api-endpoints.md](docs/api-endpoints.md)
 - Modelo de dados: [docs/data-model.md](docs/data-model.md)

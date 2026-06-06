@@ -39,7 +39,7 @@ Vite 8 · React 19 · react-router v7 · Tailwind CSS v4 · `lucide-react`
 
 ## project-web
 
-**Purpose:** The real web implementation of Ben — routing and Google/Firebase authentication are wired up, and it consumes the `project-backend` API to drive working feature screens, including a working chat experience with the Ben agent and a collaborative task workspace.
+**Purpose:** The real web implementation of Ben — routing and Google/Firebase authentication are wired up, and it consumes the `project-backend` API to drive working feature screens, including a working chat experience with the Ben agent, a collaborative task workspace, and a navigation menu for browsing captured tasks, notes, and reminders (with item detail and settings).
 
 ### Key directories
 
@@ -62,12 +62,12 @@ It shares the same stack as `project-design` but is a completely separate projec
 - `src/domain/use-cases/` — Application use cases (`auth/`, `messages/`, `topics/`, `transcription/`, `captures/`, `tasks/`)
 - `src/adapters/` — Ports and adapter implementations (auth provider, JWT, agent provider, transcription provider, in-memory repositories)
 - `src/infra/http/` — Express app, server entry point, routes, middlewares, presenters, and error handler
-- `src/infra/services/` — Infrastructure services (env validation via Zod, Firebase auth provider, JWT, AssemblyAI transcription provider, Gemini agent provider)
+- `src/infra/services/` — Infrastructure services (env validation via Zod, Firebase auth provider, JWT, AssemblyAI transcription provider, Ben agent provider)
 - `src/modules/domain/` — Domain primitives: base `Entity`, `AggregateRoot`, `ValueObject`, `Repository`, `UseCase`, domain errors, query helpers
 
 ### Stack
 
-Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · AssemblyAI (audio transcription) · Vercel AI SDK + Google Gemini (Ben agent) · multer (uploads) · `tsx` (dev runner)
+Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · AssemblyAI (audio transcription) · Vercel AI SDK + OpenRouter / Google Gemini (Ben agent) · multer (uploads) · `tsx` (dev runner)
 
 ---
 
