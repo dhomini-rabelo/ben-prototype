@@ -12,7 +12,7 @@ Use this skill when a task is large enough to be split into several small plans 
 
 This is the auto-approval variant of `.claude/skills/task-multiple-plans/SKILL.md`. The difference: **there are no `AskUserQuestion` approval gates** — the main agent proceeds automatically through every stage. Use it when the user has explicitly delegated the full task and wants it completed without intermediate check-ins.
 
-The flow has six stages:
+The flow has seven stages:
 
 1. **Define the plan set** — the main agent lists the small plans.
 2. **Detail each plan as a simple plan** — sub-agents produce simple plans.
@@ -20,6 +20,7 @@ The flow has six stages:
 4. **Create the deep plans** — sub-agents expand each simple plan into a deep, code-level plan.
 5. **Implement each plan** — the same sub-agents implement their deep plans.
 6. **Review and final feedback** — the main agent reviews, formats once, and reports back.
+7. **Review the diff against standards** — run the `task-review-diff-standards` skill on the resulting changes.
 
 ## When to use
 
@@ -174,6 +175,11 @@ This runs in auto-approval mode. Implement the plan fully and proceed without as
 2. Run formatting once for the whole change with `npm run lint:fix`, and verify the build with `npx tsc --noEmit` in the affected project(s).
 3. Give the user a **final feedback**: what was implemented, how the plans fit together, any follow-ups or risks.
 
+### Stage 7 — Review the diff against standards
+
+1. Once the task is complete, invoke the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill to review the resulting git diff against the project's conventions and design patterns.
+2. That skill orchestrates its own review sub-agents and produces the `diff-review-report.md` decision document, then asks the user with `AskUserQuestion` which improvements to apply. This is an intentional final review gate — let it run as the skill defines, even though the rest of this flow is auto-approval.
+
 ## Rules
 
 - Write in **English**.
@@ -185,4 +191,5 @@ This runs in auto-approval mode. Implement the plan fully and proceed without as
 - Each deep plan (Stage 4) must be created with the sub-agent prompt and follow the Claude Code plan structure described in Stage 4.
 - Sub-agents must **never** run formatting (`npm run lint:fix`) during parallel work — it can conflict. Formatting runs once in Stage 6.
 - Use the **same sub-agent** to create the deep plan (Stage 4) and implement it (Stage 5).
+- After the task is complete (Stage 7), always run the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill on the resulting diff.
 - Do **not** include a "Summary" or "Conclusion" section.
