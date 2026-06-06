@@ -159,6 +159,63 @@ export function DeleteItemDialog() {
 }
 ```
 
+## Do not build sub-UI through local renderX() functions
+
+- Never extract chunks of JSX into local `renderX()` helper functions inside a component.
+- Inline the JSX directly in the body; if it is reused, promote it to a real component instead.
+- Inline conditional state branches (loading / error / empty / data) in the JSX body rather than wrapping them in a `renderContent()` function.
+
+```tsx
+// Wrong way
+export function ChatPanel() {
+  function renderBanner() {
+    return <Banner>{message}</Banner>;
+  }
+
+  function renderContent() {
+    if (isLoading) return <Spinner />;
+    if (isError) return <ErrorState />;
+    return <MessageList messages={messages} />;
+  }
+
+  return (
+    <>
+      {renderBanner()}
+      {renderContent()}
+    </>
+  );
+}
+
+// Correct way
+export function ChatPanel() {
+  return (
+    <>
+      <Banner>{message}</Banner>
+      {isLoading ? (
+        <Spinner />
+      ) : isError ? (
+        <ErrorState />
+      ) : (
+        <MessageList messages={messages} />
+      )}
+    </>
+  );
+}
+```
+
+## Keep the context payload minimal
+
+- Put a value in a component's context only when it is genuinely shared or repeated across the subtree.
+- When a single prop is threaded through many composition children, lift that prop into context instead of prop-drilling it.
+
+```tsx
+// Wrong way — context carries values only one child uses
+const CardContext = createContext<{ isDisabled: boolean; title: string; icon: ReactNode }>();
+
+// Correct way — context carries only the genuinely shared value
+const CardContext = createContext<{ isDisabled: boolean }>();
+```
+
 ## Use useDialogs for opening, closing, and rendering dialogs by key
 
 ```tsx

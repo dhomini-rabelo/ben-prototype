@@ -47,3 +47,28 @@ Each status component (`loading`, `error`, `empty`, `gone`) is a pure, stateless
 ## Presentational component
 
 The `{feature}-list.tsx` (or `{feature}-content.tsx`) receives the already-loaded data plus minimal callbacks (e.g. `onSelect`) and renders it. It performs no fetching and no loading/error handling — those belong to the container.
+
+## State ownership
+
+A feature's structured state lives in a **zustand** store, and the feature's components read it directly instead of receiving it through prop-drilling.
+
+- Use **zustand** for complex/structured feature state and its actions.
+- Reserve **jotai** for simple shared primitives between components (e.g. a shared input string) where a full store would be overkill.
+- Do not add a new state library without confirming it is necessary.
+- Child components of a feature consume the store directly; only genuinely local or parent-owned values are passed as props.
+
+```tsx
+// Wrong way — parent reads the store and drills many props down
+export function ChatRoot() {
+  const recordingState = useChatStore((s) => s.recordingState);
+  const draft = useChatStore((s) => s.draft);
+  return <ChatInput recordingState={recordingState} draft={draft} />;
+}
+
+// Correct way — the child reads the store directly
+export function ChatInput() {
+  const draft = useChatStore((s) => s.draft);
+  const recordingState = useChatStore((s) => s.recordingState);
+  return <input value={draft} disabled={recordingState.isActive} />;
+}
+```
