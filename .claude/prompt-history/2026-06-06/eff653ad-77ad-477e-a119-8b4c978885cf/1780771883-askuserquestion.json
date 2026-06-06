@@ -1,0 +1,22 @@
+{
+  "questions": [
+    {
+      "question": "There's no task.md in current-tasks/, but a task folder named `implement-menu-sidebar`. What title should the archive folder use?",
+      "header": "Task title",
+      "options": [
+        {
+          "label": "implement-menu-sidebar",
+          "description": "Archive to .claude/history/2026-06-06_implement-menu-sidebar/ using the existing folder name as the title."
+        },
+        {
+          "label": "Let me specify",
+          "description": "Provide a different title for the archive folder."
+        }
+      ],
+      "multiSelect": false
+    }
+  ],
+  "answers": {
+    "There's no task.md in current-tasks/, but a task folder named `implement-menu-sidebar`. What title should the archive folder use?": "implement-menu-sidebar"
+  }
+}
