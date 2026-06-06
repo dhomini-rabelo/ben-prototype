@@ -1,8 +1,8 @@
+import { MenuListEmpty } from "@/layout/components/menu-list/menu-list-empty";
+import { MenuListError } from "@/layout/components/menu-list/menu-list-error";
+import { MenuListLoading } from "@/layout/components/menu-list/menu-list-loading";
+import { MenuListShell } from "@/layout/components/menu-list/menu-list-shell";
 import { useTaskListData } from "@/layout/hooks/api/use-task-list-data";
-import { MenuListEmpty } from "./menu-list-empty";
-import { MenuListError } from "./menu-list-error";
-import { MenuListLoading } from "./menu-list-loading";
-import { MenuListShell } from "./menu-list-shell";
 import { MenuTasksList } from "./menu-tasks-list";
 
 type MenuTasksViewProps = {

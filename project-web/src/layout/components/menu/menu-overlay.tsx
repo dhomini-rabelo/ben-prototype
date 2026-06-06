@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useNoteListData } from "@/layout/hooks/api/use-note-list-data";
 import { useReminderListData } from "@/layout/hooks/api/use-reminder-list-data";
 import { useTaskListData } from "@/layout/hooks/api/use-task-list-data";
-import { MenuNotesView } from "./menu-notes-view";
-import { MenuRemindersView } from "./menu-reminders-view";
+import { MenuNotesView } from "@/layout/components/menu-notes/menu-notes-view";
+import { MenuRemindersView } from "@/layout/components/menu-reminders/menu-reminders-view";
+import { NoteDetail } from "@/layout/components/menu-detail/note-detail";
+import { ReminderDetail } from "@/layout/components/menu-detail/reminder-detail";
+import { MenuTasksView } from "@/layout/components/menu-tasks/menu-tasks-view";
+import { SettingsView } from "@/layout/components/menu-settings/settings-view";
 import { MenuSidebar, type MenuEntryId } from "./menu-sidebar";
-import { MenuTasksView } from "./menu-tasks-view";
-import { NoteDetail } from "./note-detail";
-import { ReminderDetail } from "./reminder-detail";
-import { SettingsView } from "./settings-view";
 
 type MenuOverlayProps = {
   onClose: () => void;

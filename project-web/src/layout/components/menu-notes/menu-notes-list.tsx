@@ -1,6 +1,6 @@
 import type { NoteListItem } from "@/api/models/note";
+import { MenuListRow } from "@/layout/components/menu-list/menu-list-row";
 import { relativeTime } from "@/layout/utils/format-time";
-import { MenuListRow } from "./menu-list-row";
 
 type MenuNotesListProps = {
   notes: NoteListItem[];

@@ -1,7 +1,7 @@
 import type { TaskListItem } from "@/api/responses/task";
+import { MenuListRow } from "@/layout/components/menu-list/menu-list-row";
 import { Typography } from "@/layout/components/ui/typography";
 import { relativeTime } from "@/layout/utils/format-time";
-import { MenuListRow } from "./menu-list-row";
 
 type MenuTasksListProps = {
   tasks: TaskListItem[];

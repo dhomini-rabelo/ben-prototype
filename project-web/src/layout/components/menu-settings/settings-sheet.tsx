@@ -1,7 +1,7 @@
 import { LogOut, RotateCw, User } from "lucide-react";
+import { MenuSheet } from "@/layout/components/menu/menu-sheet";
 import { Typography } from "@/layout/components/ui/typography";
 import { cn } from "@/layout/utils/styles";
-import { MenuSheet } from "./menu-sheet";
 
 type SettingsSheetProps = {
   variant?: "populated" | "loading" | "error";

@@ -1,7 +1,7 @@
 import type { ReminderListItem } from "@/api/models/reminder";
+import { MenuListRow } from "@/layout/components/menu-list/menu-list-row";
 import { Typography } from "@/layout/components/ui/typography";
 import { firesAtRelative, relativeTime } from "@/layout/utils/format-time";
-import { MenuListRow } from "./menu-list-row";
 
 type MenuRemindersListProps = {
   reminders: ReminderListItem[];
