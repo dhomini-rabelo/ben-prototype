@@ -1,4 +1,4 @@
-import { cn } from "../../utils/styles";
+import { cn } from "@/layout/utils/styles";
 import { useChatBannerTone } from "./contexts/tone";
 
 type ChatBannerActionProps = {

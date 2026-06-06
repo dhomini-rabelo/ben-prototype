@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { authClient } from "../../api/client";
+import { authClient } from "@/api/client";
 
 interface UseAPIRequestProps {
   url: string;

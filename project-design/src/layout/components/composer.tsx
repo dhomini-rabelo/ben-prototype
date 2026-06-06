@@ -1,5 +1,5 @@
 import { ChevronUp } from "lucide-react";
-import { cn } from "../utils/cn";
+import { cn } from "@/layout/utils/cn";
 import { Typography } from "./ui/typography";
 
 type ComposerProps = {

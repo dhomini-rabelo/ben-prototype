@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Typography } from "../ui/typography";
+import { Typography } from "@/layout/components/ui/typography";
 
 type ChatBannerTextProps = {
   children: ReactNode;

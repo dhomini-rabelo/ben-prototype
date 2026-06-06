@@ -2,10 +2,10 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import Cookies from 'js-cookie'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { JWT_COOKIE, PROVIDER_COOKIE, basicClient } from '../../api/client'
-import { API_ROUTES } from '../../api/routes'
-import { auth } from '../../core/firebase'
-import { ROUTES } from '../../core/routes'
+import { JWT_COOKIE, PROVIDER_COOKIE, basicClient } from '@/api/client'
+import { API_ROUTES } from '@/api/routes'
+import { auth } from '@/core/firebase'
+import { ROUTES } from '@/core/routes'
 
 const COOKIE_MAX_AGE_DAYS = 5
 

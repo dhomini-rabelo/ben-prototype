@@ -1,4 +1,4 @@
-import { cn } from "../utils/styles";
+import { cn } from "@/layout/utils/styles";
 import { BenLogo } from "./icons/ben-logo";
 import { Typography } from "./ui/typography";
 

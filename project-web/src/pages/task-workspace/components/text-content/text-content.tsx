@@ -1,7 +1,7 @@
 import { useState, type FocusEvent } from "react";
-import { Typography } from "../../../../layout/components/ui/typography";
-import { useWorkspaceTask } from "../../hooks/use-workspace-task";
-import { useTaskContentStore } from "../../stores/task-content-store";
+import { Typography } from "@/layout/components/ui/typography";
+import { useWorkspaceTask } from "@/pages/task-workspace/hooks/use-workspace-task";
+import { useTaskContentStore } from "@/pages/task-workspace/stores/task-content-store";
 
 type TextContentProps = {
   readOnly?: boolean;

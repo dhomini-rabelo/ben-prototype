@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
-import { cn } from "../utils/cn";
+import { cn } from "@/layout/utils/cn";
 
 type SuggestedActionProps = {
   icon: ComponentType<{ className?: string; strokeWidth?: number }>;

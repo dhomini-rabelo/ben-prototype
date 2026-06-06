@@ -1,5 +1,5 @@
 import { RotateCw } from "lucide-react";
-import { Typography } from "../../../../layout/components/ui/typography";
+import { Typography } from "@/layout/components/ui/typography";
 
 type TaskPickerErrorProps = {
   onRetry?: () => void;

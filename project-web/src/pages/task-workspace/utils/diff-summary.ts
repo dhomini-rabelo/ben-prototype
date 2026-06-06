@@ -1,4 +1,4 @@
-import type { Task } from "../../../api/models/task";
+import type { Task } from "@/api/models/task";
 
 export function diffSummary(task: Task | null): string {
   const changes = task?.pendingDiff?.changes;

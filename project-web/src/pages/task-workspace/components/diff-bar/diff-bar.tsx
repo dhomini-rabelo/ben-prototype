@@ -1,9 +1,9 @@
 import { Check, X } from "lucide-react";
 import { memo } from "react";
-import { Typography } from "../../../../layout/components/ui/typography";
-import { useWorkspaceTask } from "../../hooks/use-workspace-task";
-import { useTaskDiffStore } from "../../stores/task-diff-store";
-import { diffSummary } from "../../utils/diff-summary";
+import { Typography } from "@/layout/components/ui/typography";
+import { useWorkspaceTask } from "@/pages/task-workspace/hooks/use-workspace-task";
+import { useTaskDiffStore } from "@/pages/task-workspace/stores/task-diff-store";
+import { diffSummary } from "@/pages/task-workspace/utils/diff-summary";
 
 function DiffBarComponent() {
   const task = useWorkspaceTask();

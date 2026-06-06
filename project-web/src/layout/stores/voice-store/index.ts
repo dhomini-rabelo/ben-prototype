@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { requestTranscribeAudio } from "../../../api/requests/transcription";
-import { useConnectivityStore } from "../connectivity-store";
+import { requestTranscribeAudio } from "@/api/requests/transcription";
+import { useConnectivityStore } from "@/layout/stores/connectivity-store";
 import { subscribeMicPermission } from "./mic-permission";
 import {
   cancelRecorder,

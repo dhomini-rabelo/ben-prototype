@@ -1,7 +1,7 @@
 import { RotateCw } from "lucide-react";
 import { memo } from "react";
-import { Typography } from "../../../../layout/components/ui/typography";
-import { cn } from "../../../../layout/utils/styles";
+import { Typography } from "@/layout/components/ui/typography";
+import { cn } from "@/layout/utils/styles";
 
 type SubThreadBannerProps = {
   variant?: "ben-reply" | "ben-typing" | "error";

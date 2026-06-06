@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { requestSendChatMessage } from "../../../../api/requests/chat";
-import { useConnectivityStore } from "../../../../layout/stores/connectivity-store";
+import { requestSendChatMessage } from "@/api/requests/chat";
+import { useConnectivityStore } from "@/layout/stores/connectivity-store";
 import { animateReply } from "./animate-reply";
 import { buildBenMessage, buildUserMessage } from "./message-builders";
 import type { MessagesStore } from "./types";

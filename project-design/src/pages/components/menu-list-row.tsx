@@ -1,4 +1,4 @@
-import { MenuListRow } from "../../layout/components/menu-list-row";
+import { MenuListRow } from "@/layout/components/menu-list-row";
 import { ComponentPreview } from "./_preview";
 
 export function MenuListRowPreview() {

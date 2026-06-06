@@ -1,8 +1,8 @@
 import { X } from "lucide-react";
-import { ActiveTaskPeek } from "../../layout/components/active-task-peek";
-import { ChatInput } from "../../layout/components/chat-input";
-import { MessageBubble } from "../../layout/components/message-bubble";
-import { Typography } from "../../layout/components/ui/typography";
+import { ActiveTaskPeek } from "@/layout/components/active-task-peek";
+import { ChatInput } from "@/layout/components/chat-input";
+import { MessageBubble } from "@/layout/components/message-bubble";
+import { Typography } from "@/layout/components/ui/typography";
 import { ChatShell } from "./_chat-shell";
 
 export function ChatTranscribing() {

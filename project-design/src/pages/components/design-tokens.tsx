@@ -1,4 +1,4 @@
-import { Typography } from "../../layout/components/ui/typography";
+import { Typography } from "@/layout/components/ui/typography";
 
 const COLOR_GROUPS: { label: string; swatches: { name: string; token: string; value: string }[] }[] = [
   {

@@ -1,7 +1,7 @@
-import { queryClient } from "../../../api/client";
-import type { Task } from "../../../api/models/task";
-import { API_ROUTES } from "../../../api/routes";
-import type { ItemResponse } from "../../../api/types";
+import { queryClient } from "@/api/client";
+import type { Task } from "@/api/models/task";
+import { API_ROUTES } from "@/api/routes";
+import type { ItemResponse } from "@/api/types";
 
 export function getTaskFromCache(taskId: string): Task | null {
   const data = queryClient.getQueryData<ItemResponse<Task>>([

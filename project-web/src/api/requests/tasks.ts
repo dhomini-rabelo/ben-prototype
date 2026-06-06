@@ -1,8 +1,8 @@
-import { authClient } from "../client";
-import type { Task, TodoItem } from "../models/task";
-import type { TaskListItem, TaskMessageReply } from "../responses/task";
-import { API_ROUTES } from "../routes";
-import type { ItemResponse, ListingResponse } from "../types";
+import { authClient } from "@/api/client";
+import type { Task, TodoItem } from "@/api/models/task";
+import type { TaskListItem, TaskMessageReply } from "@/api/responses/task";
+import { API_ROUTES } from "@/api/routes";
+import type { ItemResponse, ListingResponse } from "@/api/types";
 
 export async function requestListActiveTasks(): Promise<TaskListItem[]> {
   const response = await authClient.get<ListingResponse<TaskListItem>>(

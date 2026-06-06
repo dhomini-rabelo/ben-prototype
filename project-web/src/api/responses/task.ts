@@ -1,4 +1,4 @@
-import type { Task, TaskContentType, TaskStatus } from "../models/task";
+import type { Task, TaskContentType, TaskStatus } from "@/api/models/task";
 
 export interface TaskListItem {
   id: string;

@@ -1,4 +1,4 @@
-import { MenuSidebar } from "../../layout/components/menu-sidebar";
+import { MenuSidebar } from "@/layout/components/menu-sidebar";
 import { ComponentPreview } from "./_preview";
 
 export function MenuSidebarPreview() {

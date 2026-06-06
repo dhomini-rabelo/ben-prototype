@@ -1,5 +1,5 @@
 import type { StateCreator } from "zustand";
-import type { BenUiMessage } from "../../utils/chat-messages";
+import type { BenUiMessage } from "@/pages/chat/utils/chat-messages";
 
 export interface MessagesStore {
   sessionMessages: BenUiMessage[];

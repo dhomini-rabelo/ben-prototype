@@ -1,5 +1,5 @@
-import type { CaptureView } from "../../../../api/responses/agent-reply";
-import type { BenUiMessage } from "../../utils/chat-messages";
+import type { CaptureView } from "@/api/responses/agent-reply";
+import type { BenUiMessage } from "@/pages/chat/utils/chat-messages";
 
 export function buildUserMessage(text: string): BenUiMessage {
   return {

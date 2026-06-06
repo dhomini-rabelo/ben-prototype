@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { requestSendTaskMessage } from "../../../api/requests/tasks";
-import { useConnectivityStore } from "../../../layout/stores/connectivity-store";
+import { requestSendTaskMessage } from "@/api/requests/tasks";
+import { useConnectivityStore } from "@/layout/stores/connectivity-store";
 import { invalidateTask } from "./task-cache";
 import { useTaskStore } from "./task-store";
 

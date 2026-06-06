@@ -1,4 +1,4 @@
-import { TypingIndicator } from "../../layout/components/ui/typing-indicator";
+import { TypingIndicator } from "@/layout/components/ui/typing-indicator";
 import { ComponentPreview } from "./_preview";
 
 export function TypingIndicatorPreview() {

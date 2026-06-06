@@ -1,5 +1,5 @@
 import type { UIMessage } from "ai";
-import type { MessageCapture } from "../../../api/models/message";
+import type { MessageCapture } from "@/api/models/message";
 
 export type BenMessageMetadata = {
   capture?: MessageCapture;

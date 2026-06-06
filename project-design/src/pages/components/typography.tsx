@@ -1,4 +1,4 @@
-import { Typography } from "../../layout/components/ui/typography";
+import { Typography } from "@/layout/components/ui/typography";
 import { ComponentPreview } from "./_preview";
 
 export function TypographyPreview() {

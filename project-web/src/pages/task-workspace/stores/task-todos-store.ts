@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { requestUpdateTaskTodos } from "../../../api/requests/tasks";
-import { nextOrder } from "../utils/todo-order";
+import { requestUpdateTaskTodos } from "@/api/requests/tasks";
+import { nextOrder } from "@/pages/task-workspace/utils/todo-order";
 import { getTaskFromCache, invalidateTask } from "./task-cache";
 import { useTaskStore } from "./task-store";
 

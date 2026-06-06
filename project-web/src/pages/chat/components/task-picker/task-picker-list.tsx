@@ -1,8 +1,8 @@
 import { List, Type } from "lucide-react";
 import type { ComponentType } from "react";
-import type { TaskContentType } from "../../../../api/models/task";
-import type { TaskListItem } from "../../../../api/responses/task";
-import { Typography } from "../../../../layout/components/ui/typography";
+import type { TaskContentType } from "@/api/models/task";
+import type { TaskListItem } from "@/api/responses/task";
+import { Typography } from "@/layout/components/ui/typography";
 
 type TaskPickerListProps = {
   tasks: TaskListItem[];

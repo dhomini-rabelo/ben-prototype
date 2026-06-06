@@ -1,4 +1,4 @@
-import { Typography } from "../../../../layout/components/ui/typography";
+import { Typography } from "@/layout/components/ui/typography";
 
 export function TaskPickerEmpty() {
   return (

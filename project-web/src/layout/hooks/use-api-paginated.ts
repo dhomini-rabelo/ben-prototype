@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { authClient } from "../../api/client";
-import type { Pagination } from "../../api/types";
+import { authClient } from "@/api/client";
+import type { Pagination } from "@/api/types";
 
 interface UseAPIPaginatedProps {
   url: string;

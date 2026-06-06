@@ -1,4 +1,4 @@
-import { BrandMark } from "../../layout/components/brand-mark";
+import { BrandMark } from "@/layout/components/brand-mark";
 import { ComponentPreview } from "./_preview";
 
 export function BrandMarkPreview() {

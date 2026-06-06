@@ -1,4 +1,4 @@
-import { WorkspaceTopBar } from "../../layout/components/workspace-top-bar";
+import { WorkspaceTopBar } from "@/layout/components/workspace-top-bar";
 import { ComponentPreview } from "./_preview";
 
 export function WorkspaceTopBarPreview() {

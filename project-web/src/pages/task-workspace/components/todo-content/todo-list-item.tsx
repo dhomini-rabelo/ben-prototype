@@ -1,8 +1,8 @@
 import { Check } from "lucide-react";
 import { memo } from "react";
-import { Typography } from "../../../../layout/components/ui/typography";
-import { cn } from "../../../../layout/utils/styles";
-import type { TodoItemDiff } from "../../../../api/models/task";
+import { Typography } from "@/layout/components/ui/typography";
+import { cn } from "@/layout/utils/styles";
+import type { TodoItemDiff } from "@/api/models/task";
 
 type TodoListItemProps = {
   title: string;

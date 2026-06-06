@@ -1,5 +1,5 @@
 import { Bell, Menu, Mic, Plus } from "lucide-react";
-import { IconButton } from "../../layout/components/ui/icon-button";
+import { IconButton } from "@/layout/components/ui/icon-button";
 import { ComponentPreview } from "./_preview";
 
 export function IconButtonPreview() {

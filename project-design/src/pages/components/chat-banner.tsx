@@ -1,5 +1,5 @@
 import { AlertCircle, CloudOff, MicOff } from "lucide-react";
-import { ChatBanner } from "../../layout/components/chat-banner";
+import { ChatBanner } from "@/layout/components/chat-banner";
 import { ComponentPreview } from "./_preview";
 
 export function ChatBannerPreview() {

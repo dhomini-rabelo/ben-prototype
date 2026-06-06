@@ -1,6 +1,6 @@
-import { authClient } from "../client";
-import type { TranscriptionResponse } from "../responses/transcription";
-import { API_ROUTES } from "../routes";
+import { authClient } from "@/api/client";
+import type { TranscriptionResponse } from "@/api/responses/transcription";
+import { API_ROUTES } from "@/api/routes";
 
 const AUDIO_FIELD_NAME = "audio";
 const AUDIO_FILE_NAME = "recording.webm";

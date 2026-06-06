@@ -1,6 +1,6 @@
-import { useWorkspaceTask } from "../../hooks/use-workspace-task";
-import { useTaskTodosStore } from "../../stores/task-todos-store";
-import { sortByOrder } from "../../utils/todo-order";
+import { useWorkspaceTask } from "@/pages/task-workspace/hooks/use-workspace-task";
+import { useTaskTodosStore } from "@/pages/task-workspace/stores/task-todos-store";
+import { sortByOrder } from "@/pages/task-workspace/utils/todo-order";
 import { AddTodoRow } from "./add-todo-row";
 import { TodoListItem } from "./todo-list-item";
 

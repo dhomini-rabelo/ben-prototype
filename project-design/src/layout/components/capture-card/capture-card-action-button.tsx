@@ -1,5 +1,5 @@
 import { ChevronRight, Play } from "lucide-react";
-import { cn } from "../../utils/cn";
+import { cn } from "@/layout/utils/cn";
 import type { CaptureCardState } from "./capture-card.types";
 
 const DEFAULT_TASK_ACTION_LABEL: Record<CaptureCardState, string> = {

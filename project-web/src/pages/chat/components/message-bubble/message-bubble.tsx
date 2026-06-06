@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "../../../../layout/utils/styles";
+import { cn } from "@/layout/utils/styles";
 
 type MessageBubbleProps = {
   from: "user" | "ben";

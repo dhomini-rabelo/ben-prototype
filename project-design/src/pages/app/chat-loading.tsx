@@ -1,6 +1,6 @@
-import { ActiveTaskPeek } from "../../layout/components/active-task-peek";
-import { ChatInput } from "../../layout/components/chat-input";
-import { MessageBubble } from "../../layout/components/message-bubble";
+import { ActiveTaskPeek } from "@/layout/components/active-task-peek";
+import { ChatInput } from "@/layout/components/chat-input";
+import { MessageBubble } from "@/layout/components/message-bubble";
 import { ChatShell } from "./_chat-shell";
 
 export function ChatLoading() {

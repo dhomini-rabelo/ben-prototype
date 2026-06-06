@@ -1,4 +1,4 @@
-import { ChatInput } from "../../layout/components/chat-input";
+import { ChatInput } from "@/layout/components/chat-input";
 import { ComponentPreview } from "./_preview";
 
 export function ChatInputPreview() {

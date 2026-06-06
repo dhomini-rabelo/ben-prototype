@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import axios, { type AxiosError } from "axios";
 import Cookies from "js-cookie";
-import { ROUTES } from "../core/routes";
+import { ROUTES } from "@/core/routes";
 
 export const BASE_URL = import.meta.env.VITE_BACKEND_URL as string;
 

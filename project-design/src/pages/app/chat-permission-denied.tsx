@@ -1,7 +1,7 @@
 import { MicOff } from "lucide-react";
-import { ChatBanner } from "../../layout/components/chat-banner";
-import { ChatInput } from "../../layout/components/chat-input";
-import { MessageBubble } from "../../layout/components/message-bubble";
+import { ChatBanner } from "@/layout/components/chat-banner";
+import { ChatInput } from "@/layout/components/chat-input";
+import { MessageBubble } from "@/layout/components/message-bubble";
 import { ChatShell } from "./_chat-shell";
 
 export function ChatPermissionDenied() {

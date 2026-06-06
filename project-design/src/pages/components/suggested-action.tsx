@@ -1,5 +1,5 @@
 import { Bell, NotebookPen, Sparkles } from "lucide-react";
-import { SuggestedAction } from "../../layout/components/suggested-action";
+import { SuggestedAction } from "@/layout/components/suggested-action";
 import { ComponentPreview } from "./_preview";
 
 export function SuggestedActionPreview() {

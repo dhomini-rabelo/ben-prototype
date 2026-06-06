@@ -1,8 +1,8 @@
 import { useAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { useCallback } from "react";
-import { draftAtom } from "../states/chat-state";
-import { useMessagesStore } from "../stores/messages-store";
+import { draftAtom } from "@/pages/chat/states/chat-state";
+import { useMessagesStore } from "@/pages/chat/stores/messages-store";
 
 export function useChatInput() {
   const [draft, setDraft] = useAtom(draftAtom);

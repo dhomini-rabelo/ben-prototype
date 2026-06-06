@@ -1,5 +1,5 @@
-import { ChatInput } from "../../layout/components/chat-input";
-import { Typography } from "../../layout/components/ui/typography";
+import { ChatInput } from "@/layout/components/chat-input";
+import { Typography } from "@/layout/components/ui/typography";
 import { WorkspaceShell } from "./_workspace-shell";
 
 export function WorkspaceEmpty() {

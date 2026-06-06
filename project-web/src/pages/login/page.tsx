@@ -1,8 +1,8 @@
-import { BrandMark } from "../../layout/components/brand-mark";
-import { GoogleIcon } from "../../layout/components/icons/google-icon";
-import { Button } from "../../layout/components/ui/button";
-import { Typography } from "../../layout/components/ui/typography";
-import { useGoogleAuth } from "../../layout/hooks/use-google-auth";
+import { BrandMark } from "@/layout/components/brand-mark";
+import { GoogleIcon } from "@/layout/components/icons/google-icon";
+import { Button } from "@/layout/components/ui/button";
+import { Typography } from "@/layout/components/ui/typography";
+import { useGoogleAuth } from "@/layout/hooks/use-google-auth";
 
 export function Login() {
   const { signIn, isLoading, isPermissionDenied, error } = useGoogleAuth();

@@ -1,17 +1,17 @@
 import { Link } from "react-router";
-import { ROUTES } from "../../../../core/routes";
-import { Typography } from "../../../../layout/components/ui/typography";
-import { useChatMessages } from "../../hooks/use-chat-messages";
-import { useInfiniteScrollTop } from "../../hooks/use-infinite-scroll-top";
-import { useScrollToBottom } from "../../hooks/use-scroll-to-bottom";
-import { useMessagesStore } from "../../stores/messages-store";
-import { selectVoiceStatus, useVoiceStore } from "../../../../layout/stores/voice-store";
-import { getMessageText } from "../../utils/chat-messages";
-import { CaptureCard } from "../capture-card";
-import { MessageBubble } from "../message-bubble/message-bubble";
-import { RetryFooter } from "../message-footers/retry-footer";
-import { TranscribingFooter } from "../message-footers/transcribing-footer";
-import { TypingIndicator } from "../typing-indicator";
+import { ROUTES } from "@/core/routes";
+import { Typography } from "@/layout/components/ui/typography";
+import { useChatMessages } from "@/pages/chat/hooks/use-chat-messages";
+import { useInfiniteScrollTop } from "@/pages/chat/hooks/use-infinite-scroll-top";
+import { useScrollToBottom } from "@/pages/chat/hooks/use-scroll-to-bottom";
+import { useMessagesStore } from "@/pages/chat/stores/messages-store";
+import { selectVoiceStatus, useVoiceStore } from "@/layout/stores/voice-store";
+import { getMessageText } from "@/pages/chat/utils/chat-messages";
+import { CaptureCard } from "@/pages/chat/components/capture-card";
+import { MessageBubble } from "@/pages/chat/components/message-bubble/message-bubble";
+import { RetryFooter } from "@/pages/chat/components/message-footers/retry-footer";
+import { TranscribingFooter } from "@/pages/chat/components/message-footers/transcribing-footer";
+import { TypingIndicator } from "@/pages/chat/components/typing-indicator";
 
 export function ChatHistory() {
   const voiceStatus = useVoiceStore(selectVoiceStatus);

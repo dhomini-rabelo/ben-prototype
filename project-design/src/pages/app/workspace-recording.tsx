@@ -1,5 +1,5 @@
 import { ArrowUp, Mic } from "lucide-react";
-import { Typography } from "../../layout/components/ui/typography";
+import { Typography } from "@/layout/components/ui/typography";
 import { WorkspaceShell } from "./_workspace-shell";
 
 export function WorkspaceRecording() {

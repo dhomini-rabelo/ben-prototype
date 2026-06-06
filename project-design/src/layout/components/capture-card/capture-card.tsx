@@ -1,5 +1,5 @@
-import { cn } from "../../utils/cn";
-import { Typography } from "../ui/typography";
+import { cn } from "@/layout/utils/cn";
+import { Typography } from "@/layout/components/ui/typography";
 import { CaptureCardActionButton } from "./capture-card-action-button";
 import { CaptureCardErrorButton } from "./capture-card-error-button";
 import { CaptureCardHeader } from "./capture-card-header";

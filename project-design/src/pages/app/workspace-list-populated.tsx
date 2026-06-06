@@ -1,6 +1,6 @@
-import { ChatInput } from "../../layout/components/chat-input";
-import { SubThreadBanner } from "../../layout/components/sub-thread-banner";
-import { TodoListItem } from "../../layout/components/todo-list-item";
+import { ChatInput } from "@/layout/components/chat-input";
+import { SubThreadBanner } from "@/layout/components/sub-thread-banner";
+import { TodoListItem } from "@/layout/components/todo-list-item";
 import { WorkspaceShell } from "./_workspace-shell";
 
 export function WorkspaceListPopulated() {

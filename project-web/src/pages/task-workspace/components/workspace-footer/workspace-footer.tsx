@@ -1,12 +1,12 @@
 import { memo } from "react";
-import { ChatInput } from "../../../../layout/components/chat-input";
-import { RecordingBar } from "../../../../layout/components/recording-bar";
+import { ChatInput } from "@/layout/components/chat-input";
+import { RecordingBar } from "@/layout/components/recording-bar";
 import {
   selectVoiceStatus,
   useVoiceStore,
-} from "../../../../layout/stores/voice-store";
-import { useWorkspaceInput } from "../../hooks/use-workspace-input";
-import { useWorkspaceTask } from "../../hooks/use-workspace-task";
+} from "@/layout/stores/voice-store";
+import { useWorkspaceInput } from "@/pages/task-workspace/hooks/use-workspace-input";
+import { useWorkspaceTask } from "@/pages/task-workspace/hooks/use-workspace-task";
 
 function WorkspaceFooterComponent() {
   const voiceStatus = useVoiceStore(selectVoiceStatus);

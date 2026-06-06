@@ -1,7 +1,7 @@
 import { CloudOff } from "lucide-react";
-import { ChatBanner } from "../../layout/components/chat-banner";
-import { ChatInput } from "../../layout/components/chat-input";
-import { TodoListItem } from "../../layout/components/todo-list-item";
+import { ChatBanner } from "@/layout/components/chat-banner";
+import { ChatInput } from "@/layout/components/chat-input";
+import { TodoListItem } from "@/layout/components/todo-list-item";
 import { WorkspaceShell } from "./_workspace-shell";
 
 export function WorkspaceOffline() {

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { ROUTES } from "../../../../core/routes";
-import { useTaskListData } from "../../../../layout/hooks/api/use-task-list-data";
-import { ActiveTaskPeek } from "../active-task-peek";
+import { ROUTES } from "@/core/routes";
+import { useTaskListData } from "@/layout/hooks/api/use-task-list-data";
+import { ActiveTaskPeek } from "@/pages/chat/components/active-task-peek";
 import { TaskPickerEmpty } from "./task-picker-empty";
 import { TaskPickerError } from "./task-picker-error";
 import { TaskPickerList } from "./task-picker-list";

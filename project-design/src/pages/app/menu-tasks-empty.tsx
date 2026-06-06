@@ -1,4 +1,4 @@
-import { Typography } from "../../layout/components/ui/typography";
+import { Typography } from "@/layout/components/ui/typography";
 import { MenuListShell } from "./_menu-list-shell";
 
 export function MenuTasksEmpty() {

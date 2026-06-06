@@ -1,4 +1,4 @@
-import { MenuListRow } from "../../layout/components/menu-list-row";
+import { MenuListRow } from "@/layout/components/menu-list-row";
 import { MenuListShell } from "./_menu-list-shell";
 
 export function MenuNotesPopulated() {

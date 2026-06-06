@@ -1,6 +1,6 @@
 import { ChevronUp, Hammer } from "lucide-react";
-import { Typography } from "../../../layout/components/ui/typography";
-import { cn } from "../../../layout/utils/styles";
+import { Typography } from "@/layout/components/ui/typography";
+import { cn } from "@/layout/utils/styles";
 
 type ActiveTaskPeekProps = {
   variant?: "empty" | "summary" | "skeleton";

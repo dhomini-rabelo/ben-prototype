@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { Button } from "../../layout/components/ui/button";
+import { Button } from "@/layout/components/ui/button";
 import { ComponentPreview } from "./_preview";
 
 export function ButtonPreview() {

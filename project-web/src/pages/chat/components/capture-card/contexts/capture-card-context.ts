@@ -3,7 +3,7 @@ import type {
     CaptureCardState,
     CaptureKind,
     TaskShape,
-} from "../types";
+} from "@/pages/chat/components/capture-card/types";
 
 export type CaptureCardContextValue = {
   kind: CaptureKind;

@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import type { Message } from "../../../api/models/message";
-import { useMessageListData } from "../../../layout/hooks/api/use-message-list-data";
-import { useMessagesStore } from "../stores/messages-store";
-import type { BenUiMessage } from "../utils/chat-messages";
+import type { Message } from "@/api/models/message";
+import { useMessageListData } from "@/layout/hooks/api/use-message-list-data";
+import { useMessagesStore } from "@/pages/chat/stores/messages-store";
+import type { BenUiMessage } from "@/pages/chat/utils/chat-messages";
 
 export function mapHistoryToUiMessages(history: Message[]): BenUiMessage[] {
   return history.map((message) => ({

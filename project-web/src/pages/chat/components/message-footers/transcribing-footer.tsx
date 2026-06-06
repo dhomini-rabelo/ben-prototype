@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
-import { Typography } from "../../../../layout/components/ui/typography";
-import { cn } from "../../../../layout/utils/styles";
-import { useVoiceStore } from "../../../../layout/stores/voice-store";
+import { Typography } from "@/layout/components/ui/typography";
+import { cn } from "@/layout/utils/styles";
+import { useVoiceStore } from "@/layout/stores/voice-store";
 
 type TranscribingFooterProps = {
   className?: string;

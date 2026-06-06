@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 import { useState, type KeyboardEvent } from "react";
-import { useTaskTodosStore } from "../../stores/task-todos-store";
+import { useTaskTodosStore } from "@/pages/task-workspace/stores/task-todos-store";
 
 export function AddTodoRow() {
   const addTodo = useTaskTodosStore((s) => s.addTodo);

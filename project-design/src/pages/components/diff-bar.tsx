@@ -1,4 +1,4 @@
-import { DiffBar } from "../../layout/components/diff-bar";
+import { DiffBar } from "@/layout/components/diff-bar";
 import { ComponentPreview } from "./_preview";
 
 export function DiffBarPreview() {

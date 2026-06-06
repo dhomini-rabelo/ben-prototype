@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { getMessageText, type BenUiMessage } from "../utils/chat-messages";
+import { getMessageText, type BenUiMessage } from "@/pages/chat/utils/chat-messages";
 
 interface UseScrollToBottomProps {
   messages: BenUiMessage[];

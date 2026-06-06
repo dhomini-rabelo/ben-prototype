@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useConnectivityStore } from "../stores/connectivity-store";
+import { useConnectivityStore } from "@/layout/stores/connectivity-store";
 
 export function useConnectivity() {
   const [isOffline, setIsOffline] = useState(!navigator.onLine);

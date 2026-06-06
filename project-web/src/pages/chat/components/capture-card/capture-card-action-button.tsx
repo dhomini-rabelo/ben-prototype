@@ -1,5 +1,5 @@
 import { ChevronRight, Play } from "lucide-react";
-import { cn } from "../../../../layout/utils/styles";
+import { cn } from "@/layout/utils/styles";
 import { useCaptureCard } from "./contexts/capture-card-context";
 import type { CaptureCardState } from "./types";
 

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { requestUpdateTaskContent } from "../../../api/requests/tasks";
+import { requestUpdateTaskContent } from "@/api/requests/tasks";
 import { getTaskFromCache, invalidateTask } from "./task-cache";
 import { useTaskStore } from "./task-store";
 

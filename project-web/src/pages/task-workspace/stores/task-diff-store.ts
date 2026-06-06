@@ -2,7 +2,7 @@ import { create } from "zustand";
 import {
   requestApproveTaskDiff,
   requestRejectTaskDiff,
-} from "../../../api/requests/tasks";
+} from "@/api/requests/tasks";
 import { invalidateTask } from "./task-cache";
 import { useTaskStore } from "./task-store";
 

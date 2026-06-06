@@ -1,8 +1,8 @@
 import { useAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { useCallback } from "react";
-import { taskDraftAtom } from "../states/task-workspace-state";
-import { useTaskChatStore } from "../stores/task-chat-store";
+import { taskDraftAtom } from "@/pages/task-workspace/states/task-workspace-state";
+import { useTaskChatStore } from "@/pages/task-workspace/stores/task-chat-store";
 
 export function useWorkspaceInput() {
   const [draft, setDraft] = useAtom(taskDraftAtom);

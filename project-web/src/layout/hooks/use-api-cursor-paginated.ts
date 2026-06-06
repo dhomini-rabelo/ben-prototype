@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { authClient } from "../../api/client";
-import type { CursorPaginationResponse } from "../../api/types";
+import { authClient } from "@/api/client";
+import type { CursorPaginationResponse } from "@/api/types";
 
 interface UseAPICursorPaginatedProps {
   url: string;

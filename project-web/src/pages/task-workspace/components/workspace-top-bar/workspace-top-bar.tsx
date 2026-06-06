@@ -1,11 +1,11 @@
 import { CheckCircle2, ChevronLeft, List, MoreHorizontal, RotateCcw, Type } from "lucide-react";
 import { memo, useState } from "react";
 import { useNavigate } from "react-router";
-import { ROUTES } from "../../../../core/routes";
-import { Typography } from "../../../../layout/components/ui/typography";
-import { cn } from "../../../../layout/utils/styles";
-import { useWorkspaceTask } from "../../hooks/use-workspace-task";
-import { useTaskLifecycleStore } from "../../stores/task-lifecycle-store";
+import { ROUTES } from "@/core/routes";
+import { Typography } from "@/layout/components/ui/typography";
+import { cn } from "@/layout/utils/styles";
+import { useWorkspaceTask } from "@/pages/task-workspace/hooks/use-workspace-task";
+import { useTaskLifecycleStore } from "@/pages/task-workspace/stores/task-lifecycle-store";
 
 function WorkspaceTopBarComponent() {
   const navigate = useNavigate();

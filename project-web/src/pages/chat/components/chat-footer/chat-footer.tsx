@@ -1,12 +1,12 @@
 import { memo } from "react";
-import { ChatInput } from "../../../../layout/components/chat-input";
-import { RecordingBar } from "../../../../layout/components/recording-bar";
-import { useMessageListData } from "../../../../layout/hooks/api/use-message-list-data";
+import { ChatInput } from "@/layout/components/chat-input";
+import { RecordingBar } from "@/layout/components/recording-bar";
+import { useMessageListData } from "@/layout/hooks/api/use-message-list-data";
 import {
   selectVoiceStatus,
   useVoiceStore,
-} from "../../../../layout/stores/voice-store";
-import { useChatInput } from "../../hooks/use-chat-input";
+} from "@/layout/stores/voice-store";
+import { useChatInput } from "@/pages/chat/hooks/use-chat-input";
 
 function ChatFooterComponent() {
   const voiceStatus = useVoiceStore(selectVoiceStatus);

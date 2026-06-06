@@ -1,4 +1,4 @@
-import { SubThreadBanner } from "../../layout/components/sub-thread-banner";
+import { SubThreadBanner } from "@/layout/components/sub-thread-banner";
 import { ComponentPreview } from "./_preview";
 
 export function SubThreadBannerPreview() {

@@ -1,6 +1,6 @@
 import { Bell, ListTodo, NotebookPen, Settings } from "lucide-react";
 import type { ComponentType } from "react";
-import { cn } from "../utils/cn";
+import { cn } from "@/layout/utils/cn";
 import { BrandMark } from "./brand-mark";
 import { Typography } from "./ui/typography";
 

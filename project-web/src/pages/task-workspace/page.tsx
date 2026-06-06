@@ -1,9 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { ROUTES } from "../../core/routes";
-import { Typography } from "../../layout/components/ui/typography";
-import { useTaskDetailData } from "../../layout/hooks/api/use-task-detail-data";
-import { useConnectivity } from "../../layout/hooks/use-connectivity";
+import { ROUTES } from "@/core/routes";
+import { Typography } from "@/layout/components/ui/typography";
+import { useTaskDetailData } from "@/layout/hooks/api/use-task-detail-data";
+import { useConnectivity } from "@/layout/hooks/use-connectivity";
 import { DiffBar } from "./components/diff-bar/diff-bar";
 import { WorkspaceSubThreadBanner } from "./components/workspace-sub-thread-banner";
 import { WorkspaceTopBanner } from "./components/workspace-top-banner";
@@ -13,7 +13,7 @@ import { TodoContent } from "./components/todo-content/todo-content";
 import { WorkspaceTopBar } from "./components/workspace-top-bar/workspace-top-bar";
 import { useTaskChatStore } from "./stores/task-chat-store";
 import { useTaskStore } from "./stores/task-store";
-import { useVoiceStore } from "../../layout/stores/voice-store";
+import { useVoiceStore } from "@/layout/stores/voice-store";
 
 const FOOTER_GAP = 16;
 

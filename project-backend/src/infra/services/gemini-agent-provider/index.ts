@@ -7,7 +7,7 @@ import {
 } from '@/adapters/agent-provider'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { generateText, Output, stepCountIs } from 'ai'
-import { env } from '../env'
+import { env } from '@/infra/services/env'
 import { buildFormatSystemPrompt } from './generate-reply/format-system-prompt'
 import { buildHistoryContextTool } from './generate-reply/history-context-tool'
 import { agentReplySchema } from './generate-reply/schemas'

@@ -1,6 +1,6 @@
-import type { Message } from "../../../api/models/message";
-import { API_ROUTES } from "../../../api/routes";
-import { useAPICursorPaginated } from "../use-api-cursor-paginated";
+import type { Message } from "@/api/models/message";
+import { API_ROUTES } from "@/api/routes";
+import { useAPICursorPaginated } from "@/layout/hooks/use-api-cursor-paginated";
 
 export function useMessageListData() {
   return useAPICursorPaginated<Message>({

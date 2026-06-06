@@ -1,4 +1,4 @@
-import { ActiveTaskPeek } from "../../layout/components/active-task-peek";
+import { ActiveTaskPeek } from "@/layout/components/active-task-peek";
 import { ComponentPreview } from "./_preview";
 
 export function ActiveTaskPeekPreview() {

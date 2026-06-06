@@ -1,6 +1,6 @@
 import { ArrowUp, Mic } from "lucide-react";
-import { MessageBubble } from "../../layout/components/message-bubble";
-import { Typography } from "../../layout/components/ui/typography";
+import { MessageBubble } from "@/layout/components/message-bubble";
+import { Typography } from "@/layout/components/ui/typography";
 import { ChatShell } from "./_chat-shell";
 
 export function ChatRecording() {

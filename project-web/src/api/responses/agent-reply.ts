@@ -1,4 +1,4 @@
-import type { MessageCapture } from "../models/message";
+import type { MessageCapture } from "@/api/models/message";
 
 export interface ReminderDraft {
   title: string;

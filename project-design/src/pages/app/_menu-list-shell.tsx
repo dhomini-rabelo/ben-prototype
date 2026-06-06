@@ -1,6 +1,6 @@
 import { ChevronLeft } from "lucide-react";
 import type { ReactNode } from "react";
-import { Typography } from "../../layout/components/ui/typography";
+import { Typography } from "@/layout/components/ui/typography";
 
 type MenuListShellProps = {
   title: string;

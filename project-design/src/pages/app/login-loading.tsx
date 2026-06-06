@@ -1,6 +1,6 @@
-import { BrandMark } from "../../layout/components/brand-mark";
-import { Button } from "../../layout/components/ui/button";
-import { Typography } from "../../layout/components/ui/typography";
+import { BrandMark } from "@/layout/components/brand-mark";
+import { Button } from "@/layout/components/ui/button";
+import { Typography } from "@/layout/components/ui/typography";
 
 export function LoginLoading() {
   return (

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "../../../../layout/utils/styles";
+import { cn } from "@/layout/utils/styles";
 import { CaptureCardContext } from "./contexts/capture-card-context";
 import type { CaptureCardState, CaptureKind, TaskShape } from "./types";
 

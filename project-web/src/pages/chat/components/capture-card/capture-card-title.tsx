@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { Typography } from "../../../../layout/components/ui/typography";
-import { cn } from "../../../../layout/utils/styles";
+import { Typography } from "@/layout/components/ui/typography";
+import { cn } from "@/layout/utils/styles";
 import { useCaptureCard } from "./contexts/capture-card-context";
 
 type CaptureCardTitleProps = {

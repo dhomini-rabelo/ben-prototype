@@ -6,7 +6,7 @@ import {
   type ComponentEntry,
   type ScreenPage,
   type ScreenState,
-} from "../../core/screens";
+} from "@/core/screens";
 
 const PREVIEW_WIDTH = 390;
 const PREVIEW_HEIGHT = 844;

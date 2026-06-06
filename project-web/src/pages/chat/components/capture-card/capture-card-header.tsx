@@ -1,4 +1,4 @@
-import { Typography } from "../../../../layout/components/ui/typography";
+import { Typography } from "@/layout/components/ui/typography";
 import { useCaptureCard } from "./contexts/capture-card-context";
 import type { CaptureKind } from "./types";
 

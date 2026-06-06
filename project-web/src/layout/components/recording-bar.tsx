@@ -1,6 +1,6 @@
 import { ArrowUp, Mic } from "lucide-react";
-import { useVoiceStore } from "../stores/voice-store";
-import { cn } from "../utils/styles";
+import { useVoiceStore } from "@/layout/stores/voice-store";
+import { cn } from "@/layout/utils/styles";
 import { Typography } from "./ui/typography";
 
 const WAVEFORM_BARS = [

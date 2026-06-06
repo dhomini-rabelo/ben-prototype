@@ -1,4 +1,4 @@
-import type { TodoItem } from "../../../api/models/task";
+import type { TodoItem } from "@/api/models/task";
 
 export function nextOrder(todoItems: TodoItem[]): number {
   return todoItems.reduce((max, item) => Math.max(max, item.order), -1) + 1;

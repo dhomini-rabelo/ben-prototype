@@ -1,4 +1,4 @@
-import { TaskPickerSheet } from "../../layout/components/task-picker-sheet";
+import { TaskPickerSheet } from "@/layout/components/task-picker-sheet";
 import { ComponentPreview } from "./_preview";
 
 export function TaskPickerSheetPreview() {

@@ -1,8 +1,8 @@
-import type { TaskStatus } from "../../../api/models/task";
-import type { TaskListItem } from "../../../api/responses/task";
-import { API_ROUTES } from "../../../api/routes";
-import type { ListingResponse } from "../../../api/types";
-import { useAPIRequest } from "../use-api-request";
+import type { TaskStatus } from "@/api/models/task";
+import type { TaskListItem } from "@/api/responses/task";
+import { API_ROUTES } from "@/api/routes";
+import type { ListingResponse } from "@/api/types";
+import { useAPIRequest } from "@/layout/hooks/use-api-request";
 
 interface UseTaskListDataProps {
   status?: TaskStatus;

@@ -1,8 +1,8 @@
 import { useAtomValue } from "jotai";
 import { memo } from "react";
-import { useWorkspaceTask } from "../hooks/use-workspace-task";
-import { taskDraftAtom } from "../states/task-workspace-state";
-import { useTaskChatStore } from "../stores/task-chat-store";
+import { useWorkspaceTask } from "@/pages/task-workspace/hooks/use-workspace-task";
+import { taskDraftAtom } from "@/pages/task-workspace/states/task-workspace-state";
+import { useTaskChatStore } from "@/pages/task-workspace/stores/task-chat-store";
 import { SubThreadBanner } from "./sub-thread-banner/sub-thread-banner";
 
 function WorkspaceSubThreadBannerComponent() {

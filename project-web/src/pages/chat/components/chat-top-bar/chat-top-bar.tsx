@@ -1,7 +1,7 @@
 import { Menu } from "lucide-react";
 import { memo } from "react";
-import { BrandMark } from "../../../../layout/components/brand-mark";
-import { IconButton } from "../../../../layout/components/ui/icon-button";
+import { BrandMark } from "@/layout/components/brand-mark";
+import { IconButton } from "@/layout/components/ui/icon-button";
 
 function ChatTopBarComponent() {
   return (

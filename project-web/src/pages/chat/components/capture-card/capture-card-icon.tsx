@@ -1,5 +1,5 @@
 import { Bell, List, NotebookPen, Type } from "lucide-react";
-import { cn } from "../../../../layout/utils/styles";
+import { cn } from "@/layout/utils/styles";
 import { useCaptureCard } from "./contexts/capture-card-context";
 import type { CaptureCardIcon, CaptureKind, TaskShape } from "./types";
 

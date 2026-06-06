@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import { Chat } from "../pages/chat/page";
-import { Login } from "../pages/login/page";
-import { TaskWorkspace } from "../pages/task-workspace/page";
+import { Chat } from "@/pages/chat/page";
+import { Login } from "@/pages/login/page";
+import { TaskWorkspace } from "@/pages/task-workspace/page";
 import { Auth } from "./auth";
 import { ROUTES } from "./routes";
 
