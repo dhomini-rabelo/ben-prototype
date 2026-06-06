@@ -10,7 +10,7 @@ disable-model-invocation: true
 
 The `UserPromptSubmit` hook saves **every** prompt to `.claude/prompt-history/{YYYY-MM-DD}/{timestamp}.md`. That log is a goldmine of signal that code-based harvesting misses: rules the user had to correct by hand, workflows repeated across days, and well-crafted complex prompts.
 
-This skill is a **classifier and router**, not a writer. It fans out **one subagent per day**, each subagent evaluates its day's prompts and writes an insights file, then the orchestrator consolidates everything, lets the user choose, and **hands the approved items to the existing capture skills**. It never re-implements writing logic.
+This skill is a **classifier and router**, not a writer. It fans out **one subagent per day**, each subagent evaluates its day's prompts and writes an insights file, then the orchestrator consolidates everything, **saves the consolidated summary to `.claude/prompt-insights-summaries/`**, lets the user choose, and **hands the approved items to the existing capture skills**. It never re-implements writing logic.
 
 It is the prompt-history counterpart of [`task-scan-coding-patterns-and-designs`](../task-scan-coding-patterns-and-designs/SKILL.md), which harvests conventions from code. This one harvests them from prompts.
 
@@ -117,11 +117,24 @@ After every day's insights file exists:
 4. Drop anything already covered by the Step 1 baseline.
 5. Group survivors by destination: coding pattern / design / `general-coding-practices.md` / `CLAUDE.md` rule / skill (new or existing) / prompt-reference acervo.
 
-## Step 6 — Let the user choose
+## Step 6 — Persist the consolidated summary
 
-Present the consolidated, recurrence-ranked proposals **in the chat** as a numbered list (one line per proposal: rank, category, destination, one-line rationale) and ask the user to reply with which ones to act on. **Do not use `AskUserQuestion` here** — the user answers directly in the chat. **Never create or edit anything in this step.** Include the slash-command usage summary so the user can spot skills to retire.
+Before asking the user anything, save the full consolidated, recurrence-ranked output to `.claude/prompt-insights-summaries/{run-date}-summary.md` (create the folder if missing; `{run-date}` is today's date in `YYYY-MM-DD`). This file is the durable record the user reviews to decide what to act on later, so write it in full — not just a pointer.
 
-## Step 7 — Route the approved proposals
+The summary file must contain:
+
+1. A header: the run date and the list of days covered.
+2. The complete **numbered proposal list**, grouped by recurrence tier, each line carrying its rank, category, destination, one-line rationale, and the days/recurrence that back it.
+3. The **already-captured / dropped** list (for transparency).
+4. The **slash-command usage tally** across all days covered.
+
+Use the [`utils-write-documentation`](../utils-write-documentation/SKILL.md) skill to shape it. Numbering here must match exactly what is shown in Step 7 so the user can reply with numbers against either the chat or the saved file.
+
+## Step 7 — Let the user choose
+
+Present the same consolidated, recurrence-ranked proposals **in the chat** as a numbered list (one line per proposal: rank, category, destination, one-line rationale), point the user to the saved summary file from Step 6, and ask them to reply with which ones to act on. **Do not use `AskUserQuestion` here** — the user answers directly in the chat. **Never create or edit any routed asset in this step** (the Step 6 summary file is the only thing written). Include the slash-command usage summary so the user can spot skills to retire.
+
+## Step 8 — Route the approved proposals
 
 Hand each approved proposal to its owner — do not write the asset here:
 
@@ -131,9 +144,9 @@ Hand each approved proposal to its owner — do not write the asset here:
 - **skill / update-existing** — edit the named existing `SKILL.md` directly to fold in the new capability.
 - **prompt-reference** — write the template to `.claude/prompt-templates/{name}.md` (create the folder if missing) and keep a one-line pointer in `.claude/prompt-templates/INDEX.md`. Store the **generic, reusable shape** of the prompt, not the raw one-off text.
 
-## Step 8 — Report a summary
+## Step 9 — Report a summary
 
-Finish with a short summary listing: how many prompts were evaluated, the per-category counts, every asset that was created or updated and where, the days now covered under `.claude/prompt-insights/`, and the slash-command usage tally.
+Finish with a short summary listing: how many prompts were evaluated, the per-category counts, the path to the saved summary file under `.claude/prompt-insights-summaries/`, every asset that was created or updated and where, the days now covered under `.claude/prompt-insights/`, and the slash-command usage tally.
 
 ## Requirements
 
@@ -141,6 +154,7 @@ Finish with a short summary listing: how many prompts were evaluated, the per-ca
 - Fan out one subagent per day; never more than 7 running at once.
 - Subagents only read and write their own insights file; all creation/routing belongs to the orchestrator and the owner skills.
 - Never propose something already in the Step 1 baseline.
+- Always persist the consolidated summary to `.claude/prompt-insights-summaries/{run-date}-summary.md` before asking the user to choose; the numbering in the saved file must match the chat.
 - File and folder names use **kebab-case**; all written content is in **English**.
-- Always let the user choose before routing — never auto-create assets.
+- Always let the user choose before routing — never auto-create routed assets.
 - Prefer recurring candidates; a one-off prompt is rarely worth an asset.
