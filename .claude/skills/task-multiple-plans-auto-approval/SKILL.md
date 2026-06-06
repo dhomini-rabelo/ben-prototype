@@ -12,7 +12,7 @@ Use this skill when a task is large enough to be split into several small plans 
 
 This is the auto-approval variant of `.claude/skills/task-multiple-plans/SKILL.md`. The difference: **there are no `AskUserQuestion` approval gates** — the main agent proceeds automatically through every stage. Use it when the user has explicitly delegated the full task and wants it completed without intermediate check-ins.
 
-The flow has seven stages:
+The flow has eight stages:
 
 1. **Define the plan set** — the main agent lists the small plans.
 2. **Detail each plan as a simple plan** — sub-agents produce simple plans.
@@ -21,6 +21,7 @@ The flow has seven stages:
 5. **Implement each plan** — the same sub-agents implement their deep plans.
 6. **Review and final feedback** — the main agent reviews, formats once, and reports back.
 7. **Review the diff against standards** — run the `task-review-diff-standards` skill on the resulting changes.
+8. **Propose new coding patterns or designs** — run the `task-propose-coding-patterns-or-designs` skill; the user approves the new conventions.
 
 ## When to use
 
@@ -182,6 +183,13 @@ This runs in auto-approval mode. Implement the plan fully and proceed without as
 3. That skill orchestrates the review sub-agents and produces the `diff-review-report.md` decision document, then asks the user with `AskUserQuestion` which improvements to apply. This is an intentional final review gate — let it run as the skill defines, even though the rest of this flow is auto-approval.
 4. Once the user picks the improvements, the main agent **dispatches the actual code changes to sub-agents** (new or reused) — never implementing them itself — then runs the formatting and type-check once across the affected projects.
 
+### Stage 8 — Propose new coding patterns or designs
+
+1. After the diff review is complete, invoke the [`task-propose-coding-patterns-or-designs`](../task-propose-coding-patterns-or-designs/SKILL.md) skill on the resulting change set to surface reusable conventions worth documenting.
+2. The main agent stays a **pure orchestrator** — it does not analyze or write conventions itself. It **delegates** the work to sub-agents, either spawning new ones or reusing the sub-agents from earlier stages, whichever it judges best.
+3. That skill proposes candidate coding patterns or designs and asks the user with `AskUserQuestion` which to capture. This is an intentional final approval gate — **the user approves the new patterns** — so let it run as the skill defines, even though the rest of this flow is auto-approval.
+4. Once the user picks the proposals, the main agent **dispatches the creation to sub-agents**, which hand them off to the `task-add-coding-pattern-or-design` skill — never creating or registering them itself.
+
 ## Rules
 
 - Write in **English**.
@@ -194,5 +202,6 @@ This runs in auto-approval mode. Implement the plan fully and proceed without as
 - Sub-agents must **never** run formatting (`npm run lint:fix`) during parallel work — it can conflict. Formatting runs once in Stage 6.
 - Use the **same sub-agent** to create the deep plan (Stage 4) and implement it (Stage 5).
 - After the task is complete (Stage 7), always run the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill on the resulting diff.
-- In Stage 7 the main agent acts **only as an orchestrator** — it never reviews or edits code itself. It delegates both the review and the approved improvements to sub-agents (new ones or the ones reused from earlier stages), whichever it judges best.
+- After the diff review (Stage 8), always run the [`task-propose-coding-patterns-or-designs`](../task-propose-coding-patterns-or-designs/SKILL.md) skill so any reusable conventions can be captured **with the user's approval**.
+- In Stages 7 and 8 the main agent acts **only as an orchestrator** — it never reviews, edits, or writes conventions itself. It delegates the review, the approved improvements, and the proposed patterns/designs to sub-agents (new ones or the ones reused from earlier stages), whichever it judges best.
 - Do **not** include a "Summary" or "Conclusion" section.
