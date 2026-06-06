@@ -1,14 +1,15 @@
 import { CreateTaskMessageUseCase } from '@/domain/use-cases/tasks/create-task-message'
 import { TaskPresenter } from '@/infra/http/presenters/task-presenter'
 import { taskRepository } from '@/infra/http/repositories'
-import { GeminiAgentProviderService } from '@/infra/services/gemini-agent-provider'
+import { BenAgentProviderService } from '@/infra/services/ben-agent-provider'
+import { openRouterModel } from '@/infra/services/ben-agent-provider/models'
 import { HttpStatus } from '@/modules/utils/http'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 
 const createTaskMessageUseCase = new CreateTaskMessageUseCase(
   taskRepository,
-  new GeminiAgentProviderService(),
+  new BenAgentProviderService(openRouterModel),
 )
 
 const taskParamsSchema = z.object({

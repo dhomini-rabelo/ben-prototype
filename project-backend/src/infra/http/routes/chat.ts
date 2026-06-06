@@ -13,7 +13,8 @@ import {
   topicSummaryRepository,
 } from '@/infra/http/repositories'
 import { AgentReplyPresenter } from '@/infra/http/presenters/agent-reply-presenter'
-import { GeminiAgentProviderService } from '@/infra/services/gemini-agent-provider'
+import { BenAgentProviderService } from '@/infra/services/ben-agent-provider'
+import { openRouterModel } from '@/infra/services/ben-agent-provider/models'
 import { HttpStatus } from '@/modules/utils/http'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
@@ -34,7 +35,7 @@ const chatBodySchema = z.object({
     .min(1),
 })
 
-const agentService = new GeminiAgentProviderService()
+const agentService = new BenAgentProviderService(openRouterModel)
 const persistUserMessageUseCase = new PersistUserMessageUseCase(
   messageRepository,
 )

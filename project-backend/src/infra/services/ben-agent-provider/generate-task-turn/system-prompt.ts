@@ -1,5 +1,5 @@
 import { GenerateTaskTurnPayload } from '@/adapters/agent-provider'
-import { BEN_SYSTEM_PROMPT } from '@/infra/services/gemini-agent-provider/ben-system-prompt'
+import { BEN_SYSTEM_PROMPT } from '@/infra/services/ben-agent-provider/ben-system-prompt'
 
 export const buildTaskTurnSystemPrompt = (
   payload: GenerateTaskTurnPayload,
