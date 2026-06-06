@@ -7,7 +7,7 @@ import { ChatTopBanner } from "./components/chat-top-banner/chat-top-banner";
 import { ChatTopBar } from "./components/chat-top-bar/chat-top-bar";
 import { ActiveTaskPicker } from "./components/task-picker/active-task-picker";
 import { useChatMessages } from "./hooks/use-chat-messages";
-import { MenuOverlay } from "@/layout/components/menu";
+import { MenuOverlay } from "@/layout/components/menu/menu-overlay";
 import { useConnectivity } from "@/layout/hooks/use-connectivity";
 import { useMessagesStore } from "./stores/messages-store";
 import { selectVoiceStatus, useVoiceStore } from "@/layout/stores/voice-store";

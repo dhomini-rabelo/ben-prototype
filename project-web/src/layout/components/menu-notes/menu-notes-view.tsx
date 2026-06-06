@@ -3,19 +3,17 @@ import { MenuListError } from "@/layout/components/menu-list/menu-list-error";
 import { MenuListLoading } from "@/layout/components/menu-list/menu-list-loading";
 import { MenuListShell } from "@/layout/components/menu-list/menu-list-shell";
 import { useNoteListData } from "@/layout/hooks/api/use-note-list-data";
+import { useMenuStore } from "@/layout/stores/menu-store";
 import { MenuNotesList } from "./menu-notes-list";
 
-type MenuNotesViewProps = {
-  onBack: () => void;
-  onSelect: (noteId: string) => void;
-};
-
-export function MenuNotesView({ onBack, onSelect }: MenuNotesViewProps) {
+export function MenuNotesView() {
   const { actions, state } = useNoteListData();
+  const goBackToMenu = useMenuStore((store) => store.goBackToMenu);
+  const openDetail = useMenuStore((store) => store.openDetail);
   const notes = state.data?.items ?? [];
 
   return (
-    <MenuListShell title="Notes" onBack={onBack}>
+    <MenuListShell title="Notes" onBack={goBackToMenu}>
       {state.isLoading ? (
         <MenuListLoading />
       ) : state.isError ? (
@@ -29,7 +27,10 @@ export function MenuNotesView({ onBack, onSelect }: MenuNotesViewProps) {
           description="talk to Ben — he'll save the keepers."
         />
       ) : (
-        <MenuNotesList notes={notes} onSelect={onSelect} />
+        <MenuNotesList
+          notes={notes}
+          onSelect={(id) => openDetail({ kind: "note", id })}
+        />
       )}
     </MenuListShell>
   );
