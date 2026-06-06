@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "PROMPT=$(jq -r '.prompt // empty'); DATE=$(date +%Y-%m-%d); TIMESTAMP=$(date +%s); DIR=\"/home/fael/so/repos/ben-prototype/.claude/prompt-history/$DATE\"; mkdir -p \"$DIR\"; echo \"$PROMPT\" > \"$DIR/$TIMESTAMP.md\"",
+            "command": "INPUT=$(cat); PROMPT=$(echo \"$INPUT\" | jq -r '.prompt // empty'); SESSION=$(echo \"$INPUT\" | jq -r '.session_id // \"unknown\"'); DATE=$(date +%Y-%m-%d); TIMESTAMP=$(date +%s); DIR=\"/home/fael/so/repos/ben-prototype/.claude/prompt-history/$DATE/$SESSION\"; mkdir -p \"$DIR\"; echo \"$PROMPT\" > \"$DIR/$TIMESTAMP.md\"",
             "async": true
           }
         ]
@@ -18,6 +18,16 @@
           {
             "type": "command",
             "command": "FILE=$(jq -r '.tool_input.file_path // empty'); if echo \"$FILE\" | grep -q '/\\.claude/plans/'; then DATE=$(date +%Y-%m-%d); TIMESTAMP=$(date +%s); BASENAME=$(basename \"$FILE\"); DIR=\"/home/fael/so/repos/ben-prototype/.claude/plans-history/$DATE\"; mkdir -p \"$DIR\"; cp \"$FILE\" \"$DIR/${TIMESTAMP}-${BASENAME}\" 2>/dev/null || true; fi",
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); SESSION=$(echo \"$INPUT\" | jq -r '.session_id // \"unknown\"'); DATE=$(date +%Y-%m-%d); TIMESTAMP=$(date +%s); DIR=\"/home/fael/so/repos/ben-prototype/.claude/prompt-history/$DATE/$SESSION\"; mkdir -p \"$DIR\"; echo \"$INPUT\" | jq '{questions: .tool_input.questions, answers: .tool_response.answers}' > \"$DIR/${TIMESTAMP}-askuserquestion.json\"",
             "async": true
           }
         ]

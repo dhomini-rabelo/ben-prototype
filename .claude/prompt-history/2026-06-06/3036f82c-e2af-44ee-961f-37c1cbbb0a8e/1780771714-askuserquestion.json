@@ -1,0 +1,22 @@
+{
+  "questions": [
+    {
+      "question": "Pergunta de teste para disparar o hook. Qual opção você escolhe?",
+      "header": "Teste hook",
+      "options": [
+        {
+          "label": "Opção A",
+          "description": "Escolha a opção A para o teste."
+        },
+        {
+          "label": "Opção B",
+          "description": "Escolha a opção B para o teste."
+        }
+      ],
+      "multiSelect": false
+    }
+  ],
+  "answers": {
+    "Pergunta de teste para disparar o hook. Qual opção você escolhe?": "Opção A"
+  }
+}
