@@ -56,3 +56,28 @@ When writing code, it's important to follow established coding patterns to ensur
 
 - When to Use: Whenever you type the `Response` of a use case. Use the shared types instead of inline shapes: `ItemResponse<T>` (`{ item }`) and `ListingResponse<T>` (`{ items }`) from `@/modules/domain/responses`, and `CursorPaginationResponse<T>` (`{ items, hasMore, nextCursor }`) and `PaginationResponse<T>` (`{ items, totalItems, page }`) from `@/modules/domain/repository/repository`.
 - Coding pattern: [Use case response structure](./coding-patterns/use-case-response-structure.md)
+
+#### Domain Entity Declaration
+
+- When to Use: Whenever you add or refactor a domain entity in `project-backend` — extending `Entity`/`AggregateRoot<Props>`, typing the `{Entity}Props`, and exposing the `create`/`reference` static factories with `ID`-typed fields.
+- Coding pattern: [Domain entity declaration](./coding-patterns/domain-entity-declaration.md)
+
+#### HTTP Route Handler
+
+- When to Use: Whenever you write or refactor a route handler file under `src/infra/http/routes/` — module-level schemas and use-case instantiation, and a thin parse → execute → present flow with `next(err)`.
+- Coding pattern: [HTTP route handler](./coding-patterns/http-route-handler.md)
+
+#### HTTP Presenter
+
+- When to Use: Whenever you map a domain entity to an HTTP response — a stateless presenter class with static `toHttp`/`toListItemHttp` methods typed from the entity props via `Serialize`/`WithID`.
+- Coding pattern: [HTTP presenter](./coding-patterns/http-presenter.md)
+
+#### API Data Hooks
+
+- When to Use: Whenever you consume the backend API in `project-web` — the `{ state, actions }` return shape of the generic hooks, the thin per-domain `use{Domain}{Action}Data` wrappers, and the `enabled` gate.
+- Coding pattern: [API data hooks](./coding-patterns/api-data-hooks.md)
+
+#### Component Variant Maps
+
+- When to Use: Whenever a `project-web` component resolves a variant prop to classes or sub-components — a module-level `Record<Variant, ...>` map merged with `cn()`.
+- Coding pattern: [Component variant maps](./coding-patterns/component-variant-maps.md)

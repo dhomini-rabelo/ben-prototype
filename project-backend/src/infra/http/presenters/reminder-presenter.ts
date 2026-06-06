@@ -1,15 +1,21 @@
-import { Reminder } from '@/domain/entities/reminder'
+import { Reminder, ReminderProps } from '@/domain/entities/reminder'
+import { Serialize, WithID } from '@/modules/domain/types'
+import { OverWrite } from '@/modules/utils/types'
 
 type ReminderStatus = 'upcoming' | 'fired'
 
-interface ReminderHttp {
-  id: string
-  title: string
-  firesAt: string | null
-  body: string | null
-  status: ReminderStatus
-  capturedAt: string
-}
+type ReminderHttp = OverWrite<
+  Omit<
+    Serialize<WithID<ReminderProps>>,
+    'userId' | 'remindAt' | 'notes' | 'createdAt'
+  >,
+  {
+    firesAt: string | null
+    body: string | null
+    status: ReminderStatus
+    capturedAt: string
+  }
+>
 
 export class ReminderPresenter {
   static toHttp(reminder: Reminder): ReminderHttp {

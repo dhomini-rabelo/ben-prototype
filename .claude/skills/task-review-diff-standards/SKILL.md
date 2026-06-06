@@ -41,9 +41,10 @@ The flow has five stages:
 
 ### Stage 3 — Review in parallel
 
-1. Spawn **one sub-agent per group**, launched together so they run in parallel.
-2. Give each sub-agent the prompt below, listing the exact files and diffs it owns.
-3. Each sub-agent returns its report **as its response** — it does **not** write files or change code.
+1. Create the `.claude/reports/` folder if it does not exist.
+2. Spawn **one sub-agent per group**, launched together so they run in parallel.
+3. Give each sub-agent the prompt below, listing the exact files and diffs it owns and the **exact report path** it must write.
+4. Each sub-agent **writes its report** to `.claude/reports/diff-review-{n}.md` (n = 1..5, one per group) **and** returns the same report as its response. It does **not** change any code.
 
 #### Sub-agent prompt
 
@@ -56,6 +57,8 @@ Files and diffs you own:
 
 {list of files and their diffs}
 
+Write your report to: {report-path}
+
 Use the skills `code-get-coding-designs` and `code-write-code` to learn the patterns the codebase follows, and read the surrounding code so your judgment is based on the real conventions — NO GUESSING.
 
 For each file, report:
@@ -63,7 +66,7 @@ For each file, report:
 - **Deviates from the standard** — where the change breaks a convention or pattern, with the concrete file and line, and the pattern it should follow.
 - **Suggested improvement** — what to change and why, with a severity of `high` | `medium` | `low`.
 
-Do NOT change any code and do NOT write any file. Return only your report.
+Write your report to the report path above AND return the same report as your response. Do NOT change any code.
 ````
 
 ### Stage 4 — Write the decision document
@@ -92,7 +95,7 @@ cd /path/to/project && npx tsc --noEmit
 
 - Write the sub-agent reports and the decision document in **English**.
 - Use **at most 5** sub-agents; **3 is the recommended** default. Use fewer when the diff is small.
-- Sub-agents **only review** — they never write files or change code.
+- Sub-agents **only review** — they write their own review report to `.claude/reports/diff-review-{n}.md` and never change code.
 - Never assign the same changed file to more than one sub-agent.
 - The decision document is saved at the **repository root** as `diff-review-report.md`.
 - Always ask with `AskUserQuestion` **before** implementing any improvement — never implement straight from the reports.

@@ -1,11 +1,11 @@
-import { Note } from '@/domain/entities/note'
+import { Note, NoteProps } from '@/domain/entities/note'
+import { Serialize, WithID } from '@/modules/domain/types'
+import { OverWrite } from '@/modules/utils/types'
 
-interface NoteHttp {
-  id: string
-  title: string
-  body: string
-  capturedAt: string
-}
+type NoteHttp = OverWrite<
+  Omit<Serialize<WithID<NoteProps>>, 'userId' | 'createdAt'>,
+  { capturedAt: string }
+>
 
 export class NotePresenter {
   static toHttp(note: Note): NoteHttp {

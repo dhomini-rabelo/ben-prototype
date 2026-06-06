@@ -72,3 +72,89 @@ const audioBuffer = payload.audioBuffer
 // correct way
 payload.audioBuffer
 ```
+
+- Use `??` for null/undefined fallbacks, not `||`.
+
+```typescript
+// Wrong way
+const remindAt = draft.remindAt || null
+const items = draft.todoItems || []
+
+// Correct way
+const remindAt = draft.remindAt ?? null
+const items = draft.todoItems ?? []
+```
+
+- Convert raw string ids from a payload into the `ID` value class with `createID()` at the use-case entry point, before passing them to repositories.
+
+```typescript
+// Wrong way
+async execute(payload: Payload) {
+  return this.taskRepository.get({ id: payload.taskId })
+}
+
+// Correct way
+async execute(payload: Payload) {
+  return this.taskRepository.get({
+    id: createID(payload.taskId),
+    userId: createID(payload.userId),
+  })
+}
+```
+
+- Throw `DomainError` with both a `code` and a classified `errorType` from `DangerErrors`, never a bare `Error`.
+
+```typescript
+// Wrong way
+throw new Error('Task not found')
+
+// Correct way
+throw new DomainError({
+  code: 'TASK_NOT_FOUND',
+  errorType: DangerErrors.NOT_FOUND,
+})
+```
+
+- Use the `HttpStatus` enum for response status codes, not numeric literals.
+
+```typescript
+// Wrong way
+return res.status(200).json(body)
+
+// Correct way
+return res.status(HttpStatus.OK).json(body)
+```
+
+- Name Zod schemas after their subject with a `Schema` suffix.
+
+```typescript
+// Wrong way
+const schema = z.object({ id: z.string() })
+
+// Correct way
+const paramsSchema = z.object({ id: z.string() })
+const reminderDraftSchema = z.object({ title: z.string() })
+```
+
+- Merge Tailwind classes with the `cn()` helper (`@/layout/utils/styles`); never concatenate class strings by hand.
+
+```tsx
+// Wrong way
+<div className={'flex items-center ' + (isActive ? 'opacity-100' : 'opacity-60')} />
+
+// Correct way
+<div className={cn('flex items-center', isActive ? 'opacity-100' : 'opacity-60', className)} />
+```
+
+- Name magic numbers as module-level constants instead of inlining them.
+
+```typescript
+// Wrong way
+const intervalId = setInterval(() => reveal(3), 24)
+
+// Correct way
+const TYPING_STEP_MS = 24
+const TYPING_CHARS_PER_STEP = 3
+
+const intervalId = setInterval(() => reveal(TYPING_CHARS_PER_STEP), TYPING_STEP_MS)
+```
