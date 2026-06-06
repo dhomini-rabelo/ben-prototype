@@ -5,7 +5,11 @@ import {
   firesAtRelative,
   relativeTime,
 } from "@/layout/utils/format-time";
-import { ItemDetailSheet } from "./item-detail-sheet";
+import { ItemDetailContent } from "./item-detail-content";
+import { ItemDetailError } from "./item-detail-error";
+import { ItemDetailGone } from "./item-detail-gone";
+import { ItemDetailLoading } from "./item-detail-loading";
+import { ItemDetailRoot } from "./item-detail-root";
 
 type ReminderDetailProps = {
   reminderId: string;
@@ -15,44 +19,33 @@ type ReminderDetailProps = {
 export function ReminderDetail({ reminderId, onClose }: ReminderDetailProps) {
   const { actions, state } = useReminderDetailData(reminderId);
   const reminder = state.data?.item;
-
-  if (state.isLoading) {
-    return (
-      <ItemDetailSheet kind="reminder" variant="loading" onClose={onClose} />
-    );
-  }
-
-  if (state.isError) {
-    const isGone = isAxiosError(state.error) && state.error.response?.status === 404;
-    return (
-      <ItemDetailSheet
-        kind="reminder"
-        variant={isGone ? "gone" : "error"}
-        onClose={onClose}
-        onRetry={() => actions.refetch()}
-      />
-    );
-  }
-
-  if (!reminder) {
-    return (
-      <ItemDetailSheet kind="reminder" variant="gone" onClose={onClose} />
-    );
-  }
+  const isNotFound =
+    isAxiosError(state.error) && state.error.response?.status === 404;
+  const isGone =
+    (state.isError && isNotFound) ||
+    (!state.isLoading && !state.isError && !reminder);
 
   return (
-    <ItemDetailSheet
-      kind="reminder"
-      title={reminder.title}
-      body={reminder.body ?? undefined}
-      status={reminder.status}
-      firesAtRelative={firesAtRelative(reminder.firesAt)}
-      firesAtAbsolute={
-        reminder.firesAt ? absoluteDateTime(reminder.firesAt) : undefined
-      }
-      capturedAtAbsolute={absoluteDateTime(reminder.capturedAt)}
-      capturedAtRelative={relativeTime(reminder.capturedAt)}
-      onClose={onClose}
-    />
+    <ItemDetailRoot kind="reminder" onClose={onClose}>
+      {state.isLoading ? (
+        <ItemDetailLoading />
+      ) : isGone ? (
+        <ItemDetailGone />
+      ) : state.isError ? (
+        <ItemDetailError onRetry={() => actions.refetch()} />
+      ) : reminder ? (
+        <ItemDetailContent
+          title={reminder.title}
+          body={reminder.body ?? undefined}
+          status={reminder.status}
+          firesAtRelative={firesAtRelative(reminder.firesAt)}
+          firesAtAbsolute={
+            reminder.firesAt ? absoluteDateTime(reminder.firesAt) : undefined
+          }
+          capturedAtAbsolute={absoluteDateTime(reminder.capturedAt)}
+          capturedAtRelative={relativeTime(reminder.capturedAt)}
+        />
+      ) : null}
+    </ItemDetailRoot>
   );
 }

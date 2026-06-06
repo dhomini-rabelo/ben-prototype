@@ -1,7 +1,11 @@
 import { isAxiosError } from "axios";
 import { useNoteDetailData } from "@/layout/hooks/api/use-note-detail-data";
 import { absoluteDateTime, relativeTime } from "@/layout/utils/format-time";
-import { ItemDetailSheet } from "./item-detail-sheet";
+import { ItemDetailContent } from "./item-detail-content";
+import { ItemDetailError } from "./item-detail-error";
+import { ItemDetailGone } from "./item-detail-gone";
+import { ItemDetailLoading } from "./item-detail-loading";
+import { ItemDetailRoot } from "./item-detail-root";
 
 type NoteDetailProps = {
   noteId: string;
@@ -11,35 +15,26 @@ type NoteDetailProps = {
 export function NoteDetail({ noteId, onClose }: NoteDetailProps) {
   const { actions, state } = useNoteDetailData(noteId);
   const note = state.data?.item;
-
-  if (state.isLoading) {
-    return <ItemDetailSheet kind="note" variant="loading" onClose={onClose} />;
-  }
-
-  if (state.isError) {
-    const isGone = isAxiosError(state.error) && state.error.response?.status === 404;
-    return (
-      <ItemDetailSheet
-        kind="note"
-        variant={isGone ? "gone" : "error"}
-        onClose={onClose}
-        onRetry={() => actions.refetch()}
-      />
-    );
-  }
-
-  if (!note) {
-    return <ItemDetailSheet kind="note" variant="gone" onClose={onClose} />;
-  }
+  const isNotFound =
+    isAxiosError(state.error) && state.error.response?.status === 404;
+  const isGone = (state.isError && isNotFound) || (!state.isLoading && !state.isError && !note);
 
   return (
-    <ItemDetailSheet
-      kind="note"
-      title={note.title}
-      body={note.body}
-      capturedAtAbsolute={absoluteDateTime(note.capturedAt)}
-      capturedAtRelative={relativeTime(note.capturedAt)}
-      onClose={onClose}
-    />
+    <ItemDetailRoot kind="note" onClose={onClose}>
+      {state.isLoading ? (
+        <ItemDetailLoading />
+      ) : isGone ? (
+        <ItemDetailGone />
+      ) : state.isError ? (
+        <ItemDetailError onRetry={() => actions.refetch()} />
+      ) : note ? (
+        <ItemDetailContent
+          title={note.title}
+          body={note.body}
+          capturedAtAbsolute={absoluteDateTime(note.capturedAt)}
+          capturedAtRelative={relativeTime(note.capturedAt)}
+        />
+      ) : null}
+    </ItemDetailRoot>
   );
 }
