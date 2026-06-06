@@ -18,8 +18,8 @@ export function useChatInput() {
       (get, set) => {
         const draft = get(draftAtom);
         set(draftAtom, "");
-        void sendText(draft).then((sent) => {
-          if (!sent) {
+        void sendText(draft).then((committed) => {
+          if (!committed) {
             set(draftAtom, draft);
           }
         });

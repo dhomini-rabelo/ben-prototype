@@ -9,6 +9,7 @@ export interface MessagesStore {
 
   stopTyping: () => void;
   sendText: (content: string) => Promise<boolean>;
+  retrySend: () => Promise<void>;
 }
 
 export type StoreSet = Parameters<StateCreator<MessagesStore>>[0];

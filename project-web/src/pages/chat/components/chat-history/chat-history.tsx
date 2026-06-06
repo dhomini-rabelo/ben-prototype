@@ -10,14 +10,21 @@ import { getMessageText } from "@/pages/chat/utils/chat-messages";
 import { CaptureCard } from "@/pages/chat/components/capture-card";
 import { MessageBubble } from "@/pages/chat/components/message-bubble/message-bubble";
 import { RetryFooter } from "@/pages/chat/components/message-footers/retry-footer";
+import { SendRetryFooter } from "@/pages/chat/components/message-footers/send-retry-footer";
 import { TranscribingFooter } from "@/pages/chat/components/message-footers/transcribing-footer";
 import { TypingIndicator } from "@/pages/chat/components/typing-indicator";
 
 export function ChatHistory() {
   const voiceStatus = useVoiceStore(selectVoiceStatus);
   const isAwaitingReply = useMessagesStore((store) => store.isAwaitingReply);
+  const sendError = useMessagesStore((store) => store.sendError);
+  const sessionMessages = useMessagesStore((store) => store.sessionMessages);
 
   const { messages, historyState, historyActions } = useChatMessages();
+
+  const failedMessageId = sendError
+    ? sessionMessages[sessionMessages.length - 1]?.id
+    : undefined;
 
   const { bottomRef } = useScrollToBottom({ messages, isAwaitingReply });
   const { topRef } = useInfiniteScrollTop({
@@ -41,8 +48,14 @@ export function ChatHistory() {
         const text = getMessageText(message);
         const isBen = message.role === "assistant";
         const capture = message.metadata?.capture;
+        const isFailed = message.id === failedMessageId;
         return (
-          <MessageBubble key={message.id} from={isBen ? "ben" : "user"}>
+          <MessageBubble
+            key={message.id}
+            from={isBen ? "ben" : "user"}
+            state={isFailed ? "error" : "default"}
+            footer={isFailed ? <SendRetryFooter /> : undefined}
+          >
             {text}
             {isBen && capture && (
               <CaptureCard.Root kind={capture.kind}>

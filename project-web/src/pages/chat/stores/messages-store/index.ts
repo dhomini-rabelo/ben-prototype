@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import { requestSendChatMessage } from "@/api/requests/chat";
 import { useConnectivityStore } from "@/layout/stores/connectivity-store";
-import { animateReply } from "./animate-reply";
-import { buildBenMessage, buildUserMessage } from "./message-builders";
+import { getMessageText } from "@/pages/chat/utils/chat-messages";
+import { dispatchReply } from "./dispatch-reply";
+import { buildUserMessage } from "./message-builders";
 import type { MessagesStore } from "./types";
 
 export const useMessagesStore = create<MessagesStore>((set, get) => ({
@@ -32,23 +32,19 @@ export const useMessagesStore = create<MessagesStore>((set, get) => ({
     get().stopTyping();
     set((state) => ({
       sessionMessages: [...state.sessionMessages, buildUserMessage(trimmed)],
-      isAwaitingReply: true,
-      sendError: false,
     }));
+    await dispatchReply(set, get, trimmed);
+    return true;
+  },
 
-    try {
-      const reply = await requestSendChatMessage(trimmed);
-      const benMessage = buildBenMessage("", reply.capture);
-      set((state) => ({
-        sessionMessages: [...state.sessionMessages, benMessage],
-      }));
-      animateReply(set, get, benMessage.id, reply.message);
-      return true;
-    } catch {
-      set({ sendError: true });
-      return false;
-    } finally {
-      set({ isAwaitingReply: false });
+  retrySend: async () => {
+    const messages = get().sessionMessages;
+    const lastMessage = messages[messages.length - 1];
+    if (!lastMessage || lastMessage.role !== "user" || get().isAwaitingReply) {
+      return;
     }
+
+    get().stopTyping();
+    await dispatchReply(set, get, getMessageText(lastMessage));
   },
 }));
