@@ -1,0 +1,233 @@
+---
+name: task-multiple-plans-full-auto-approval
+description: Break a task into a set of small high-level plans that run synchronously or in parallel across multiple agents, end-to-end with zero user participation. A main agent defines the plan set, sub-agents detail and expand each plan, everything is implemented, reviewed, and captured automatically — no approval gates of any kind.
+disable-model-invocation: true
+---
+
+# Multiple Plans (Full Auto Approval)
+
+## Overview
+
+Use this skill when a task is large enough to be split into several small plans that can be executed by multiple agents — some in parallel, some in sequence — and you want the whole flow to run **end-to-end with no user participation whatsoever**. Instead of producing a single plan (see `.claude/skills/task-simple-plan-lvl1/SKILL.md`), a main agent defines a **set of plans**; each plan is first detailed as a simple plan, validated for conflicts, then expanded into a deep plan by a dedicated sub-agent, and finally implemented.
+
+This is the **full** auto-approval variant of `.claude/skills/task-multiple-plans-auto-approval/SKILL.md`. The difference: that skill still stops for the user at three points — the cross-impact instability check, the diff-standards review, and the propose-coding-patterns step. **This skill removes every one of those gates.** There is **no `AskUserQuestion` anywhere** — the main agent and its sub-agents decide and proceed automatically through every stage, start to finish. Use it only when the user has fully delegated the task and wants it completed without any check-in, confirmation, or approval.
+
+The flow has ten stages:
+
+1. **Define the plan set** — the main agent lists the small plans.
+2. **Detail each plan as a simple plan** — sub-agents produce simple plans.
+3. **Validate there is no overlap (simple plans)** — the main agent confirms parallel simple plans do not conflict.
+4. **Create the deep plans** — sub-agents expand each simple plan into a deep, code-level plan.
+5. **Validate there is no overlap (deep plans)** — the main agent confirms the parallel deep plans do not conflict now that they are code-level.
+6. **Implement each plan** — the same sub-agents implement their deep plans.
+7. **Cross-impact instability check** — each sub-agent analyzes whether its changes could destabilize other flows; the main agent decides automatically which fixes to dispatch.
+8. **Review and final feedback** — the main agent reviews, formats once, and reports back.
+9. **Review the diff against standards** — run the `task-review-diff-standards` skill on the resulting changes; apply improvements automatically.
+10. **Propose new coding patterns or designs** — run the `task-propose-coding-patterns-or-designs` skill; capture the new conventions automatically.
+
+## When to use
+
+- When a task spans multiple concerns (e.g. backend and frontend) that can progress independently.
+- When you want several agents to work in parallel on separate parts of the same feature.
+- When the work needs an explicit order: shared contracts first, then parallel implementation, then a final merge.
+- When the user wants the task completed **fully autonomously**, with **no participation at all** — not even for instability fixes, diff-review improvements, or new conventions.
+
+## File layout
+
+All plan files live under a single task folder. Use **two-digit, zero-padded** indexes (`01`, `02`, ...) and **kebab-case** names that describe the action.
+
+```
+.claude/current-tasks/{task-name}/
+  {index}-{plan-name}/
+    start-briefing.md                    ← Stage 1: the high-level brief for this plan
+    briefing/
+      {plan-index}-{plan-name}.md        ← Stage 2: the simple plan (task-simple-plan-lvl1)
+    {plan-index}-{plan-name}.md          ← Stage 4: the deep plan (Claude Code plan structure)
+```
+
+- `{task-name}`: kebab-case name of the overall task.
+- `{index}`: the plan's sequential index in the set (`01`, `02`, ...). Parallel plans (same plan number) still get **distinct folder indexes**.
+- `{plan-name}`: kebab-case description of the action the plan performs.
+- `{plan-index}`: the index of the plan inside its folder (`01`, `02`, ...).
+
+## Workflow
+
+### Stage 1 — Define the plan set
+
+1. Act as the **main agent** that designs the overall execution.
+2. Produce a list of small plans. Each plan must follow the format below.
+3. Group plans that can run in **parallel** by giving them the **same plan number**.
+4. Sequence dependent plans by giving them **increasing plan numbers** (lower numbers run first).
+5. Ensure plans that run in parallel **never touch the same files**. When parallel work produces pieces that must be combined (e.g. new routes), add a final **synchronous plan** with a higher number whose only job is to merge them.
+6. Under each plan line, add a bullet with the **justification** for why it runs synchronously or in parallel (which plans it depends on, and which files it owns).
+7. Save each plan's brief to its own folder at `.claude/current-tasks/{task-name}/{index}-{plan-name}/start-briefing.md`. The brief contains the plan line (number, side, parallel/sync) and a short paragraph describing its goal and the files it owns.
+8. Proceed directly to Stage 2 — **do not ask the user to approve the plan set**.
+
+#### Plan format
+
+```
+**Plan {number} [Backend | Frontend] ({parallel | sync})**: {one-line description}
+```
+
+- `{number}`: same number = runs in parallel; higher number = runs after lower numbers.
+- `[Backend | Frontend]`: the side this plan belongs to.
+- `({parallel | sync})`: whether the plan can run alongside others with the same number, or must run alone.
+
+#### Example plan set
+
+**Task:** Add a messages feature shared by backend and frontend.
+
+---
+
+**Plan 1 [Backend] (sync)**: Define the contracts that backend and frontend will share
+- Defines the contract used during Plan 2 execution, so it must finish before anything else starts.
+
+**Plan 2 [Backend] (parallel)**: Create the routes for messages
+- Depends only on the contract from Plan 1 and touches its own route files, so it runs in parallel with the frontend.
+
+**Plan 2 [Frontend] (parallel)**: Implement the messages screen
+- Depends only on the contract from Plan 1 and touches its own screen files, so it runs in parallel with the backend.
+
+**Plan 3 [Backend] (sync)**: Merge the new routes into the main router
+- Merges the routes created in parallel into the main router; it must run alone and last to avoid file conflicts with Plan 2.
+
+### Stage 2 — Detail each plan as a simple plan
+
+1. For each plan, spawn a **sub-agent** to produce its **simple plan** using `.claude/skills/task-simple-plan-lvl1/SKILL.md`. Give the sub-agent the plan's `start-briefing.md` as input.
+2. Run sub-agents according to the plan numbers:
+   - Plans with the **same number** run **in parallel** (one sub-agent each, launched together).
+   - Plans with **higher numbers** run **after** lower-numbered plans finish.
+3. Each sub-agent saves its simple plan at `.claude/current-tasks/{task-name}/{index}-{plan-name}/briefing/{plan-index}-{plan-name}.md`.
+4. Proceed automatically — **do not ask the user to approve each simple plan**. Start dependent (higher-numbered) plans as soon as the plans they depend on finish.
+
+### Stage 3 — Validate there is no overlap (simple plans)
+
+1. The **main agent** reads every simple plan produced in Stage 2.
+2. Confirm that plans meant to run in **parallel** (same plan number) do **not** touch the same files and have **no conflicts** between them.
+3. If a conflict is found, the orchestrator **identifies which plan's sub-agent must change** (e.g. the one that should give up ownership of a shared file, or move shared work into an earlier synchronous plan) and **asks that sub-agent to update its simple plan because of the overlap**, passing it the specific conflict and the resolution to apply. The orchestrator stays a **pure orchestrator** — it does not edit the plan itself; it delegates the fix to the sub-agent that owns the plan.
+4. After the sub-agent updates its plan, re-read the affected plans and confirm the conflict is gone. Repeat until parallel plans are conflict-free.
+5. Proceed automatically once validation passes — **do not ask the user to approve the validation result**.
+
+### Stage 4 — Create the deep plans with sub-agents
+
+1. For each plan, spawn a **sub-agent** to produce its **deep plan**, passing the prompt below with the plan's specification (its `start-briefing.md` and the simple plan from Stage 2).
+2. Run sub-agents according to the plan numbers (same number → parallel, higher number → after).
+3. Each sub-agent saves its deep plan at `.claude/current-tasks/{task-name}/{index}-{plan-name}/{plan-index}-{plan-name}.md`.
+4. Proceed automatically — **do not ask the user to approve each deep plan**. Start dependent (higher-numbered) plans as soon as the plans they depend on finish.
+
+#### Sub-agent prompt
+
+````
+/code-get-project-context
+
+Create a plan for
+
+{plan specification}
+
+by reading the documentation and the codebase.
+
+Use the skills `code-get-coding-designs`, `code-write-code`, and `code-most-used-libraries` to keep the code consistent with the existing codebase and follow the best practices.
+
+This plan runs alongside other plans in parallel, so it must only touch the files it owns and must not depend on files owned by another parallel plan. Do not include any formatting step (`npm run lint:fix`) — formatting is handled once after all parallel plans finish.
+
+This runs in full auto-approval mode. Make reasonable, well-justified decisions and proceed without asking the user. Resolve every decision from the codebase or sensible defaults — do not stop for user input under any circumstance.
+If these changes impact on another flow or part of the codebase, account for that impact directly in the plan.
+````
+
+#### Deep plan structure
+
+The sub-agent's instructions for the plan to create should include the following:
+
+> ### Follow the Claude Code plan structure
+>
+> The deep plan should follow the standard Claude Code plan structure. The structure below describes what such a plan typically contains — **the model has full freedom** to organize, add, drop, or reshape sections in whatever way best communicates this specific plan. The format is a guide, **not** a rigid template.
+>
+> A typical structure includes:
+>
+> - **Context** — what exists today and what the change should achieve.
+> - **Decisions** — choices made and their rationale.
+> - **Files to Modify / Create** — one subsection per file, with code blocks for the exact additions when useful.
+> - **Existing Code to Reuse** — point at concrete files/symbols.
+> - **Code blocks** — for new functions, classes, types, or snippets to add within existing files, so the user can see better the update.
+> - **Contracts / Tables** — use tables for API payloads, events, status transitions, etc.
+> - **Verification** — how to confirm the change works (`npx tsc --noEmit`, smoke tests, error paths). Do **not** run formatting (`npm run lint:fix`) — that is handled once after all parallel plans finish.
+>
+> Pick whatever best communicates each part of the plan — a table, a code block, a numbered list, etc. Prefer code blocks for concrete snippets and tables for contracts.
+
+### Stage 5 — Validate there is no overlap (deep plans)
+
+1. The **main agent** reads every deep plan produced in Stage 4.
+2. Now that each plan is detailed at the **code level** — concrete files to create/modify, functions, types, and shared symbols — confirm that plans meant to run in **parallel** (same plan number) do **not** touch the same files and have **no conflicts** between them. Deep plans expose overlaps that the simple plans in Stage 3 could not (e.g. two plans editing the same file, redefining the same symbol, or relying on a contract owned by a parallel plan).
+3. If a conflict is found, the orchestrator **identifies which plan's sub-agent must change** (e.g. the one that should give up ownership of a shared file or symbol, reassign file ownership, move shared work into an earlier synchronous plan, or split out a final synchronous merge plan) and **asks that sub-agent to update its deep plan because of the overlap**, passing it the specific conflict and the resolution to apply. The orchestrator stays a **pure orchestrator** — it does not edit the deep plan itself; it delegates the fix to the sub-agent that owns the plan (reuse the same sub-agent that created the deep plan so it keeps its context).
+4. After the sub-agent updates its deep plan, re-read the affected deep plans and confirm the conflict is gone. Repeat until parallel plans are conflict-free.
+5. Proceed automatically once validation passes — **do not ask the user to approve the validation result**. Only enter Stage 6 (implementation) once the deep plans are confirmed conflict-free.
+
+### Stage 6 — Implement each plan
+
+1. For each plan, use the **same sub-agent that created its deep plan** to implement it, passing the prompt below.
+2. Run sub-agents according to the plan numbers (same number → parallel, higher number → after).
+3. Do **not** start a dependent (higher-numbered) plan until the plans it depends on finish.
+4. Sub-agents must **not** run formatting (`npm run lint:fix`) — formatting is run once after all parallel plans finish, to avoid conflicts.
+
+#### Sub-agent prompt
+
+````
+Implement this plan
+
+Make sure to follow the patterns and best practices of the codebase, using the skills `code-get-coding-designs`, `code-write-code`, and `code-most-used-libraries` to keep the code consistent with the existing codebase.
+
+This plan runs alongside other plans in parallel, so only touch the files this plan owns and do not run formatting (`npm run lint:fix`).
+
+This runs in full auto-approval mode. Implement the plan fully and proceed without asking the user for confirmation under any circumstance.
+````
+
+### Stage 7 — Cross-impact instability check
+
+Parallel plans only see the files they own, so a change that is correct in isolation can still destabilize a flow it does not touch (e.g. a new query/contract that another flow must now invalidate, refetch, or keep in sync). This stage catches those cross-impacts before the review.
+
+1. After all plans are implemented (Stage 6), for **each** plan ask the **same sub-agent that implemented it** (reuse it so it keeps its context) to **briefly analyze whether its changes could have introduced instability in other flows or parts of the codebase** — including the parts owned by the other parallel plans and any existing flow that interacts with the files, contracts, queries, caches, or events its change touched.
+2. Each sub-agent **only analyzes and reports — it does not fix anything**. If it finds a potential instability, it writes a short report at `.claude/reports/instability-{index}-{plan-name}.md` describing: the suspected instability, the affected flow/file, why the change could break or destabilize it, a severity (`high` | `medium` | `low`), and a suggested fix. If it finds none, it states so explicitly and writes no report.
+3. Run these analyses for plans the same way as their implementation (same number → in parallel, higher number → after), or simply run them all together since this stage is read-only.
+4. The **main agent** consolidates the instability reports. **If no instability is found, skip straight to Stage 8.**
+5. If one or more instabilities are found, the main agent **decides automatically** which fixes are necessary — **it does not use `AskUserQuestion`**. Apply every `high` and `medium` severity fix, and apply `low` severity fixes when the suggested fix is safe and well-scoped; skip a fix only when it is clearly spurious or out of scope, and note that reasoning in the final feedback.
+6. For each instability the main agent decides to fix, it **dispatches the fix to a sub-agent** (reuse the one that owns the affected files, or spawn a new one) — it never fixes the code itself. Sub-agents must still **not** run formatting (`npm run lint:fix`); the single formatting + type-check pass happens next in Stage 8.
+7. Once the fixes are applied (or none were found), proceed to Stage 8.
+
+### Stage 8 — Review and final feedback
+
+1. After all plans are implemented, the **main agent** reviews whether everything is correct and consistent across the plans.
+2. Run formatting once for the whole change with `npm run lint:fix`, and verify the build with `npx tsc --noEmit` in the affected project(s).
+3. Give the user a **final feedback**: what was implemented, how the plans fit together, which instability fixes were applied or skipped (and why), and any follow-ups or risks. This is a **report only** — it does not ask the user for anything.
+
+### Stage 9 — Review the diff against standards
+
+1. Once the task is complete, invoke the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill to review the resulting git diff against the project's conventions and design patterns.
+2. The main agent stays a **pure orchestrator** here — exactly as in the rest of this flow, it does **not** review or edit code itself. It **delegates** the work to sub-agents, either **spawning new sub-agents** or **reusing the sub-agents from earlier stages**, whichever it judges best (e.g. reuse the sub-agent that owns a file so it carries its context).
+3. That skill orchestrates the review sub-agents and produces the `diff-review-report.md` decision document. **In full auto-approval mode there is no user gate**: the main agent **decides automatically** which improvements to apply — apply every high-confidence improvement that aligns with the project's conventions, and skip only those that are speculative, risky, or out of scope, noting that reasoning in the final feedback. Do **not** call `AskUserQuestion`.
+4. Once the improvements are selected, the main agent **dispatches the actual code changes to sub-agents** (new or reused) — never implementing them itself — then runs the formatting and type-check once across the affected projects.
+
+### Stage 10 — Propose new coding patterns or designs
+
+1. After the diff review is complete, invoke the [`task-propose-coding-patterns-or-designs`](../task-propose-coding-patterns-or-designs/SKILL.md) skill on the resulting change set to surface reusable conventions worth documenting.
+2. The main agent stays a **pure orchestrator** — it does not analyze or write conventions itself. It **delegates** the work to sub-agents, either spawning new ones or reusing the sub-agents from earlier stages, whichever it judges best.
+3. That skill proposes candidate coding patterns or designs. **In full auto-approval mode there is no user gate**: the main agent **decides automatically** which proposals to capture — capture every proposal that is clearly reusable and consistent with the existing conventions, and skip only weak or duplicate ones, noting that reasoning in the final feedback. Do **not** call `AskUserQuestion`.
+4. Once the proposals are selected, the main agent **dispatches the creation to sub-agents**, which hand them off to the `task-add-coding-pattern-or-design` skill — never creating or registering them itself.
+
+## Rules
+
+- Write in **English**.
+- **Full auto-approval**: **never** use `AskUserQuestion` anywhere in this flow — not for plan sets, not for validation, not for instability fixes, not for diff-review improvements, and not for new conventions. The flow runs end-to-end with **zero user participation**. Make reasonable, well-justified decisions and proceed; resolve every decision from the codebase or sensible defaults.
+- Keep the plan set small: each plan is a focused, single-concern unit.
+- Parallel plans (same number) must **not** modify the same files.
+- When parallel plans create pieces that must be joined, add a final synchronous plan to merge them.
+- Each simple plan (Stage 2) must follow the format and rules of `.claude/skills/task-simple-plan-lvl1/SKILL.md`.
+- Each deep plan (Stage 4) must be created with the sub-agent prompt and follow the Claude Code plan structure described in Stage 4.
+- Sub-agents must **never** run formatting (`npm run lint:fix`) during parallel work — it can conflict. Formatting runs once in Stage 8.
+- Use the **same sub-agent** to create the deep plan (Stage 4) and implement it (Stage 6).
+- Validate overlap **twice**: once on the simple plans (Stage 3) and again on the deep plans (Stage 5), since the code-level detail of deep plans can reveal conflicts the simple plans did not.
+- When an overlap is found, the orchestrator **identifies which plan's sub-agent must change and asks that sub-agent to update its plan because of the overlap** — it never edits the conflicting plan itself. For deep plans, reuse the sub-agent that created it so it keeps its context.
+- After all plans are implemented (Stage 6), always run the **cross-impact instability check** (Stage 7): each implementing sub-agent analyzes whether its changes could destabilize other flows and reports any instability it finds. The main agent **decides automatically** which fixes to dispatch (never asking the user) and delegates them to sub-agents — it never analyzes or fixes the instability itself.
+- After the review and final feedback (Stage 8), always run the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill (Stage 9) on the resulting diff, applying the selected improvements **automatically**.
+- After the diff review (Stage 9), always run the [`task-propose-coding-patterns-or-designs`](../task-propose-coding-patterns-or-designs/SKILL.md) skill (Stage 10) so any reusable conventions are captured **automatically, without the user's approval**.
+- In Stages 9 and 10 the main agent acts **only as an orchestrator** — it never reviews, edits, or writes conventions itself. It delegates the review, the selected improvements, and the captured patterns/designs to sub-agents (new ones or the ones reused from earlier stages), whichever it judges best.
+- Do **not** include a "Summary" or "Conclusion" section.
