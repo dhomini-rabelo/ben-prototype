@@ -1,6 +1,6 @@
 # Relatório de Funcionalidades Testáveis — Ben Prototype
 
-> **Snapshot:** 2026-06-06 · branch `main`
+> **Snapshot:** 2026-06-07 · branch `main`
 >
 > Este documento é um **levantamento do que já está implementado e pode ser testado hoje** nos sistemas do `ben-prototype`, com o comportamento esperado de cada funcionalidade descrito em detalhe.
 >
@@ -270,9 +270,11 @@ Comportamento esperado:
 
 ### 7.1 Sidebar de navegação
 
-**Componente:** [menu-sidebar.tsx](project-web/src/layout/components/menu/menu-sidebar.tsx).
+**Componente:** [menu-sidebar.tsx](project-web/src/layout/components/menu/menu-sidebar.tsx) (apresentacional) + [menu-sidebar-view.tsx](project-web/src/layout/components/menu/menu-sidebar-view.tsx) (conectado à API). **Endpoint:** **`GET /captures/counts`** (ver 7.6). **Hook:** [use-captures-counts-data.ts](project-web/src/layout/hooks/api/use-captures-counts-data.ts).
 
 - Lista as entradas **Tasks**, **Notes**, **Reminders** e **Settings**. Selecionar Tasks/Notes/Reminders troca a `view` do overlay; Settings abre o sheet de configurações (7.4).
+- **Badges de contagem:** cada entrada (exceto Settings) mostra um badge com a contagem vinda de `GET /captures/counts` — Tasks no formato `"{n} active"`, Notes/Reminders apenas o total ([menu-sidebar-count-badge.tsx](project-web/src/layout/components/menu/menu-sidebar-count-badge.tsx)).
+- **Estados da própria sidebar** (`variant`): **loading** → badges viram skeleton animado; **error** → badges viram traço (`—`); **default** → exibe as contagens. O estado é derivado do `useCapturesCountsData` em [menu-sidebar-view.tsx](project-web/src/layout/components/menu/menu-sidebar-view.tsx).
 
 ### 7.2 Lista de Notes
 
@@ -305,6 +307,15 @@ Comportamento esperado:
 
 > Notes e reminders são **read-only** no v1 — não há rota de edição; correções acontecem via conversa com o Ben.
 
+### 7.6 Contagens das capturas (badges da sidebar)
+
+**Endpoint:** **`GET /captures/counts`** ([get-captures-counts route](project-backend/src/infra/http/routes/captures/get-captures-counts.ts), use case [get-captures-counts.ts](project-backend/src/domain/use-cases/captures/get-captures-counts.ts), presenter [captures-counts-presenter.ts](project-backend/src/infra/http/presenters/captures-counts-presenter.ts)).
+
+- Resposta `{ item: { tasks: { active }, notes: { total }, reminders: { total } } }`.
+- **Tasks (`active`):** conta as tasks do usuário cujo `status` **não é** `finished` (inclui `created` e `active`) — `taskRepository.count` com `NotEqualQuery`.
+- **Notes (`total`)** e **Reminders (`total`):** total de itens do usuário em cada repositório.
+- Alimenta os badges da sidebar (7.1) via [use-captures-counts-data.ts](project-web/src/layout/hooks/api/use-captures-counts-data.ts). As contagens são **derivadas no servidor**, não no cliente.
+
 ---
 
 ## 8. Tabela de endpoints disponíveis (backend)
@@ -331,6 +342,7 @@ Fonte de verdade: [project-backend/src/infra/http/app.ts](project-backend/src/in
 | `GET` | `/notes/:id/detail` | Detalhe da nota → `{ item }` |
 | `GET` | `/reminders/list` | Lista os reminders (com `status` derivado) |
 | `GET` | `/reminders/:id/detail` | Detalhe do reminder → `{ item }` |
+| `GET` | `/captures/counts` | Contagens para a sidebar → `{ item: { tasks: { active }, notes: { total }, reminders: { total } } }` |
 
 ---
 
@@ -356,7 +368,7 @@ Os documentos em [docs/api-endpoints.md](docs/api-endpoints.md) e [docs/data-mod
 2. **`/chat` faz classificação de captura e memória.** Os docs marcam `/chat` como "reply-only"; na prática ele **cria notes/reminders/tasks** e mantém **memória de tópicos** persistida.
 3. **Não existem** `POST /messages/create` nem `POST /messages/create-audio`. A criação acontece via `/chat`; a transcrição é a rota separada `/transcription`.
 4. **Provider do agente:** os docs/`docs/vercel-ai-sdk.md` falam em Google Gemini; o código hoje usa **OpenRouter (`openai/gpt-oss-120b`)** via Vercel AI SDK (o `geminiModel` segue configurado, mas não é usado pelas rotas).
-5. **Listagem/detalhe de notes e reminders já existem** (`GET /notes/list`, `GET /notes/:id/detail`, `GET /reminders/list`, `GET /reminders/:id/detail`) e o **menu lateral** (Tasks/Notes/Reminders/Settings) + **detalhe de item** estão implementados no web. Ainda **não existem** `GET /sidebar/counts` (contagens derivadas no cliente) nem `GET /me/detail` (Settings usa o `user` do login).
+5. **Listagem/detalhe de notes e reminders já existem** (`GET /notes/list`, `GET /notes/:id/detail`, `GET /reminders/list`, `GET /reminders/:id/detail`) e o **menu lateral** (Tasks/Notes/Reminders/Settings) + **detalhe de item** estão implementados no web. As **contagens da sidebar** existem como **`GET /captures/counts`** (derivadas no servidor) — não como o `GET /sidebar/counts` planejado nos docs. Ainda **não existe** `GET /me/detail` (Settings usa o `user` do login).
 6. **Persistência:** o modelo de dados fala em MongoDB; a implementação atual é **100% em memória** (perde tudo no restart).
 7. **Sistema de tópicos/memória** (`topic`, `topic-summary`) existe no código, mas **não consta** como collection no `docs/data-model.md`.
 

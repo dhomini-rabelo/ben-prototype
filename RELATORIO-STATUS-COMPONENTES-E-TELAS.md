@@ -22,7 +22,7 @@ Uma tela/componente é considerado **pronto** quando existe e está roteado/usad
 
 - **Prontos:** Login, Chat (com capture cards e seletor de tarefa ativa), Task Workspace, **Menu lateral** (listas de Tasks/Notes/Reminders + Settings) e **modal de detalhe de item** (note/reminder) — o fluxo de captura por voz/texto **e** a camada de navegação/consulta estão funcionais.
 - **Parcial:** os **Inline Capture Cards** cobrem note/reminder/task, mas ainda falta o estado de **pergunta de esclarecimento** ("clarifying question").
-- **A construir:** nenhum grupo inteiramente pendente, porém uma verificação **estado a estado** revelou estados individuais ainda não implementados dentro de grupos já roteados — ver a seção [O que falta construir](#o-que-falta-construir) para a lista priorizada (badges de contagem na sidebar, overlay de conclusão do workspace, espera estendida no login e, por último, o clarifying-question).
+- **A construir:** nenhum grupo inteiramente pendente, porém uma verificação **estado a estado** revelou estados individuais ainda não implementados dentro de grupos já roteados — ver a seção [O que falta construir](#o-que-falta-construir) para a lista priorizada (overlay de conclusão do workspace, espera estendida no login e, por último, o clarifying-question). Os **badges de contagem na sidebar** (loading/error/populated) já foram implementados.
 
 ## Telas — status detalhado
 
@@ -42,7 +42,7 @@ O componente de capture card no `project-web` cobre os três tipos (`note`, `rem
 
 ### Observação sobre o Menu sidebar (pronto)
 
-O menu é um **overlay** aberto pela top bar do chat (`menu-overlay.tsx`), com navegação por `menu-store` entre as views `menu | tasks | notes | reminders` (Settings é um sheet à parte). As listas (Tasks/Notes/Reminders) reutilizam a shell `menu-list/` com estados **loading / error / empty / populated**, consumindo `GET /tasks/list`, `GET /notes/list` e `GET /reminders/list`. O Settings sheet (`menu-settings/`) usa o `user` do `auth-store` (não há `GET /me/detail`); estados de "loading" puramente de design não se aplicam porque os dados vêm do cliente.
+O menu é um **overlay** aberto pela top bar do chat (`menu-overlay.tsx`), com navegação por `menu-store` entre as views `menu | tasks | notes | reminders` (Settings é um sheet à parte). As listas (Tasks/Notes/Reminders) reutilizam a shell `menu-list/` com estados **loading / error / empty / populated**, consumindo `GET /tasks/list`, `GET /notes/list` e `GET /reminders/list`. A própria sidebar também já tem seus estados **loading / error / populated**: `menu-sidebar-view.tsx` consome `GET /captures/counts` e exibe **badges de contagem** por entrada (Tasks `"{n} active"`, Notes/Reminders total) via `menu-sidebar-count-badge.tsx` — skeleton no loading, traço (`—`) no erro. O Settings sheet (`menu-settings/`) usa o `user` do `auth-store` (não há `GET /me/detail`).
 
 ## Componentes — status detalhado
 
@@ -79,19 +79,15 @@ O `project-web` decompôs a UI em peças estruturais que não constam como entra
 
 > Verificação feita **estado a estado** (não apenas a nível de grupo): cada grupo de tela está roteado e em uso, mas ainda restam **estados individuais** desenhados no `project-design` que não têm equivalente no `project-web`. As etapas abaixo estão em **ordem lógica de implementação** (do mais funcional ao polish), deixando a "Tool para perguntar mais contexto" por último, conforme priorização.
 
-1. **Badges de contagem + loading/error na sidebar do menu** (`menu-sidebar-populated/loading/error`)
-   - O design mostra contadores por entrada (Tasks: "3 active", totais de Notes/Reminders) com estados de loading/error; o `layout/components/menu/menu-sidebar.tsx` atual **não exibe contagem alguma**.
-   - Adicionar os badges de contagem e os estados de carregamento/erro da própria sidebar (hoje só as sub-views têm esses estados).
-
-2. **Overlay de conclusão no Task Workspace** (`workspace-finished`)
+1. **Overlay de conclusão no Task Workspace** (`workspace-finished`)
    - O design mostra um toast comemorativo ("nice. that one's done."), conteúdo com `line-through` e composer desabilitado com copy "reopen to keep editing"; o `pages/task-workspace/page.tsx` apenas torna o conteúdo read-only ao finalizar.
    - Adicionar o overlay de sucesso, o tratamento visual de "done" e o affordance de reabertura.
 
-3. **Mensagem de espera estendida no Login** (`login-edge-extended-wait`)
+2. **Mensagem de espera estendida no Login** (`login-edge-extended-wait`)
    - O design faz aparecer, após um atraso, a linha "still waiting on Google…"; o `pages/login/page.tsx` não tem esse estado.
    - Polish menor sobre o fluxo de login existente.
 
-4. **Pergunta de esclarecimento nos Capture Cards** (`capture-clarifying-question` + edge-case) — _deixado por último_
+3. **Pergunta de esclarecimento nos Capture Cards** (`capture-clarifying-question` + edge-case) — _deixado por último_
    - Adicionar o estado de "clarifying question" (e seu edge-case) ao fluxo de captura no chat (referência: `docs/v1.md` — "Tool para perguntar mais contexto").
    - Depende do trabalho de backend da tool `ask_clarifying_question`; por isso fica como última etapa.
 
