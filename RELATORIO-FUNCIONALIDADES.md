@@ -150,6 +150,7 @@ A geração tem **duas chamadas ao modelo**:
   - **Task** nasce com `status: 'created'`, `messageId: null`. Se `contentType: 'todo'`, os `todoItems` (strings) viram itens com `done: false` e `order` sequencial.
   - **Reminder** guarda `title`, `remindAt` (opcional) e `notes` (opcional). O alarme é **mockado** — não dispara notificação.
   - **Note** guarda `title` e `body`.
+- **Atualização automática das listas/contagens:** ao receber a resposta do `/chat`, o web invalida as queries das listas afetadas (`/notes/list`, `/tasks/list`, `/reminders/list`) **e** a de contagens (`/captures/counts`) conforme o que foi capturado no turno ([invalidate-captured-queries.ts](project-web/src/pages/chat/stores/messages-store/invalidate-captured-queries.ts)). Resultado: ao capturar algo no chat, os badges da sidebar (7.6) e as listas do menu lateral (7.2–7.4) refletem o novo item sem refresh manual.
 
 ### 4.4 Capture cards inline
 
@@ -257,7 +258,7 @@ Comportamento esperado:
 
 **Endpoints:** **`POST /tasks/:id/finish`** ([finish-task.ts](project-backend/src/domain/use-cases/tasks/finish-task.ts)) e **`POST /tasks/:id/reopen`** ([reopen-task.ts](project-backend/src/domain/use-cases/tasks/reopen-task.ts)).
 
-- **Finish:** `status: 'finished'`, grava `finishedAt`. A task sai do peek/ativas e o conteúdo fica **read-only** na workspace.
+- **Finish:** `status: 'finished'`, grava `finishedAt`. A task sai do peek/ativas e o conteúdo fica **read-only** na workspace. A UI sinaliza o estado concluído: o conteúdo ganha `opacity-60` + `line-through` ([text-content.tsx](project-web/src/pages/task-workspace/components/text-content/text-content.tsx), [todo-content.tsx](project-web/src/pages/task-workspace/components/todo-content/todo-content.tsx)), aparece um **overlay comemorativo** *"nice. that one's done."* ([workspace-done-overlay.tsx](project-web/src/pages/task-workspace/components/workspace-done-overlay/workspace-done-overlay.tsx)) e o composer fica desabilitado com o placeholder *"reopen to keep editing"* ([workspace-footer.tsx](project-web/src/pages/task-workspace/components/workspace-footer/workspace-footer.tsx)).
 - **Reopen:** volta para `active`, zera `finishedAt`, reabilita o composer.
 
 > Toda rota de task valida **posse** (`loadOwnedTask` confere `userId`) — você só acessa suas próprias tasks.

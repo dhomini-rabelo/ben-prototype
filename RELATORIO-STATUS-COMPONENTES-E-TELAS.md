@@ -22,7 +22,7 @@ Uma tela/componente é considerado **pronto** quando existe e está roteado/usad
 
 - **Prontos:** Login, Chat (com capture cards e seletor de tarefa ativa), Task Workspace, **Menu lateral** (listas de Tasks/Notes/Reminders + Settings) e **modal de detalhe de item** (note/reminder) — o fluxo de captura por voz/texto **e** a camada de navegação/consulta estão funcionais.
 - **Parcial:** os **Inline Capture Cards** cobrem note/reminder/task, mas ainda falta o estado de **pergunta de esclarecimento** ("clarifying question").
-- **A construir:** nenhum grupo inteiramente pendente, porém uma verificação **estado a estado** revelou estados individuais ainda não implementados dentro de grupos já roteados — ver a seção [O que falta construir](#o-que-falta-construir) para a lista priorizada (overlay de conclusão do workspace, espera estendida no login e, por último, o clarifying-question). Os **badges de contagem na sidebar** (loading/error/populated) já foram implementados.
+- **A construir:** nenhum grupo inteiramente pendente, porém uma verificação **estado a estado** revelou estados individuais ainda não implementados dentro de grupos já roteados — ver a seção [O que falta construir](#o-que-falta-construir) para a lista priorizada (espera estendida no login e, por último, o clarifying-question). O **overlay de conclusão do Task Workspace** (`workspace-finished`) e os **badges de contagem na sidebar** (loading/error/populated) já foram implementados.
 
 ## Telas — status detalhado
 
@@ -79,15 +79,13 @@ O `project-web` decompôs a UI em peças estruturais que não constam como entra
 
 > Verificação feita **estado a estado** (não apenas a nível de grupo): cada grupo de tela está roteado e em uso, mas ainda restam **estados individuais** desenhados no `project-design` que não têm equivalente no `project-web`. As etapas abaixo estão em **ordem lógica de implementação** (do mais funcional ao polish), deixando a "Tool para perguntar mais contexto" por último, conforme priorização.
 
-1. **Overlay de conclusão no Task Workspace** (`workspace-finished`)
-   - O design mostra um toast comemorativo ("nice. that one's done."), conteúdo com `line-through` e composer desabilitado com copy "reopen to keep editing"; o `pages/task-workspace/page.tsx` apenas torna o conteúdo read-only ao finalizar.
-   - Adicionar o overlay de sucesso, o tratamento visual de "done" e o affordance de reabertura.
+> ✅ **Concluído:** o **overlay de conclusão no Task Workspace** (`workspace-finished`) foi implementado — toast comemorativo *"nice. that one's done."* ([workspace-done-overlay.tsx](project-web/src/pages/task-workspace/components/workspace-done-overlay/workspace-done-overlay.tsx)), conteúdo com `opacity-60` + `line-through` ([text-content.tsx](project-web/src/pages/task-workspace/components/text-content/text-content.tsx), [todo-content.tsx](project-web/src/pages/task-workspace/components/todo-content/todo-content.tsx)) e composer desabilitado com a copy *"reopen to keep editing"* ([workspace-footer.tsx](project-web/src/pages/task-workspace/components/workspace-footer/workspace-footer.tsx)).
 
-2. **Mensagem de espera estendida no Login** (`login-edge-extended-wait`)
+1. **Mensagem de espera estendida no Login** (`login-edge-extended-wait`)
    - O design faz aparecer, após um atraso, a linha "still waiting on Google…"; o `pages/login/page.tsx` não tem esse estado.
    - Polish menor sobre o fluxo de login existente.
 
-3. **Pergunta de esclarecimento nos Capture Cards** (`capture-clarifying-question` + edge-case) — _deixado por último_
+2. **Pergunta de esclarecimento nos Capture Cards** (`capture-clarifying-question` + edge-case) — _deixado por último_
    - Adicionar o estado de "clarifying question" (e seu edge-case) ao fluxo de captura no chat (referência: `docs/v1.md` — "Tool para perguntar mais contexto").
    - Depende do trabalho de backend da tool `ask_clarifying_question`; por isso fica como última etapa.
 
