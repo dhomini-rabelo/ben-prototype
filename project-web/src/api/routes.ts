@@ -30,4 +30,7 @@ export const API_ROUTES = {
     list: "/reminders/list",
     detail: (id: string) => `/reminders/${id}/detail`,
   },
+  captures: {
+    counts: "/captures/counts",
+  },
 } as const;

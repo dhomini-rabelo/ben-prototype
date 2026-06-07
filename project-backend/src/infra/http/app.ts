@@ -1,6 +1,7 @@
 import { authMiddleware } from '@/infra/http/middlewares/auth'
 import { errorHandler } from '@/infra/http/middlewares/error-handler'
 import { loginOrRegister } from '@/infra/http/routes/auth/login-or-register'
+import { getCapturesCounts } from '@/infra/http/routes/captures/get-captures-counts'
 import { chat } from '@/infra/http/routes/chat'
 import { listMessages } from '@/infra/http/routes/messages/list-messages'
 import { getNoteDetail } from '@/infra/http/routes/notes/get-note-detail'
@@ -68,6 +69,8 @@ app.get('/notes/:id/detail', authMiddleware, getNoteDetail)
 
 app.get('/reminders/list', authMiddleware, listReminders)
 app.get('/reminders/:id/detail', authMiddleware, getReminderDetail)
+
+app.get('/captures/counts', authMiddleware, getCapturesCounts)
 
 app.use(errorHandler)
 

@@ -6,7 +6,7 @@ import { SettingsView } from "@/layout/components/menu-settings/settings-view";
 import { MenuTasksView } from "@/layout/components/menu-tasks/menu-tasks-view";
 import { useMenuStore } from "@/layout/stores/menu-store";
 import { useEffect } from "react";
-import { MenuSidebar } from "./menu-sidebar";
+import { MenuSidebarView } from "./menu-sidebar-view";
 
 type MenuOverlayProps = {
   onClose: () => void;
@@ -32,7 +32,7 @@ export function MenuOverlay({ onClose }: MenuOverlayProps) {
 
       <div className="fixed top-0 bottom-0 left-1/2 z-50 flex h-dvh w-full max-w-120 -translate-x-1/2">
         <div className="flex h-full w-[78%] overflow-hidden">
-          {view === "menu" && <MenuSidebar />}
+          {view === "menu" && <MenuSidebarView />}
           {view === "tasks" && <MenuTasksView />}
           {view === "notes" && <MenuNotesView />}
           {view === "reminders" && <MenuRemindersView />}
