@@ -2,7 +2,7 @@
 
 Avaliação do que **já está pronto** versus **o que falta construir**, comparando a especificação de design (`project-design`) com a implementação real (`project-web`).
 
-> Data: 2026-06-06 · branch `main`
+> Data: 2026-06-07 · branch `main`
 
 ## Como a avaliação foi feita
 
@@ -22,7 +22,7 @@ Uma tela/componente é considerado **pronto** quando existe e está roteado/usad
 
 - **Prontos:** Login, Chat (com capture cards e seletor de tarefa ativa), Task Workspace, **Menu lateral** (listas de Tasks/Notes/Reminders + Settings) e **modal de detalhe de item** (note/reminder) — o fluxo de captura por voz/texto **e** a camada de navegação/consulta estão funcionais.
 - **Parcial:** os **Inline Capture Cards** cobrem note/reminder/task, mas ainda falta o estado de **pergunta de esclarecimento** ("clarifying question").
-- **A construir:** nenhum grupo inteiramente pendente, porém uma verificação **estado a estado** revelou estados individuais ainda não implementados dentro de grupos já roteados — ver a seção [O que falta construir](#o-que-falta-construir) para a lista priorizada (transcrição no workspace, badges de contagem na sidebar, overlay de conclusão do workspace, espera estendida no login e, por último, o clarifying-question).
+- **A construir:** nenhum grupo inteiramente pendente, porém uma verificação **estado a estado** revelou estados individuais ainda não implementados dentro de grupos já roteados — ver a seção [O que falta construir](#o-que-falta-construir) para a lista priorizada (badges de contagem na sidebar, overlay de conclusão do workspace, espera estendida no login e, por último, o clarifying-question).
 
 ## Telas — status detalhado
 
@@ -79,24 +79,19 @@ O `project-web` decompôs a UI em peças estruturais que não constam como entra
 
 > Verificação feita **estado a estado** (não apenas a nível de grupo): cada grupo de tela está roteado e em uso, mas ainda restam **estados individuais** desenhados no `project-design` que não têm equivalente no `project-web`. As etapas abaixo estão em **ordem lógica de implementação** (do mais funcional ao polish), deixando a "Tool para perguntar mais contexto" por último, conforme priorização.
 
-1. **Feedback de transcrição no Task Workspace** (`workspace-transcribing`)
-   - O chat mostra, após soltar o áudio, uma bolha pendente com indicador de transcrição; o workspace **não** tem o equivalente.
-   - Falta a variante `user-pending` em `pages/task-workspace/components/workspace-sub-thread-banner.tsx` (texto do transcript em andamento) e o conceito de `transcribing`/mensagem pendente em `pages/task-workspace/stores/task-chat-store.ts`, além do input em `mode="sending-disabled"` no `workspace-footer`.
-   - É a maior lacuna **funcional** (paridade de interação de voz entre chat e workspace).
-
-2. **Badges de contagem + loading/error na sidebar do menu** (`menu-sidebar-populated/loading/error`)
+1. **Badges de contagem + loading/error na sidebar do menu** (`menu-sidebar-populated/loading/error`)
    - O design mostra contadores por entrada (Tasks: "3 active", totais de Notes/Reminders) com estados de loading/error; o `layout/components/menu/menu-sidebar.tsx` atual **não exibe contagem alguma**.
    - Adicionar os badges de contagem e os estados de carregamento/erro da própria sidebar (hoje só as sub-views têm esses estados).
 
-3. **Overlay de conclusão no Task Workspace** (`workspace-finished`)
+2. **Overlay de conclusão no Task Workspace** (`workspace-finished`)
    - O design mostra um toast comemorativo ("nice. that one's done."), conteúdo com `line-through` e composer desabilitado com copy "reopen to keep editing"; o `pages/task-workspace/page.tsx` apenas torna o conteúdo read-only ao finalizar.
    - Adicionar o overlay de sucesso, o tratamento visual de "done" e o affordance de reabertura.
 
-4. **Mensagem de espera estendida no Login** (`login-edge-extended-wait`)
+3. **Mensagem de espera estendida no Login** (`login-edge-extended-wait`)
    - O design faz aparecer, após um atraso, a linha "still waiting on Google…"; o `pages/login/page.tsx` não tem esse estado.
    - Polish menor sobre o fluxo de login existente.
 
-5. **Pergunta de esclarecimento nos Capture Cards** (`capture-clarifying-question` + edge-case) — _deixado por último_
+4. **Pergunta de esclarecimento nos Capture Cards** (`capture-clarifying-question` + edge-case) — _deixado por último_
    - Adicionar o estado de "clarifying question" (e seu edge-case) ao fluxo de captura no chat (referência: `docs/v1.md` — "Tool para perguntar mais contexto").
    - Depende do trabalho de backend da tool `ask_clarifying_question`; por isso fica como última etapa.
 
