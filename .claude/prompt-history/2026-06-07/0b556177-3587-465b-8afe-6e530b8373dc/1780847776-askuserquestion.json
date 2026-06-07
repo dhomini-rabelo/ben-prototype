@@ -1,0 +1,38 @@
+{
+  "questions": [
+    {
+      "question": "O que invalidar quando uma captura é criada pelo chat?",
+      "header": "Escopo",
+      "options": [
+        {
+          "label": "Contagens + listas (recomendado)",
+          "description": "Invalida /captures/counts E as listas do menu (/notes/list, /tasks/list, /reminders/list). Resolve o badge e também a sub-view aberta — ambas têm o mesmo staleTime de 5 min."
+        },
+        {
+          "label": "Só as contagens",
+          "description": "Invalida apenas /captures/counts. Resolve só o badge da sidebar; as listas continuam podendo ficar stale por até 5 min."
+        }
+      ],
+      "multiSelect": false
+    },
+    {
+      "question": "Invalidar de forma direcionada por tipo ou tudo de uma vez?",
+      "header": "Granularidade",
+      "options": [
+        {
+          "label": "Tudo de uma vez (recomendado)",
+          "description": "Sempre que houver qualquer captura, invalida as contagens (1 query) e as listas escolhidas. Mais simples; uma mensagem pode gerar mais de um tipo de captura."
+        },
+        {
+          "label": "Só o tipo capturado",
+          "description": "Usa reply.capture.kind / os arrays newNotes/newTasks/newReminders para invalidar apenas a entidade criada. Mais preciso, porém mais código."
+        }
+      ],
+      "multiSelect": false
+    }
+  ],
+  "answers": {
+    "O que invalidar quando uma captura é criada pelo chat?": "contagem +listas (caso não atualizamos as listas manualmente)",
+    "Invalidar de forma direcionada por tipo ou tudo de uma vez?": "Só o tipo capturado"
+  }
+}
