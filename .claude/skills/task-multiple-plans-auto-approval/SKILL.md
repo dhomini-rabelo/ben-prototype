@@ -12,16 +12,17 @@ Use this skill when a task is large enough to be split into several small plans 
 
 This is the auto-approval variant of `.claude/skills/task-multiple-plans/SKILL.md`. The difference: **there are no `AskUserQuestion` approval gates** — the main agent proceeds automatically through every stage. Use it when the user has explicitly delegated the full task and wants it completed without intermediate check-ins.
 
-The flow has eight stages:
+The flow has nine stages:
 
 1. **Define the plan set** — the main agent lists the small plans.
 2. **Detail each plan as a simple plan** — sub-agents produce simple plans.
-3. **Validate there is no overlap** — the main agent confirms parallel plans do not conflict.
+3. **Validate there is no overlap (simple plans)** — the main agent confirms parallel simple plans do not conflict.
 4. **Create the deep plans** — sub-agents expand each simple plan into a deep, code-level plan.
-5. **Implement each plan** — the same sub-agents implement their deep plans.
-6. **Review and final feedback** — the main agent reviews, formats once, and reports back.
-7. **Review the diff against standards** — run the `task-review-diff-standards` skill on the resulting changes.
-8. **Propose new coding patterns or designs** — run the `task-propose-coding-patterns-or-designs` skill; the user approves the new conventions.
+5. **Validate there is no overlap (deep plans)** — the main agent confirms the parallel deep plans do not conflict now that they are code-level.
+6. **Implement each plan** — the same sub-agents implement their deep plans.
+7. **Review and final feedback** — the main agent reviews, formats once, and reports back.
+8. **Review the diff against standards** — run the `task-review-diff-standards` skill on the resulting changes.
+9. **Propose new coding patterns or designs** — run the `task-propose-coding-patterns-or-designs` skill; the user approves the new conventions.
 
 ## When to use
 
@@ -98,12 +99,13 @@ All plan files live under a single task folder. Use **two-digit, zero-padded** i
 3. Each sub-agent saves its simple plan at `.claude/current-tasks/{task-name}/{index}-{plan-name}/briefing/{plan-index}-{plan-name}.md`.
 4. Proceed automatically — **do not ask the user to approve each simple plan**. Start dependent (higher-numbered) plans as soon as the plans they depend on finish.
 
-### Stage 3 — Validate there is no overlap
+### Stage 3 — Validate there is no overlap (simple plans)
 
 1. The **main agent** reads every simple plan produced in Stage 2.
 2. Confirm that plans meant to run in **parallel** (same plan number) do **not** touch the same files and have **no conflicts** between them.
-3. If a conflict is found, resolve it — for example, move the shared work into an earlier synchronous plan, or add a final synchronous plan to merge the parallel outputs — and re-run the affected Stage 2 plans.
-4. Proceed automatically once validation passes — **do not ask the user to approve the validation result**.
+3. If a conflict is found, the orchestrator **identifies which plan's sub-agent must change** (e.g. the one that should give up ownership of a shared file, or move shared work into an earlier synchronous plan) and **asks that sub-agent to update its simple plan because of the overlap**, passing it the specific conflict and the resolution to apply. The orchestrator stays a **pure orchestrator** — it does not edit the plan itself; it delegates the fix to the sub-agent that owns the plan.
+4. After the sub-agent updates its plan, re-read the affected plans and confirm the conflict is gone. Repeat until parallel plans are conflict-free.
+5. Proceed automatically once validation passes — **do not ask the user to approve the validation result**.
 
 ### Stage 4 — Create the deep plans with sub-agents
 
@@ -151,7 +153,15 @@ The sub-agent's instructions for the plan to create should include the following
 >
 > Pick whatever best communicates each part of the plan — a table, a code block, a numbered list, etc. Prefer code blocks for concrete snippets and tables for contracts.
 
-### Stage 5 — Implement each plan
+### Stage 5 — Validate there is no overlap (deep plans)
+
+1. The **main agent** reads every deep plan produced in Stage 4.
+2. Now that each plan is detailed at the **code level** — concrete files to create/modify, functions, types, and shared symbols — confirm that plans meant to run in **parallel** (same plan number) do **not** touch the same files and have **no conflicts** between them. Deep plans expose overlaps that the simple plans in Stage 3 could not (e.g. two plans editing the same file, redefining the same symbol, or relying on a contract owned by a parallel plan).
+3. If a conflict is found, the orchestrator **identifies which plan's sub-agent must change** (e.g. the one that should give up ownership of a shared file or symbol, reassign file ownership, move shared work into an earlier synchronous plan, or split out a final synchronous merge plan) and **asks that sub-agent to update its deep plan because of the overlap**, passing it the specific conflict and the resolution to apply. The orchestrator stays a **pure orchestrator** — it does not edit the deep plan itself; it delegates the fix to the sub-agent that owns the plan (reuse the same sub-agent that created the deep plan so it keeps its context).
+4. After the sub-agent updates its deep plan, re-read the affected deep plans and confirm the conflict is gone. Repeat until parallel plans are conflict-free.
+5. Proceed automatically once validation passes — **do not ask the user to approve the validation result**. Only enter Stage 6 (implementation) once the deep plans are confirmed conflict-free.
+
+### Stage 6 — Implement each plan
 
 1. For each plan, use the **same sub-agent that created its deep plan** to implement it, passing the prompt below.
 2. Run sub-agents according to the plan numbers (same number → parallel, higher number → after).
@@ -170,20 +180,20 @@ This plan runs alongside other plans in parallel, so only touch the files this p
 This runs in auto-approval mode. Implement the plan fully and proceed without asking the user for confirmation.
 ````
 
-### Stage 6 — Review and final feedback
+### Stage 7 — Review and final feedback
 
 1. After all plans are implemented, the **main agent** reviews whether everything is correct and consistent across the plans.
 2. Run formatting once for the whole change with `npm run lint:fix`, and verify the build with `npx tsc --noEmit` in the affected project(s).
 3. Give the user a **final feedback**: what was implemented, how the plans fit together, any follow-ups or risks.
 
-### Stage 7 — Review the diff against standards
+### Stage 8 — Review the diff against standards
 
 1. Once the task is complete, invoke the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill to review the resulting git diff against the project's conventions and design patterns.
 2. The main agent stays a **pure orchestrator** here — exactly as in the rest of this flow, it does **not** review or edit code itself. It **delegates** the work to sub-agents, either **spawning new sub-agents** or **reusing the sub-agents from earlier stages**, whichever it judges best (e.g. reuse the sub-agent that owns a file so it carries its context).
 3. That skill orchestrates the review sub-agents and produces the `diff-review-report.md` decision document, then asks the user with `AskUserQuestion` which improvements to apply. This is an intentional final review gate — let it run as the skill defines, even though the rest of this flow is auto-approval.
 4. Once the user picks the improvements, the main agent **dispatches the actual code changes to sub-agents** (new or reused) — never implementing them itself — then runs the formatting and type-check once across the affected projects.
 
-### Stage 8 — Propose new coding patterns or designs
+### Stage 9 — Propose new coding patterns or designs
 
 1. After the diff review is complete, invoke the [`task-propose-coding-patterns-or-designs`](../task-propose-coding-patterns-or-designs/SKILL.md) skill on the resulting change set to surface reusable conventions worth documenting.
 2. The main agent stays a **pure orchestrator** — it does not analyze or write conventions itself. It **delegates** the work to sub-agents, either spawning new ones or reusing the sub-agents from earlier stages, whichever it judges best.
@@ -199,9 +209,11 @@ This runs in auto-approval mode. Implement the plan fully and proceed without as
 - When parallel plans create pieces that must be joined, add a final synchronous plan to merge them.
 - Each simple plan (Stage 2) must follow the format and rules of `.claude/skills/task-simple-plan-lvl1/SKILL.md`.
 - Each deep plan (Stage 4) must be created with the sub-agent prompt and follow the Claude Code plan structure described in Stage 4.
-- Sub-agents must **never** run formatting (`npm run lint:fix`) during parallel work — it can conflict. Formatting runs once in Stage 6.
-- Use the **same sub-agent** to create the deep plan (Stage 4) and implement it (Stage 5).
-- After the task is complete (Stage 7), always run the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill on the resulting diff.
-- After the diff review (Stage 8), always run the [`task-propose-coding-patterns-or-designs`](../task-propose-coding-patterns-or-designs/SKILL.md) skill so any reusable conventions can be captured **with the user's approval**.
-- In Stages 7 and 8 the main agent acts **only as an orchestrator** — it never reviews, edits, or writes conventions itself. It delegates the review, the approved improvements, and the proposed patterns/designs to sub-agents (new ones or the ones reused from earlier stages), whichever it judges best.
+- Sub-agents must **never** run formatting (`npm run lint:fix`) during parallel work — it can conflict. Formatting runs once in Stage 7.
+- Use the **same sub-agent** to create the deep plan (Stage 4) and implement it (Stage 6).
+- Validate overlap **twice**: once on the simple plans (Stage 3) and again on the deep plans (Stage 5), since the code-level detail of deep plans can reveal conflicts the simple plans did not.
+- When an overlap is found, the orchestrator **identifies which plan's sub-agent must change and asks that sub-agent to update its plan because of the overlap** — it never edits the conflicting plan itself. For deep plans, reuse the sub-agent that created it so it keeps its context.
+- After the task is complete (Stage 8), always run the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill on the resulting diff.
+- After the diff review (Stage 9), always run the [`task-propose-coding-patterns-or-designs`](../task-propose-coding-patterns-or-designs/SKILL.md) skill so any reusable conventions can be captured **with the user's approval**.
+- In Stages 8 and 9 the main agent acts **only as an orchestrator** — it never reviews, edits, or writes conventions itself. It delegates the review, the approved improvements, and the proposed patterns/designs to sub-agents (new ones or the ones reused from earlier stages), whichever it judges best.
 - Do **not** include a "Summary" or "Conclusion" section.
