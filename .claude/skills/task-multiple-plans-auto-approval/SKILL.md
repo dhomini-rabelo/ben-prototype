@@ -12,7 +12,7 @@ Use this skill when a task is large enough to be split into several small plans 
 
 This is the auto-approval variant of `.claude/skills/task-multiple-plans/SKILL.md`. The difference: **there are no `AskUserQuestion` approval gates** — the main agent proceeds automatically through every stage. Use it when the user has explicitly delegated the full task and wants it completed without intermediate check-ins.
 
-The flow has nine stages:
+The flow has ten stages:
 
 1. **Define the plan set** — the main agent lists the small plans.
 2. **Detail each plan as a simple plan** — sub-agents produce simple plans.
@@ -20,9 +20,10 @@ The flow has nine stages:
 4. **Create the deep plans** — sub-agents expand each simple plan into a deep, code-level plan.
 5. **Validate there is no overlap (deep plans)** — the main agent confirms the parallel deep plans do not conflict now that they are code-level.
 6. **Implement each plan** — the same sub-agents implement their deep plans.
-7. **Review and final feedback** — the main agent reviews, formats once, and reports back.
-8. **Review the diff against standards** — run the `task-review-diff-standards` skill on the resulting changes.
-9. **Propose new coding patterns or designs** — run the `task-propose-coding-patterns-or-designs` skill; the user approves the new conventions.
+7. **Cross-impact instability check** — each sub-agent analyzes whether its changes could destabilize other flows; it reports any instability found and the user decides with `AskUserQuestion` whether each fix is needed.
+8. **Review and final feedback** — the main agent reviews, formats once, and reports back.
+9. **Review the diff against standards** — run the `task-review-diff-standards` skill on the resulting changes.
+10. **Propose new coding patterns or designs** — run the `task-propose-coding-patterns-or-designs` skill; the user approves the new conventions.
 
 ## When to use
 
@@ -180,20 +181,32 @@ This plan runs alongside other plans in parallel, so only touch the files this p
 This runs in auto-approval mode. Implement the plan fully and proceed without asking the user for confirmation.
 ````
 
-### Stage 7 — Review and final feedback
+### Stage 7 — Cross-impact instability check
+
+Parallel plans only see the files they own, so a change that is correct in isolation can still destabilize a flow it does not touch (e.g. a new query/contract that another flow must now invalidate, refetch, or keep in sync). This stage catches those cross-impacts before the review.
+
+1. After all plans are implemented (Stage 6), for **each** plan ask the **same sub-agent that implemented it** (reuse it so it keeps its context) to **briefly analyze whether its changes could have introduced instability in other flows or parts of the codebase** — including the parts owned by the other parallel plans and any existing flow that interacts with the files, contracts, queries, caches, or events its change touched.
+2. Each sub-agent **only analyzes and reports — it does not fix anything**. If it finds a potential instability, it writes a short report at `.claude/reports/instability-{index}-{plan-name}.md` describing: the suspected instability, the affected flow/file, why the change could break or destabilize it, a severity (`high` | `medium` | `low`), and a suggested fix. If it finds none, it states so explicitly and writes no report.
+3. Run these analyses for plans the same way as their implementation (same number → in parallel, higher number → after), or simply run them all together since this stage is read-only.
+4. The **main agent** consolidates the instability reports. **If no instability is found, skip straight to Stage 8.**
+5. If one or more instabilities are found, the main agent uses **`AskUserQuestion`** to let the user decide, per instability, whether the fix is actually necessary. This is an intentional gate — **even though the rest of this flow is auto-approval, the user must confirm an instability fix before any code is touched.** Present each instability with its severity and suggested fix as an option.
+6. For each instability the user confirms, the main agent **dispatches the fix to a sub-agent** (reuse the one that owns the affected files, or spawn a new one) — it never fixes the code itself. Sub-agents must still **not** run formatting (`npm run lint:fix`); the single formatting + type-check pass happens next in Stage 8.
+7. Once the confirmed fixes are applied (or the user declines all / none were found), proceed to Stage 8.
+
+### Stage 8 — Review and final feedback
 
 1. After all plans are implemented, the **main agent** reviews whether everything is correct and consistent across the plans.
 2. Run formatting once for the whole change with `npm run lint:fix`, and verify the build with `npx tsc --noEmit` in the affected project(s).
 3. Give the user a **final feedback**: what was implemented, how the plans fit together, any follow-ups or risks.
 
-### Stage 8 — Review the diff against standards
+### Stage 9 — Review the diff against standards
 
 1. Once the task is complete, invoke the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill to review the resulting git diff against the project's conventions and design patterns.
 2. The main agent stays a **pure orchestrator** here — exactly as in the rest of this flow, it does **not** review or edit code itself. It **delegates** the work to sub-agents, either **spawning new sub-agents** or **reusing the sub-agents from earlier stages**, whichever it judges best (e.g. reuse the sub-agent that owns a file so it carries its context).
 3. That skill orchestrates the review sub-agents and produces the `diff-review-report.md` decision document, then asks the user with `AskUserQuestion` which improvements to apply. This is an intentional final review gate — let it run as the skill defines, even though the rest of this flow is auto-approval.
 4. Once the user picks the improvements, the main agent **dispatches the actual code changes to sub-agents** (new or reused) — never implementing them itself — then runs the formatting and type-check once across the affected projects.
 
-### Stage 9 — Propose new coding patterns or designs
+### Stage 10 — Propose new coding patterns or designs
 
 1. After the diff review is complete, invoke the [`task-propose-coding-patterns-or-designs`](../task-propose-coding-patterns-or-designs/SKILL.md) skill on the resulting change set to surface reusable conventions worth documenting.
 2. The main agent stays a **pure orchestrator** — it does not analyze or write conventions itself. It **delegates** the work to sub-agents, either spawning new ones or reusing the sub-agents from earlier stages, whichever it judges best.
@@ -209,11 +222,12 @@ This runs in auto-approval mode. Implement the plan fully and proceed without as
 - When parallel plans create pieces that must be joined, add a final synchronous plan to merge them.
 - Each simple plan (Stage 2) must follow the format and rules of `.claude/skills/task-simple-plan-lvl1/SKILL.md`.
 - Each deep plan (Stage 4) must be created with the sub-agent prompt and follow the Claude Code plan structure described in Stage 4.
-- Sub-agents must **never** run formatting (`npm run lint:fix`) during parallel work — it can conflict. Formatting runs once in Stage 7.
+- Sub-agents must **never** run formatting (`npm run lint:fix`) during parallel work — it can conflict. Formatting runs once in Stage 8.
 - Use the **same sub-agent** to create the deep plan (Stage 4) and implement it (Stage 6).
 - Validate overlap **twice**: once on the simple plans (Stage 3) and again on the deep plans (Stage 5), since the code-level detail of deep plans can reveal conflicts the simple plans did not.
 - When an overlap is found, the orchestrator **identifies which plan's sub-agent must change and asks that sub-agent to update its plan because of the overlap** — it never edits the conflicting plan itself. For deep plans, reuse the sub-agent that created it so it keeps its context.
-- After the task is complete (Stage 8), always run the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill on the resulting diff.
-- After the diff review (Stage 9), always run the [`task-propose-coding-patterns-or-designs`](../task-propose-coding-patterns-or-designs/SKILL.md) skill so any reusable conventions can be captured **with the user's approval**.
-- In Stages 8 and 9 the main agent acts **only as an orchestrator** — it never reviews, edits, or writes conventions itself. It delegates the review, the approved improvements, and the proposed patterns/designs to sub-agents (new ones or the ones reused from earlier stages), whichever it judges best.
+- After all plans are implemented (Stage 6), always run the **cross-impact instability check** (Stage 7): each implementing sub-agent analyzes whether its changes could destabilize other flows, reports any instability it finds, and the main agent asks the user with `AskUserQuestion` whether each fix is necessary before any code is touched. The main agent never analyzes or fixes the instability itself — it delegates to sub-agents (reused or new).
+- After the review and final feedback (Stage 8), always run the [`task-review-diff-standards`](../task-review-diff-standards/SKILL.md) skill (Stage 9) on the resulting diff.
+- After the diff review (Stage 9), always run the [`task-propose-coding-patterns-or-designs`](../task-propose-coding-patterns-or-designs/SKILL.md) skill (Stage 10) so any reusable conventions can be captured **with the user's approval**.
+- In Stages 9 and 10 the main agent acts **only as an orchestrator** — it never reviews, edits, or writes conventions itself. It delegates the review, the approved improvements, and the proposed patterns/designs to sub-agents (new ones or the ones reused from earlier stages), whichever it judges best.
 - Do **not** include a "Summary" or "Conclusion" section.
