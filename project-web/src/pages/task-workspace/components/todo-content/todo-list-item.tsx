@@ -8,6 +8,7 @@ type TodoListItemProps = {
   title: string;
   done?: boolean;
   diff?: TodoItemDiff;
+  finished?: boolean;
   onToggle?: () => void;
 };
 
@@ -15,11 +16,13 @@ function TodoListItemComponent({
   title,
   done,
   diff,
+  finished,
   onToggle,
 }: TodoListItemProps) {
   const isAdded = diff === "added";
   const isRemoved = diff === "removed";
   const isDiff = isAdded || isRemoved;
+  const isMuted = done || finished;
 
   return (
     <div
@@ -48,7 +51,7 @@ function TodoListItemComponent({
         variant="body-md"
         className={cn(
           "flex-1 leading-snug",
-          done && "text-on-surface-variant line-through",
+          isMuted && "text-on-surface-variant line-through",
           isRemoved && "text-diff-removed-fg line-through",
           isAdded && "text-diff-added-fg",
           !done && !isRemoved && !isAdded && "text-on-surface",

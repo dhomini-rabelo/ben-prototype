@@ -1,5 +1,6 @@
 import { useState, type FocusEvent } from "react";
 import { Typography } from "@/layout/components/ui/typography";
+import { cn } from "@/layout/utils/styles";
 import { useWorkspaceTask } from "@/pages/task-workspace/hooks/use-workspace-task";
 import { useTaskContentStore } from "@/pages/task-workspace/stores/task-content-store";
 
@@ -27,6 +28,8 @@ export function TextContent({ readOnly }: TextContentProps) {
   if (!task) {
     return null;
   }
+
+  const isFinished = task.status === "finished";
 
   const diff =
     task.pendingDiff?.changes.contentType === "text"
@@ -61,14 +64,19 @@ export function TextContent({ readOnly }: TextContentProps) {
   }
 
   return (
-    <section className="flex flex-1 flex-col pt-2">
+    <section
+      className={cn("flex flex-1 flex-col pt-2", isFinished && "opacity-60")}
+    >
       <textarea
         value={value}
         readOnly={readOnly}
         placeholder="tell Ben what to put here…"
         onChange={(event) => setValue(event.target.value)}
         onBlur={handleBlur}
-        className="min-h-60 flex-1 resize-none border-none bg-transparent text-body-md leading-relaxed text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-0"
+        className={cn(
+          "min-h-60 flex-1 resize-none border-none bg-transparent text-body-md leading-relaxed text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-0",
+          isFinished && "text-on-surface-variant line-through",
+        )}
       />
     </section>
   );

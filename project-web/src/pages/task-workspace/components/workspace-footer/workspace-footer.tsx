@@ -17,15 +17,19 @@ function WorkspaceFooterComponent() {
     return <RecordingBar />;
   }
 
+  const isFinished = task?.status === "finished";
+
   return (
     <ChatInput.Root
       draft={draft}
       onDraftChange={handleDraftChange}
       onSend={handleSend}
-      disabled={task?.status === "finished"}
+      disabled={isFinished}
     >
       <ChatInput.AttachButton />
-      <ChatInput.Input placeholder="Ask Ben to edit…" />
+      <ChatInput.Input
+        placeholder={isFinished ? "reopen to keep editing" : "Ask Ben to edit…"}
+      />
       <ChatInput.ActionButton />
     </ChatInput.Root>
   );
