@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Agora que sabe a diferença, qual estratégia de reminder registrar no documento?",
+      "header": "Reminders",
+      "options": [
+        {
+          "label": "Notificação local (Recommended)",
+          "description": "expo-notifications agendando no device. Zero mudança no backend, ideal pra validar no protótipo. Migra pra push depois se precisar."
+        },
+        {
+          "label": "Push notification",
+          "description": "Backend agenda e envia. Robusto e multi-device, mas exige mudança no backend (push token + agendador)."
+        },
+        {
+          "label": "Local agora, push depois",
+          "description": "Registrar local como fase 1 e push como evolução futura planejada no documento."
+        }
+      ],
+      "multiSelect": false
+    }
+  ],
+  "answers": {
+    "Agora que sabe a diferença, qual estratégia de reminder registrar no documento?": "notificação local (devemos criar um service no mobile para isso em src/services do project-mobile (salve isso no planejamento de portagem)"
+  }
+}

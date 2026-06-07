@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "Como os reminders devem se comportar no mobile? (no web são só exibidos, não disparam nada)",
+      "header": "Reminders",
+      "options": [
+        {
+          "label": "Notificação local",
+          "description": "expo-notifications agendando no device a partir de firesAt. Sem mudança no backend. Não cobre app fechado por muito tempo nem multi-device, mas é o melhor custo/benefício pra protótipo."
+        },
+        {
+          "label": "Push notification",
+          "description": "expo-notifications + serviço de push (Expo Push / FCM/APNs) + mudança no backend para agendar e enviar. Mais robusto, mais trabalho."
+        },
+        {
+          "label": "Apenas display (igual web)",
+          "description": "Sem lib extra. Reminders continuam só listados, sem disparar nada. Mantém o escopo idêntico ao web."
+        }
+      ],
+      "multiSelect": false
+    }
+  ],
+  "answers": {
+    "Como os reminders devem se comportar no mobile? (no web são só exibidos, não disparam nada)": "Deve funcionar, qual a diferença entre notificação local e push notification?"
+  }
+}

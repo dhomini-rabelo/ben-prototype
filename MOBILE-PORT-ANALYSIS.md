@@ -68,6 +68,44 @@ Esses diretórios migram com ajustes mínimos:
 
 5. **Telas** — 3 rotas (`login`, `chat`, `tasks/[taskId]`) viram telas Expo Router. O **menu overlay** (hoje state-driven sobre a página) e os **detail modals** (notes/reminders) podem virar modais nativos do Expo Router, o que melhora a UX mobile.
 
+## Libs/ferramentas adicionais a definir (revisão)
+
+Itens que não estavam no mapa inicial e precisam ser decididos antes de codar.
+
+| Necessidade | Lib/ferramenta | Motivo |
+|---|---|---|
+| Animações (`fadeInUp`, waveform, `animate-bounce`, `animate-pulse`) | **`react-native-reanimated`** | CSS keyframes não existem em RN |
+| Gesto "slide up to cancel" na gravação | **`react-native-gesture-handler`** | gesto da `RecordingBar` |
+| Ícones (dependência do `lucide-react-native`) | **`react-native-svg`** | obrigatório para renderizar SVG |
+| Fontes Hanken Grotesk + JetBrains Mono | **`expo-font`** + **`@expo-google-fonts/hanken-grotesk`** + **`@expo-google-fonts/jetbrains-mono`** | no web nem são carregadas (caem no fallback) |
+| Splash / status bar / ícone do app | **`expo-splash-screen`** + **`expo-status-bar`** | shell do app |
+| Permissão de microfone | config no `app.json` (`NSMicrophoneUsageDescription`, Android `RECORD_AUDIO`) | exigido por iOS/Android |
+| Feedback tátil (opcional) | **`expo-haptics`** | melhora UX de voz/ações |
+| Formatação/lint | **Prettier** + ESLint flat config + plugin RN | o web não usa Prettier; definir padrão no mobile |
+| Path alias `@/` | `tsconfig paths` + **`babel-plugin-module-resolver`** | Metro não resolve o alias sozinho |
+
+### Decisão de produto pendente: notificações de reminders
+
+No web, reminders são **somente display** (`firesAt`, status `upcoming`/`fired`) — nada é disparado. Em mobile, fazer um reminder **realmente notificar** é **feature nova**, não port. Opções:
+
+1. **Apenas display (igual ao web)** — sem lib extra; reminders continuam só listados.
+2. **Notificação local** — **`expo-notifications`** agendando no device a partir de `firesAt`. Sem mudança no backend, mas não dispara com app fechado por muito tempo / multi-device.
+3. **Push notification** — `expo-notifications` + serviço de push (Expo Push / FCM/APNs) + **mudança no backend** para agendar e enviar. Mais robusto.
+
+> **Decisão registrada: notificação local (opção 2).** Encapsular a lógica num **service em `project-mobile/src/services/`** (ex.: `notifications-service.ts`) responsável por: pedir permissão de notificação, agendar a partir do `firesAt`, cancelar/reagendar quando o reminder muda e limpar agendamentos órfãos. As telas/stores chamam esse service — nunca o `expo-notifications` direto. Push fica como evolução futura.
+
+### Não precisam de lib (confirmado na revisão)
+
+- **Datas**: `format-time.ts` usa JS puro + `Intl` → copia direto, **sem date-fns/dayjs**.
+- **Markdown**: chat, task content e notes são texto puro → **sem react-markdown**.
+
+### Reescritas que não portam direto
+
+- **Scroll infinito do chat**: `use-infinite-scroll-top.ts` (`IntersectionObserver` + `ResizeObserver` + `window.scrollBy`) → reescrever com **`FlatList` invertida** + `onEndReached`.
+- **`ResizeObserver` do footer** (`chat/page.tsx`) → usar prop `onLayout`.
+- **Conectividade** (`navigator.onLine` + eventos do browser) → **`@react-native-community/netinfo`**.
+- **Permissão de microfone** (`navigator.permissions`) → tratada pelo `expo-av`.
+
 ## Diferenças conceituais web → mobile
 
 - **Teclado**: precisa de `KeyboardAvoidingView` no footer de chat/task (não existe no web).
@@ -81,7 +119,14 @@ Esses diretórios migram com ajustes mínimos:
 
 Montar um **plano de implementação faseado**:
 
-1. **Fase 1** — scaffold Expo + camada API + auth.
+1. **Fase 1** — scaffold Expo + camada API + auth + `src/services/`.
 2. **Fase 2** — chat.
 3. **Fase 3** — voz.
 4. **Fase 4** — task workspace + menu.
+5. **Fase 5** — reminders + `notifications-service` (notificação local).
+
+### Nova convenção de estrutura: `src/services/`
+
+O `project-web` **não tem** uma pasta `services/`. No `project-mobile` ela passa a existir para encapsular integrações de plataforma (notificações, e futuramente push/áudio), mantendo telas e stores agnósticas da API nativa.
+
+- `src/services/notifications-service.ts` — agenda/cancela/reagenda notificações locais a partir do `firesAt` dos reminders; pede permissão; limpa agendamentos órfãos. Único ponto que importa `expo-notifications`.
