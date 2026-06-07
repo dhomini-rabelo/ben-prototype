@@ -82,6 +82,7 @@ cd project-web && npm run dev
 - **Renovação de token:** se o middleware do backend renova o JWT, devolve no header `updatedjwtauthenticationtoken`; o front substitui o cookie automaticamente.
 - **Expiração / 401:** qualquer resposta `401` limpa os cookies e joga o usuário de volta para o login.
 - **Cancelamento do popup:** se o usuário fecha o popup, a tela mostra *"looks like that didn't go through — want to try again?"*; outros erros mostram *"Authentication failed. Please try again."*.
+- **Espera estendida:** se o sign-in fica em `loading` por mais de **4s** (`EXTENDED_WAIT_DELAY_MS`), aparece a linha *"still waiting on Google…"* abaixo do botão ([use-google-auth.ts](project-web/src/layout/hooks/use-google-auth.ts), [page.tsx](project-web/src/pages/login/page.tsx)); o timer é limpo assim que o loading termina.
 - **Sign out:** o Settings sheet descarta os três cookies (`@ben/jwttoken`, `@ben/authprovidertoken`, `@ben/user`), limpa o `auth-store` e volta para `/` — não há signout no servidor (auth stateless por JWT).
 
 > ⚠️ **Limitação conhecida (ver seção 11):** o `UserRepository` é instanciado **separadamente** no login e no middleware de auth. Enquanto o JWT estiver válido, tudo funciona; a **reemissão de JWT por expiração** tentaria buscar o usuário num repositório vazio e falharia.

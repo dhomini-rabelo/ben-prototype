@@ -22,7 +22,7 @@ Uma tela/componente é considerado **pronto** quando existe e está roteado/usad
 
 - **Prontos:** Login, Chat (com capture cards e seletor de tarefa ativa), Task Workspace, **Menu lateral** (listas de Tasks/Notes/Reminders + Settings) e **modal de detalhe de item** (note/reminder) — o fluxo de captura por voz/texto **e** a camada de navegação/consulta estão funcionais.
 - **Parcial:** os **Inline Capture Cards** cobrem note/reminder/task, mas ainda falta o estado de **pergunta de esclarecimento** ("clarifying question").
-- **A construir:** nenhum grupo inteiramente pendente, porém uma verificação **estado a estado** revelou estados individuais ainda não implementados dentro de grupos já roteados — ver a seção [O que falta construir](#o-que-falta-construir) para a lista priorizada (espera estendida no login e, por último, o clarifying-question). O **overlay de conclusão do Task Workspace** (`workspace-finished`) e os **badges de contagem na sidebar** (loading/error/populated) já foram implementados.
+- **A construir:** nenhum grupo inteiramente pendente; resta apenas **um** estado individual desenhado no `project-design` sem equivalente no `project-web` — o **clarifying-question** dos capture cards (ver a seção [O que falta construir](#o-que-falta-construir)). O **overlay de conclusão do Task Workspace** (`workspace-finished`), os **badges de contagem na sidebar** (loading/error/populated) e a **mensagem de espera estendida no Login** (`login-edge-extended-wait`) já foram implementados.
 
 ## Telas — status detalhado
 
@@ -77,15 +77,11 @@ O `project-web` decompôs a UI em peças estruturais que não constam como entra
 
 ## O que falta construir
 
-> Verificação feita **estado a estado** (não apenas a nível de grupo): cada grupo de tela está roteado e em uso, mas ainda restam **estados individuais** desenhados no `project-design` que não têm equivalente no `project-web`. As etapas abaixo estão em **ordem lógica de implementação** (do mais funcional ao polish), deixando a "Tool para perguntar mais contexto" por último, conforme priorização.
+> Verificação feita **estado a estado** (não apenas a nível de grupo): cada grupo de tela está roteado e em uso, mas ainda resta **um estado individual** desenhado no `project-design` sem equivalente no `project-web` — a "Tool para perguntar mais contexto", deixada por último conforme priorização (depende de trabalho de backend).
 
-> ✅ **Concluído:** o **overlay de conclusão no Task Workspace** (`workspace-finished`) foi implementado — toast comemorativo *"nice. that one's done."* ([workspace-done-overlay.tsx](project-web/src/pages/task-workspace/components/workspace-done-overlay/workspace-done-overlay.tsx)), conteúdo com `opacity-60` + `line-through` ([text-content.tsx](project-web/src/pages/task-workspace/components/text-content/text-content.tsx), [todo-content.tsx](project-web/src/pages/task-workspace/components/todo-content/todo-content.tsx)) e composer desabilitado com a copy *"reopen to keep editing"* ([workspace-footer.tsx](project-web/src/pages/task-workspace/components/workspace-footer/workspace-footer.tsx)).
+> ✅ **Concluído:** o **overlay de conclusão no Task Workspace** (`workspace-finished`) — toast comemorativo *"nice. that one's done."* ([workspace-done-overlay.tsx](project-web/src/pages/task-workspace/components/workspace-done-overlay/workspace-done-overlay.tsx)), conteúdo com `opacity-60` + `line-through` ([text-content.tsx](project-web/src/pages/task-workspace/components/text-content/text-content.tsx), [todo-content.tsx](project-web/src/pages/task-workspace/components/todo-content/todo-content.tsx)) e composer desabilitado com a copy *"reopen to keep editing"* ([workspace-footer.tsx](project-web/src/pages/task-workspace/components/workspace-footer/workspace-footer.tsx)) — **e** a **mensagem de espera estendida no Login** (`login-edge-extended-wait`): após 4s em `loading` aparece a linha *"still waiting on Google…"* ([use-google-auth.ts](project-web/src/layout/hooks/use-google-auth.ts), [page.tsx](project-web/src/pages/login/page.tsx)).
 
-1. **Mensagem de espera estendida no Login** (`login-edge-extended-wait`)
-   - O design faz aparecer, após um atraso, a linha "still waiting on Google…"; o `pages/login/page.tsx` não tem esse estado.
-   - Polish menor sobre o fluxo de login existente.
-
-2. **Pergunta de esclarecimento nos Capture Cards** (`capture-clarifying-question` + edge-case) — _deixado por último_
+1. **Pergunta de esclarecimento nos Capture Cards** (`capture-clarifying-question` + edge-case) — _deixado por último_
    - Adicionar o estado de "clarifying question" (e seu edge-case) ao fluxo de captura no chat (referência: `docs/v1.md` — "Tool para perguntar mais contexto").
    - Depende do trabalho de backend da tool `ask_clarifying_question`; por isso fica como última etapa.
 
