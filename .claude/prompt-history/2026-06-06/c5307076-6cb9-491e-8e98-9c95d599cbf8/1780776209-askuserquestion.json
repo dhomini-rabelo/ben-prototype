@@ -1,0 +1,30 @@
+{
+  "questions": [
+    {
+      "question": "Diff review of the workspace-transcribing change found one worthwhile improvement (full rationale in diff-review-report.md). Which improvements should I apply?",
+      "header": "Improvements",
+      "options": [
+        {
+          "label": "Align voice-error copy (#4)",
+          "description": "Change \"Couldn't catch that — tap to retry\" to match the Chat reference wording/casing: \"couldn't catch that — tap to retry or type it instead\". Recommended for true parity."
+        },
+        {
+          "label": "Match dots to Chat footer (#3)",
+          "description": "Change the dot cluster from gap-1/size-1.5 to the Chat footer's gap-0.5/size-1. Note: current code intentionally matches the banner's own ben-typing dots."
+        },
+        {
+          "label": "Move pendingDiff guard on top (#5)",
+          "description": "Suppress the transcribing/error banner while a diff is pending. Note: verified the composer stays active during pendingDiff, so the feedback is arguably correct as-is."
+        },
+        {
+          "label": "Apply none",
+          "description": "Keep the implementation exactly as it is now; skip all suggested tweaks."
+        }
+      ],
+      "multiSelect": true
+    }
+  ],
+  "answers": {
+    "Diff review of the workspace-transcribing change found one worthwhile improvement (full rationale in diff-review-report.md). Which improvements should I apply?": "the diff review should be at the end after all plans implementations - otherwise it takes too long"
+  }
+}

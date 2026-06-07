@@ -4,7 +4,7 @@ import { Typography } from "@/layout/components/ui/typography";
 import { cn } from "@/layout/utils/styles";
 
 type SubThreadBannerProps = {
-  variant?: "ben-reply" | "ben-typing" | "error";
+  variant?: "ben-reply" | "user-pending" | "ben-typing" | "error";
   text?: string;
   onRetry?: () => void;
 };
@@ -33,7 +33,7 @@ function SubThreadBannerComponent({
             : "bg-surface-container-high text-on-surface-variant",
         )}
       >
-        Ben
+        {variant === "user-pending" ? "You" : "Ben"}
       </span>
       <div className="min-w-0 flex-1">
         {variant === "ben-typing" ? (
@@ -41,6 +41,20 @@ function SubThreadBannerComponent({
             <span className="size-1.5 animate-bounce rounded-full bg-on-surface-variant [animation-delay:-0.2s]" />
             <span className="size-1.5 animate-bounce rounded-full bg-on-surface-variant [animation-delay:-0.1s]" />
             <span className="size-1.5 animate-bounce rounded-full bg-on-surface-variant" />
+          </span>
+        ) : variant === "user-pending" ? (
+          <span className="inline-flex items-center gap-1.5">
+            <Typography
+              variant="label-caps"
+              className="text-on-surface-variant"
+            >
+              Hearing you
+            </Typography>
+            <span className="flex items-center gap-1">
+              <span className="size-1.5 animate-bounce rounded-full bg-on-surface-variant [animation-delay:-0.2s]" />
+              <span className="size-1.5 animate-bounce rounded-full bg-on-surface-variant [animation-delay:-0.1s]" />
+              <span className="size-1.5 animate-bounce rounded-full bg-on-surface-variant" />
+            </span>
           </span>
         ) : (
           <Typography
