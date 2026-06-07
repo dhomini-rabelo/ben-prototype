@@ -1,6 +1,6 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import Cookies from 'js-cookie'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { JWT_COOKIE, PROVIDER_COOKIE, basicClient } from '@/api/client'
 import { API_ROUTES } from '@/api/routes'
@@ -9,6 +9,8 @@ import { ROUTES } from '@/core/routes'
 import { useAuthStore } from '@/layout/stores/auth-store'
 
 const COOKIE_MAX_AGE_DAYS = 5
+
+const EXTENDED_WAIT_DELAY_MS = 4000
 
 const USER_CANCEL_ERROR_CODES = [
   'auth/popup-closed-by-user',
@@ -29,7 +31,25 @@ export function useGoogleAuth() {
     status: 'idle',
     error: '',
   })
+  const [isExtendedWait, setIsExtendedWait] = useState(false)
   const navigate = useNavigate()
+
+  const isLoading = state.status === 'loading'
+
+  useEffect(() => {
+    if (!isLoading) {
+      return
+    }
+
+    const timeout = setTimeout(() => {
+      setIsExtendedWait(true)
+    }, EXTENDED_WAIT_DELAY_MS)
+
+    return () => {
+      clearTimeout(timeout)
+      setIsExtendedWait(false)
+    }
+  }, [isLoading])
 
   async function signIn() {
     setState({ status: 'loading', error: '' })
@@ -65,7 +85,8 @@ export function useGoogleAuth() {
 
   return {
     signIn,
-    isLoading: state.status === 'loading',
+    isLoading,
+    isExtendedWait,
     isPermissionDenied: state.status === 'denied',
     error: state.error,
   }

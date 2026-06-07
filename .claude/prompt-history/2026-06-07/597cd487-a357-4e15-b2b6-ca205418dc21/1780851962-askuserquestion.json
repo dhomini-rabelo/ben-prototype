@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "The diff review (diff-review-report.md) found only low-severity polish items. Which improvements should I apply?",
+      "header": "Improvements",
+      "options": [
+        {
+          "label": "Drop delay-200 (rec.)",
+          "description": "Item 1: change the hint's class from `fade-in-up delay-200` to just `fade-in-up`. The delay only staggers the page's initial entrance; the hint appears alone after 4s, so the 200ms lag is meaningless here. Recommended."
+        },
+        {
+          "label": "Fold into state object",
+          "description": "Item 2: merge isExtendedWait into the GoogleAuthState object instead of a separate useState. I recommend skipping — it entangles UI timing with the auth machine for no real gain."
+        },
+        {
+          "label": "Explicit text-center",
+          "description": "Item 3: add an explicit `text-center` class to the hint instead of relying on inheritance. I recommend skipping — redundant noise."
+        }
+      ],
+      "multiSelect": true
+    }
+  ],
+  "answers": {
+    "The diff review (diff-review-report.md) found only low-severity polish items. Which improvements should I apply?": "the code is fine"
+  }
+}

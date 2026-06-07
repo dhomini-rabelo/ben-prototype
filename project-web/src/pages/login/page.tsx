@@ -5,7 +5,8 @@ import { Typography } from "@/layout/components/ui/typography";
 import { useGoogleAuth } from "@/layout/hooks/use-google-auth";
 
 export function Login() {
-  const { signIn, isLoading, isPermissionDenied, error } = useGoogleAuth();
+  const { signIn, isLoading, isExtendedWait, isPermissionDenied, error } =
+    useGoogleAuth();
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-6 text-on-background">
@@ -38,6 +39,14 @@ export function Login() {
             <GoogleIcon className="size-5 opacity-90 transition-opacity group-hover:opacity-100" />
             {isLoading ? "Signing in..." : "Continue with Google"}
           </Button>
+          {isExtendedWait && (
+            <Typography
+              variant="body-md"
+              className="fade-in-up delay-200 text-secondary"
+            >
+              still waiting on Google…
+            </Typography>
+          )}
         </div>
 
         <footer className="fade-in-up delay-200 flex flex-col items-center gap-2 pt-2">

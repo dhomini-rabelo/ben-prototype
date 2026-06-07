@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "question": "The pattern analysis surfaced reusable conventions from this task. Which should I capture as documented coding patterns (handed to task-add-coding-pattern-or-design)?",
+      "header": "New patterns",
+      "options": [
+        {
+          "label": "timer-effect-with-cleanup (rec.)",
+          "description": "useEffect keyed on a boolean trigger that early-returns when off, sets a setTimeout/setInterval, and returns cleanup that BOTH clears the timer AND resets the derived state. Now appears twice (use-google-auth.ts + use-elapsed-timer.ts). Recommended — a separate coding-patterns/ file."
+        },
+        {
+          "label": "additive-ui-gated-by-hook-flag",
+          "description": "Render secondary/reassurance UI as a separate {flag && <…/>} block driven by a dedicated hook flag, layered alongside the existing element rather than branching it. Single occurrence so far; close to generic conditional rendering. I lean against it."
+        },
+        {
+          "label": "Capture none",
+          "description": "Don't document any new convention from this task — the existing registries already cover the meaningful choices (named constants, boolean naming, hook/destructure patterns)."
+        }
+      ],
+      "multiSelect": true
+    }
+  ],
+  "answers": {
+    "The pattern analysis surfaced reusable conventions from this task. Which should I capture as documented coding patterns (handed to task-add-coding-pattern-or-design)?": "Capture none"
+  }
+}
