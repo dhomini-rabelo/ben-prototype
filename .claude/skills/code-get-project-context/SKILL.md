@@ -14,9 +14,11 @@ The `ben-prototype` repository is the **v1 prototyping workspace** for this app.
 The repo contains four separate projects:
 
 - [`project-design/`](../../../project-design/) — Design sandbox and gallery (Vite + React + Tailwind v4)
-- [`project-web/`](../../../project-web/) — Mock web implementation of Ben (Vite + React + Tailwind v4)
+- [`project-mobile/`](../../../project-mobile/) — Mobile implementation of Ben (Expo + React Native), ported from `project-web` — **the active development focus**
+- [`project-web/`](../../../project-web/) — Web implementation of Ben (Vite + React + Tailwind v4) — now a **reference/frozen** baseline, expected to drift out of date
 - [`project-backend/`](../../../project-backend/) — Node.js backend for Ben (Express 5 + TypeScript + Zod)
-- [`project-mobile/`](../../../project-mobile/) — Mobile implementation of Ben (Expo + React Native), ported from `project-web`
+
+> **Where work happens now:** active feature work has moved to **`project-mobile`**. `project-web` is treated as the original reference implementation the mobile port was derived from and is **no longer actively maintained**, so expect it to gradually fall behind mobile. New features and changes should target `project-mobile` (and `project-backend` when the API needs to change) unless the user explicitly says otherwise. The shared `project-backend` API still serves both clients.
 
 ---
 
@@ -39,7 +41,9 @@ Vite 8 · React 19 · react-router v7 · Tailwind CSS v4 · `lucide-react`
 
 ## project-web
 
-**Purpose:** The real web implementation of Ben — routing and Google/Firebase authentication are wired up, and it consumes the `project-backend` API to drive working feature screens, including a working chat experience with the Ben agent, a collaborative task workspace, and a navigation menu for browsing captured tasks, notes, and reminders (with item detail and settings).
+> **Status: reference / frozen.** This was the first real implementation of Ben and the source the mobile port was derived from. Active development has since moved to [`project-mobile`](#project-mobile), so `project-web` is **no longer actively maintained** and is expected to drift out of date relative to mobile. Treat it as the original reference for behavior and API usage, not as the place to add new features (unless the user explicitly asks to change the web app).
+
+**Purpose:** The original web implementation of Ben — routing and Google/Firebase authentication are wired up, and it consumes the `project-backend` API to drive working feature screens, including a working chat experience with the Ben agent, a collaborative task workspace, and a navigation menu for browsing captured tasks, notes, and reminders (with item detail and settings).
 
 ### Key directories
 
@@ -48,7 +52,7 @@ Vite 8 · React 19 · react-router v7 · Tailwind CSS v4 · `lucide-react`
 - `src/layout/` — Shared UI primitives and cross-page hooks (e.g. API request / pagination hooks)
 - `src/core/` — App wiring: router, entry point
 
-It shares the same stack as `project-design` but is a completely separate project (with Firebase added for auth). Work here will grow as the design is validated in `project-design`.
+It shares the same stack as `project-design` but is a completely separate project (with Firebase added for auth). New feature work no longer lands here — it now targets `project-mobile`.
 
 ---
 
@@ -72,6 +76,8 @@ Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · Ass
 ---
 
 ## project-mobile
+
+> **Status: active development focus.** This is where new features and changes now land. It started as a port of `project-web`, but going forward mobile and web will diverge — mobile moves ahead while web stays frozen as the reference baseline.
 
 **Purpose:** The mobile implementation of Ben — a React Native (Expo) port of `project-web`. It reuses the platform-agnostic layers (API client/contracts, Zustand/Jotai state, React Query hooks, the voice state machine, design tokens) and re-implements the presentation and platform-specific pieces (UI primitives, navigation, audio, auth, storage) natively. It consumes the same `project-backend` API and covers the same flows: Google auth, chat with the Ben agent, the task workspace, and the navigation menu (tasks/notes/reminders with detail + settings), plus local notifications for reminders.
 

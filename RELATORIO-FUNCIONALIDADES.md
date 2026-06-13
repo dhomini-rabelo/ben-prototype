@@ -6,6 +6,8 @@
 >
 > Ele reflete o **estado atual do código** (não o plano de produto). Onde o código diverge dos documentos de planejamento em [docs/](docs/), isso está sinalizado na seção [Divergências em relação aos docs](#10-divergências-em-relação-aos-docs-de-planejamento).
 
+> ⚠️ **Foco de desenvolvimento agora é o `project-mobile`.** O trabalho ativo de features migrou para o app mobile ([project-mobile/](project-mobile/)); o **[project-web/](project-web/) passou a ser uma implementação de referência/congelada** e **não é mais mantido ativamente**, então tende a ficar desatualizado em relação ao mobile. As seções 3–7 abaixo descrevem os fluxos pelos **caminhos do `project-web`** (a base de referência); o `project-mobile` cobre os mesmos fluxos contra o **mesmo `project-backend`**, mas pode já ter evoluído além do que está descrito aqui. O **backend continua compartilhado** pelos dois clientes.
+
 ---
 
 ## 1. Mapa dos sistemas
@@ -14,9 +16,9 @@ O repositório tem quatro projetos:
 
 | Projeto | Papel | Executável hoje? |
 | --- | --- | --- |
-| [project-backend/](project-backend/) | API Node.js (Express 5 + TypeScript) que serve o app | **Sim** — `npm run dev` |
-| [project-web/](project-web/) | Web app real do Ben (Vite + React 19) que consome a API | **Sim** — `npm run dev` |
-| [project-mobile/](project-mobile/) | App mobile do Ben (Expo + React Native), porte do `project-web`, consome a mesma API | **Sim** — `npm start` (`expo start`) |
+| [project-backend/](project-backend/) | API Node.js (Express 5 + TypeScript) que serve os dois clientes | **Sim** — `npm run dev` |
+| [project-mobile/](project-mobile/) | App mobile do Ben (Expo + React Native), porte do `project-web`, consome a mesma API — **foco ativo de desenvolvimento** | **Sim** — `npm start` (`expo start`) |
+| [project-web/](project-web/) | Web app do Ben (Vite + React 19) que consome a API — **referência/congelado, não mais mantido ativamente** (tende a desatualizar) | **Sim** — `npm run dev` |
 | [project-design/](project-design/) | Sandbox de design (galeria de telas estáticas) | Sim, mas é só protótipo visual — sem lógica de negócio |
 
 O **fluxo de ponta a ponta testável** é: cliente (`project-web` na porta **3001**, ou `project-mobile` via Expo) → `project-backend` (porta definida em `API_PORT`). O `project-mobile` reaproveita as camadas agnósticas de plataforma do `project-web` (client/contratos da API, stores, hooks de query, máquina de estados de voz) e cobre os mesmos fluxos descritos nas seções 3–7 contra o mesmo backend; as diferenças são de apresentação e de integrações nativas (áudio, auth, storage, notificações locais).

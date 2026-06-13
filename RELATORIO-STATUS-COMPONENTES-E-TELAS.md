@@ -1,15 +1,17 @@
 # Relatório — Status de Componentes e Telas
 
-Avaliação do que **já está pronto** versus **o que falta construir**, comparando a especificação de design (`project-design`) com a implementação real (`project-web`).
+Avaliação do que **já está pronto** versus **o que falta construir**, comparando a especificação de design (`project-design`) com a implementação de referência (`project-web`).
 
-> Data: 2026-06-07 · branch `main`
+> Data: 2026-06-13 · branch `main`
+
+> ⚠️ **Este relatório avalia o `project-web`, que agora é a implementação de referência/congelada.** O **foco de desenvolvimento ativo migrou para o `project-mobile`** ([project-mobile/](project-mobile/)), que portou esses mesmos grupos de tela e componentes. O `project-web` **não é mais mantido ativamente** e tende a ficar desatualizado; os status abaixo refletem o estado (congelado) do web em relação à spec de design, não o avanço do mobile.
 
 ## Como a avaliação foi feita
 
 A comparação usa duas fontes:
 
 - **Spec / fonte da verdade:** a galeria do **`project-design`**, registrada em `project-design/src/core/screens.ts` — **7 grupos de telas (77 estados)** e **22 componentes** — somada ao design system em `docs/design.md`.
-- **Implementação / "pronto":** o **`project-web`** (app web real), cujas rotas estão em `project-web/src/core/router.tsx`: `/` (login), `/chat` e `/tasks/:taskId` (task workspace). O **menu lateral** e o **detalhe de item** não têm rota própria — são overlays/sheets renderizados sobre `/chat` (ver `project-web/src/layout/components/menu/menu-overlay.tsx`), controlados pela store `menu-store`.
+- **Implementação / "pronto":** o **`project-web`** (app web de referência, hoje congelado), cujas rotas estão em `project-web/src/core/router.tsx`: `/` (login), `/chat` e `/tasks/:taskId` (task workspace). O **menu lateral** e o **detalhe de item** não têm rota própria — são overlays/sheets renderizados sobre `/chat` (ver `project-web/src/layout/components/menu/menu-overlay.tsx`), controlados pela store `menu-store`.
 
 Uma tela/componente é considerado **pronto** quando existe e está roteado/usado no `project-web`. É **a construir** quando só existe como design no `project-design`.
 
