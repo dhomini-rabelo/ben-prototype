@@ -1,26 +1,15 @@
-import { Audio } from 'expo-av'
-import type { PermissionResponse } from 'expo-modules-core'
-import type { MicPermission } from './types'
-
-function toMicPermission(response: PermissionResponse): MicPermission {
-  if (response.granted) {
-    return 'granted'
-  }
-  if (response.status === 'denied' && !response.canAskAgain) {
-    return 'denied'
-  }
-  return 'prompt'
-}
+import { getMicPermissionStatus } from '@/services/audio-service'
+import type { MicPermission } from '@/services/audio-service'
 
 export function subscribeMicPermission(
   onChange: (permission: MicPermission) => void,
 ): () => void {
   let active = true
 
-  Audio.getPermissionsAsync()
-    .then((response) => {
+  getMicPermissionStatus()
+    .then((permission) => {
       if (active) {
-        onChange(toMicPermission(response))
+        onChange(permission)
       }
     })
     .catch(() => undefined)

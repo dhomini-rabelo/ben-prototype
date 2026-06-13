@@ -3,6 +3,7 @@ import { BenLogo } from '@/layout/components/icons/ben-logo'
 import { GoogleIcon } from '@/layout/components/icons/google-icon'
 import { Button } from '@/layout/components/ui/button'
 import { Typography } from '@/layout/components/ui/typography'
+import { useDevAuth } from '@/layout/hooks/use-dev-auth'
 import { useGoogleAuth } from '@/layout/hooks/use-google-auth'
 import { onPrimary, primary } from '@/layout/utils/colors'
 
@@ -13,8 +14,15 @@ const FOOTER_LINKS = [
 ]
 
 export function Login() {
-  const { signIn, isLoading, isExtendedWait, isPermissionDenied, error } =
-    useGoogleAuth()
+  const {
+    signIn,
+    isAvailable: isGoogleAvailable,
+    isLoading,
+    isExtendedWait,
+    isPermissionDenied,
+    error,
+  } = useGoogleAuth()
+  const devAuth = useDevAuth()
 
   return (
     <View className="flex-1 items-center justify-center bg-background px-6">
@@ -48,16 +56,32 @@ export function Login() {
               {error}
             </Typography>
           )}
-          <Button className="w-full" onPress={signIn} disabled={isLoading}>
-            <GoogleIcon className="size-5 text-on-primary" color={onPrimary} />
-            {isLoading ? 'Signing in...' : 'Continue with Google'}
-          </Button>
+          {isGoogleAvailable && (
+            <Button className="w-full" onPress={signIn} disabled={isLoading}>
+              <GoogleIcon
+                className="size-5 text-on-primary"
+                color={onPrimary}
+              />
+              {isLoading ? 'Signing in...' : 'Continue with Google'}
+            </Button>
+          )}
           {isExtendedWait && (
             <Typography
               variant="body-md"
               className="text-center text-secondary"
             >
               still waiting on Google…
+            </Typography>
+          )}
+          {devAuth.isAvailable && (
+            <Typography
+              variant="body-md"
+              className="text-center font-medium text-secondary"
+              onPress={() => {
+                void devAuth.signIn()
+              }}
+            >
+              Dev sign-in (Expo Go)
             </Typography>
           )}
         </View>

@@ -3,6 +3,7 @@ import type { ExpoConfig } from 'expo/config'
 const config: ExpoConfig = {
   name: 'Ben',
   slug: 'ben',
+  owner: 'dhomini07',
   scheme: 'ben',
   version: '0.0.0',
   orientation: 'portrait',
@@ -25,7 +26,7 @@ const config: ExpoConfig = {
     'expo-secure-store',
     'expo-notifications',
     [
-      'expo-av',
+      'expo-audio',
       {
         microphonePermission:
           'Ben needs your microphone to capture voice notes.',
@@ -43,12 +44,16 @@ const config: ExpoConfig = {
     ],
   ],
   extra: {
+    eas: {
+      projectId: 'ba75dfd9-8220-4674-bb35-a7f9c812bb99',
+    },
     backendUrl: process.env.BACKEND_URL,
     firebaseApiKey: process.env.FIREBASE_API_KEY,
     firebaseAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,
     firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
     googleWebClientId: process.env.GOOGLE_WEB_CLIENT_ID,
     googleIosClientId: process.env.GOOGLE_IOS_CLIENT_ID,
+    devAccessToken: process.env.DEV_ACCESS_TOKEN,
   },
 }
 

@@ -1,5 +1,10 @@
-import { Audio } from 'expo-av'
-import type { MicPermission } from './types'
+import {
+  beginRecording,
+  discardRecording,
+  endRecording,
+  requestMicPermission,
+} from '@/services/audio-service'
+import type { MicPermission } from '@/services/audio-service'
 
 const MIN_RECORDING_MILLIS = 500
 const CAPTURE_ERROR_MESSAGE = 'Could not access the microphone.'
@@ -10,52 +15,26 @@ interface RecorderCallbacks {
   onStop: (audioUri: string) => void
 }
 
-let recording: Audio.Recording | null = null
 let activeCallbacks: RecorderCallbacks | null = null
 let isCancelled = false
 
-async function resetAudioMode() {
-  await Audio.setAudioModeAsync({
-    allowsRecordingIOS: false,
-    playsInSilentModeIOS: true,
-  })
-}
-
 export async function releaseRecorder() {
-  const current = recording
-  recording = null
   activeCallbacks = null
-  if (current) {
-    try {
-      await current.stopAndUnloadAsync()
-    } catch {
-      // already unloaded
-    }
-  }
-  await resetAudioMode()
+  await discardRecording()
 }
 
 export async function startRecorder(
   callbacks: RecorderCallbacks,
 ): Promise<boolean> {
-  const permission = await Audio.requestPermissionsAsync()
-  if (!permission.granted) {
+  const granted = await requestMicPermission()
+  if (!granted) {
     callbacks.onPermission('denied')
     return false
   }
   callbacks.onPermission('granted')
 
   try {
-    await Audio.setAudioModeAsync({
-      allowsRecordingIOS: true,
-      playsInSilentModeIOS: true,
-    })
-
-    const { recording: created } = await Audio.Recording.createAsync(
-      Audio.RecordingOptionsPresets.HIGH_QUALITY,
-    )
-
-    recording = created
+    await beginRecording()
     activeCallbacks = callbacks
     isCancelled = false
     return true
@@ -67,24 +46,19 @@ export async function startRecorder(
 }
 
 export async function stopRecorder() {
-  const current = recording
   const callbacks = activeCallbacks
-  if (!current || !callbacks) {
+  if (!callbacks) {
     return
   }
-
-  recording = null
   activeCallbacks = null
 
   try {
-    const status = await current.stopAndUnloadAsync()
-    const uri = current.getURI()
+    const { uri, durationMillis } = await endRecording()
 
     if (isCancelled) {
       return
     }
 
-    const durationMillis = status.durationMillis ?? 0
     if (!uri || durationMillis < MIN_RECORDING_MILLIS) {
       callbacks.onError(CAPTURE_ERROR_MESSAGE)
       return
@@ -95,8 +69,6 @@ export async function stopRecorder() {
     if (!isCancelled) {
       callbacks.onError(CAPTURE_ERROR_MESSAGE)
     }
-  } finally {
-    await resetAudioMode()
   }
 }
 

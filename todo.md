@@ -1,5 +1,0 @@
-- [x] Padronizar código projeto design antes de trazer para o project-web
-- [x] Iniciar project-backend
-- [ ] Finalizar timertasks
-- [ ] Publicar timertasks nas lojas apple e android
-- [ ] Criar tabela user e flow de login

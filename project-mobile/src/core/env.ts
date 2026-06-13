@@ -7,6 +7,7 @@ interface Env {
   firebaseProjectId: string
   googleWebClientId: string
   googleIosClientId: string
+  devAccessToken: string | null
 }
 
 const extra = (Constants.expoConfig?.extra ?? {}) as Partial<Env>
@@ -25,4 +26,5 @@ export const env: Env = {
   firebaseProjectId: required(extra.firebaseProjectId, 'firebaseProjectId'),
   googleWebClientId: required(extra.googleWebClientId, 'googleWebClientId'),
   googleIosClientId: required(extra.googleIosClientId, 'googleIosClientId'),
+  devAccessToken: extra.devAccessToken ?? null,
 }

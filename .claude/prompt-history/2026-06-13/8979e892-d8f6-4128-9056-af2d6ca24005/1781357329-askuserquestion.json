@@ -1,0 +1,22 @@
+{
+  "questions": [
+    {
+      "question": "When should these console.warn calls actually log?",
+      "header": "Log gating",
+      "options": [
+        {
+          "label": "Only in production",
+          "description": "Gate on !__DEV__: warnings are hidden while developing (clean console now) and only emitted in production builds. This matches what you literally asked."
+        },
+        {
+          "label": "Only in development",
+          "description": "Gate on __DEV__: warnings show while developing/debugging and are stripped from production builds. This is the conventional RN pattern — useful if your goal is just to keep them out of shipped apps."
+        }
+      ],
+      "multiSelect": false
+    }
+  ],
+  "answers": {
+    "When should these console.warn calls actually log?": "only development, só uma dúvida, assim como, por exemplo, o vitE tem algumas variáveis de env que a gente pode ter acesso no nAvagador como VITE_* - Como foi isso que funciona no mobile? "
+  }
+}

@@ -1,6 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
+  // Ben uses a single light palette (no dark variants). Without an explicit
+  // darkMode, NativeWind defaults to 'media' and throws on web when it tries to
+  // reconcile the system color scheme ("Cannot manually set color scheme, as dark
+  // mode is type 'media'"). 'class' opts out of the media-query path so dark mode
+  // is never auto-applied.
+  darkMode: 'class',
   presets: [require('nativewind/preset')],
   theme: {
     extend: {

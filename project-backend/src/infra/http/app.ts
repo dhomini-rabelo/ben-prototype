@@ -32,7 +32,11 @@ const upload = multer({
 
 app.use(
   cors({
-    origin: ['https://dev-dhomini.remktos.com', 'http://localhost:3001'],
+    origin: [
+      'https://dev-dhomini.remktos.com',
+      'http://localhost:3001',
+      'http://localhost:8081',
+    ],
     exposedHeaders: ['updatedjwtauthenticationtoken'],
   }),
   urlencoded({ extended: true, limit: '100mb' }),

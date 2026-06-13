@@ -1,6 +1,8 @@
+import type { MicPermission } from '@/services/audio-service'
+
 export type TranscriptionStatus = 'idle' | 'pending' | 'error'
 export type VoiceStatus = 'idle' | 'recording' | 'transcribing' | 'error'
-export type MicPermission = 'granted' | 'denied' | 'prompt'
+export type { MicPermission }
 
 export interface VoiceStore {
   transcription: TranscriptionStatus

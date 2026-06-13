@@ -22,6 +22,7 @@ import { WorkspaceFooter } from '@/pages/task-workspace/components/workspace-foo
 import { WorkspaceSubThreadBanner } from '@/pages/task-workspace/components/workspace-sub-thread-banner'
 import { WorkspaceTopBanner } from '@/pages/task-workspace/components/workspace-top-banner'
 import { WorkspaceTopBar } from '@/pages/task-workspace/components/workspace-top-bar/workspace-top-bar'
+import { resetTaskWorkspace } from '@/pages/task-workspace/stores/reset-task-workspace'
 import { useTaskChatStore } from '@/pages/task-workspace/stores/task-chat-store'
 import { useTaskStore } from '@/pages/task-workspace/stores/task-store'
 
@@ -50,7 +51,7 @@ export function TaskWorkspace() {
 
   useEffect(() => {
     setTaskId(taskId)
-    return () => useTaskStore.getState().reset()
+    return () => resetTaskWorkspace()
   }, [taskId, setTaskId])
 
   function handleFooterLayout(event: LayoutChangeEvent) {

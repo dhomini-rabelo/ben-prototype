@@ -1,30 +1,21 @@
-import {
-  GoogleSignin,
-  isErrorWithCode,
-  isSuccessResponse,
-  statusCodes,
-} from '@react-native-google-signin/google-signin'
 import { useEffect, useState } from 'react'
 import { router } from 'expo-router'
 import { basicClient } from '@/api/client'
 import { API_ROUTES } from '@/api/routes'
 import type { User } from '@/api/models/user'
-import { env } from '@/core/env'
+import { devWarn } from '@/core/logger'
 import { ROUTES } from '@/core/routes'
 import { useAuthStore } from '@/layout/stores/auth-store'
 import {
-  setCachedProviderToken,
-  setCachedToken,
-  setStoredProviderToken,
-  setStoredToken,
+  isGoogleAuthAvailable,
+  signInWithGoogle,
+} from '@/services/google-auth-service'
+import {
+  persistAccessToken,
+  persistProviderToken,
 } from '@/storage/token-storage'
 
 const EXTENDED_WAIT_DELAY_MS = 4000
-
-GoogleSignin.configure({
-  webClientId: env.googleWebClientId,
-  iosClientId: env.googleIosClientId,
-})
 
 interface LoginOrRegisterResponse {
   process: 'login' | 'register'
@@ -66,33 +57,29 @@ export function useGoogleAuth() {
   async function signIn() {
     setState({ status: 'loading', error: '' })
 
+    const result = await signInWithGoogle()
+
+    if (result.status === 'cancelled') {
+      setState({ status: 'denied', error: '' })
+      return
+    }
+
+    if (result.status === 'error') {
+      setState({
+        status: 'error',
+        error: 'Authentication failed. Please try again.',
+      })
+      return
+    }
+
     try {
-      await GoogleSignin.hasPlayServices()
-      const response = await GoogleSignin.signIn()
-
-      if (!isSuccessResponse(response)) {
-        setState({ status: 'denied', error: '' })
-        return
-      }
-
-      const idToken = response.data.idToken
-      if (!idToken) {
-        setState({
-          status: 'error',
-          error: 'Authentication failed. Please try again.',
-        })
-        return
-      }
-
       const loginResponse = await basicClient.post<LoginOrRegisterResponse>(
         API_ROUTES.auth.loginOrRegister,
-        { token: idToken },
+        { token: result.idToken },
       )
 
-      setCachedToken(loginResponse.data.accessToken)
-      setCachedProviderToken(idToken)
-      await setStoredToken(loginResponse.data.accessToken)
-      await setStoredProviderToken(idToken)
+      await persistAccessToken(loginResponse.data.accessToken)
+      await persistProviderToken(result.idToken)
 
       if (loginResponse.data.user) {
         useAuthStore.getState().setUser(loginResponse.data.user)
@@ -100,20 +87,20 @@ export function useGoogleAuth() {
 
       router.replace(ROUTES.chat)
     } catch (caughtError) {
-      const wasCancelledByUser =
-        isErrorWithCode(caughtError) &&
-        caughtError.code === statusCodes.SIGN_IN_CANCELLED
+      devWarn('[google-auth] backend login failed', {
+        message:
+          caughtError instanceof Error ? caughtError.message : caughtError,
+      })
       setState({
-        status: wasCancelledByUser ? 'denied' : 'error',
-        error: wasCancelledByUser
-          ? ''
-          : 'Authentication failed. Please try again.',
+        status: 'error',
+        error: 'Authentication failed. Please try again.',
       })
     }
   }
 
   return {
     signIn,
+    isAvailable: isGoogleAuthAvailable,
     isLoading,
     isExtendedWait,
     isPermissionDenied: state.status === 'denied',

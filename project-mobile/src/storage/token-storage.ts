@@ -1,4 +1,4 @@
-import * as SecureStore from 'expo-secure-store'
+import { deleteItem, getItem, setItem } from './secure-store'
 
 export const JWT_TOKEN_KEY = '@ben/jwttoken'
 export const PROVIDER_TOKEN_KEY = '@ben/authprovidertoken'
@@ -15,18 +15,18 @@ let cachedProviderToken: string | null = null
 
 async function readSecure(key: TokenKey): Promise<string | null> {
   try {
-    return await SecureStore.getItemAsync(SECURE_KEYS[key])
+    return await getItem(SECURE_KEYS[key])
   } catch {
     return null
   }
 }
 
 async function writeSecure(key: TokenKey, value: string): Promise<void> {
-  await SecureStore.setItemAsync(SECURE_KEYS[key], value)
+  await setItem(SECURE_KEYS[key], value)
 }
 
 async function deleteSecure(key: TokenKey): Promise<void> {
-  await SecureStore.deleteItemAsync(SECURE_KEYS[key])
+  await deleteItem(SECURE_KEYS[key])
 }
 
 export async function getStoredToken(): Promise<string | null> {
@@ -45,6 +45,16 @@ export async function setStoredToken(token: string): Promise<void> {
 export async function setStoredProviderToken(token: string): Promise<void> {
   cachedProviderToken = token
   await writeSecure(PROVIDER_TOKEN_KEY, token)
+}
+
+export async function persistAccessToken(token: string): Promise<void> {
+  setCachedToken(token)
+  await setStoredToken(token)
+}
+
+export async function persistProviderToken(token: string): Promise<void> {
+  setCachedProviderToken(token)
+  await setStoredProviderToken(token)
 }
 
 export async function clearStoredToken(): Promise<void> {
