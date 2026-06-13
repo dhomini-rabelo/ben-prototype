@@ -1,0 +1,42 @@
+{
+  "questions": [
+    {
+      "question": "How should this subagent drive Playwright? There's no Playwright MCP server currently configured in this repo.",
+      "header": "Driving method",
+      "options": [
+        {
+          "label": "Playwright MCP server",
+          "description": "Agent uses @playwright/mcp tools (browser_navigate, browser_snapshot, browser_click...). I'd also add the MCP server config. Best for interactive, exploratory testing where the agent observes and reacts to the live page."
+        },
+        {
+          "label": "Bash + Playwright scripts",
+          "description": "Agent writes and runs Playwright test scripts via Bash (npx playwright). Best for repeatable, committed test suites."
+        }
+      ],
+      "multiSelect": false
+    },
+    {
+      "question": "What mobile screen size should the browser always open at?",
+      "header": "Mobile viewport",
+      "options": [
+        {
+          "label": "iPhone (390×844)",
+          "description": "iPhone 12/13/14 logical viewport, DPR 3. A common modern mobile baseline."
+        },
+        {
+          "label": "iPhone SE (375×667)",
+          "description": "Smaller iPhone viewport — good for testing tight layouts."
+        },
+        {
+          "label": "Pixel (393×851)",
+          "description": "Pixel 5 / Android baseline viewport."
+        }
+      ],
+      "multiSelect": false
+    }
+  ],
+  "answers": {
+    "How should this subagent drive Playwright? There's no Playwright MCP server currently configured in this repo.": "create a .claude agent and set up the mcp only for this sub agent",
+    "What mobile screen size should the browser always open at?": "iPhone (390×844)"
+  }
+}
