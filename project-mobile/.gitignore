@@ -9,6 +9,7 @@ yarn-error.*
 
 .env
 .env.*.local
+.env.development
 *.local
 
 ios/
@@ -21,3 +22,5 @@ android/
 !.vscode/extensions.json
 
 expo-env.d.ts
+
+

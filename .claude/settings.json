@@ -5,8 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "INPUT=$(cat); PROMPT=$(echo \"$INPUT\" | jq -r '.prompt // empty'); SESSION=$(echo \"$INPUT\" | jq -r '.session_id // \"unknown\"'); DATE=$(date +%Y-%m-%d); TIMESTAMP=$(date +%s); DIR=\"/home/fael/so/repos/ben-prototype/.claude/prompt-history/$DATE/$SESSION\"; mkdir -p \"$DIR\"; echo \"$PROMPT\" > \"$DIR/$TIMESTAMP.md\"",
-            "async": true
+            "command": "INPUT=$(cat); PROMPT=$(printf '%s' \"$INPUT\" | jq -r '.prompt // empty'); SESSION=$(printf '%s' \"$INPUT\" | jq -r 'if (.session_id // \"\")==\"\" then \"unknown\" else .session_id end'); DATE=$(date +%Y-%m-%d); TIMESTAMP=$(date +%s); DIR=\"/home/fael/so/repos/ben-prototype/.claude/prompt-history/$DATE/$SESSION\"; mkdir -p \"$DIR\"; if [ -n \"$PROMPT\" ]; then printf '%s\\n' \"$PROMPT\" > \"$DIR/$TIMESTAMP.md\"; else printf 'RAW_PAYLOAD:\\n%s\\n' \"$INPUT\" > \"$DIR/$TIMESTAMP.md\"; fi"
           }
         ]
       }

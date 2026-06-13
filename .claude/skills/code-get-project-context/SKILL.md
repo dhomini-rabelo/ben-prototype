@@ -1,6 +1,6 @@
 ---
 name: code-get-project-context
-description: Gives the AI a quick, accurate picture of what the ben-prototype repository is and how its two sub-projects are organized. Use at the start of any task so you never have to guess the project's purpose, structure, or conventions.
+description: Gives the AI a quick, accurate picture of what the ben-prototype repository is and how its four sub-projects are organized. Use at the start of any task so you never have to guess the project's purpose, structure, or conventions.
 ---
 
 # Ben Prototype — Quick Project Context
@@ -11,12 +11,12 @@ description: Gives the AI a quick, accurate picture of what the ben-prototype re
 
 The `ben-prototype` repository is the **v1 prototyping workspace** for this app. It is not a production codebase — its purpose is to design, iterate, and validate Ben's screens and interactions before the real product is built.
 
-The repo contains three separate projects:
+The repo contains four separate projects:
 
 - [`project-design/`](../../../project-design/) — Design sandbox and gallery (Vite + React + Tailwind v4)
 - [`project-web/`](../../../project-web/) — Mock web implementation of Ben (Vite + React + Tailwind v4)
 - [`project-backend/`](../../../project-backend/) — Node.js backend for Ben (Express 5 + TypeScript + Zod)
-- Coming soon: `project-mobile/` — Real mobile implementation of Ben (not started yet)
+- [`project-mobile/`](../../../project-mobile/) — Mobile implementation of Ben (Expo + React Native), ported from `project-web`
 
 ---
 
@@ -68,6 +68,26 @@ It shares the same stack as `project-design` but is a completely separate projec
 ### Stack
 
 Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · AssemblyAI (audio transcription) · Vercel AI SDK + OpenRouter / Google Gemini (Ben agent) · multer (uploads) · `tsx` (dev runner)
+
+---
+
+## project-mobile
+
+**Purpose:** The mobile implementation of Ben — a React Native (Expo) port of `project-web`. It reuses the platform-agnostic layers (API client/contracts, Zustand/Jotai state, React Query hooks, the voice state machine, design tokens) and re-implements the presentation and platform-specific pieces (UI primitives, navigation, audio, auth, storage) natively. It consumes the same `project-backend` API and covers the same flows: Google auth, chat with the Ben agent, the task workspace, and the navigation menu (tasks/notes/reminders with detail + settings), plus local notifications for reminders.
+
+### Key directories
+
+- `app/` — Expo Router file-based routes (`index` login, `(protected)/` group with `chat`, `tasks/[taskId]`, `menu`, plus the auth-guard `_layout`)
+- `src/api/` — Backend API client layer (ported from web; client rewritten for native token handling and `FormData`)
+- `src/pages/` — Feature screens (`login`, `chat`, `task-workspace`, `menu`), each with its own `components/`, `hooks/`, `stores/`
+- `src/layout/` — Shared UI primitives, composite components, cross-page hooks, global stores, and utils
+- `src/storage/` — Native persistence: `expo-secure-store` (token, with in-memory sync cache) + AsyncStorage (user)
+- `src/services/` — Platform-integration boundary (e.g. `notifications-service.ts`, the sole importer of `expo-notifications`); a convention new to mobile (not present in `project-web`)
+- `src/core/` — App wiring: env, query client, routes, Firebase, auth bootstrap
+
+### Stack
+
+Expo SDK 54 · React Native 0.81 · React 19 · Expo Router (file-based) · NativeWind v4 (Tailwind v3) · Zustand · Jotai · TanStack Query · axios · Firebase + `@react-native-google-signin/google-signin` (auth) · `expo-av` (audio) · `expo-secure-store` + AsyncStorage · `expo-notifications` · `react-native-reanimated` + `react-native-gesture-handler` · `lucide-react-native`
 
 ---
 
