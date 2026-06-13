@@ -76,6 +76,11 @@ When writing code, it's important to follow established coding patterns to ensur
 - When to Use: Whenever a `project-web` component resolves a variant prop to classes or sub-components — a module-level `Record<Variant, ...>` map merged with `cn()`.
 - Coding pattern: [Component variant maps](./coding-patterns/component-variant-maps.md)
 
+##### Mobile Icon Colors
+
+- When to Use: Whenever you render an icon (`lucide-react-native` / `react-native-svg`) in `project-mobile` — NativeWind `text-*`/`size-*` classNames do not propagate to icons, so pass explicit `color`/`size` props sourced from the shared `@/layout/utils/colors` theme-hex module.
+- Coding pattern: [Mobile icon colors](./coding-patterns/mobile-icon-colors.md)
+
 #### Backend Patterns
 
 ##### Back-end Code Preferences

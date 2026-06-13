@@ -158,3 +158,31 @@ const TYPING_CHARS_PER_STEP = 3
 
 const intervalId = setInterval(() => reveal(TYPING_CHARS_PER_STEP), TYPING_STEP_MS)
 ```
+
+- In `project-mobile`, give a `Pressable` press feedback with NativeWind `active:` variants, not the `({ pressed }) => ...` render-callback form (which the project's NativeWind typing does not support).
+
+```tsx
+// Wrong way
+<Pressable onPress={onPress}>
+  {({ pressed }) => (
+    <Text className={cn('text-primary', pressed && 'underline')}>{label}</Text>
+  )}
+</Pressable>
+
+// Correct way
+<Pressable onPress={onPress}>
+  <Text className="text-primary active:underline">{label}</Text>
+</Pressable>
+```
+
+- In `project-mobile`, generate client-side ids with `randomUUID()` from `expo-crypto`, not the web `crypto.randomUUID()` (which is not available in the React Native runtime).
+
+```typescript
+// Wrong way
+const id = crypto.randomUUID()
+
+// Correct way
+import { randomUUID } from 'expo-crypto'
+
+const id = randomUUID()
+```

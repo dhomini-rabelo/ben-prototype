@@ -42,3 +42,13 @@ description: Use when you need to create/edit a feature that requires writing co
   - Purpose: Define how a data-fetching feature splits into a container view, per-state status components (loading/error/empty/gone), and a presentational component, with a fixed render order.
   - When to Use: Use when building or refactoring a feature that fetches data and must render loading, error, empty, and loaded states consistently.
   - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/web-feature-state-components-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
+
+- **Mobile Services Layer Structure**:
+  - Purpose: Define how `project-mobile` isolates native SDK integrations behind `src/services/` — one `{capability}-service.ts` module is the sole importer of a native SDK and exposes intent-named functions that screens, stores, and bootstrap call.
+  - When to Use: Use when adding or refactoring a native platform integration (notifications, location, camera, …) in `project-mobile`, so the SDK stays behind a single swappable boundary.
+  - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/mobile-services-layer-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
+
+- **Mobile Token Persistence Structure**:
+  - Purpose: Define how `project-mobile` splits auth persistence in `src/storage/` — SecureStore holds the JWT + provider token with an in-memory synchronous cache so the sync axios interceptor can read a token, while AsyncStorage holds the user profile.
+  - When to Use: Use when adding or refactoring token/auth persistence in `project-mobile`, or whenever a synchronous caller needs a value from an async-only native store.
+  - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/mobile-token-persistence-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
