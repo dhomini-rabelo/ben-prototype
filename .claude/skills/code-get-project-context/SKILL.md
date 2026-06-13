@@ -87,7 +87,7 @@ Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · Ass
 
 ### Stack
 
-Expo SDK 54 · React Native 0.81 · React 19 · Expo Router (file-based) · NativeWind v4 (Tailwind v3) · Zustand · Jotai · TanStack Query · axios · Firebase + `@react-native-google-signin/google-signin` (auth) · `expo-av` (audio) · `expo-secure-store` + AsyncStorage · `expo-notifications` · `react-native-reanimated` + `react-native-gesture-handler` · `lucide-react-native`
+Expo SDK 54 · React Native 0.81 · React 19 · Expo Router (file-based) · NativeWind v4 (Tailwind v3) · Zustand · Jotai · TanStack Query · axios · Firebase + `@react-native-google-signin/google-signin` (auth) · `expo-audio` (audio) · `expo-secure-store` + AsyncStorage · `expo-notifications` · `react-native-reanimated` + `react-native-gesture-handler` · `lucide-react-native`
 
 ---
 

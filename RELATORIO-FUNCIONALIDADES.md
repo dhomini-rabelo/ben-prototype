@@ -1,6 +1,6 @@
 # Relatório de Funcionalidades Testáveis — Ben Prototype
 
-> **Snapshot:** 2026-06-07 · branch `main`
+> **Snapshot:** 2026-06-13 · branch `main`
 >
 > Este documento é um **levantamento do que já está implementado e pode ser testado hoje** nos sistemas do `ben-prototype`, com o comportamento esperado de cada funcionalidade descrito em detalhe.
 >
@@ -10,15 +10,16 @@
 
 ## 1. Mapa dos sistemas
 
-O repositório tem três projetos. Apenas dois são executáveis e testáveis hoje:
+O repositório tem quatro projetos:
 
 | Projeto | Papel | Executável hoje? |
 | --- | --- | --- |
 | [project-backend/](project-backend/) | API Node.js (Express 5 + TypeScript) que serve o app | **Sim** — `npm run dev` |
 | [project-web/](project-web/) | Web app real do Ben (Vite + React 19) que consome a API | **Sim** — `npm run dev` |
+| [project-mobile/](project-mobile/) | App mobile do Ben (Expo + React Native), porte do `project-web`, consome a mesma API | **Sim** — `npm start` (`expo start`) |
 | [project-design/](project-design/) | Sandbox de design (galeria de telas estáticas) | Sim, mas é só protótipo visual — sem lógica de negócio |
 
-O **fluxo de ponta a ponta testável** é: `project-web` (porta **3001**) → `project-backend` (porta definida em `API_PORT`).
+O **fluxo de ponta a ponta testável** é: cliente (`project-web` na porta **3001**, ou `project-mobile` via Expo) → `project-backend` (porta definida em `API_PORT`). O `project-mobile` reaproveita as camadas agnósticas de plataforma do `project-web` (client/contratos da API, stores, hooks de query, máquina de estados de voz) e cobre os mesmos fluxos descritos nas seções 3–7 contra o mesmo backend; as diferenças são de apresentação e de integrações nativas (áudio, auth, storage, notificações locais).
 
 > **Importante para os testes:** o backend usa **repositórios em memória** ([project-backend/src/infra/http/repositories.ts](project-backend/src/infra/http/repositories.ts)). **Todos os dados (mensagens, capturas, tasks, tópicos) são perdidos a cada restart do servidor.** Não há MongoDB conectado ainda, apesar do modelo de dados descrito em [docs/data-model.md](docs/data-model.md).
 
@@ -55,7 +56,7 @@ Rodar (sobe na porta **3001**, exigida pelo CORS do backend):
 cd project-web && npm run dev
 ```
 
-> O CORS do backend libera apenas `http://localhost:3001` e `https://dev-dhomini.remktos.com` ([project-backend/src/infra/http/app.ts](project-backend/src/infra/http/app.ts)). Rodar o web em outra porta quebra as requisições.
+> O CORS do backend libera apenas `http://localhost:3001` (web), `http://localhost:8081` (Expo web do `project-mobile`) e `https://dev-dhomini.remktos.com` ([project-backend/src/infra/http/app.ts](project-backend/src/infra/http/app.ts)). Rodar o web em outra porta quebra as requisições.
 
 ---
 
@@ -383,7 +384,7 @@ Os documentos em [docs/api-endpoints.md](docs/api-endpoints.md) e [docs/data-mod
 3. **Detalhe de note/reminder só pelo menu:** os capture cards de note/reminder no chat não têm botão de ação (só tasks navegam). Para abrir o detalhe de uma nota/lembrete, use o **menu lateral** (seção 7).
 4. **Reminders não disparam** — o alarme é mockado; `remindAt`/`status` são apenas dados (status é derivado no presenter).
 5. **Dependência de chaves externas:** sem `OPENROUTER_API_KEY` (agente) e `ASSEMBLYAI_API_KEY` (transcrição), o chat e a voz não funcionam. `GOOGLE_GENERATIVE_AI_API_KEY` ainda é obrigatória para o boot, embora o modelo Gemini não seja usado nas rotas.
-6. **CORS restrito:** o web precisa rodar em `http://localhost:3001`.
+6. **CORS restrito:** o web precisa rodar em `http://localhost:3001` (o Expo web do `project-mobile` é liberado em `http://localhost:8081`).
 7. **Determinismo do agente:** como o Ben é um LLM, a classificação e as propostas de diff **variam entre execuções** — testes de conteúdo devem considerar essa variabilidade.
 
 ---
