@@ -26,7 +26,7 @@ export function ChatEmptyState() {
         </View>
       </View>
 
-      <View className="-mb-10 mt-8 flex-col gap-2 border-t border-surface-variant pt-4">
+      <View className="mt-8 flex-col gap-2 border-t border-surface-variant pt-4">
         <Typography
           variant="label-caps"
           className="ml-1 mb-1 text-on-surface-variant"

@@ -34,6 +34,7 @@ export function Chat() {
 
   const router = useRouter()
   const [footerHeight, setFooterHeight] = useState(0)
+  const [headerHeight, setHeaderHeight] = useState(0)
 
   useEffect(() => stopTyping, [stopTyping])
 
@@ -51,6 +52,10 @@ export function Chat() {
     setFooterHeight(event.nativeEvent.layout.height)
   }
 
+  function handleHeaderLayout(event: LayoutChangeEvent) {
+    setHeaderHeight(event.nativeEvent.layout.height)
+  }
+
   const isRecording = voiceStatus === 'recording'
   const hasVoiceBubble =
     voiceStatus === 'transcribing' || voiceStatus === 'error'
@@ -58,7 +63,10 @@ export function Chat() {
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-surface">
       <View className="flex-1">
-        <View className="absolute inset-x-0 top-0 z-50 bg-surface">
+        <View
+          onLayout={handleHeaderLayout}
+          className="absolute inset-x-0 top-0 z-50 bg-surface"
+        >
           <ChatTopBar onOpenMenu={() => router.push(ROUTES.menu)} />
           <ChatTopBanner />
         </View>
@@ -67,7 +75,15 @@ export function Chat() {
           {historyState.isLoading ? (
             <ChatHistorySkeleton />
           ) : historyState.isEmpty && !hasVoiceBubble ? (
-            <ChatEmptyState />
+            <View
+              className="flex-1 px-4"
+              style={{
+                paddingTop: headerHeight,
+                paddingBottom: footerHeight + FOOTER_GAP,
+              }}
+            >
+              <ChatEmptyState />
+            </View>
           ) : (
             <ChatHistory
               listRef={listRef}
