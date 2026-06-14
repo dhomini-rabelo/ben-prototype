@@ -2,7 +2,11 @@ import { useCapturesCountsData } from '@/layout/hooks/api/use-captures-counts-da
 import { useMenuStore } from '@/layout/stores/menu-store'
 import { MenuSidebar } from './menu-sidebar'
 
-export function MenuSidebarView() {
+type MenuSidebarViewProps = {
+  onClose?: () => void
+}
+
+export function MenuSidebarView({ onClose }: MenuSidebarViewProps) {
   const selectEntry = useMenuStore((store) => store.selectEntry)
   const { state } = useCapturesCountsData()
 
@@ -21,6 +25,11 @@ export function MenuSidebarView() {
     : undefined
 
   return (
-    <MenuSidebar variant={variant} counts={counts} onSelect={selectEntry} />
+    <MenuSidebar
+      variant={variant}
+      counts={counts}
+      onSelect={selectEntry}
+      onClose={onClose}
+    />
   )
 }

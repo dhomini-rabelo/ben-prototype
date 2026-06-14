@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router'
 import { useEffect } from 'react'
 import { View } from 'react-native'
 import { MenuSidebarView } from '@/layout/components/menu/menu-sidebar-view'
@@ -11,6 +12,7 @@ import { MenuTasksView } from '@/layout/components/menu-tasks/menu-tasks-view'
 import { useMenuStore } from '@/layout/stores/menu-store'
 
 export function Menu() {
+  const router = useRouter()
   const view = useMenuStore((store) => store.view)
   const detailTarget = useMenuStore((store) => store.detailTarget)
   const isSettingsOpen = useMenuStore((store) => store.isSettingsOpen)
@@ -22,7 +24,7 @@ export function Menu() {
 
   return (
     <View className="flex-1 bg-surface-container-lowest">
-      {view === 'menu' && <MenuSidebarView />}
+      {view === 'menu' && <MenuSidebarView onClose={() => router.back()} />}
       {view === 'tasks' && <MenuTasksView />}
       {view === 'notes' && <MenuNotesView />}
       {view === 'reminders' && <MenuRemindersView />}

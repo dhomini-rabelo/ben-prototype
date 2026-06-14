@@ -1,10 +1,11 @@
-import { Bell, ListTodo, NotebookPen, Settings } from 'lucide-react-native'
+import { Bell, ListTodo, NotebookPen, Settings, X } from 'lucide-react-native'
 import type { ComponentType } from 'react'
 import { Pressable, View } from 'react-native'
 import { BrandMark } from '@/layout/components/brand-mark'
+import { IconButton } from '@/layout/components/ui/icon-button'
 import { Typography } from '@/layout/components/ui/typography'
 import type { MenuEntryId } from '@/layout/stores/menu-store'
-import { onSurfaceVariant } from '@/layout/utils/colors'
+import { onSurfaceVariant, primary } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 import { CountBadge, type CountValue } from './menu-sidebar-count-badge'
 
@@ -15,6 +16,7 @@ type MenuSidebarProps = {
   counts?: Partial<Record<MenuEntryId, CountValue>>
   className?: string
   onSelect?: (id: MenuEntryId) => void
+  onClose?: () => void
 }
 
 const ENTRIES: {
@@ -39,6 +41,7 @@ export function MenuSidebar({
   counts,
   className,
   onSelect,
+  onClose,
 }: MenuSidebarProps) {
   const effectiveCounts: Partial<Record<MenuEntryId, CountValue>> =
     variant === 'loading'
@@ -54,8 +57,15 @@ export function MenuSidebar({
         className,
       )}
     >
-      <View className="h-16 flex-row items-center px-5">
-        <BrandMark logoWidth={24} logoHeight={19} />
+      <View className="h-16 flex-row items-center justify-between px-3">
+        <View className="pl-2">
+          <BrandMark logoWidth={24} logoHeight={19} />
+        </View>
+        {onClose && (
+          <IconButton label="Close menu" onPress={onClose}>
+            <X size={24} color={primary} />
+          </IconButton>
+        )}
       </View>
 
       <View className="px-2 pt-2">
