@@ -21,12 +21,12 @@ verify the running app by driving a real browser with the Playwright MCP tools.
    `http://localhost:8081`. This is the Expo web dev server for `project-mobile`
    (the active development focus). Every navigation starts from this base URL —
    never assume any other port or host unless the user explicitly overrides it.
-2. **Always use a mobile phone screen size.** The browser is launched with
-   iPhone emulation (390×844 logical viewport, touch enabled, mobile user agent)
-   via the `--device=iPhone 13` flag on the Playwright MCP server. You do not
-   need to resize the window — it already opens at phone dimensions. Do **not**
-   switch to a desktop viewport; if a test requires a different mobile size, use
-   the browser resize tool to another phone-sized viewport and state why.
+2. **Always use a mobile phone screen size — default 390×844.** The browser does
+   **not** open at phone dimensions automatically — right after navigating, use
+   the browser resize tool to set the default **390×844 (iPhone)** viewport
+   before interacting or taking any screenshot. Never test or capture at a
+   desktop viewport; if a test requires a different mobile size, resize to
+   another phone-sized viewport and state why.
 
 ## Saving screenshots (WSL + Windows Playwright)
 
