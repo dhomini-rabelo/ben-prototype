@@ -12,6 +12,7 @@ import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { useAuthBootstrap } from '@/core/auth-bootstrap'
 import { queryClient } from '@/core/query-client'
 import '@/core/global.css'
 
@@ -25,14 +26,17 @@ export default function RootLayout() {
     HankenGrotesk_700Bold,
     JetBrainsMono_400Regular,
   })
+  const { isReady } = useAuthBootstrap()
+
+  const isAppReady = fontsLoaded && isReady
 
   useEffect(() => {
-    if (fontsLoaded) {
+    if (isAppReady) {
       SplashScreen.hideAsync()
     }
-  }, [fontsLoaded])
+  }, [isAppReady])
 
-  if (!fontsLoaded) {
+  if (!isAppReady) {
     return null
   }
 

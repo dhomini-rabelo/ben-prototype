@@ -73,6 +73,15 @@ lands somewhere the caller can actually read:
   for browser testing). Flows you may be asked to test include Google login,
   chat with the Ben agent, the task workspace, and the navigation menu
   (tasks/notes/reminders with detail + settings).
+- **Auth auto-redirect:** when a user is already logged in (a valid token is
+  persisted), opening the app entry point (`/`, the login route) must
+  **automatically redirect to the chat page** (`/chat`) instead of showing the
+  login screen. The token is hydrated from secure storage into memory at app
+  startup (root layout bootstrap) before any route decides, so this redirect
+  works on a cold start / page reload too, not only right after signing in. When
+  testing this: sign in (or have a session), then navigate to the base URL `/`
+  and reload — you should land on `/chat`, never back on the login screen. A
+  logged-out user (no token) should still see the login screen at `/`.
 - Stay focused on testing and reporting. Do not modify application source code —
   if you find a bug, report it with clear reproduction steps for the caller to
   fix.
