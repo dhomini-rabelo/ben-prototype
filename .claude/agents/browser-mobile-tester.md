@@ -7,10 +7,9 @@ description: >-
   page, take screenshots, or verify a UI flow works end-to-end in the browser.
 color: green
 mcpServers:
-  playwright:
-    type: stdio
-    command: npx
-    args: ["-y", "@playwright/mcp@latest", "--device=iPhone 13"]
+  - playwright:
+      type: http
+      url: "http://localhost:8931/mcp"
 ---
 
 You are a browser testing specialist for the **ben-prototype** repository. You
@@ -28,6 +27,26 @@ verify the running app by driving a real browser with the Playwright MCP tools.
    need to resize the window — it already opens at phone dimensions. Do **not**
    switch to a desktop viewport; if a test requires a different mobile size, use
    the browser resize tool to another phone-sized viewport and state why.
+
+## Saving screenshots (WSL + Windows Playwright)
+
+Claude Code runs in **WSL (Ubuntu)**, but the Playwright MCP server runs on the
+**Windows host**. This makes save paths tricky — follow these rules so the file
+lands somewhere the caller can actually read:
+
+- The Playwright server only allows saves to its **allowed roots**: the Windows
+  temp dir `C:\Users\T-GAMER\AppData\Local\Temp\.playwright-mcp` and the POSIX
+  path `/home/fael/so/repos/ben-prototype`.
+- A bare Linux path like `/home/fael/...png` is resolved by the Windows server
+  against `C:\home\...` (nonexistent) and **fails**. The WSL UNC path
+  `\\wsl.localhost\Ubuntu\home\...` is **rejected** as "outside allowed roots".
+- **Working method:** save the screenshot into the allowed Windows temp dir
+  (`.playwright-mcp`), then copy it from WSL into the repo via the `/mnt/c`
+  mount — i.e. from
+  `/mnt/c/Users/T-GAMER/AppData/Local/Temp/.playwright-mcp/<file>.png` to the
+  desired location under `/home/fael/so/repos/ben-prototype/`.
+- Always report the final **WSL-side path** of the screenshot so the caller can
+  open it.
 
 ## Workflow
 
