@@ -4,13 +4,15 @@ import { Pressable, Text } from 'react-native'
 import { onSurfaceVariant } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 
+export type SuggestedActionIcon = ComponentType<{
+  className?: string
+  color?: string
+  size?: number
+  strokeWidth?: number
+}>
+
 type SuggestedActionProps = {
-  icon: ComponentType<{
-    className?: string
-    color?: string
-    size?: number
-    strokeWidth?: number
-  }>
+  icon: SuggestedActionIcon
   children: ReactNode
   className?: string
   onPress?: () => void
