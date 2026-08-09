@@ -81,6 +81,16 @@ When writing code, it's important to follow established coding patterns to ensur
 - When to Use: Whenever you render an icon (`lucide-react-native` / `react-native-svg`) in `project-mobile` — NativeWind `text-*`/`size-*` classNames do not propagate to icons, so pass explicit `color`/`size` props sourced from the shared `@/layout/utils/colors` theme-hex module.
 - Coding pattern: [Mobile icon colors](./coding-patterns/mobile-icon-colors.md)
 
+##### Keyboard-Aware Absolute Footer
+
+- When to Use: Whenever you have an absolutely-positioned input footer in `project-mobile` that must lift above the keyboard — track keyboard height with a `Keyboard` hook instead of `KeyboardAvoidingView`, subtract the safe-area bottom inset, and apply the offset to both the footer and the scroll content inset.
+- Coding pattern: [Keyboard-aware absolute footer](./coding-patterns/keyboard-aware-absolute-footer.md)
+
+##### Mobile Bottom Sheet Overlay
+
+- When to Use: Whenever you build a slide-up bottom sheet in `project-mobile` — a single reusable transparent `Modal` + Reanimated `withTiming` overlay with a dimmed `bg-inverse-surface/30` scrim and tap-to-dismiss, rather than duplicated inline absolute blocks.
+- Coding pattern: [Mobile bottom sheet overlay](./coding-patterns/mobile-bottom-sheet-overlay.md)
+
 #### Backend Patterns
 
 ##### Back-end Code Preferences

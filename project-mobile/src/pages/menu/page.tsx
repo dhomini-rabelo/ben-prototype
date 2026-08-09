@@ -7,6 +7,7 @@ import { NoteDetail } from '@/layout/components/menu-detail/note-detail'
 import { ReminderDetail } from '@/layout/components/menu-detail/reminder-detail'
 import { MenuNotesView } from '@/layout/components/menu-notes/menu-notes-view'
 import { MenuRemindersView } from '@/layout/components/menu-reminders/menu-reminders-view'
+import { SettingsSheetOverlay } from '@/layout/components/menu-settings/settings-sheet-overlay'
 import { SettingsView } from '@/layout/components/menu-settings/settings-view'
 import { MenuTasksView } from '@/layout/components/menu-tasks/menu-tasks-view'
 import { useMenuStore } from '@/layout/stores/menu-store'
@@ -29,8 +30,8 @@ export function Menu() {
       {view === 'notes' && <MenuNotesView />}
       {view === 'reminders' && <MenuRemindersView />}
 
-      {detailTarget && (
-        <View className="absolute inset-x-0 bottom-0">
+      <SettingsSheetOverlay isOpen={detailTarget != null} onClose={closeDetail}>
+        {detailTarget && (
           <MenuSheet>
             {detailTarget.kind === 'note' ? (
               <NoteDetail noteId={detailTarget.id} onClose={closeDetail} />
@@ -41,14 +42,12 @@ export function Menu() {
               />
             )}
           </MenuSheet>
-        </View>
-      )}
+        )}
+      </SettingsSheetOverlay>
 
-      {isSettingsOpen && (
-        <View className="absolute inset-x-0 bottom-0">
-          <SettingsView onClose={closeSettings} />
-        </View>
-      )}
+      <SettingsSheetOverlay isOpen={isSettingsOpen} onClose={closeSettings}>
+        {isSettingsOpen && <SettingsView onClose={closeSettings} />}
+      </SettingsSheetOverlay>
     </View>
   )
 }

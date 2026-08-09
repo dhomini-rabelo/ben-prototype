@@ -6,6 +6,7 @@ import { RecordingBar } from '@/layout/components/recording-bar'
 import { IconButton } from '@/layout/components/ui/icon-button'
 import { useCanRecord } from '@/layout/hooks/use-can-record'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
+import { onPrimary } from '@/layout/utils/colors'
 import { useChatInput } from '@/pages/chat/hooks/use-chat-input'
 import { useChatMessages } from '@/pages/chat/hooks/use-chat-messages'
 
@@ -41,7 +42,7 @@ function ChatFooterComponent({ onStartRecording }: ChatFooterProps) {
             onPress={isDisabled ? undefined : handleSend}
             className="ml-2 bg-primary"
           >
-            <Send size={20} className="text-on-primary" />
+            <Send size={20} color={onPrimary} />
           </IconButton>
         ) : (
           <IconButton
@@ -49,7 +50,7 @@ function ChatFooterComponent({ onStartRecording }: ChatFooterProps) {
             onPress={canRecord ? onStartRecording : undefined}
             className={`ml-2 bg-primary ${canRecord ? '' : 'opacity-60'}`}
           >
-            <Mic size={20} className="text-on-primary" />
+            <Mic size={20} color={onPrimary} />
           </IconButton>
         )}
       </View>

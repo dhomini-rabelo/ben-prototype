@@ -14,6 +14,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useAuthBootstrap } from '@/core/auth-bootstrap'
 import { queryClient } from '@/core/query-client'
+import { hideAndroidNavigationBar } from '@/services/system-ui-service'
 import '@/core/global.css'
 
 SplashScreen.preventAutoHideAsync()
@@ -29,6 +30,10 @@ export default function RootLayout() {
   const { isReady } = useAuthBootstrap()
 
   const isAppReady = fontsLoaded && isReady
+
+  useEffect(() => {
+    void hideAndroidNavigationBar()
+  }, [])
 
   useEffect(() => {
     if (isAppReady) {

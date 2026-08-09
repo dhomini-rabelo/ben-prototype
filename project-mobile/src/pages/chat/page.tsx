@@ -1,11 +1,6 @@
 import { useFocusEffect, useRouter } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
-import {
-  KeyboardAvoidingView,
-  Platform,
-  View,
-  type LayoutChangeEvent,
-} from 'react-native'
+import { View, type LayoutChangeEvent } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ROUTES } from '@/core/routes'
 import { useConnectivity } from '@/layout/hooks/use-connectivity'
@@ -18,6 +13,7 @@ import { ChatTopBanner } from '@/pages/chat/components/chat-top-banner/chat-top-
 import { ChatTopBar } from '@/pages/chat/components/chat-top-bar/chat-top-bar'
 import { ActiveTaskPicker } from '@/pages/chat/components/task-picker/active-task-picker'
 import { useChatMessages } from '@/pages/chat/hooks/use-chat-messages'
+import { useKeyboardHeight } from '@/pages/chat/hooks/use-keyboard-height'
 import { useScrollToBottom } from '@/pages/chat/hooks/use-scroll-to-bottom'
 import { useMessagesStore } from '@/pages/chat/stores/messages-store'
 
@@ -31,6 +27,7 @@ export function Chat() {
   useConnectivity()
 
   const { listRef } = useScrollToBottom({ messages, isAwaitingReply })
+  const { keyboardOffset } = useKeyboardHeight()
 
   const router = useRouter()
   const [footerHeight, setFooterHeight] = useState(0)
@@ -79,7 +76,7 @@ export function Chat() {
               className="flex-1 px-4"
               style={{
                 paddingTop: headerHeight,
-                paddingBottom: footerHeight + FOOTER_GAP,
+                paddingBottom: footerHeight + FOOTER_GAP + keyboardOffset,
               }}
             >
               <ChatEmptyState />
@@ -87,14 +84,14 @@ export function Chat() {
           ) : (
             <ChatHistory
               listRef={listRef}
-              bottomInset={footerHeight + FOOTER_GAP}
+              bottomInset={footerHeight + FOOTER_GAP + keyboardOffset}
             />
           )}
         </View>
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        <View
           className="absolute inset-x-0 bottom-0 z-50"
+          style={{ bottom: keyboardOffset }}
         >
           <View
             onLayout={handleFooterLayout}
@@ -105,7 +102,7 @@ export function Chat() {
               onStartRecording={() => useVoiceStore.getState().startRecording()}
             />
           </View>
-        </KeyboardAvoidingView>
+        </View>
       </View>
     </SafeAreaView>
   )

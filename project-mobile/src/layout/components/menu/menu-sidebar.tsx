@@ -1,6 +1,7 @@
 import { Bell, ListTodo, NotebookPen, Settings, X } from 'lucide-react-native'
 import type { ComponentType } from 'react'
 import { Pressable, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BrandMark } from '@/layout/components/brand-mark'
 import { IconButton } from '@/layout/components/ui/icon-button'
 import { Typography } from '@/layout/components/ui/typography'
@@ -43,6 +44,8 @@ export function MenuSidebar({
   onSelect,
   onClose,
 }: MenuSidebarProps) {
+  const insets = useSafeAreaInsets()
+
   const effectiveCounts: Partial<Record<MenuEntryId, CountValue>> =
     variant === 'loading'
       ? { tasks: 'skeleton', notes: 'skeleton', reminders: 'skeleton' }
@@ -52,6 +55,7 @@ export function MenuSidebar({
 
   return (
     <View
+      style={{ paddingTop: insets.top }}
       className={cn(
         'h-full w-full bg-surface-container-lowest shadow-[8px_0_32px_rgba(0,0,0,0.08)]',
         className,

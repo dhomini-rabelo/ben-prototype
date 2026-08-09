@@ -39,3 +39,35 @@ import { request{Capability}Permission, {operation} } from '@/services/{capabili
 ```
 
 This keeps every native dependency swappable and testable from a single file, and prevents SDK calls from leaking across the codebase. If a screen or store needs a native capability, add or extend the matching service module rather than importing the SDK inline.
+
+## Platform file variants
+
+When a service wraps an Android/native-only capability, the native SDK must never reach the web bundle. Split the module into two siblings that export the **same function signatures**, and let Metro pick the right one per platform.
+
+```
+src/
+└── services/
+    ├── {capability}-service.ts       # native (Android/iOS) implementation
+    └── {capability}-service.web.ts   # web no-op sibling, same exports
+```
+
+- Metro resolves `.web.ts` for the web bundle and `.ts` for native automatically. Callers import the **single** path `@/services/{capability}-service` and never branch on platform at the call site.
+- The `.web.ts` variant exports the same functions as no-ops, preserving return types so consumers stay type-safe.
+
+```ts
+// {capability}-service.ts (native)
+import * as Capability from 'expo-{capability}'
+import { Platform } from 'react-native'
+
+export async function {operation}(payload: Payload): Promise<void> {
+  if (Platform.OS !== 'android') return
+  await Capability.{operation}(payload)
+}
+```
+
+```ts
+// {capability}-service.web.ts (no-op sibling)
+export async function {operation}(_payload: Payload): Promise<void> {}
+```
+
+Inside the native variant, still guard platform-specific work with `Platform.OS` and return early as a safe no-op when the capability is not available on the current native platform. This keeps a single, branch-free call site while ensuring the native SDK is excluded from the web build entirely.
