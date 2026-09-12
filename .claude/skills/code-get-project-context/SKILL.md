@@ -110,17 +110,15 @@ Expo SDK 54 · React Native 0.81 · React 19 · Expo Router (file-based) · Nati
 These are the canonical brief for Ben. Open the relevant one before deciding; do not rely on memory of what is "Ben-like."
 
 - [`.claude/agents-docs/design-advisor/design.md`](../../agents-docs/design-advisor/design.md) — the **design system source of truth**: full color palette, typography scale, rounded/spacing tokens, brand voice ("Modern and Human", "Linear-adjacent" precision softened with warmth), layout philosophy (Fixed and Centered, max 480px, strict 8px grid), elevation strategy (tonal layers, no heavy shadows), and component descriptions (primary button, inline error bands, optimistic capture cards, composer with press-and-hold mic, ledger peek, quiet loading states). The frontmatter tokens here are what got ported into [`global.css`](../../../project-design/src/core/global.css). When adding a new token, mirror it here first.
-- [`docs/prd-to-ux/2026-05-23-ben-prototype/01b-ux-philosophy.md`](../../../docs/prd-to-ux/2026-05-23-ben-prototype/01b-ux-philosophy.md) — the **organizing metaphor**: "Chat with a Live Ledger." Single chat surface plus a persistent glanceable ledger drawer with three tabs (Reminders / Tasks / Notes), peek strip showing "Up next: {title} in 2h". Maps every PRD feature to UI. Use this to decide *where a feature goes* on screen.
-- [`docs/prd-to-ux/2026-05-23-ben-prototype/03-design-direction.md`](../../../docs/prd-to-ux/2026-05-23-ben-prototype/03-design-direction.md) — **mood, tone, and the hard color guardrail**. Friend-tone copy, modern but human, never bubbly or clinical. Ben is *not* monochrome and *not* Linear's blue: the palette is **vivid-but-adult** (considered greens, warm corals, deep ambers, friendly purples). Must-have affordances: dominant press-and-hold mic, **optimistic capture cards with no spinner between speech-end and confirmation**, always-visible ledger peek that does not collapse on scroll.
-- [`docs/prd-to-ux/2026-05-23-ben-prototype/04-screen-prompts/`](../../../docs/prd-to-ux/2026-05-23-ben-prototype/04-screen-prompts/) — one file per page (`01-sign-in.md`, `02-chat-surface.md`, `03-inline-capture-cards.md`, `04-task-workspaces.md`, `05-menu-sidebar.md`), each describing that page's states. This is where the state list for a screen comes from.
+- [`.claude/agents-docs/project-context/ux-philosophy.md`](../../agents-docs/project-context/ux-philosophy.md) — the **organizing metaphor**: "Chat with a Live Ledger." Single chat surface plus a persistent glanceable ledger drawer with three tabs (Reminders / Tasks / Notes), peek strip showing "Up next: {title} in 2h". Maps every PRD feature to UI. Use this to decide *where a feature goes* on screen.
+- [`.claude/agents-docs/project-context/design-direction.md`](../../agents-docs/project-context/design-direction.md) — **mood, tone, and the hard color guardrail**. Friend-tone copy, modern but human, never bubbly or clinical. Ben is *not* monochrome and *not* Linear's blue: the palette is **vivid-but-adult** (considered greens, warm corals, deep ambers, friendly purples). Must-have affordances: dominant press-and-hold mic, **optimistic capture cards with no spinner between speech-end and confirmation**, always-visible ledger peek that does not collapse on scroll.
+- [`project-design/src/core/screens.ts`](../../../project-design/src/core/screens.ts) — the **live registry of every screen page and its states** (`PAGES`) and every reusable UI primitive (`COMPONENTS`), used to render the Design Gallery. This is where the state list for a screen comes from.
 
 ### Technical reference
 
-- [`docs/data-model.md`](../../../docs/data-model.md) — domain data model for Ben.
-- [`docs/api-endpoints.md`](../../../docs/api-endpoints.md) — backend API endpoint reference.
-- [`docs/assemblyai-transcription.md`](../../../docs/assemblyai-transcription.md) — the AssemblyAI audio transcription integration.
-- [`docs/vercel-ai-sdk.md`](../../../docs/vercel-ai-sdk.md) — the Vercel AI SDK + Gemini agent integration.
-- [`docs/google-auth.md`](../../../docs/google-auth.md) — the Google/Firebase authentication flow.
+- [`project-backend/src/infra/http/routes/`](../../../project-backend/src/infra/http/routes/) — the real backend API endpoints, grouped by resource (`auth/`, `messages/`, `captures/`, `notes/`, `reminders/`, `tasks/`, plus `chat.ts` and `transcription.ts`).
+- [`project-backend/src/domain/entities/`](../../../project-backend/src/domain/entities/) — the real domain entities (`user`, `message`, `topic`, `topic-summary`, and the capture entities `note`, `reminder`, `task`).
+- [`.claude/agents-docs/project-context/assemblyai-transcription.md`](../../agents-docs/project-context/assemblyai-transcription.md) — the AssemblyAI audio transcription integration.
 
 ---
 
@@ -148,7 +146,7 @@ These are specific to `project-design`. A "screen" in Ben is a *page* with one o
 
 ### Add a screen state
 
-1. Create `project-design/src/pages/app/<page>-<state>.tsx` exporting a named PascalCase React component (e.g. `ChatRecording`). The filename pattern is `<page>-<state>.tsx`; the route mirrors it at `/app/<page>-<state>`. The state list for a page comes from its file in [`04-screen-prompts/`](../../../docs/prd-to-ux/2026-05-23-ben-prototype/04-screen-prompts/).
+1. Create `project-design/src/pages/app/<page>-<state>.tsx` exporting a named PascalCase React component (e.g. `ChatRecording`). The filename pattern is `<page>-<state>.tsx`; the route mirrors it at `/app/<page>-<state>`. The state list for a page comes from its entry in [`screens.ts`](../../../project-design/src/core/screens.ts).
 2. Register the route in [`main.tsx`](../../../project-design/src/core/main.tsx) at `/app/<page>-<state>`.
 3. Add it to `PAGES` in [`screens.ts`](../../../project-design/src/core/screens.ts):
    - Page already exists: push into its `states` array — `{ id: "<state>", title: "<State>", file: "/app/<page>-<state>" }`.

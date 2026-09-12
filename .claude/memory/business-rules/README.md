@@ -6,4 +6,4 @@ Não mora aqui: a ordem de como o agente escreve código, que vai para [`rules/`
 
 ## Entries
 
-_Nenhuma entrada ainda._
+- [Razão de negócio do Ben e casos de uso do v1](./razao-de-negocio-e-casos-de-uso-v1.md) — abra antes de decidir o que Ben deve fazer ou para quem; sem isso dá pra achar que lembrete recorrente é v1, ou perder de vista que o único usuário validado é o fundador em dogfooding.
