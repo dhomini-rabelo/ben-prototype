@@ -6,6 +6,7 @@
 
 ### When performing any task
 
+- **Check the memory** in [`.claude/memory/`](.claude/memory/README.md) before planning or executing a task. It holds what you cannot deduce from the code: environment requirements, business rules, past decisions and their why, standing rules, user preferences, past failures, and project vocabulary. The root `README.md` indexes the categories and each category indexes its entries. Open only the ones your task touches. To record anything there, use the `save-memory` skill.
 - **NO GUESSING**: Do not assume workflows, file names, variable names, or business logic if they are not explicitly provided or found via search.
 - **Intent Check**: If the user asks to execute Action A, but the context or logic suggests the objective is actually B (or if Action A seems counter-intuitive or confusing), use `AskUserQuestion` to clarify intent. Ask explicitly: "You asked for [A], but that seems unusual in this context. Is your actual goal [B]? Would you prefer I execute [B] instead?"
 - Use the `AskUserQuestion` tool whenever ambiguity arises. Do not try to solve ambiguity by yourself. Examples of when to ask:
