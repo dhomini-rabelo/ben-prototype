@@ -1,6 +1,6 @@
 ---
 name: code-get-project-context
-description: Gives the AI a quick, accurate picture of what the ben-prototype repository is, how its four sub-projects are organized, and the design rules every Ben screen follows. Use at the start of any task so you never have to guess the project's purpose, structure, conventions, or design system.
+description: Gives the AI a quick, accurate picture of what the ben-prototype repository is, how its three sub-projects are organized, and the design rules every Ben screen follows. Use at the start of any task so you never have to guess the project's purpose, structure, conventions, or design system.
 ---
 
 # Ben Prototype — Quick Project Context
@@ -11,14 +11,13 @@ description: Gives the AI a quick, accurate picture of what the ben-prototype re
 
 The `ben-prototype` repository is the **v1 prototyping workspace** for this app. It is not a production codebase. Its purpose is to design, iterate, and validate Ben's screens and interactions before the real product is built.
 
-The repo contains four separate projects:
+The repo contains three separate projects:
 
 - [`project-design/`](../../../project-design/) — Design sandbox and gallery (Vite + React + Tailwind v4) — **where a screen is drawn and reviewed before it is implemented**
-- [`project-mobile/`](../../../project-mobile/) — Mobile implementation of Ben (Expo + React Native), ported from `project-web` — **the active development focus**
-- [`project-web/`](../../../project-web/) — Web implementation of Ben (Vite + React + Tailwind v4) — now a **reference/frozen** baseline, expected to drift out of date
+- [`project-mobile/`](../../../project-mobile/) — Mobile implementation of Ben (Expo + React Native) — **the active development focus**
 - [`project-backend/`](../../../project-backend/) — Node.js backend for Ben (Express 5 + TypeScript + Zod)
 
-> **Where work happens now:** feature work lands in **`project-mobile`** (and `project-backend` when the API needs to change). `project-design` stays in the loop as the step *before* implementation: a change is drawn there first so it can be seen without paying the cost of building it. `project-web` is the original reference implementation the mobile port was derived from and is **no longer actively maintained**, so expect it to gradually fall behind mobile. The shared `project-backend` API still serves both clients.
+> **Where work happens now:** feature work lands in **`project-mobile`** (and `project-backend` when the API needs to change). `project-design` stays in the loop as the step *before* implementation: a change is drawn there first so it can be seen without paying the cost of building it. The shared `project-backend` API serves the mobile client.
 
 ---
 
@@ -45,23 +44,6 @@ To add a screen state or a primitive here, follow [Design Gallery workflows](#de
 
 ---
 
-## project-web
-
-> **Status: reference / frozen.** This was the first real implementation of Ben and the source the mobile port was derived from. Active development has since moved to [`project-mobile`](#project-mobile), so `project-web` is **no longer actively maintained** and is expected to drift out of date relative to mobile. Treat it as the original reference for behavior and API usage, not as the place to add new features (unless the user explicitly asks to change the web app).
-
-**Purpose:** The original web implementation of Ben — routing and Google/Firebase authentication are wired up, and it consumes the `project-backend` API to drive working feature screens, including a working chat experience with the Ben agent, a collaborative task workspace, and a navigation menu for browsing captured tasks, notes, and reminders (with item detail and settings).
-
-### Key directories
-
-- `src/api/` — Backend API client layer: HTTP client, route definitions, request/response contracts, and models
-- `src/pages/` — Feature screens (one folder per page, each with its own `components/` and `hooks/`)
-- `src/layout/` — Shared UI primitives and cross-page hooks (e.g. API request / pagination hooks)
-- `src/core/` — App wiring: router, entry point
-
-It shares the same stack as `project-design` but is a completely separate project (with Firebase added for auth). New feature work no longer lands here — it now targets `project-mobile`.
-
----
-
 ## project-backend
 
 **Purpose:** The Node.js API server for Ben.
@@ -83,18 +65,18 @@ Node.js · Express 5 · TypeScript · Zod · Firebase Admin (auth) · JWT · Ass
 
 ## project-mobile
 
-> **Status: active development focus.** This is where new features and changes now land. It started as a port of `project-web`, but going forward mobile and web will diverge — mobile moves ahead while web stays frozen as the reference baseline.
+> **Status: active development focus.** This is where new features and changes land.
 
-**Purpose:** The mobile implementation of Ben — a React Native (Expo) port of `project-web`. It reuses the platform-agnostic layers (API client/contracts, Zustand/Jotai state, React Query hooks, the voice state machine, design tokens) and re-implements the presentation and platform-specific pieces (UI primitives, navigation, audio, auth, storage) natively. It consumes the same `project-backend` API and covers the same flows: Google auth, chat with the Ben agent, the task workspace, and the navigation menu (tasks/notes/reminders with detail + settings), plus local notifications for reminders.
+**Purpose:** The mobile implementation of Ben — a React Native (Expo) app. It layers platform-agnostic pieces (API client/contracts, Zustand/Jotai state, React Query hooks, the voice state machine, design tokens) with native presentation and platform-specific pieces (UI primitives, navigation, audio, auth, storage). It consumes the `project-backend` API and covers: Google auth, chat with the Ben agent, the task workspace, and the navigation menu (tasks/notes/reminders with detail + settings), plus local notifications for reminders.
 
 ### Key directories
 
 - `app/` — Expo Router file-based routes (`index` login, `(protected)/` group with `chat`, `tasks/[taskId]`, `menu`, plus the auth-guard `_layout`)
-- `src/api/` — Backend API client layer (ported from web; client rewritten for native token handling and `FormData`)
+- `src/api/` — Backend API client layer, built for native token handling and `FormData`
 - `src/pages/` — Feature screens (`login`, `chat`, `task-workspace`, `menu`), each with its own `components/`, `hooks/`, `stores/`
 - `src/layout/` — Shared UI primitives, composite components, cross-page hooks, global stores, and utils
 - `src/storage/` — Native persistence: `expo-secure-store` (token, with in-memory sync cache) + AsyncStorage (user)
-- `src/services/` — Platform-integration boundary (e.g. `notifications-service.ts`, the sole importer of `expo-notifications`); a convention new to mobile (not present in `project-web`)
+- `src/services/` — Platform-integration boundary (e.g. `notifications-service.ts`, the sole importer of `expo-notifications`)
 - `src/core/` — App wiring: env, query client, routes, Firebase, auth bootstrap
 
 ### Stack
@@ -126,7 +108,7 @@ These are the canonical brief for Ben. Open the relevant one before deciding; do
 
 These apply to every Ben screen, in `project-design` and `project-mobile` alike.
 
-- **Use theme tokens over arbitrary values** when a token exists. Font-size tokens: `wordmark`, `tagline`, `headline-lg`, `body-md`, `button`, `label-caps`. They live in [`global.css`](../../../project-design/src/core/global.css) (design/web) and in [`typography.tsx`](../../../project-mobile/src/layout/components/ui/typography.tsx) + [`tailwind.config.js`](../../../project-mobile/tailwind.config.js) (mobile).
+- **Use theme tokens over arbitrary values** when a token exists. Font-size tokens: `wordmark`, `tagline`, `headline-lg`, `body-md`, `button`, `label-caps`. They live in [`global.css`](../../../project-design/src/core/global.css) (design) and in [`typography.tsx`](../../../project-mobile/src/layout/components/ui/typography.tsx) + [`tailwind.config.js`](../../../project-mobile/tailwind.config.js) (mobile).
 - **Reusable primitives stay generic.** No baked-in `w-full`, `max-w-*`, or page-specific spacing. Apply those at the call site via `className`.
 - **Anchor chat messages to the composer.** Messages and capture cards sit just above the chat input, not floating at the top of the viewport. A tall empty gap between the last bubble and the mic reads as dead air, especially in short exchanges like inline captures.
 - **`ActiveTaskPeek` placement.**

@@ -1,6 +1,6 @@
-# Web API Client Structure
+# API Client Structure
 
-How the `project-web` backend API layer under `src/api/` is organized. **All file and folder names use kebab-case**; only exported identifiers follow their own casing.
+How the `project-mobile` backend API layer under `src/api/` is organized. **All file and folder names use kebab-case**; only exported identifiers follow their own casing.
 
 ## Folder layout
 

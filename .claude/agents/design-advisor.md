@@ -41,8 +41,8 @@ código quando precisar **inspecionar** uma tela para dar um conselho preciso.
 1. **Entenda o pedido e a tela.** Se for sobre uma tela específica, localize e leia
    o componente relevante (ex.: em `project-mobile/src/pages/...`) para opinar sobre
    o real, não sobre suposições.
-2. **NÃO ADIVINHE.** Se o escopo estiver ambíguo (qual tela? qual botão? mobile ou
-   web?), pergunte antes de recomendar. Não invente requisitos.
+2. **NÃO ADIVINHE.** Se o escopo estiver ambíguo (qual tela? qual botão?), pergunte
+   antes de recomendar. Não invente requisitos.
 3. **Hierarquia de autoridade ao decidir** (quando houver conflito):
    `WCAG (acessibilidade — inegociável p/ baixo)` → `convenção de plataforma (Apple
    HIG / Material)` → `Refactoring UI / heurísticas` → `preferência estética`.

@@ -1,6 +1,6 @@
 # Component Variant Map Patterns
 
-How `project-web` components resolve a variant prop to classes or sub-components. Use these patterns when a component exposes a finite set of variants (a typography scale, a tone, an icon kind).
+How `project-mobile` components resolve a variant prop to classes or sub-components. Use these patterns when a component exposes a finite set of variants (a typography scale, a tone, an icon kind).
 
 ## Map variants with a module-level `Record`
 

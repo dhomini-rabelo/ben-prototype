@@ -7,7 +7,7 @@ Para gravar algo aqui, use a skill [`save-memory`](../skills/save-memory/SKILL.m
 ## Como ler
 
 - Cada categoria tem o próprio `README.md` com as entradas. Abra só a categoria que interessa à sua task.
-- O prefixo do nome do arquivo diz a qual sub-projeto a memória se aplica: `backend-`, `web-`, `mobile-`, `design-`. **Sem prefixo** significa que ela vale para o repo inteiro ou atravessa mais de um projeto.
+- O prefixo do nome do arquivo diz a qual sub-projeto a memória se aplica: `backend-`, `mobile-`, `design-`. **Sem prefixo** significa que ela vale para o repo inteiro ou atravessa mais de um projeto.
 
 ## Categorias
 

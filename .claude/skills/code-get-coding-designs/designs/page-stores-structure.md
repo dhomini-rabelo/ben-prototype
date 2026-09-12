@@ -1,6 +1,6 @@
-# Web Page Stores Structure
+# Page Stores Structure
 
-How a `project-web` page organizes its client state when it grows beyond a single store. This sits next to the [page structure](./page-structure.md) `states/` convention: use `states/` for ephemeral Jotai UI atoms, and `stores/` for the page's Zustand domain stores. **All file and folder names use kebab-case**.
+How a `project-mobile` page organizes its client state when it grows beyond a single store. This sits next to the [page structure](./page-structure.md) `states/` convention: use `states/` for ephemeral Jotai UI atoms, and `stores/` for the page's Zustand domain stores. **All file and folder names use kebab-case**.
 
 ## Folder layout
 
@@ -45,7 +45,7 @@ useEffect(() => {
 
 ### Variation: a standalone reset coordinator when the identity store is a leaf
 
-The pattern above assumes the root store can import its children. That breaks when the **child stores read the page identity from the root store** (so they import it) *and* the root store imports the children back to reset them — a require cycle. This happens in `project-mobile`, where the chat/diff/lifecycle/content stores all read `taskId` from `task-store`.
+The pattern above assumes the root store can import its children. That breaks when the **child stores read the page identity from the root store** (so they import it) *and* the root store imports the children back to reset them — a require cycle. This happens on the task workspace page, where the chat/diff/lifecycle/content stores all read `taskId` from `task-store`.
 
 In that case keep the identity store a **leaf** (it imports none of the children) and move reset coordination into a standalone `reset-{page}.ts` module that sits *above* the stores and imports them all:
 

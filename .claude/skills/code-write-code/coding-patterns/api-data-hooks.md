@@ -1,6 +1,6 @@
 # API Data Hook Patterns
 
-How `project-web` consumes the backend API through hooks. The `api/` layer is covered by the [web API client structure](../../code-get-coding-designs/designs/web-api-client-structure.md) design; these patterns cover the hooks that wrap it.
+How `project-mobile` consumes the backend API through hooks. The `api/` layer is covered by the [API client structure](../../code-get-coding-designs/designs/api-client-structure.md) design; these patterns cover the hooks that wrap it.
 
 ## Return `{ state, actions }` from generic API hooks
 

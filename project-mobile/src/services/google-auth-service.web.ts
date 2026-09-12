@@ -9,7 +9,7 @@ export type GoogleSignInResult =
 
 // On web there is no native Google Sign-In module — the @react-native-google-signin
 // flow used on iOS/Android is not implemented for the browser. We sign in through
-// Firebase's popup flow instead (mirroring project-web). Metro picks this `.web.ts`
+// Firebase's popup flow instead (mirroring the web auth flow). Metro picks this `.web.ts`
 // variant for the web bundle, so the native module is never required there.
 export const isGoogleAuthAvailable = true
 

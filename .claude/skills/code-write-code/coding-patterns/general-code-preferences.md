@@ -1,6 +1,6 @@
 # General Code Preferences
 
-Cross-cutting preferences captured from review corrections that apply to **both** projects. They complement the focused patterns and designs; when a rule here overlaps a dedicated pattern, the dedicated pattern still applies for its own topic. See also the [front-end](./frontend-code-preferences.md) and [back-end](./backend-code-preferences.md) preferences.
+Cross-cutting preferences captured from review corrections. They complement the focused patterns and designs; when a rule here overlaps a dedicated pattern, the dedicated pattern still applies for its own topic. See also the [front-end](./frontend-code-preferences.md) and [back-end](./backend-code-preferences.md) preferences.
 
 ## Apply a change across every matching file and layer
 
@@ -12,15 +12,15 @@ interface UserProps {
   avatarUrl: string
   createdAt: Date
 }
-// ...adapter still builds the old shape, web client still reads the old field
+// ...adapter still builds the old shape, mobile client still reads the old field
 
-// Correct way — propagate to entity + every adapter/mapper + the web client
-// entity, in-memory repo, db mapper, presenter, and consuming web types all updated together
+// Correct way — propagate to entity + every adapter/mapper + the mobile client
+// entity, in-memory repo, db mapper, presenter, and consuming mobile types all updated together
 ```
 
-## Sync the web client when a backend contract changes
+## Sync the consuming client(s) when a backend contract changes
 
-A backend response/contract change is not done until the consuming `project-web` client is updated to match, in the same task.
+A backend response/contract change is not done until the consuming `project-mobile` client is updated to match, in the same task.
 
 ## Web-search the correct approach instead of guessing
 

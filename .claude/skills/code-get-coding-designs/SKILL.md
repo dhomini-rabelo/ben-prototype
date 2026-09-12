@@ -28,20 +28,20 @@ description: Use when you need to create/edit a feature that requires writing co
   - When to Use: Use when adding or refactoring an HTTP endpoint, presenter, or route registration in `project-backend`.
   - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/backend-http-layer-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
 
-- **Web API Client Structure**:
-  - Purpose: Define how `project-web`'s `src/api/` layer is organized — axios clients and interceptors in `client.ts`, the `API_ROUTES` map, per-feature `request{Action}` functions, entity `models/` vs list-item `responses/`, and envelope `types.ts`.
-  - When to Use: Use when adding or refactoring a backend API call, route, request function, or response/model contract in `project-web`.
-  - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/web-api-client-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
+- **API Client Structure**:
+  - Purpose: Define how `project-mobile`'s `src/api/` layer is organized — axios clients and interceptors in `client.ts`, the `API_ROUTES` map, per-feature `request{Action}` functions, entity `models/` vs list-item `responses/`, and envelope `types.ts`.
+  - When to Use: Use when adding or refactoring a backend API call, route, request function, or response/model contract in `project-mobile`.
+  - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/api-client-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
 
-- **Web Page Stores Structure**:
-  - Purpose: Define how a `project-web` page organizes its Zustand state — one store per concern, a root store that coordinates `reset()`, and splitting a large store into a folder.
+- **Page Stores Structure**:
+  - Purpose: Define how a `project-mobile` page organizes its Zustand state — one store per concern, a root store that coordinates `reset()`, and splitting a large store into a folder.
   - When to Use: Use when a page needs more than a single store, or when a store grows enough to split its async logic and builders into a folder.
-  - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/web-page-stores-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
+  - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/page-stores-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
 
-- **Web Feature State Components Structure**:
+- **Feature State Components Structure**:
   - Purpose: Define how a data-fetching feature splits into a container view, per-state status components (loading/error/empty/gone), and a presentational component, with a fixed render order.
   - When to Use: Use when building or refactoring a feature that fetches data and must render loading, error, empty, and loaded states consistently.
-  - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/web-feature-state-components-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
+  - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/feature-state-components-structure.md` (use the `read/readFile` tool to understand more of this structure if needed)
 
 - **Mobile Services Layer Structure**:
   - Purpose: Define how `project-mobile` isolates native SDK integrations behind `src/services/` — one `{capability}-service.ts` module is the sole importer of a native SDK and exposes intent-named functions that screens, stores, and bootstrap call.

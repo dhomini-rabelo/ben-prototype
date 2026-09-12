@@ -49,9 +49,9 @@ Os pares abaixo são os que colidem de verdade. Quando o pedido cair num deles e
 
 ## Escopo: o prefixo do nome do arquivo
 
-O repo tem quatro sub-projetos, e o nome do arquivo carrega a qual deles a memória se aplica:
+O repo tem três sub-projetos, e o nome do arquivo carrega a qual deles a memória se aplica:
 
-- `backend-`, `web-`, `mobile-`, `design-` quando vale para um projeto só. Exemplo: `mobile-expo-secure-store-cache.md`.
+- `backend-`, `mobile-`, `design-` quando vale para um projeto só. Exemplo: `mobile-expo-secure-store-cache.md`.
 - **Sem prefixo** quando vale para o repo inteiro ou atravessa mais de um projeto. Nesse caso, a primeira linha do arquivo diz onde ela vale.
 
 Se o pedido não deixa claro qual projeto, pergunte com `AskUserQuestion` antes de nomear o arquivo. `project-mobile` é o foco ativo, mas isso não autoriza assumir que a memória é dele.

@@ -1,6 +1,6 @@
 # Mobile Services Layer Structure
 
-How `project-mobile` isolates native platform integrations behind a services layer. `src/services/` is a **platform-integration boundary** that `project-web` does not have: it is the mobile analogue of the backend's ports-and-adapters split, where the rest of the app depends on a small set of intent-named functions instead of on a native SDK directly. **All file and folder names use kebab-case.**
+How `project-mobile` isolates native platform integrations behind a services layer. `src/services/` is a **platform-integration boundary**: it is the mobile analogue of the backend's ports-and-adapters split, where the rest of the app depends on a small set of intent-named functions instead of on a native SDK directly. **All file and folder names use kebab-case.**
 
 ## The boundary rule
 

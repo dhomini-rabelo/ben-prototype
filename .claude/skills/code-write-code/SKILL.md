@@ -35,7 +35,7 @@ Use the skill `most-used-libraries` to find out which libraries are commonly use
 
 ### Coding Patterns
 
-When writing code, it's important to follow established coding patterns to ensure that your code is consistent with the rest of the codebase and is easy to understand and maintain. Patterns are split by project: **Frontend Patterns** for `project-web` and **Backend Patterns** for `project-backend`.
+When writing code, it's important to follow established coding patterns to ensure that your code is consistent with the rest of the codebase and is easy to understand and maintain. Patterns are split by project: **Frontend Patterns** for `project-mobile` and **Backend Patterns** for `project-backend`.
 
 #### General Patterns
 
@@ -48,7 +48,7 @@ When writing code, it's important to follow established coding patterns to ensur
 
 ##### Front-end Code Preferences
 
-- When to Use: Whenever you write or refactor `project-web` code and want the preferences captured from review corrections (file naming, component/store organization, api-client naming, state, props).
+- When to Use: Whenever you write or refactor `project-mobile` code and want the preferences captured from review corrections (file naming, component/store organization, api-client naming, state, props).
 - Coding pattern: [Front-end code preferences](./coding-patterns/frontend-code-preferences.md)
 
 ##### React Component Patterns
@@ -68,12 +68,12 @@ When writing code, it's important to follow established coding patterns to ensur
 
 ##### API Data Hooks
 
-- When to Use: Whenever you consume the backend API in `project-web` — the `{ state, actions }` return shape of the generic hooks, the thin per-domain `use{Domain}{Action}Data` wrappers, and the `enabled` gate.
+- When to Use: Whenever you consume the backend API in `project-mobile` — the `{ state, actions }` return shape of the generic hooks, the thin per-domain `use{Domain}{Action}Data` wrappers, and the `enabled` gate.
 - Coding pattern: [API data hooks](./coding-patterns/api-data-hooks.md)
 
 ##### Component Variant Maps
 
-- When to Use: Whenever a `project-web` component resolves a variant prop to classes or sub-components — a module-level `Record<Variant, ...>` map merged with `cn()`.
+- When to Use: Whenever a `project-mobile` component resolves a variant prop to classes or sub-components — a module-level `Record<Variant, ...>` map merged with `cn()`.
 - Coding pattern: [Component variant maps](./coding-patterns/component-variant-maps.md)
 
 ##### Mobile Icon Colors

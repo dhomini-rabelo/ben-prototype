@@ -1,6 +1,6 @@
-# Web Feature State Components Structure
+# Feature State Components Structure
 
-How a `project-web` feature that fetches data composes its UI states. A feature splits into a **container** that owns data and orchestration, a set of **status components** for the non-data states, and a **presentational** component for the data itself. **All file and folder names use kebab-case**; only exported component identifiers stay PascalCase.
+How a `project-mobile` feature that fetches data composes its UI states. A feature splits into a **container** that owns data and orchestration, a set of **status components** for the non-data states, and a **presentational** component for the data itself. **All file and folder names use kebab-case**; only exported component identifiers stay PascalCase.
 
 ## Folder layout
 

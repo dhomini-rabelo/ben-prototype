@@ -1,6 +1,6 @@
 # Front-end Code Preferences
 
-Preferences for `project-web`, captured from review corrections. They complement the focused front-end patterns; when a rule here overlaps a dedicated pattern, the dedicated pattern still applies for its own topic. See also the [general](./general-code-preferences.md) and [back-end](./backend-code-preferences.md) preferences.
+Preferences for `project-mobile`, captured from review corrections. They complement the focused front-end patterns; when a rule here overlaps a dedicated pattern, the dedicated pattern still applies for its own topic. See also the [general](./general-code-preferences.md) and [back-end](./backend-code-preferences.md) preferences.
 
 ## File names are kebab-case
 
