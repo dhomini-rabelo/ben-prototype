@@ -74,7 +74,7 @@ Re-scan these source-of-truth files and rewrite the report to match the current 
 
 Re-scan and recompute the readiness tables from:
 
-- **Spec / source of truth** — `project-design/src/core/screens.ts` (screen groups, state counts, components) plus `docs/design.md`
+- **Spec / source of truth** — `project-design/src/core/screens.ts` (screen groups, state counts, components) plus `.claude/agents-docs/design-advisor/design.md`
 - **Implementation** — `project-web/src/core/router.tsx` (routed screens) plus `project-web/src/pages/` and `project-web/src/layout/components/` (implemented components)
 - Recompute the **summary counts** (screen groups ready/to-build, components ready/to-build), the **per-screen status table**, and the **per-component status table**.
 - A screen/component is **"Pronto"** only when it exists and is routed/used in `project-web`; it is **"A construir"** when it only exists in `project-design`.

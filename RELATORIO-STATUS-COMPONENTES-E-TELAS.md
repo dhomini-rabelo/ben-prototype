@@ -10,7 +10,7 @@ Avaliação do que **já está pronto** versus **o que falta construir**, compar
 
 A comparação usa duas fontes:
 
-- **Spec / fonte da verdade:** a galeria do **`project-design`**, registrada em `project-design/src/core/screens.ts` — **7 grupos de telas (77 estados)** e **22 componentes** — somada ao design system em `docs/design.md`.
+- **Spec / fonte da verdade:** a galeria do **`project-design`**, registrada em `project-design/src/core/screens.ts` — **7 grupos de telas (77 estados)** e **22 componentes** — somada ao design system em `.claude/agents-docs/design-advisor/design.md`.
 - **Implementação / "pronto":** o **`project-web`** (app web de referência, hoje congelado), cujas rotas estão em `project-web/src/core/router.tsx`: `/` (login), `/chat` e `/tasks/:taskId` (task workspace). O **menu lateral** e o **detalhe de item** não têm rota própria — são overlays/sheets renderizados sobre `/chat` (ver `project-web/src/layout/components/menu/menu-overlay.tsx`), controlados pela store `menu-store`.
 
 Uma tela/componente é considerado **pronto** quando existe e está roteado/usado no `project-web`. É **a construir** quando só existe como design no `project-design`.

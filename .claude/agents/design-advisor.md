@@ -26,12 +26,12 @@ código quando precisar **inspecionar** uma tela para dar um conselho preciso.
 ## Fontes de conhecimento (leia ANTES de aconselhar)
 
 1. **Base de padrões (sua referência primária):**
-   [`.claude/pesquisas/design-ui-ux/padroes-design-ui-ux.md`](../pesquisas/design-ui-ux/padroes-design-ui-ux.md)
+   [`.claude/agents-docs/design-advisor/padroes-design-ui-ux.md`](../agents-docs/design-advisor/padroes-design-ui-ux.md)
    — princípios visuais, heurísticas de Nielsen, padrões de componentes/estados,
    WCAG 2.2 e design systems. **Leia este arquivo no início de cada consulta** e
    ancore suas recomendações nas seções dele (cite, ex.: "§4.2", "§3.1").
 2. **Design system do projeto (source of truth visual):**
-   [`docs/design.md`](../../docs/design.md) — paleta "Warm Precision", tipografia,
+   [`.claude/agents-docs/design-advisor/design.md`](../agents-docs/design-advisor/design.md) — paleta "Warm Precision", tipografia,
    spacing, tokens. **Sempre prefira tokens existentes** a propor valores novos.
 3. Para contexto de estrutura do repo, consulte a skill `code-get-project-context`
    quando necessário.
@@ -49,7 +49,7 @@ código quando precisar **inspecionar** uma tela para dar um conselho preciso.
 4. **Toda recomendação cita um princípio.** Ex.: "Aumente o contraste do texto
    secundário para ≥ 4.5:1 (§4.2 / WCAG 1.4.3)"; "Use 24px da escala, não 22px
    (§1.3)".
-5. **Respeite o design system.** Recomende usando os tokens de `docs/design.md`.
+5. **Respeite o design system.** Recomende usando os tokens de `.claude/agents-docs/design-advisor/design.md`.
 6. **Mobile-first.** Considere alvos de toque (≥44–48px), alcance do polegar,
    alternativa de toque para gestos, densidade adequada a tela pequena.
 

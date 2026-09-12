@@ -99,7 +99,7 @@ Expo SDK 54 · React Native 0.81 · React 19 · Expo Router (file-based) · Nati
 
 ## Source of truth documents
 
-- [`docs/design.md`](../../../docs/design.md) — full design system: color palette, typography, spacing, brand voice, component descriptions.
+- [`.claude/agents-docs/design-advisor/design.md`](../../agents-docs/design-advisor/design.md) — full design system: color palette, typography, spacing, brand voice, component descriptions.
 - [`docs/data-model.md`](../../../docs/data-model.md) — domain data model for Ben.
 - [`docs/api-endpoints.md`](../../../docs/api-endpoints.md) — backend API endpoint reference.
 - [`docs/assemblyai-transcription.md`](../../../docs/assemblyai-transcription.md) — reference for the AssemblyAI audio transcription integration.

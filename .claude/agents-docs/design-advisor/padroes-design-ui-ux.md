@@ -23,7 +23,7 @@
    `WCAG (acessibilidade, mínimo legal/ético)` → `convenção da plataforma (Apple HIG / Material)` →
    `Refactoring UI / heurísticas` → `preferência estética`.
    Acessibilidade nunca é negociável para baixo.
-3. **Respeite o design system existente do projeto** (`docs/design.md`, paleta
+3. **Respeite o design system existente do projeto** (`.claude/agents-docs/design-advisor/design.md`, paleta
    "Warm Precision", tokens, tipografia). Estes princípios orientam *como aplicar*
    o design system, não o substituem.
 4. **Contexto = mobile-first** (Ben é voice-first, telas de iPhone ~390×844).
@@ -298,7 +298,7 @@ do estado "com conteúdo":
   bruto, permitindo temas e mudanças centralizadas.
 - **Princípios de um bom design system 📐:** consistência, reutilização, escalabilidade,
   acessibilidade embutida, documentação clara, e *single source of truth*.
-- **Neste projeto:** o source of truth é [docs/design.md](../../../docs/design.md)
+- **Neste projeto:** o source of truth é [design.md](./design.md)
   (paleta "Warm Precision", tipografia, spacing). Qualquer recomendação deve **usar
   os tokens existentes** antes de propor valores novos.
 
@@ -318,7 +318,7 @@ Ao alterar/avaliar uma tela, percorra:
 - [ ] Feedback de status para esperas (>10s = progresso)? (§2.1)
 - [ ] Erros prevenidos na origem + mensagens com solução? (§2.2, §3.3)
 - [ ] Gestos têm alternativa de toque simples? (§4.4)
-- [ ] Consistente com o resto do app e com `docs/design.md`? (§2.5, §5)
+- [ ] Consistente com o resto do app e com `design.md`? (§2.5, §5)
 - [ ] Nada irrelevante competindo por atenção? (§2.4)
 
 ---

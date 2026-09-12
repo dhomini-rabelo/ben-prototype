@@ -398,4 +398,4 @@ Os documentos em [docs/api-endpoints.md](docs/api-endpoints.md) e [docs/data-mod
 - Integração AssemblyAI: [docs/assemblyai-transcription.md](docs/assemblyai-transcription.md)
 - Integração Vercel AI SDK + Gemini: [docs/vercel-ai-sdk.md](docs/vercel-ai-sdk.md)
 - Fluxo de autenticação Google: [docs/google-auth.md](docs/google-auth.md)
-- Design system: [docs/design.md](docs/design.md)
+- Design system: [.claude/agents-docs/design-advisor/design.md](.claude/agents-docs/design-advisor/design.md)
