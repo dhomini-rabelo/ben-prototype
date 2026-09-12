@@ -9,7 +9,7 @@ description: Refresh the code-get-project-context skill AND the two repository r
 
 Use this skill to keep three documents in sync with the real state of the repository:
 
-1. **`.claude/skills/code-get-project-context/SKILL.md`** — the **high-level** "what is this repo and how is it organized?" context loader.
+1. **`.claude/skills/code-get-project-context/SKILL.md`** — the **high-level** "what is this repo, how is it organized, and what rules does every Ben screen follow?" context loader.
 2. **`RELATORIO-FUNCIONALIDADES.md`** (repo root) — the **detailed** report of what is implemented and testable today.
 3. **`RELATORIO-STATUS-COMPONENTES-E-TELAS.md`** (repo root) — the **detailed** status report comparing the design spec (`project-design`) against the real implementation (`project-web`).
 
@@ -48,7 +48,9 @@ The skill reads what has changed since the context skill was last modified, then
    - Remove sub-projects or directories that no longer exist
    - Update stack versions if they changed
    - Update purpose summaries if the project intent shifted
-   - Do **not** include transient details (feature names, component names, bug fixes)
+   - Update the **Design rules** section when a rule governing every Ben screen changes (theme tokens, `ActiveTaskPeek` placement, chat anchoring)
+   - Update the **Design Gallery workflows** section when the steps to register a screen state or a primitive change (`main.tsx`, `screens.ts`, `_preview.tsx`, the `cn()` helper path)
+   - Do **not** include transient details (individual feature names, one-off bug fixes)
 
 6. **Write the updated file** back to `.claude/skills/code-get-project-context/SKILL.md`. If nothing structurally significant changed, leave it untouched.
 
@@ -85,7 +87,7 @@ Re-scan and recompute the readiness tables from:
 
 ## Rules
 
-- **Context skill = high-level.** Concise; answers "what is this repo and how is it organized?" — never transient detail (feature/component names, bug fixes), and never specific commits, PRs, or dates.
+- **Context skill = high-level, plus two standing sections.** It answers "what is this repo, how is it organized, and what rules does every Ben screen follow?". Keep it concise and free of specific commits, PRs, or dates. Its **Design rules** and **Design Gallery workflows** sections are permanent: they name components (`ActiveTaskPeek`) and files (`screens.ts`) on purpose, so refresh them in place instead of stripping them. Everything outside those two sections stays free of transient detail (individual feature names, one-off bug fixes).
 - **Reports = detailed and current.** They must reflect feature-, endpoint-, screen-, and component-level reality. This is intentionally the opposite altitude from the context skill.
 - **Language:** write the two reports in **Portuguese** (match their existing language). The context skill stays in **English**.
 - **No guessing:** never invent endpoints, screens, entities, or components — include only what is confirmed via search in the actual code.
