@@ -1,8 +1,8 @@
 import { VerifyAuthenticationUseCase } from '@/domain/use-cases/auth/verify-authentication'
+import { userRepository } from '@/infra/http/repositories'
 import { env } from '@/infra/services/env'
 import { FirebaseAuthProviderService } from '@/infra/services/firebase-auth-provider'
 import { JsonWebTokenJwtService } from '@/infra/services/jwt'
-import { InMemoryUserRepository } from '@/infra/services/repositories/in-memory-user-repository'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 
@@ -19,7 +19,6 @@ const headersSchema = z.object({
   providerauthenticationtoken: z.string(),
 })
 
-const userRepository = new InMemoryUserRepository()
 const authProviderService = new FirebaseAuthProviderService()
 const jwtService = new JsonWebTokenJwtService({
   privateKey: env.JWT_PRIVATE_KEY,
