@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "NODE_ENV=development tsx watch ./src/infra/http/server.ts",
     "postinstall": "prisma generate",
+    "build": "tsup src/infra/http/server.ts --format esm --target node24 --out-dir dist --clean",
+    "start": "node dist/server.js",
     "lint:fix": "eslint ./src --ext .ts --fix"
   },
   "dependencies": {
@@ -44,6 +46,7 @@
     "globals": "^17.6.0",
     "prettier": "^3.5.3",
     "prisma": "7.10.0",
+    "tsup": "^8.5.1",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   }
