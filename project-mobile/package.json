@@ -4,9 +4,14 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
+    "icons": "node scripts/generate-icons.mjs",
+    "prestart": "npm run icons",
     "start": "expo start",
+    "preandroid": "npm run icons",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "android:prebuild": "expo prebuild --platform android --no-install --clean",
+    "apk": "npm run icons && npm run android:prebuild && cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

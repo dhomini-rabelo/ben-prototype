@@ -5,9 +5,10 @@ const config: ExpoConfig = {
   slug: 'ben',
   owner: 'dhomini07',
   scheme: 'ben',
-  version: '0.0.0',
+  version: '1.0.0',
   orientation: 'portrait',
   userInterfaceStyle: 'light',
+  icon: './assets/icon.png',
   newArchEnabled: true,
   ios: {
     supportsTablet: false,
@@ -19,12 +20,36 @@ const config: ExpoConfig = {
   },
   android: {
     package: 'com.benprototype.app',
+    versionCode: 1,
     permissions: ['RECORD_AUDIO'],
+    adaptiveIcon: {
+      backgroundColor: '#f9f9f9',
+      foregroundImage: './assets/adaptive-icon-foreground.png',
+      monochromeImage: './assets/adaptive-icon-monochrome.png',
+    },
+  },
+  web: {
+    favicon: './assets/favicon.png',
   },
   plugins: [
     'expo-router',
+    [
+      'expo-splash-screen',
+      {
+        image: './assets/splash-icon.png',
+        imageWidth: 180,
+        resizeMode: 'contain',
+        backgroundColor: '#f9f9f9',
+      },
+    ],
     'expo-secure-store',
-    'expo-notifications',
+    [
+      'expo-notifications',
+      {
+        icon: './assets/notification-icon.png',
+        color: '#121213',
+      },
+    ],
     [
       'expo-audio',
       {
@@ -33,6 +58,7 @@ const config: ExpoConfig = {
       },
     ],
     '@react-native-google-signin/google-signin',
+    './plugins/with-release-signing',
     [
       'expo-font',
       {

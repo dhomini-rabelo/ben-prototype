@@ -6,6 +6,17 @@ module.exports = defineConfig([
   expoConfig,
   eslintPluginPrettier,
   {
+    files: ['scripts/**', 'plugins/**'],
+    languageOptions: {
+      globals: {
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        console: 'readonly',
+        process: 'readonly',
+      },
+    },
+  },
+  {
     ignores: ['dist/*', '.expo/*', 'node_modules/*'],
   },
 ])

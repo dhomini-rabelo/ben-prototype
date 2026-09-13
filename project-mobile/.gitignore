@@ -10,6 +10,8 @@ yarn-error.*
 .env
 .env.*.local
 .env.development
+.env.production
+credentials/
 *.local
 
 ios/
