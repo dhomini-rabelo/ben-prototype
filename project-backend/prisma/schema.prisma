@@ -1,0 +1,66 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  runtime      = "nodejs"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Message {
+  id    String @id
+  props String
+  types String
+
+  @@map("messages")
+}
+
+model Note {
+  id    String @id
+  props String
+  types String
+
+  @@map("notes")
+}
+
+model Reminder {
+  id    String @id
+  props String
+  types String
+
+  @@map("reminders")
+}
+
+model Task {
+  id    String @id
+  props String
+  types String
+
+  @@map("tasks")
+}
+
+model Topic {
+  id    String @id
+  props String
+  types String
+
+  @@map("topics")
+}
+
+model TopicSummary {
+  id    String @id
+  props String
+  types String
+
+  @@map("topic_summaries")
+}
+
+model User {
+  id    String @id
+  props String
+  types String
+
+  @@map("users")
+}

@@ -2,3 +2,7 @@ node_modules
 dist
 .env
 .env.development
+*.db
+*.db-journal
+.tmp
+src/generated
