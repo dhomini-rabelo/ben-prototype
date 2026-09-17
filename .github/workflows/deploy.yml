@@ -1,0 +1,41 @@
+# Deploy automatico: todo push na main entra no ar sozinho.
+#
+# Como funciona: este job so abre um SSH na VPS. Todo o trabalho (git pull, npm ci,
+# prisma migrate, build, restart) esta em /usr/local/bin/deploy-ben, la no servidor.
+# A chave de deploy esta travada nesse script por `command=` no authorized_keys do
+# usuario `dev`, entao o comando mandado aqui embaixo e ignorado pelo sshd: mesmo
+# que essa chave vaze, ela nao abre shell nem le arquivo — so dispara este deploy.
+#
+# Secret necessario no repo (Settings > Secrets and variables > Actions):
+#   VPS_DEPLOY_KEY  -> conteudo de /home/dev/.ssh/deploy_ben (a chave privada)
+
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # permite redisparar o deploy na mao pela aba Actions
+
+# Dois pushes seguidos nao disputam o servidor: o segundo espera o primeiro acabar.
+concurrency:
+  group: deploy-producao
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Conectar na VPS e rodar o deploy
+        env:
+          DEPLOY_KEY: ${{ secrets.VPS_DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Host key fixa em vez de ssh-keyscan: o runner nao aceita qualquer
+          # servidor que atenda naquele IP.
+          echo '2.25.94.160 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAQaqurXB5lgv59m7jZMXLAsXwL/IpoAzZlDkzdZHxIS' > ~/.ssh/known_hosts
+          # O `deploy` aqui e so simbolico — o sshd troca pelo forced command.
+          ssh -i ~/.ssh/deploy_key -o BatchMode=yes dev@2.25.94.160 deploy
