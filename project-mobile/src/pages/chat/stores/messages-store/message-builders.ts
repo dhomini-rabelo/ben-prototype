@@ -7,17 +7,22 @@ export function buildUserMessage(text: string): BenUiMessage {
     id: randomUUID(),
     role: 'user',
     parts: [{ type: 'text', text }],
+    metadata: { createdAt: new Date().toISOString() },
   }
 }
 
 export function buildBenMessage(
+  id: string,
   text: string,
   capture?: CaptureView | null,
 ): BenUiMessage {
   return {
-    id: randomUUID(),
+    id,
     role: 'assistant',
     parts: [{ type: 'text', text }],
-    metadata: capture ? { capture } : undefined,
+    metadata: {
+      capture: capture ?? undefined,
+      createdAt: new Date().toISOString(),
+    },
   }
 }

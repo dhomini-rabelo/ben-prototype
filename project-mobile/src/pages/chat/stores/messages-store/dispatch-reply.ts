@@ -14,7 +14,7 @@ export async function dispatchReply(
   try {
     const reply = await requestSendChatMessage(message)
     invalidateCapturedQueries(reply)
-    const benMessage = buildBenMessage('', reply.capture)
+    const benMessage = buildBenMessage(reply.messageId, '', reply.capture)
     set((state) => ({
       sessionMessages: [...state.sessionMessages, benMessage],
     }))

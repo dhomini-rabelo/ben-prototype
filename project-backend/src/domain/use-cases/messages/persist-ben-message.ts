@@ -1,3 +1,4 @@
+import { AgentCallTrace } from '@/adapters/agent-call-trace'
 import { MessageRepository } from '@/adapters/repositories/message-repository'
 import { Message, MessageCapture } from '@/domain/entities/message'
 import { createID } from '@/modules/domain/entity/id'
@@ -8,6 +9,7 @@ interface Payload {
   userId: string
   content: string
   capture?: MessageCapture | null
+  trace?: AgentCallTrace | null
 }
 
 export class PersistBenMessageUseCase implements UseCase<
@@ -21,6 +23,7 @@ export class PersistBenMessageUseCase implements UseCase<
       role: 'ben',
       content: payload.content,
       capture: payload.capture ?? null,
+      trace: payload.trace ?? null,
       createdAt: new Date(),
     })
 

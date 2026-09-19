@@ -94,7 +94,7 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       userId: req.userId,
     })
 
-    const reply = await agentService.generateReply({
+    const { reply, trace } = await agentService.generateReply({
       userId: req.userId,
       message,
       topicIndex,
@@ -117,6 +117,7 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       capture: primaryCapture
         ? { kind: primaryCapture.kind, itemId: createID(primaryCapture.itemId) }
         : null,
+      trace,
     })
 
     await persistTopicSummariesUseCase.execute({
@@ -127,7 +128,13 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
 
     return res
       .status(HttpStatus.OK)
-      .json(AgentReplyPresenter.toHttp(reply, primaryCapture))
+      .json(
+        AgentReplyPresenter.toHttp(
+          reply,
+          primaryCapture,
+          benMessageResult.item.id.toValue(),
+        ),
+      )
   } catch (err) {
     next(err)
   }

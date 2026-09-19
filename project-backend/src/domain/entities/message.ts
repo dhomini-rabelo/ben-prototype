@@ -1,3 +1,4 @@
+import { AgentCallTrace } from '@/adapters/agent-call-trace'
 import { Entity } from '@/modules/domain/entity/entity'
 import { ID } from '@/modules/domain/entity/id'
 
@@ -15,6 +16,7 @@ export interface MessageProps {
   role: MessageRole
   content: string
   capture: MessageCapture | null
+  trace: AgentCallTrace | null
   createdAt: Date
 }
 

@@ -5,7 +5,8 @@ export class AgentReplyPresenter {
   static toHttp(
     reply: AgentReply,
     capture: CaptureView | null,
-  ): AgentReply & { capture: CaptureView | null } {
+    messageId: string,
+  ): AgentReply & { capture: CaptureView | null; messageId: string } {
     return {
       message: reply.message,
       newReminders: reply.newReminders,
@@ -13,6 +14,7 @@ export class AgentReplyPresenter {
       newTasks: reply.newTasks,
       historyTopics: reply.historyTopics,
       capture,
+      messageId,
     }
   }
 }

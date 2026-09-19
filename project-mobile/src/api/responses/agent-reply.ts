@@ -30,4 +30,5 @@ export interface AgentReply {
   newTasks: TaskDraft[]
   historyTopics: HistoryTopic[]
   capture: CaptureView | null
+  messageId: string
 }

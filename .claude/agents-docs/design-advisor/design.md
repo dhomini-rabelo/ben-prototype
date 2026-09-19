@@ -83,6 +83,11 @@ typography:
     fontWeight: '500'
     lineHeight: 16px
     letterSpacing: 0.05em
+  code:
+    fontFamily: JetBrains Mono
+    fontSize: 13px
+    fontWeight: '400'
+    lineHeight: 20px
   button-text:
     fontFamily: Hanken Grotesk
     fontSize: 15px

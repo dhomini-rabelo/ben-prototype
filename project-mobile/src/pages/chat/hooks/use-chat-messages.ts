@@ -9,7 +9,7 @@ export function mapHistoryToUiMessages(history: Message[]): BenUiMessage[] {
     id: message.id,
     role: message.role === 'ben' ? 'assistant' : 'user',
     parts: [{ type: 'text', text: message.content }],
-    metadata: message.capture ? { capture: message.capture } : undefined,
+    metadata: { capture: message.capture, createdAt: message.createdAt },
   }))
 }
 
@@ -18,8 +18,14 @@ export function useChatMessages() {
   const sessionMessages = useMessagesStore((store) => store.sessionMessages)
 
   const messages = useMemo(() => {
+    const sessionIds = new Set(sessionMessages.map((message) => message.id))
     const historyOldestFirst = [...historyState.items].reverse()
-    return [...mapHistoryToUiMessages(historyOldestFirst), ...sessionMessages]
+    return [
+      ...mapHistoryToUiMessages(historyOldestFirst).filter(
+        (message) => !sessionIds.has(message.id),
+      ),
+      ...sessionMessages,
+    ]
   }, [historyState.items, sessionMessages])
 
   return {

@@ -8,7 +8,7 @@ export class MessagePresenter {
     message: Message,
     capture: CaptureView | null = null,
   ): OverWrite<
-    Omit<Serialize<WithID<MessageProps>>, 'userId'>,
+    Omit<Serialize<WithID<MessageProps>>, 'userId' | 'trace'>,
     { capture: CaptureView | null }
   > {
     return {

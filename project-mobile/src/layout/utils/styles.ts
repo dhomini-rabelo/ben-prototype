@@ -12,6 +12,7 @@ const twMerge = extendTailwindMerge({
             'body-md',
             'button',
             'label-caps',
+            'code',
           ],
         },
       ],

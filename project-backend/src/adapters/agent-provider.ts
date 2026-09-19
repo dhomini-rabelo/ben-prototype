@@ -1,3 +1,5 @@
+import { AgentCallTrace } from '@/adapters/agent-call-trace'
+
 /**
  * Identifies a recurring subject for a user.
  * Documented shape: `kind:category:slug` (e.g. `reminder:work:meeting`).
@@ -48,6 +50,11 @@ export type GenerateReplyPayload = {
   resolveHistoryContext: ResolveHistoryContext
 }
 
+export type GenerateReplyResult = {
+  reply: AgentReply
+  trace: AgentCallTrace
+}
+
 export type TaskTurnTodo = {
   id: string
   title: string
@@ -84,6 +91,6 @@ export type TaskTurnReply = {
 }
 
 export interface AgentService {
-  generateReply(payload: GenerateReplyPayload): Promise<AgentReply>
+  generateReply(payload: GenerateReplyPayload): Promise<GenerateReplyResult>
   generateTaskTurn(payload: GenerateTaskTurnPayload): Promise<TaskTurnReply>
 }

@@ -6,22 +6,16 @@ import { UseCase } from '@/modules/domain/use-case'
 
 interface Payload {
   userId: string
-  content: string
+  messageId: string
 }
 
-export class PersistUserMessageUseCase implements UseCase<
-  ItemResponse<Message>
-> {
+export class GetMessageTraceUseCase implements UseCase<ItemResponse<Message>> {
   constructor(private messageRepository: MessageRepository) {}
 
   async execute(payload: Payload): Promise<ItemResponse<Message>> {
-    const item = await this.messageRepository.create({
+    const item = await this.messageRepository.get({
+      id: createID(payload.messageId),
       userId: createID(payload.userId),
-      role: 'user',
-      content: payload.content,
-      capture: null,
-      trace: null,
-      createdAt: new Date(),
     })
 
     return { item }

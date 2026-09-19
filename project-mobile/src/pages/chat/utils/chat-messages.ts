@@ -3,6 +3,7 @@ import type { MessageCapture } from '@/api/models/message'
 
 export type BenMessageMetadata = {
   capture?: MessageCapture
+  createdAt?: string
 }
 
 export type BenUiMessage = UIMessage<BenMessageMetadata>
