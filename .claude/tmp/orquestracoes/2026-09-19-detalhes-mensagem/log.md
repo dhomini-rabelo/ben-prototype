@@ -94,3 +94,15 @@ deixando o git status limpo?" — resposta era NÃO nas duas partes. Investigaç
 - O3 -> O4: teto de turns (50/50) e janela em 90%. Falta apenas versionar a pasta da run (git add
   -f, seguindo precedente de a544d65), limpar 4 arquivos soltos da raiz, atualizar
   relatorio-final.md e responder ao usuário. handoff-3.md
+
+## O4
+- Rodada 11 (r11-versionar-run, filho sonnet único): confirmou branch, limpou os 4 arquivos soltos
+  da raiz (2 PNGs verificados por sha256sum idênticos aos da pasta da run antes de apagar),
+  `git add -f` na pasta inteira da run (48 arquivos), commit `6949afe`, push confirmado
+  (`1ea2d11..6949afe`), `git status` final limpo. Entrega: r11-versionar-run.md.
+- Atualizado `relatorio-final.md` com seção "Reabertura pós-entrega" apontando para r11 e o commit
+  `6949afe`. Como isso reabriu o arquivo já commitado (fica "modified"), e o próprio r11 nasceu
+  untracked (pasta ignorada por padrão), fiz um segundo `git add -f` + commit desses dois arquivos
+  para devolver `git status` limpo, em vez de deixar a resposta final descrever um estado que o
+  disco não tem mais.
+- Task encerrada. `bloco: fim`, veredito `entregue`.

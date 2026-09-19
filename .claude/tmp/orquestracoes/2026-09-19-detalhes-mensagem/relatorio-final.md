@@ -82,6 +82,24 @@ por `MutationObserver` (25ms→1527ms, bate com o timer de 1500ms).
 
 ## A cadeia
 
-3 orquestradores (O1 opus, O2 sonnet, O3 sonnet), ~13 filhos ao longo de 10 rodadas nomeadas (r0 a r10,
-com r9b/r9c de correção e reteste). Pasta da run:
+4 orquestradores (O1 opus, O2 sonnet, O3 sonnet, O4 sonnet), ~14 filhos ao longo de 11 rodadas
+nomeadas (r0 a r11, com r9b/r9c de correção e reteste). Pasta da run:
 `.claude/tmp/orquestracoes/2026-09-19-detalhes-mensagem/`.
+
+## Reabertura pós-entrega: versionamento da pasta da run
+
+Depois do "fim" acima, o usuário perguntou se os commits incluíram a pasta de orquestração (com
+as screenshots) e se o `git status` ficou limpo. Na hora, a resposta era não nas duas partes: a
+pasta da run e 4 arquivos soltos de teste do Playwright (`.playwright-mcp/`, `01-initial-load.png`,
+`12-longpress-menu-style.png`, `step0-chat-loaded.png`) estavam fora do commit `1ea2d11`.
+
+Resolvido no commit `6949afe`, seguindo o precedente já aberto pelo `a544d65`:
+- Confirmados por `sha256sum` que `12-longpress-menu-style.png` e `step0-chat-loaded.png` na raiz
+  eram bit-a-bit idênticos aos equivalentes em `screenshots/`; os 4 arquivos soltos foram removidos
+  da raiz.
+- Pasta `.claude/tmp/orquestracoes/2026-09-19-detalhes-mensagem/` (48 arquivos, incluindo `screenshots/`
+  inteira) versionada via `git add -f`, exceção pontual ao `.gitignore` — sem editar o `.gitignore`.
+- Commit `6949afe` e push confirmados: `1ea2d11..6949afe feat/update-model-and-add-logs`.
+- `git status` final: limpo (`nothing to commit, working tree clean`).
+
+Detalhe: [r11-versionar-run.md](r11-versionar-run.md).
