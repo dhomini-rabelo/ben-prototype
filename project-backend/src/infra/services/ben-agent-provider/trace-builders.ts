@@ -6,6 +6,7 @@ import {
   AgentCallTrace,
   AgentCallUsage,
 } from '@/adapters/agent-call-trace'
+import { AgentModelSelection } from '@/domain/utils/agent-models'
 
 type UsageLike = {
   inputTokens: number | undefined
@@ -154,11 +155,14 @@ export function buildAgentCallTrace(params: {
   steps: AgentCallStep[]
   startedAt: Date
   finishedAt: Date
+  selection: AgentModelSelection
 }): AgentCallTrace {
   return {
     status: 'ok',
     error: null,
     modelId: params.steps[params.steps.length - 1]?.modelId ?? null,
+    modelSlug: params.selection.modelSlug,
+    effort: params.selection.effort,
     startedAt: params.startedAt.toISOString(),
     finishedAt: params.finishedAt.toISOString(),
     latencyMs: params.finishedAt.getTime() - params.startedAt.getTime(),

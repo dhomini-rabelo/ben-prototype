@@ -1,4 +1,5 @@
 import { PersistCapturesUseCase } from '@/domain/use-cases/captures/persist-captures'
+import { GetAgentPreferencesUseCase } from '@/domain/use-cases/agent-preferences/get-agent-preferences'
 import { PersistBenMessageUseCase } from '@/domain/use-cases/messages/persist-ben-message'
 import { PersistUserMessageUseCase } from '@/domain/use-cases/messages/persist-user-message'
 import { BuildTopicIndexUseCase } from '@/domain/use-cases/topics/build-topic-index'
@@ -11,11 +12,11 @@ import {
   taskRepository,
   topicRepository,
   topicSummaryRepository,
+  userRepository,
 } from '@/infra/http/repositories'
 import { AgentReplyPresenter } from '@/infra/http/presenters/agent-reply-presenter'
 import { BenAgentProviderService } from '@/infra/services/ben-agent-provider'
 import { createID } from '@/modules/domain/entity/id'
-import { openRouterModel } from '@/infra/services/ben-agent-provider/models'
 import { HttpStatus } from '@/modules/utils/http'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
@@ -36,7 +37,10 @@ const chatBodySchema = z.object({
     .min(1),
 })
 
-const agentService = new BenAgentProviderService(openRouterModel)
+const agentService = new BenAgentProviderService()
+const getAgentPreferencesUseCase = new GetAgentPreferencesUseCase(
+  userRepository,
+)
 const persistUserMessageUseCase = new PersistUserMessageUseCase(
   messageRepository,
 )
@@ -94,12 +98,17 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       userId: req.userId,
     })
 
+    const preferences = await getAgentPreferencesUseCase.execute({
+      userId: req.userId,
+    })
+
     const { reply, trace } = await agentService.generateReply({
       userId: req.userId,
       message,
       topicIndex,
       resolveHistoryContext: ({ topics }) =>
         getHistoryContextUseCase.execute({ userId: req.userId, topics }),
+      model: preferences.item,
     })
 
     const capturesResult = await persistCapturesUseCase.execute({

@@ -671,6 +671,8 @@ async function runUserCases(
         avatarUrl: 'https://example.com/ada.png',
         providerId: 'provider-1',
         createdAt: NOW,
+        agentModelSlug: null,
+        agentEffort: null,
       })
       const reloaded = await userRepository.get({ id: user.id })
       assert(

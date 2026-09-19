@@ -16,9 +16,20 @@ export function MessageTraceMetaStrip({ trace }: MessageTraceMetaStripProps) {
           variant="label-caps"
           className="normal-case text-on-surface-variant"
         >
-          {trace.modelId ?? 'unknown model'}
+          {trace.modelSlug ?? trace.modelId ?? 'unknown model'}
         </Typography>
       </View>
+
+      {trace.effort && (
+        <View className="flex-row items-center gap-1 rounded-full bg-surface-container px-2 py-1">
+          <Typography
+            variant="label-caps"
+            className="normal-case text-on-surface-variant"
+          >
+            {`effort · ${trace.effort}`}
+          </Typography>
+        </View>
+      )}
 
       <View className="flex-row items-center gap-1 rounded-full bg-surface-container px-2 py-1">
         <Typography
