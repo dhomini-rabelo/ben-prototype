@@ -12,7 +12,7 @@ const openrouter = createOpenRouter({
   apiKey: env.OPENROUTER_API_KEY,
 })
 
-export const openRouterModel = openrouter('openai/gpt-oss-120b', {
+export const openRouterModel = openrouter('openai/gpt-5.6-luna', {
   extraBody: {
     provider: {
       sort: 'throughput', // uses the provider with the highest throughput
