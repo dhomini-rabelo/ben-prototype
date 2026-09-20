@@ -60,6 +60,8 @@ export class LoginOrRegisterUseCase implements UseCase<Response> {
       avatarUrl: userFromProvider.avatarUrl,
       providerId: userFromProvider.id,
       createdAt: new Date(),
+      agentModelSlug: null,
+      agentEffort: null,
     })
 
     return {

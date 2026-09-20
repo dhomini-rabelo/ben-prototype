@@ -10,6 +10,7 @@ import {
   TaskDiffChanges,
   TodoItemWithDiff,
 } from '@/domain/entities/task'
+import { AgentModelSelection } from '@/domain/utils/agent-models'
 import { createID } from '@/modules/domain/entity/id'
 import { ItemResponse } from '@/modules/domain/responses'
 import { UseCase } from '@/modules/domain/use-case'
@@ -18,6 +19,7 @@ interface Payload {
   userId: string
   taskId: string
   message: string
+  model: AgentModelSelection
 }
 
 type Response = ItemResponse<Task> & {
@@ -51,6 +53,7 @@ export class CreateTaskMessageUseCase implements UseCase<Response> {
       todoItems: task.props.todoItems,
       summary: task.props.summary,
       message: payload.message,
+      model: payload.model,
     })
   }
 
