@@ -4,7 +4,7 @@ Executado ao pé da letra o roteiro de `r3-plano-v2.md` (`## Plano de teste`, li
 da seção). Ambiente: backend (3333) e mobile (8081) já estavam de pé; usei-os como estavam,
 reiniciando o backend só quando o roteiro pedia (passos 2 e 6). Viewport 390×844 durante todo o
 teste. Screenshots em
-`/tmp/claude-1000/-root-so-repos-ben-prototype/6938fb42-3615-45c5-a0ca-23839ef30716/scratchpad/screenshots/`.
+`.claude/tmp/orquestracoes/2026-09-19-config-model-effort/screenshots/`.
 
 ## Ambiente e autenticação
 
@@ -158,7 +158,7 @@ teste. Screenshots em
 
 ## Lista de screenshots
 
-Pasta: `/tmp/claude-1000/-root-so-repos-ben-prototype/6938fb42-3615-45c5-a0ca-23839ef30716/scratchpad/screenshots/`
+Pasta: `.claude/tmp/orquestracoes/2026-09-19-config-model-effort/screenshots/`
 
 1. `01-settings-luna-default.png` — Estado inicial: GPT-5.6 Luna marcado, 6 chips de effort, `medium` marcado.
 2. `02-settings-deepseek-high.png` — Após selecionar DeepSeek V4.1 Flash: 3 chips, `high` marcado (default do modelo).
