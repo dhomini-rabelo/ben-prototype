@@ -16,8 +16,10 @@ import {
 } from './generate-reply/history-context-tool'
 import { agentReplySchema } from './generate-reply/schemas'
 import { buildSystemPrompt } from './generate-reply/system-prompt'
+import { toAgentReply } from './generate-reply/to-agent-reply'
 import { taskTurnReplySchema } from './generate-task-turn/schemas'
 import { buildTaskTurnSystemPrompt } from './generate-task-turn/system-prompt'
+import { toTaskTurnReply } from './generate-task-turn/to-task-turn-reply'
 import {
   buildAgentCallSteps,
   buildAgentCallTrace,
@@ -112,7 +114,7 @@ export class BenAgentProviderService implements AgentService {
     })
 
     return {
-      reply: result.output,
+      reply: toAgentReply(result.output),
       trace: buildAgentCallTrace({
         steps: [...contextSteps, ...formatSteps],
         startedAt: traceStartedAt,
@@ -131,6 +133,6 @@ export class BenAgentProviderService implements AgentService {
       output: Output.object({ schema: taskTurnReplySchema }),
     })
 
-    return result.output
+    return toTaskTurnReply(result.output)
   }
 }

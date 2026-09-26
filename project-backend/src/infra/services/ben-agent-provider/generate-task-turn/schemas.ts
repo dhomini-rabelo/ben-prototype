@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 const proposedTodoItemSchema = z.object({
-  id: z.string().optional(),
+  id: z.string().nullable(),
   title: z.string(),
   done: z.boolean(),
   order: z.number(),
