@@ -10,6 +10,7 @@ export type TypographyVariant =
   | 'body-md'
   | 'button-text'
   | 'label-caps'
+  | 'code'
 
 const variantClasses: Record<TypographyVariant, string> = {
   wordmark: 'text-wordmark',
@@ -18,6 +19,7 @@ const variantClasses: Record<TypographyVariant, string> = {
   'body-md': 'text-body-md',
   'button-text': 'text-button',
   'label-caps': 'text-label-caps font-mono uppercase',
+  code: 'text-code font-mono',
 }
 
 type TypographyProps = TextProps & {

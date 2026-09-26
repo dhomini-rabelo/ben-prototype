@@ -4,6 +4,7 @@ export const API_ROUTES = {
   },
   messages: {
     list: '/messages/list',
+    trace: (id: string) => `/messages/${id}/trace`,
   },
   chat: {
     send: '/chat',

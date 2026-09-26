@@ -3,6 +3,7 @@ import { errorHandler } from '@/infra/http/middlewares/error-handler'
 import { loginOrRegister } from '@/infra/http/routes/auth/login-or-register'
 import { getCapturesCounts } from '@/infra/http/routes/captures/get-captures-counts'
 import { chat } from '@/infra/http/routes/chat'
+import { getMessageTrace } from '@/infra/http/routes/messages/get-message-trace'
 import { listMessages } from '@/infra/http/routes/messages/list-messages'
 import { getNoteDetail } from '@/infra/http/routes/notes/get-note-detail'
 import { listNotes } from '@/infra/http/routes/notes/list-notes'
@@ -50,6 +51,7 @@ app.get('/health', (_req, res) => {
 app.post('/auth/login-or-register', loginOrRegister)
 
 app.get('/messages/list', authMiddleware, listMessages)
+app.get('/messages/:id/trace', authMiddleware, getMessageTrace)
 app.post('/chat', authMiddleware, chat)
 app.post(
   '/transcription',

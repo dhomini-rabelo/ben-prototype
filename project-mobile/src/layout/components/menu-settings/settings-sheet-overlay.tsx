@@ -11,6 +11,7 @@ type SettingsSheetOverlayProps = {
   isOpen: boolean
   onClose: () => void
   children: ReactNode
+  slideOffset?: number
 }
 
 const SLIDE_OFFSET = 600
@@ -20,8 +21,10 @@ export function SettingsSheetOverlay({
   isOpen,
   onClose,
   children,
+  slideOffset,
 }: SettingsSheetOverlayProps) {
-  const translateY = useSharedValue(SLIDE_OFFSET)
+  const offset = slideOffset ?? SLIDE_OFFSET
+  const translateY = useSharedValue(offset)
   const backdropOpacity = useSharedValue(0)
 
   useEffect(() => {
@@ -29,10 +32,10 @@ export function SettingsSheetOverlay({
       translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
       backdropOpacity.value = withTiming(1, { duration: ANIMATION_DURATION })
     } else {
-      translateY.value = SLIDE_OFFSET
+      translateY.value = offset
       backdropOpacity.value = 0
     }
-  }, [isOpen, translateY, backdropOpacity])
+  }, [isOpen, offset, translateY, backdropOpacity])
 
   const sheetStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],

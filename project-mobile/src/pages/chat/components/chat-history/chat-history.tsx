@@ -5,6 +5,7 @@ import { Typography } from '@/layout/components/ui/typography'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
 import { ROUTES } from '@/core/routes'
 import { CaptureCard } from '@/pages/chat/components/capture-card'
+import { MessageTracePressable } from '@/pages/chat/components/chat-history/message-trace-pressable'
 import { MessageBubble } from '@/pages/chat/components/message-bubble/message-bubble'
 import { RetryFooter } from '@/pages/chat/components/message-footers/retry-footer'
 import { SendRetryFooter } from '@/pages/chat/components/message-footers/send-retry-footer'
@@ -38,7 +39,7 @@ export function ChatHistory({ listRef, bottomInset = 0 }: ChatHistoryProps) {
     const capture = item.metadata?.capture
     const isFailed = item.id === failedMessageId
 
-    return (
+    const bubble = (
       <MessageBubble
         from={isBen ? 'ben' : 'user'}
         state={isFailed ? 'error' : 'default'}
@@ -64,6 +65,17 @@ export function ChatHistory({ listRef, bottomInset = 0 }: ChatHistoryProps) {
           </CaptureCard.Root>
         )}
       </MessageBubble>
+    )
+
+    if (!isBen) return bubble
+
+    return (
+      <MessageTracePressable
+        messageId={item.id}
+        createdAt={item.metadata?.createdAt ?? null}
+      >
+        {bubble}
+      </MessageTracePressable>
     )
   }
 

@@ -125,6 +125,7 @@ module.exports = {
           '12px',
           { lineHeight: '16px', letterSpacing: '0.05em', fontWeight: '500' },
         ],
+        code: ['13px', { lineHeight: '20px', fontWeight: '400' }],
       },
     },
   },

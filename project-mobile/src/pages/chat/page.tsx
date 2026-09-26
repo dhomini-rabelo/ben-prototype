@@ -1,8 +1,9 @@
 import { useFocusEffect, useRouter } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
-import { View, type LayoutChangeEvent } from 'react-native'
+import { useWindowDimensions, View, type LayoutChangeEvent } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ROUTES } from '@/core/routes'
+import { SettingsSheetOverlay } from '@/layout/components/menu-settings/settings-sheet-overlay'
 import { useConnectivity } from '@/layout/hooks/use-connectivity'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
 import { ChatEmptyState } from '@/pages/chat/components/chat-empty-state/chat-empty-state'
@@ -11,11 +12,14 @@ import { ChatHistory } from '@/pages/chat/components/chat-history/chat-history'
 import { ChatHistorySkeleton } from '@/pages/chat/components/chat-history/chat-history-skeleton'
 import { ChatTopBanner } from '@/pages/chat/components/chat-top-banner/chat-top-banner'
 import { ChatTopBar } from '@/pages/chat/components/chat-top-bar/chat-top-bar'
+import { MessageActionsMenu } from '@/pages/chat/components/message-actions-menu/message-actions-menu'
+import { MessageTraceSheet } from '@/pages/chat/components/message-trace-sheet/message-trace-sheet'
 import { ActiveTaskPicker } from '@/pages/chat/components/task-picker/active-task-picker'
 import { useChatMessages } from '@/pages/chat/hooks/use-chat-messages'
 import { useKeyboardHeight } from '@/pages/chat/hooks/use-keyboard-height'
 import { useScrollToBottom } from '@/pages/chat/hooks/use-scroll-to-bottom'
 import { useMessagesStore } from '@/pages/chat/stores/messages-store'
+import { useMessageTraceStore } from '@/pages/chat/stores/message-trace-store'
 
 const FOOTER_GAP = 16
 
@@ -32,6 +36,13 @@ export function Chat() {
   const router = useRouter()
   const [footerHeight, setFooterHeight] = useState(0)
   const [headerHeight, setHeaderHeight] = useState(0)
+
+  const traceTarget = useMessageTraceStore((store) => store.traceTarget)
+  const closeTrace = useMessageTraceStore((store) => store.closeTrace)
+  const resetTrace = useMessageTraceStore((store) => store.reset)
+  const { height: windowHeight } = useWindowDimensions()
+
+  useEffect(() => () => resetTrace(), [resetTrace])
 
   useEffect(() => stopTyping, [stopTyping])
 
@@ -103,6 +114,23 @@ export function Chat() {
             />
           </View>
         </View>
+
+        <MessageActionsMenu />
+
+        <SettingsSheetOverlay
+          isOpen={traceTarget != null}
+          onClose={closeTrace}
+          slideOffset={windowHeight}
+        >
+          {traceTarget && (
+            <MessageTraceSheet
+              messageId={traceTarget.messageId}
+              createdAt={traceTarget.createdAt}
+              initialTab={traceTarget.tab}
+              onClose={closeTrace}
+            />
+          )}
+        </SettingsSheetOverlay>
       </View>
     </SafeAreaView>
   )

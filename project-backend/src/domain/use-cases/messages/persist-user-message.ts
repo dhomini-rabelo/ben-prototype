@@ -20,6 +20,7 @@ export class PersistUserMessageUseCase implements UseCase<
       role: 'user',
       content: payload.content,
       capture: null,
+      trace: null,
       createdAt: new Date(),
     })
 
