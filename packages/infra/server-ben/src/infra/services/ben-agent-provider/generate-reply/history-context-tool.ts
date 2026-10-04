@@ -1,4 +1,4 @@
-import { ResolveHistoryContext } from '@/adapters/agent-provider'
+import { ResolveHistoryContext } from '@ben/adapters'
 import { tool } from 'ai'
 import { z } from 'zod'
 

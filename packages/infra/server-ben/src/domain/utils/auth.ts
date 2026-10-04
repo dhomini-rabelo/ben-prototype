@@ -1,4 +1,4 @@
-import { AuthProviderService } from '@/adapters/auth-provider'
+import { AuthProviderService } from '@ben/adapters'
 import { DangerErrors, DomainError } from '@ben/domain-base'
 
 export async function getUserFromProviderTokenOrThrow(

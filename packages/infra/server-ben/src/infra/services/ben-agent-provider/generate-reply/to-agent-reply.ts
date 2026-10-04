@@ -1,4 +1,4 @@
-import { AgentReply } from '@/adapters/agent-provider'
+import { AgentReply } from '@ben/adapters'
 import { z } from 'zod'
 import { agentReplySchema } from './schemas'
 

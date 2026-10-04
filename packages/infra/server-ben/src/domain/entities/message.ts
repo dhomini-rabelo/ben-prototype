@@ -1,4 +1,4 @@
-import { AgentCallTrace } from '@/adapters/agent-call-trace'
+import { AgentCallTrace } from '@ben/adapters'
 import { Entity } from '@ben/domain-base'
 import { ID } from '@ben/domain-base'
 

@@ -1,4 +1,4 @@
-import { ExpiredTokenState, JwtService, ValidTokenState } from '@/adapters/jwt'
+import { ExpiredTokenState, JwtService, ValidTokenState } from '@ben/adapters'
 
 export class FakeJwtService extends JwtService {
   public generatedFor: string[] = []

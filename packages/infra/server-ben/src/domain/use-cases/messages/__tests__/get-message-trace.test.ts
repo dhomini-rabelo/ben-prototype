@@ -6,7 +6,7 @@ import { expectError, some } from '@/modules/tests'
 
 import { InMemoryMessageRepository } from '@/domain/__tests__/repositories/message'
 import { MessageFactory } from '@/domain/__tests__/factories/message'
-import { AgentCallTrace } from '@/adapters/agent-call-trace'
+import { AgentCallTrace } from '@ben/adapters'
 import { GetMessageTraceUseCase } from '../get-message-trace'
 
 const trace: AgentCallTrace = {

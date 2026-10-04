@@ -1,8 +1,5 @@
-import {
-  AuthProviderService,
-  GetUserFromTokenResponse,
-} from '@/adapters/auth-provider'
-import { JwtService } from '@/adapters/jwt'
+import { AuthProviderService, GetUserFromTokenResponse } from '@ben/adapters'
+import { JwtService } from '@ben/adapters'
 import { UserRepository } from '@/adapters/repositories/user-repository'
 import { User } from '@/domain/entities/user'
 import { getUserFromProviderTokenOrThrow } from '@/domain/utils/auth'

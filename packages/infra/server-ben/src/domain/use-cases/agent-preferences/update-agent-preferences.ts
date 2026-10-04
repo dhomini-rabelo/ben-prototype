@@ -1,8 +1,6 @@
+import { AgentModelSelection } from '@ben/adapters'
 import { UserRepository } from '@/adapters/repositories/user-repository'
-import {
-  AgentModelSelection,
-  findAgentModel,
-} from '@/domain/utils/agent-models'
+import { findAgentModel } from '@/domain/utils/agent-models'
 import { createID } from '@ben/domain-base'
 import { ValidationError } from '@ben/domain-base'
 import { ItemResponse } from '@ben/domain-base'

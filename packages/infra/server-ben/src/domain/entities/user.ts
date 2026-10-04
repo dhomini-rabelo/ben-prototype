@@ -1,10 +1,6 @@
 import { Entity } from '@ben/domain-base'
 import { ID } from '@ben/domain-base'
-
-export type AgentModelSlug =
-  'openai/gpt-5.6-luna' | 'deepseek/deepseek-v4.1-flash' | 'z-ai/glm-5.3-flash'
-
-export type AgentEffort = 'none' | 'low' | 'medium' | 'high' | 'xhigh' | 'max'
+import { AgentEffort, AgentModelSlug } from '@ben/adapters'
 
 export interface UserProps {
   name: string

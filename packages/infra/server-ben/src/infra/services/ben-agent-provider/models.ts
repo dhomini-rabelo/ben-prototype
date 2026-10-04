@@ -1,4 +1,4 @@
-import { AgentModelSelection } from '@/domain/utils/agent-models'
+import { AgentModelSelection } from '@ben/adapters'
 import { env } from '@ben/modules-env'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'

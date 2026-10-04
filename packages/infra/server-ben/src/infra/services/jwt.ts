@@ -1,4 +1,4 @@
-import { ExpiredTokenState, JwtService, ValidTokenState } from '@/adapters/jwt'
+import { ExpiredTokenState, JwtService, ValidTokenState } from '@ben/adapters'
 
 import jwt from 'jsonwebtoken'
 

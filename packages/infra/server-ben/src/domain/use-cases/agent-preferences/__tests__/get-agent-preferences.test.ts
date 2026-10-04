@@ -6,7 +6,7 @@ import { ResourceNotFoundError } from '@ben/domain-base'
 import { InMemoryUserRepository } from '@/domain/__tests__/repositories/user'
 import { UserFactory } from '@/domain/__tests__/factories/user'
 import { GetAgentPreferencesUseCase } from '@/domain/use-cases/agent-preferences/get-agent-preferences'
-import { AgentModelSlug } from '@/domain/entities/user'
+import { AgentModelSlug } from '@ben/adapters'
 
 describe('GetAgentPreferencesUseCase', () => {
   let userRepository: InMemoryUserRepository

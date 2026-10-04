@@ -1,5 +1,14 @@
-import { AgentCallTrace } from '@/adapters/agent-call-trace'
-import { AgentModelSelection } from '@/domain/utils/agent-models'
+import { AgentCallTrace } from '@ben/adapters/ports/agent-call-trace'
+
+export type AgentModelSlug =
+  'openai/gpt-5.6-luna' | 'deepseek/deepseek-v4.1-flash' | 'z-ai/glm-5.3-flash'
+
+export type AgentEffort = 'none' | 'low' | 'medium' | 'high' | 'xhigh' | 'max'
+
+export type AgentModelSelection = {
+  modelSlug: AgentModelSlug
+  effort: AgentEffort
+}
 
 /**
  * Identifies a recurring subject for a user.

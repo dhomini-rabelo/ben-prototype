@@ -1,4 +1,4 @@
-import { AgentCallTrace } from '@/adapters/agent-call-trace'
+import { AgentCallTrace } from '@ben/adapters'
 import { MessageRepository } from '@/adapters/repositories/message-repository'
 import { Message, MessageCapture } from '@/domain/entities/message'
 import { createID } from '@ben/domain-base'

@@ -4,7 +4,7 @@ import { createID } from '@ben/domain-base'
 import { some } from '@/modules/tests'
 
 import { InMemoryMessageRepository } from '@/domain/__tests__/repositories/message'
-import { AgentCallTrace } from '@/adapters/agent-call-trace'
+import { AgentCallTrace } from '@ben/adapters'
 import { MessageCapture } from '@/domain/entities/message'
 import { PersistBenMessageUseCase } from '../persist-ben-message'
 

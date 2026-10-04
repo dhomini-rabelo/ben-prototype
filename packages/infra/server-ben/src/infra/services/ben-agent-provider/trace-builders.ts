@@ -5,8 +5,8 @@ import {
   AgentCallToolDefinition,
   AgentCallTrace,
   AgentCallUsage,
-} from '@/adapters/agent-call-trace'
-import { AgentModelSelection } from '@/domain/utils/agent-models'
+} from '@ben/adapters'
+import { AgentModelSelection } from '@ben/adapters'
 
 type UsageLike = {
   inputTokens: number | undefined

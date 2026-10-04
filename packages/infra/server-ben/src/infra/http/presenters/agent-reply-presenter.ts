@@ -1,4 +1,4 @@
-import { AgentReply } from '@/adapters/agent-provider'
+import { AgentReply } from '@ben/adapters'
 import { CaptureView } from '@/adapters/capture-view'
 
 export class AgentReplyPresenter {

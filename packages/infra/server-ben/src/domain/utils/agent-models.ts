@@ -1,15 +1,10 @@
-import { AgentEffort, AgentModelSlug } from '@/domain/entities/user'
+import { AgentEffort, AgentModelSelection, AgentModelSlug } from '@ben/adapters'
 
 export type AgentModelOption = {
   slug: AgentModelSlug
   label: string
   efforts: AgentEffort[]
   defaultEffort: AgentEffort
-}
-
-export type AgentModelSelection = {
-  modelSlug: AgentModelSlug
-  effort: AgentEffort
 }
 
 export const AGENT_MODELS: AgentModelOption[] = [

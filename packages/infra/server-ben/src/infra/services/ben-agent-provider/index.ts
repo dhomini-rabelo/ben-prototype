@@ -4,7 +4,7 @@ import {
   GenerateReplyResult,
   GenerateTaskTurnPayload,
   TaskTurnReply,
-} from '@/adapters/agent-provider'
+} from '@ben/adapters'
 import { generateText, Output, stepCountIs } from 'ai'
 import { z } from 'zod'
 import { buildFormatSystemPrompt } from './generate-reply/format-system-prompt'

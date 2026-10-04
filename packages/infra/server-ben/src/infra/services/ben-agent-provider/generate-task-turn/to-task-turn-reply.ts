@@ -1,4 +1,4 @@
-import { TaskTurnReply } from '@/adapters/agent-provider'
+import { TaskTurnReply } from '@ben/adapters'
 import { z } from 'zod'
 import { taskTurnReplySchema } from './schemas'
 

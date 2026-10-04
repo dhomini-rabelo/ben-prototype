@@ -4,7 +4,7 @@ import {
   GenerateReplyResult,
   GenerateTaskTurnPayload,
   TaskTurnReply,
-} from '@/adapters/agent-provider'
+} from '@ben/adapters'
 
 export class FakeAgentService implements AgentService {
   public receivedPayloads: GenerateTaskTurnPayload[] = []

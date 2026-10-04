@@ -2,7 +2,7 @@ import {
   TranscribePayload,
   TranscribeResponse,
   TranscriptionProvider,
-} from '@/adapters/transcription-provider'
+} from '@ben/adapters'
 import { AssemblyAI } from 'assemblyai'
 import { env } from '@ben/modules-env'
 

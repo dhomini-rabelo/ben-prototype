@@ -2,7 +2,7 @@ import {
   AuthProviderService,
   GetUserFromTokenPayload,
   GetUserFromTokenResponse,
-} from '@/adapters/auth-provider'
+} from '@ben/adapters'
 
 export class FakeAuthProviderService implements AuthProviderService {
   public calls = 0

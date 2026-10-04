@@ -2,7 +2,7 @@ import {
   TranscribePayload,
   TranscribeResponse,
   TranscriptionProvider,
-} from '@/adapters/transcription-provider'
+} from '@ben/adapters'
 
 export class FakeTranscriptionProvider implements TranscriptionProvider {
   public receivedPayloads: TranscribePayload[] = []

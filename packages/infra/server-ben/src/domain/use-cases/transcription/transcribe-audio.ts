@@ -1,4 +1,4 @@
-import { TranscriptionProvider } from '@/adapters/transcription-provider'
+import { TranscriptionProvider } from '@ben/adapters'
 import { ValidationError } from '@ben/domain-base'
 import { UseCase } from '@ben/domain-base'
 

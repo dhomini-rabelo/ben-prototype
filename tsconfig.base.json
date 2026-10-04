@@ -13,6 +13,8 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "paths": {
+      "@ben/adapters": ["./packages/adapters/src/index.ts"],
+      "@ben/adapters/*": ["./packages/adapters/src/*"],
       "@ben/domain-base": ["./packages/domain/base/src/index.ts"],
       "@ben/domain-base/*": ["./packages/domain/base/src/*"],
       "@ben/modules-utils": ["./packages/modules/utils/src/index.ts"],

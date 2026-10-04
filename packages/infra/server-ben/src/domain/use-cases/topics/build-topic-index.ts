@@ -1,5 +1,5 @@
 import { TopicRepository } from '@/adapters/repositories/topic-repository'
-import { TopicKey } from '@/adapters/agent-provider'
+import { TopicKey } from '@ben/adapters'
 import { createID } from '@ben/domain-base'
 import { UseCase } from '@ben/domain-base'
 
