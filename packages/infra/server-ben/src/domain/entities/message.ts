@@ -1,6 +1,6 @@
 import { AgentCallTrace } from '@/adapters/agent-call-trace'
-import { Entity } from '@/modules/domain/entity/entity'
-import { ID } from '@/modules/domain/entity/id'
+import { Entity } from '@ben/domain-base'
+import { ID } from '@ben/domain-base'
 
 export type MessageRole = 'user' | 'ben'
 

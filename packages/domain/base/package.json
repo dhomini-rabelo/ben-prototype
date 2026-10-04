@@ -1,0 +1,12 @@
+{
+  "name": "@ben/domain-base",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": { ".": "./src/index.ts", "./*": "./src/*.ts" },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": { "@ben/modules-utils": "workspace:*", "lodash-es": "^4.17.21" },
+  "devDependencies": { "@types/lodash-es": "^4.17.12", "@types/node": "^22.15.29", "typescript": "^5.9.3" }
+}

@@ -1,6 +1,6 @@
 import { Note, NoteProps } from '@/domain/entities/note'
-import { Serialize, WithID } from '@/modules/domain/types'
-import { OverWrite } from '@/modules/utils/types'
+import { Serialize, WithID } from '@ben/domain-base'
+import { OverWrite } from '@ben/modules-utils'
 
 type NoteHttp = OverWrite<
   Omit<Serialize<WithID<NoteProps>>, 'userId' | 'createdAt'>,

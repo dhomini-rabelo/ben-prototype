@@ -1,7 +1,7 @@
 import { ListNotesUseCase } from '@/domain/use-cases/captures/list-notes'
 import { NotePresenter } from '@/infra/http/presenters/note-presenter'
 import { noteRepository } from '@/infra/http/repositories'
-import { HttpStatus } from '@/modules/utils/http'
+import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'
 
 const listNotesUseCase = new ListNotesUseCase(noteRepository)

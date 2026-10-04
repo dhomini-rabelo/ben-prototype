@@ -1,5 +1,5 @@
 import { AgentModelSelection } from '@/domain/utils/agent-models'
-import { env } from '@/infra/services/env'
+import { env } from '@ben/modules-env'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 import type { LanguageModel } from 'ai'

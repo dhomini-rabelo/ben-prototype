@@ -11,6 +11,14 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "@ben/domain-base": ["./packages/domain/base/src/index.ts"],
+      "@ben/domain-base/*": ["./packages/domain/base/src/*"],
+      "@ben/modules-utils": ["./packages/modules/utils/src/index.ts"],
+      "@ben/modules-utils/*": ["./packages/modules/utils/src/*"],
+      "@ben/modules-env": ["./packages/modules/env/src/index.ts"],
+      "@ben/modules-env/*": ["./packages/modules/env/src/*"]
+    }
   }
 }

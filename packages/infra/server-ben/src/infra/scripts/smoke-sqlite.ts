@@ -4,7 +4,7 @@ import { PrismaClient } from '@/generated/prisma/client'
 
 import { Task, TaskProps, PendingDiff } from '@/domain/entities/task'
 
-import { ID, createID } from '@/modules/domain/entity/id'
+import { ID, createID } from '@ben/domain-base'
 import {
   BetweenQuery,
   ContainsQuery,
@@ -14,11 +14,8 @@ import {
   NotEqualQuery,
   NotInQuery,
   NotNullQuery,
-} from '@/modules/domain/repository/queries'
-import {
-  RepeatedResource,
-  ResourceNotFoundError,
-} from '@/modules/domain/repository/repository-errors'
+} from '@ben/domain-base'
+import { RepeatedResource, ResourceNotFoundError } from '@ben/domain-base'
 
 import { createPrismaClient } from '@/infra/services/prisma'
 import { SqliteReminderRepository } from '@/infra/services/repositories/sqlite-reminder-repository'

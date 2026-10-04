@@ -11,9 +11,9 @@ import {
   TodoItemWithDiff,
 } from '@/domain/entities/task'
 import { AgentModelSelection } from '@/domain/utils/agent-models'
-import { createID } from '@/modules/domain/entity/id'
-import { ItemResponse } from '@/modules/domain/responses'
-import { UseCase } from '@/modules/domain/use-case'
+import { createID } from '@ben/domain-base'
+import { ItemResponse } from '@ben/domain-base'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   userId: string

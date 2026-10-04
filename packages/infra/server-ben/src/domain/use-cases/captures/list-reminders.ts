@@ -1,8 +1,8 @@
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
 import { Reminder } from '@/domain/entities/reminder'
-import { createID } from '@/modules/domain/entity/id'
-import { ListingResponse } from '@/modules/domain/responses'
-import { UseCase } from '@/modules/domain/use-case'
+import { createID } from '@ben/domain-base'
+import { ListingResponse } from '@ben/domain-base'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   userId: string

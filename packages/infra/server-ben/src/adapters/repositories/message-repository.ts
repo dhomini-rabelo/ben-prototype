@@ -1,4 +1,4 @@
-import { Repository } from '@/modules/domain/repository/repository'
+import { Repository } from '@ben/domain-base'
 
 import { Message } from '@/domain/entities/message'
 

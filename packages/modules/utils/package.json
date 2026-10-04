@@ -1,0 +1,11 @@
+{
+  "name": "@ben/modules-utils",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": { ".": "./src/index.ts", "./*": "./src/*.ts" },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": { "@types/node": "^22.15.29", "typescript": "^5.9.3" }
+}

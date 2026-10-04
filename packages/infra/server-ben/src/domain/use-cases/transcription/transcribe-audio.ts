@@ -1,6 +1,6 @@
 import { TranscriptionProvider } from '@/adapters/transcription-provider'
-import { ValidationError } from '@/modules/domain/domain-errors'
-import { UseCase } from '@/modules/domain/use-case'
+import { ValidationError } from '@ben/domain-base'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   audio: Buffer

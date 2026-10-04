@@ -1,7 +1,7 @@
 import { GetMessageTraceUseCase } from '@/domain/use-cases/messages/get-message-trace'
 import { MessageTracePresenter } from '@/infra/http/presenters/message-trace-presenter'
 import { messageRepository } from '@/infra/http/repositories'
-import { HttpStatus } from '@/modules/utils/http'
+import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 

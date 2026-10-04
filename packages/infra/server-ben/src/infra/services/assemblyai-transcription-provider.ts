@@ -4,7 +4,7 @@ import {
   TranscriptionProvider,
 } from '@/adapters/transcription-provider'
 import { AssemblyAI } from 'assemblyai'
-import { env } from './env'
+import { env } from '@ben/modules-env'
 
 const client = new AssemblyAI({ apiKey: env.ASSEMBLYAI_API_KEY })
 

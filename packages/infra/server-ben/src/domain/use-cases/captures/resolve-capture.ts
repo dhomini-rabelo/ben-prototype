@@ -3,9 +3,9 @@ import { NoteRepository } from '@/adapters/repositories/note-repository'
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { MessageCapture } from '@/domain/entities/message'
-import { ID } from '@/modules/domain/entity/id'
-import { ItemResponse } from '@/modules/domain/responses'
-import { UseCase } from '@/modules/domain/use-case'
+import { ID } from '@ben/domain-base'
+import { ItemResponse } from '@ben/domain-base'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   capture: MessageCapture

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { createID } from '@/modules/domain/entity/id'
+import { createID } from '@ben/domain-base'
 
 import { InMemoryNoteRepository } from '@/domain/__tests__/repositories/note'
 import { NoteFactory } from '@/domain/__tests__/factories/note'

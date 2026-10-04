@@ -1,7 +1,7 @@
 import { TopicRepository } from '@/adapters/repositories/topic-repository'
 import { TopicKey } from '@/adapters/agent-provider'
-import { createID } from '@/modules/domain/entity/id'
-import { UseCase } from '@/modules/domain/use-case'
+import { createID } from '@ben/domain-base'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   userId: string

@@ -1,4 +1,4 @@
-import { createID } from '@/modules/domain/entity/id'
+import { createID } from '@ben/domain-base'
 import { Factory, some } from '@/modules/tests'
 
 import { Reminder, ReminderProps } from '@/domain/entities/reminder'

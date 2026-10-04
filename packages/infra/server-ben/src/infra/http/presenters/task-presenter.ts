@@ -1,6 +1,6 @@
 import { PendingDiff, Task, TaskProps } from '@/domain/entities/task'
-import { Serialize, WithID } from '@/modules/domain/types'
-import { OverWrite } from '@/modules/utils/types'
+import { Serialize, WithID } from '@ben/domain-base'
+import { OverWrite } from '@ben/modules-utils'
 
 export class TaskPresenter {
   static toHttp(

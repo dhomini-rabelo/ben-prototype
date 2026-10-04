@@ -1,5 +1,5 @@
 import { Message, MessageProps } from '@/domain/entities/message'
-import { Serialize, WithID } from '@/modules/domain/types'
+import { Serialize, WithID } from '@ben/domain-base'
 
 export class MessageTracePresenter {
   static toHttp(

@@ -6,7 +6,7 @@ import { JwtService } from '@/adapters/jwt'
 import { UserRepository } from '@/adapters/repositories/user-repository'
 import { User } from '@/domain/entities/user'
 import { getUserFromProviderTokenOrThrow } from '@/domain/utils/auth'
-import { UseCase } from '@/modules/domain/use-case'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   token: string

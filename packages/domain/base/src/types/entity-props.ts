@@ -1,4 +1,4 @@
-import { ID } from './entity/id'
+import { ID } from '@ben/domain-base/entity/id'
 
 export type WithID<Props> = Props & {
   id: ID

@@ -1,7 +1,7 @@
 import { TranscribeAudioUseCase } from '@/domain/use-cases/transcription/transcribe-audio'
 import { AssemblyAITranscriptionProvider } from '@/infra/services/assemblyai-transcription-provider'
-import { ValidationError } from '@/modules/domain/domain-errors'
-import { HttpStatus } from '@/modules/utils/http'
+import { ValidationError } from '@ben/domain-base'
+import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'
 
 const transcriptionProvider = new AssemblyAITranscriptionProvider()

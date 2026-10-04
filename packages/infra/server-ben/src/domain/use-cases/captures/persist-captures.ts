@@ -3,9 +3,9 @@ import { NoteRepository } from '@/adapters/repositories/note-repository'
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { NoteDraft, ReminderDraft, TaskDraft } from '@/adapters/agent-provider'
-import { ID, createID } from '@/modules/domain/entity/id'
-import { ListingResponse } from '@/modules/domain/responses'
-import { UseCase } from '@/modules/domain/use-case'
+import { ID, createID } from '@ben/domain-base'
+import { ListingResponse } from '@ben/domain-base'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   userId: string

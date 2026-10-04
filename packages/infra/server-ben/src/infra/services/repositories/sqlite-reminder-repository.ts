@@ -1,4 +1,4 @@
-import { EntityWithStatic } from '@/modules/domain/entity/entity'
+import { EntityWithStatic } from '@ben/domain-base'
 
 import { Reminder } from '@/domain/entities/reminder'
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'

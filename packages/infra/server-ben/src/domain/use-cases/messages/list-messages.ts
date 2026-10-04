@@ -1,8 +1,8 @@
 import { MessageRepository } from '@/adapters/repositories/message-repository'
 import { Message } from '@/domain/entities/message'
-import { createID } from '@/modules/domain/entity/id'
-import { CursorPaginationResponse } from '@/modules/domain/repository/repository'
-import { UseCase } from '@/modules/domain/use-case'
+import { createID } from '@ben/domain-base'
+import { CursorPaginationResponse } from '@ben/domain-base'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   userId: string

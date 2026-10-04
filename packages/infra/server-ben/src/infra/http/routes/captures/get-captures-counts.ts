@@ -5,7 +5,7 @@ import {
   reminderRepository,
   taskRepository,
 } from '@/infra/http/repositories'
-import { HttpStatus } from '@/modules/utils/http'
+import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'
 
 const getCapturesCountsUseCase = new GetCapturesCountsUseCase(

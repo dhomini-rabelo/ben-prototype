@@ -6,7 +6,7 @@ import {
 
 import { cert, getApp, getApps, initializeApp } from 'firebase-admin/app'
 import { getAuth } from 'firebase-admin/auth'
-import { env } from './env'
+import { env } from '@ben/modules-env'
 
 function getFirebaseAuth() {
   const app =

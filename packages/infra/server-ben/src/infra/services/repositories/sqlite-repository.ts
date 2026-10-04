@@ -1,11 +1,11 @@
 import { Prisma, PrismaClient } from '@/generated/prisma/client'
 
-import { Entity, EntityWithStatic } from '@/modules/domain/entity/entity'
-import { ID, createID } from '@/modules/domain/entity/id'
-import { ValueObject } from '@/modules/domain/entity/value-object'
-import { WithID } from '@/modules/domain/types'
-import { AnyRecord, Complement } from '@/modules/utils/types'
-import { decodeCursor, encodeCursor } from '@/modules/domain/repository/cursor'
+import { Entity, EntityWithStatic } from '@ben/domain-base'
+import { ID, createID } from '@ben/domain-base'
+import { ValueObject } from '@ben/domain-base'
+import { WithID } from '@ben/domain-base'
+import { AnyRecord, Complement } from '@ben/modules-utils'
+import { decodeCursor, encodeCursor } from '@ben/domain-base'
 import {
   BetweenQuery,
   ContainsQuery,
@@ -16,18 +16,15 @@ import {
   NotInQuery,
   Query,
   QueryTypes,
-} from '@/modules/domain/repository/queries'
+} from '@ben/domain-base'
 import {
   CursorPaginationResponse,
   CursorQueryFilters,
   PaginationResponse,
   QueryFilters,
   Repository,
-} from '@/modules/domain/repository/repository'
-import {
-  RepeatedResource,
-  ResourceNotFoundError,
-} from '@/modules/domain/repository/repository-errors'
+} from '@ben/domain-base'
+import { RepeatedResource, ResourceNotFoundError } from '@ben/domain-base'
 
 import { SqliteRow, TypeMap, TypeTag } from './sqlite-repository-types'
 

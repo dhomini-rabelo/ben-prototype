@@ -1,9 +1,9 @@
 import { TaskRepository } from '@/adapters/repositories/task-repository'
 import { Task } from '@/domain/entities/task'
-import { createID } from '@/modules/domain/entity/id'
-import { NotEqualQuery } from '@/modules/domain/repository/queries'
-import { ListingResponse } from '@/modules/domain/responses'
-import { UseCase } from '@/modules/domain/use-case'
+import { createID } from '@ben/domain-base'
+import { NotEqualQuery } from '@ben/domain-base'
+import { ListingResponse } from '@ben/domain-base'
+import { UseCase } from '@ben/domain-base'
 
 export type ListTasksFilter = 'active' | 'finished'
 

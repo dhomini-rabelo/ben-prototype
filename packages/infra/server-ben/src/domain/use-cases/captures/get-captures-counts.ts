@@ -1,10 +1,10 @@
 import { NoteRepository } from '@/adapters/repositories/note-repository'
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
 import { TaskRepository } from '@/adapters/repositories/task-repository'
-import { ID, createID } from '@/modules/domain/entity/id'
-import { NotEqualQuery } from '@/modules/domain/repository/queries'
-import { ItemResponse } from '@/modules/domain/responses'
-import { UseCase } from '@/modules/domain/use-case'
+import { ID, createID } from '@ben/domain-base'
+import { NotEqualQuery } from '@ben/domain-base'
+import { ItemResponse } from '@ben/domain-base'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   userId: string

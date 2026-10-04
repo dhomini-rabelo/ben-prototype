@@ -3,7 +3,7 @@ import { CreateTaskMessageUseCase } from '@/domain/use-cases/tasks/create-task-m
 import { TaskPresenter } from '@/infra/http/presenters/task-presenter'
 import { taskRepository, userRepository } from '@/infra/http/repositories'
 import { BenAgentProviderService } from '@/infra/services/ben-agent-provider'
-import { HttpStatus } from '@/modules/utils/http'
+import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 

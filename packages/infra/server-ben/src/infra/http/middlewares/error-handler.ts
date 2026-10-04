@@ -1,10 +1,6 @@
-import {
-  DangerErrors,
-  DomainError,
-  ValidationError,
-} from '@/modules/domain/domain-errors'
-import { ResourceNotFoundError } from '@/modules/domain/repository/repository-errors'
-import { HttpStatus } from '@/modules/utils/http'
+import { DangerErrors, DomainError, ValidationError } from '@ben/domain-base'
+import { ResourceNotFoundError } from '@ben/domain-base'
+import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'
 import { ZodError, ZodFormattedError } from 'zod'
 

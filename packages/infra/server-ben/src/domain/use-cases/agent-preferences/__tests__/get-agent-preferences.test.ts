@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { expectError, some } from '@/modules/tests'
-import { ResourceNotFoundError } from '@/modules/domain/repository/repository-errors'
+import { ResourceNotFoundError } from '@ben/domain-base'
 
 import { InMemoryUserRepository } from '@/domain/__tests__/repositories/user'
 import { UserFactory } from '@/domain/__tests__/factories/user'

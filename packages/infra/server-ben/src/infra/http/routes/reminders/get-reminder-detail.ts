@@ -1,7 +1,7 @@
 import { GetReminderDetailUseCase } from '@/domain/use-cases/captures/get-reminder-detail'
 import { ReminderPresenter } from '@/infra/http/presenters/reminder-presenter'
 import { reminderRepository } from '@/infra/http/repositories'
-import { HttpStatus } from '@/modules/utils/http'
+import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 

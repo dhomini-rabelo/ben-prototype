@@ -2,7 +2,7 @@ import { AuthProviderService } from '@/adapters/auth-provider'
 import { JwtService } from '@/adapters/jwt'
 import { UserRepository } from '@/adapters/repositories/user-repository'
 import { getUserFromProviderTokenOrThrow } from '@/domain/utils/auth'
-import { UseCase } from '@/modules/domain/use-case'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   jwtToken: string

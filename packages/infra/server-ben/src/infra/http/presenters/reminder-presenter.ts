@@ -1,6 +1,6 @@
 import { Reminder, ReminderProps } from '@/domain/entities/reminder'
-import { Serialize, WithID } from '@/modules/domain/types'
-import { OverWrite } from '@/modules/utils/types'
+import { Serialize, WithID } from '@ben/domain-base'
+import { OverWrite } from '@ben/modules-utils'
 
 type ReminderStatus = 'upcoming' | 'fired'
 

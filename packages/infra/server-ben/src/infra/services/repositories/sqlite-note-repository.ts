@@ -1,4 +1,4 @@
-import { EntityWithStatic } from '@/modules/domain/entity/entity'
+import { EntityWithStatic } from '@ben/domain-base'
 
 import { Note } from '@/domain/entities/note'
 import { NoteRepository } from '@/adapters/repositories/note-repository'

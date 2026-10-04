@@ -16,6 +16,9 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.80",
+    "@ben/domain-base": "workspace:*",
+    "@ben/modules-env": "workspace:*",
+    "@ben/modules-utils": "workspace:*",
     "@openrouter/ai-sdk-provider": "^2.9.0",
     "@prisma/adapter-better-sqlite3": "7.10.0",
     "@prisma/client": "7.10.0",

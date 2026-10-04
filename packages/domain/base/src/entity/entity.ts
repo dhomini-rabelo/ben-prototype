@@ -1,4 +1,4 @@
-import { ID, createID } from '@/modules/domain/entity/id'
+import { ID, createID } from '@ben/domain-base/entity/id'
 
 export abstract class Entity<Props extends Record<string, any> = any> {
   private _id: ID

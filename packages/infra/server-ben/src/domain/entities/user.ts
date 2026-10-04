@@ -1,5 +1,5 @@
-import { Entity } from '@/modules/domain/entity/entity'
-import { ID } from '@/modules/domain/entity/id'
+import { Entity } from '@ben/domain-base'
+import { ID } from '@ben/domain-base'
 
 export type AgentModelSlug =
   'openai/gpt-5.6-luna' | 'deepseek/deepseek-v4.1-flash' | 'z-ai/glm-5.3-flash'

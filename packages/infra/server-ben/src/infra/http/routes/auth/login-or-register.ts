@@ -1,10 +1,10 @@
 import { LoginOrRegisterUseCase } from '@/domain/use-cases/auth/login-or-register'
 import { UserPresenter } from '@/infra/http/presenters/user-presenter'
 import { userRepository } from '@/infra/http/repositories'
-import { env } from '@/infra/services/env'
+import { env } from '@ben/modules-env'
 import { FirebaseAuthProviderService } from '@/infra/services/firebase-auth-provider'
 import { JsonWebTokenJwtService } from '@/infra/services/jwt'
-import { HttpStatus } from '@/modules/utils/http'
+import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 

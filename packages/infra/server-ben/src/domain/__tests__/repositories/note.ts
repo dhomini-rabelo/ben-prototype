@@ -1,5 +1,5 @@
-import { EntityWithStatic } from '@/modules/domain/entity/entity'
-import { InMemoryRepository } from '@/modules/domain/repository/repository'
+import { EntityWithStatic } from '@ben/domain-base'
+import { InMemoryRepository } from '@ben/domain-base'
 
 import { Note } from '@/domain/entities/note'
 import { NoteRepository } from '@/adapters/repositories/note-repository'

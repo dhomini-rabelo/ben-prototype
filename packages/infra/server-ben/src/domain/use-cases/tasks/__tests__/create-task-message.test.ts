@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { createID } from '@/modules/domain/entity/id'
-import { ResourceNotFoundError } from '@/modules/domain/repository/repository-errors'
+import { createID } from '@ben/domain-base'
+import { ResourceNotFoundError } from '@ben/domain-base'
 import { FakeAgentService, expectError, some } from '@/modules/tests'
 
 import { TaskTurnReply } from '@/adapters/agent-provider'

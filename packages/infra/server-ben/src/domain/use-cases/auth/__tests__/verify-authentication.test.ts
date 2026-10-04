@@ -6,8 +6,8 @@ import {
   expectError,
   some,
 } from '@/modules/tests'
-import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
-import { ResourceNotFoundError } from '@/modules/domain/repository/repository-errors'
+import { DangerErrors, DomainError } from '@ben/domain-base'
+import { ResourceNotFoundError } from '@ben/domain-base'
 
 import { InMemoryUserRepository } from '@/domain/__tests__/repositories/user'
 import { UserFactory } from '@/domain/__tests__/factories/user'

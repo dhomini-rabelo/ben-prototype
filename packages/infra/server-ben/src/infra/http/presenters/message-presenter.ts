@@ -1,7 +1,7 @@
 import { CaptureView } from '@/adapters/capture-view'
 import { Message, MessageProps } from '@/domain/entities/message'
-import { Serialize, WithID } from '@/modules/domain/types'
-import { OverWrite } from '@/modules/utils/types'
+import { Serialize, WithID } from '@ben/domain-base'
+import { OverWrite } from '@ben/modules-utils'
 
 export class MessagePresenter {
   static toHttp(

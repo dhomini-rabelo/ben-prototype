@@ -21,7 +21,7 @@ const envSchema = z.object({
   OPENROUTER_API_KEY: z.string(),
   ASSEMBLYAI_API_KEY: z.string(),
   PERSISTENCE_DRIVER: z.enum(['in-memory', 'sqlite']).default('in-memory'),
-  DATABASE_URL: z.string().default('file:./prisma/dev.db'),
+  DATABASE_URL: z.string().optional(),
 })
 
 const schema = envSchema.safeParse(process.env)

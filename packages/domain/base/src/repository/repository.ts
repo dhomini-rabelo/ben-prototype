@@ -1,8 +1,8 @@
-import { AnyRecord, Complement, KeyOf } from '@/modules/utils/types'
+import { AnyRecord, Complement, KeyOf } from '@ben/modules-utils'
 
-import { Entity, EntityWithStatic } from '@/modules/domain/entity/entity'
-import { ID } from '@/modules/domain/entity/id'
-import { WithID } from '@/modules/domain/types'
+import { Entity, EntityWithStatic } from '@ben/domain-base/entity/entity'
+import { ID } from '@ben/domain-base/entity/id'
+import { WithID } from '@ben/domain-base/types/entity-props'
 import {
   BetweenQuery,
   ContainsQuery,
@@ -16,7 +16,7 @@ import {
 } from './queries'
 import { RepeatedResource, ResourceNotFoundError } from './repository-errors'
 
-import { ValueObject } from '@/modules/domain/entity/value-object'
+import { ValueObject } from '@ben/domain-base/entity/value-object'
 import { cloneDeep } from 'lodash-es'
 import { decodeCursor, encodeCursor } from './cursor'
 

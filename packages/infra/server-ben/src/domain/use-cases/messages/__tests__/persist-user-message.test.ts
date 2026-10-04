@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { createID } from '@/modules/domain/entity/id'
+import { createID } from '@ben/domain-base'
 import { some } from '@/modules/tests'
 
 import { InMemoryMessageRepository } from '@/domain/__tests__/repositories/message'

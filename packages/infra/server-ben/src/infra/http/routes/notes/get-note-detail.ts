@@ -1,7 +1,7 @@
 import { GetNoteDetailUseCase } from '@/domain/use-cases/captures/get-note-detail'
 import { NotePresenter } from '@/infra/http/presenters/note-presenter'
 import { noteRepository } from '@/infra/http/repositories'
-import { HttpStatus } from '@/modules/utils/http'
+import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 

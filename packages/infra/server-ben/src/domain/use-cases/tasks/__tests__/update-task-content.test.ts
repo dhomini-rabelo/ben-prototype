@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { DangerErrors, DomainError } from '@/modules/domain/domain-errors'
-import { createID } from '@/modules/domain/entity/id'
-import { ResourceNotFoundError } from '@/modules/domain/repository/repository-errors'
+import { DangerErrors, DomainError } from '@ben/domain-base'
+import { createID } from '@ben/domain-base'
+import { ResourceNotFoundError } from '@ben/domain-base'
 import { expectError, some } from '@/modules/tests'
 
 import { TaskFactory } from '@/domain/__tests__/factories/task'

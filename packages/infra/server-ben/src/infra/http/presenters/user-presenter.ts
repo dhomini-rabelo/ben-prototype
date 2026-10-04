@@ -1,5 +1,5 @@
 import { User, UserProps } from '@/domain/entities/user'
-import { Serialize, WithID } from '@/modules/domain/types'
+import { Serialize, WithID } from '@ben/domain-base'
 
 export class UserPresenter {
   static toHttp(

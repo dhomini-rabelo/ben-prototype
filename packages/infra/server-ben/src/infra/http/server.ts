@@ -1,5 +1,5 @@
 import app from '@/infra/http/app'
-import { env } from '@/infra/services/env'
+import { env } from '@ben/modules-env'
 
 async function bootstrap() {
   app.listen(env.API_PORT, () => {

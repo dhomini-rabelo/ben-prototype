@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { expectError, some } from '@/modules/tests'
-import { ValidationError } from '@/modules/domain/domain-errors'
-import { ResourceNotFoundError } from '@/modules/domain/repository/repository-errors'
+import { ValidationError } from '@ben/domain-base'
+import { ResourceNotFoundError } from '@ben/domain-base'
 
 import { InMemoryUserRepository } from '@/domain/__tests__/repositories/user'
 import { UserFactory } from '@/domain/__tests__/factories/user'

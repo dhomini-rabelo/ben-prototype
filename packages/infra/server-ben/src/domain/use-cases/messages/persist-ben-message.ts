@@ -1,9 +1,9 @@
 import { AgentCallTrace } from '@/adapters/agent-call-trace'
 import { MessageRepository } from '@/adapters/repositories/message-repository'
 import { Message, MessageCapture } from '@/domain/entities/message'
-import { createID } from '@/modules/domain/entity/id'
-import { ItemResponse } from '@/modules/domain/responses'
-import { UseCase } from '@/modules/domain/use-case'
+import { createID } from '@ben/domain-base'
+import { ItemResponse } from '@ben/domain-base'
+import { UseCase } from '@ben/domain-base'
 
 interface Payload {
   userId: string
