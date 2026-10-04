@@ -5,9 +5,7 @@ export type MenuView = 'menu' | 'tasks' | 'notes' | 'reminders'
 export type MenuEntryId = 'tasks' | 'notes' | 'reminders' | 'settings'
 
 export type MenuDetailTarget =
-  | { kind: 'note'; id: string }
-  | { kind: 'reminder'; id: string }
-  | null
+  { kind: 'note'; id: string } | { kind: 'reminder'; id: string } | null
 
 interface MenuStore {
   view: MenuView

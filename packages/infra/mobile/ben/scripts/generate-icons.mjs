@@ -1,5 +1,5 @@
 // Regenerates every launcher/splash asset in `assets/` from the BenLogo geometry
-// in `src/layout/components/icons/ben-logo.tsx`. Run: npm run icons -w project-mobile.
+// in `src/layout/components/icons/ben-logo.tsx`. Run: pnpm --filter @ben/mobile-ben icons.
 // Kept dependency-free (no sharp) so a fresh clone can rebuild the icons offline.
 import { deflateSync } from 'node:zlib'
 import { mkdir, writeFile } from 'node:fs/promises'

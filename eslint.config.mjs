@@ -1,5 +1,7 @@
 import js from '@eslint/js'
+import expoConfig from 'eslint-config-expo/flat.js'
 import prettier from 'eslint-plugin-prettier'
+import prettierRecommended from 'eslint-plugin-prettier/recommended'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
@@ -117,6 +119,29 @@ const backendFiles = [
 const rootFiles = ['*.{js,mjs,cjs,ts}']
 const scopedFiles = [...backendFiles, ...rootFiles]
 
+const MOBILE = 'packages/infra/mobile/ben'
+const mobileFiles = [`${MOBILE}/**/*.{js,jsx,ts,tsx,mjs,cjs}`]
+const scopeToMobile = (config) => {
+  if (!config.files) {
+    return config.ignores &&
+      Object.keys(config).every((key) => key === 'ignores' || key === 'name')
+      ? {
+          ...config,
+          ignores: config.ignores.map((pattern) => `${MOBILE}/${pattern}`),
+        }
+      : { ...config, files: mobileFiles }
+  }
+  return {
+    ...config,
+    files: config.files.map((pattern) =>
+      Array.isArray(pattern)
+        ? pattern.map((entry) => `${MOBILE}/${entry}`)
+        : `${MOBILE}/${pattern}`,
+    ),
+  }
+}
+const mobileConfigs = [...expoConfig, prettierRecommended].map(scopeToMobile)
+
 export default tseslint.config(
   {
     ignores: [
@@ -127,7 +152,7 @@ export default tseslint.config(
       '**/generated/**',
       '**/.tmp/**',
       '**/.claude/**',
-      'project-mobile/**',
+      `${MOBILE}/{dist,.expo,android}/**`,
       'project-design/**',
       'dist-apk/**',
     ],
@@ -163,6 +188,26 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-namespace': 'off',
+    },
+  },
+  ...mobileConfigs,
+  {
+    files: [`${MOBILE}/**/*.{ts,tsx}`],
+    settings: {
+      'import/resolver': {
+        typescript: { project: `${MOBILE}/tsconfig.json` },
+      },
+    },
+  },
+  {
+    files: [`${MOBILE}/scripts/**`, `${MOBILE}/plugins/**`],
+    languageOptions: {
+      globals: {
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        console: 'readonly',
+        process: 'readonly',
+      },
     },
   },
 )

@@ -1,13 +1,13 @@
-# project-mobile
+# @ben/mobile-ben
 
 The React Native (Expo) client for Ben. Day-to-day development needs none of the Android
-toolchain below — `npm start` and Expo Go cover it.
+toolchain below — `pnpm dev:mobile` and Expo Go cover it.
 
 ## Branding assets
 
 `assets/` is generated from the `BenLogo` geometry in
 [`src/layout/components/icons/ben-logo.tsx`](./src/layout/components/icons/ben-logo.tsx) —
-the three circles in `#121213` on the `#f9f9f9` surface. Run `npm run icons` to regenerate
+the three circles in `#121213` on the `#f9f9f9` surface. Run `pnpm --filter @ben/mobile-ben icons` to regenerate
 (it also runs before `start` and `android`). The script writes PNGs directly through
 `node:zlib`, so there is no image dependency to install.
 
@@ -30,7 +30,7 @@ clean checkout.
 
 ```bash
 source scripts/android-env.sh   # once per shell: JAVA_HOME + ANDROID_HOME
-npm run apk
+pnpm --filter @ben/mobile-ben apk
 ```
 
 That regenerates the icons, prebuilds, and runs `assembleRelease -PreactNativeArchitectures=arm64-v8a`,
