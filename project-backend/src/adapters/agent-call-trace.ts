@@ -67,6 +67,8 @@ export type AgentCallTrace = {
   status: AgentCallStatus
   error: string | null
   modelId: string | null
+  modelSlug: string | null
+  effort: string | null
   startedAt: string
   finishedAt: string
   latencyMs: number

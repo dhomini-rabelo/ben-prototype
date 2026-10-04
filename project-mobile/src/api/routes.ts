@@ -34,4 +34,8 @@ export const API_ROUTES = {
   captures: {
     counts: '/captures/counts',
   },
+  agentPreferences: {
+    detail: '/agent-preferences/detail',
+    update: '/agent-preferences/update',
+  },
 } as const

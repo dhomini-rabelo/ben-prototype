@@ -1,4 +1,5 @@
 import { AgentCallTrace } from '@/adapters/agent-call-trace'
+import { AgentModelSelection } from '@/domain/utils/agent-models'
 
 /**
  * Identifies a recurring subject for a user.
@@ -48,6 +49,7 @@ export type GenerateReplyPayload = {
   message: string
   topicIndex: TopicKey[]
   resolveHistoryContext: ResolveHistoryContext
+  model: AgentModelSelection
 }
 
 export type GenerateReplyResult = {
@@ -82,6 +84,7 @@ export type GenerateTaskTurnPayload = {
   todoItems: TaskTurnTodo[] | null
   summary: string
   message: string
+  model: AgentModelSelection
 }
 
 export type TaskTurnReply = {

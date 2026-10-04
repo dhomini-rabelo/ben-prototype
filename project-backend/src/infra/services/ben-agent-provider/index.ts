@@ -5,7 +5,7 @@ import {
   GenerateTaskTurnPayload,
   TaskTurnReply,
 } from '@/adapters/agent-provider'
-import { generateText, LanguageModel, Output, stepCountIs } from 'ai'
+import { generateText, Output, stepCountIs } from 'ai'
 import { z } from 'zod'
 import { buildFormatSystemPrompt } from './generate-reply/format-system-prompt'
 import {
@@ -20,6 +20,7 @@ import { toAgentReply } from './generate-reply/to-agent-reply'
 import { taskTurnReplySchema } from './generate-task-turn/schemas'
 import { buildTaskTurnSystemPrompt } from './generate-task-turn/system-prompt'
 import { toTaskTurnReply } from './generate-task-turn/to-task-turn-reply'
+import { resolveOpenRouterModel } from './models'
 import {
   buildAgentCallSteps,
   buildAgentCallTrace,
@@ -27,17 +28,16 @@ import {
 } from './trace-builders'
 
 export class BenAgentProviderService implements AgentService {
-  constructor(private readonly model: LanguageModel) {}
-
   async generateReply(
     payload: GenerateReplyPayload,
   ): Promise<GenerateReplyResult> {
+    const model = resolveOpenRouterModel(payload.model)
     const traceStartedAt = new Date()
     const contextSystemPrompt = buildSystemPrompt(payload.topicIndex)
     const contextRecorder: RecordedStep[] = []
 
     const contextResult = await generateText({
-      model: this.model,
+      model,
       system: contextSystemPrompt,
       prompt: payload.message,
       tools: {
@@ -83,7 +83,7 @@ export class BenAgentProviderService implements AgentService {
     const formatRecorder: RecordedStep[] = []
 
     const result = await generateText({
-      model: this.model,
+      model,
       system: formatSystemPrompt,
       prompt: contextResult.text,
       output: Output.object({ schema: agentReplySchema }),
@@ -119,6 +119,7 @@ export class BenAgentProviderService implements AgentService {
         steps: [...contextSteps, ...formatSteps],
         startedAt: traceStartedAt,
         finishedAt: new Date(),
+        selection: payload.model,
       }),
     }
   }
@@ -126,8 +127,10 @@ export class BenAgentProviderService implements AgentService {
   async generateTaskTurn(
     payload: GenerateTaskTurnPayload,
   ): Promise<TaskTurnReply> {
+    const model = resolveOpenRouterModel(payload.model)
+
     const result = await generateText({
-      model: this.model,
+      model,
       system: buildTaskTurnSystemPrompt(payload),
       prompt: payload.message,
       output: Output.object({ schema: taskTurnReplySchema }),

@@ -1,5 +1,7 @@
 import { authMiddleware } from '@/infra/http/middlewares/auth'
 import { errorHandler } from '@/infra/http/middlewares/error-handler'
+import { getAgentPreferences } from '@/infra/http/routes/agent-preferences/get-agent-preferences'
+import { updateAgentPreferences } from '@/infra/http/routes/agent-preferences/update-agent-preferences'
 import { loginOrRegister } from '@/infra/http/routes/auth/login-or-register'
 import { getCapturesCounts } from '@/infra/http/routes/captures/get-captures-counts'
 import { chat } from '@/infra/http/routes/chat'
@@ -77,6 +79,9 @@ app.get('/reminders/list', authMiddleware, listReminders)
 app.get('/reminders/:id/detail', authMiddleware, getReminderDetail)
 
 app.get('/captures/counts', authMiddleware, getCapturesCounts)
+
+app.get('/agent-preferences/detail', authMiddleware, getAgentPreferences)
+app.post('/agent-preferences/update', authMiddleware, updateAgentPreferences)
 
 app.use(errorHandler)
 
