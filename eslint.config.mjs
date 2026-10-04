@@ -127,7 +127,6 @@ export default tseslint.config(
       '**/generated/**',
       '**/.tmp/**',
       '**/.claude/**',
-      'project-backend/**',
       'project-mobile/**',
       'project-design/**',
       'dist-apk/**',
@@ -163,6 +162,7 @@ export default tseslint.config(
       'id-denylist': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-namespace': 'off',
     },
   },
 )
