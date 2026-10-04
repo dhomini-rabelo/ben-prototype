@@ -2,6 +2,8 @@ import js from '@eslint/js'
 import expoConfig from 'eslint-config-expo/flat.js'
 import prettier from 'eslint-plugin-prettier'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
@@ -120,6 +122,7 @@ const rootFiles = ['*.{js,mjs,cjs,ts}']
 const scopedFiles = [...backendFiles, ...rootFiles]
 
 const MOBILE = 'packages/infra/mobile/ben'
+const DESIGN = 'packages/infra/mobile/design'
 const mobileFiles = [`${MOBILE}/**/*.{js,jsx,ts,tsx,mjs,cjs}`]
 const scopeToMobile = (config) => {
   if (!config.files) {
@@ -153,7 +156,7 @@ export default tseslint.config(
       '**/.tmp/**',
       '**/.claude/**',
       `${MOBILE}/{dist,.expo,android}/**`,
-      'project-design/**',
+      `${DESIGN}/dist/**`,
       'dist-apk/**',
     ],
   },
@@ -209,5 +212,15 @@ export default tseslint.config(
         process: 'readonly',
       },
     },
+  },
+  {
+    files: [`${DESIGN}/**/*.{ts,tsx}`],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: { globals: globals.browser },
   },
 )
