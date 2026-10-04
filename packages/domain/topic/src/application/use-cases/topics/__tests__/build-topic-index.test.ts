@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it } from 'vitest'
 
 import { createID } from '@ben/domain-base'
 
-import { InMemoryTopicRepository } from '@/domain/__tests__/repositories/topic'
-import { TopicFactory } from '@/domain/__tests__/factories/topic'
+import { InMemoryTopicRepository } from '@ben/domain-topic/application/__tests__/repositories/topic'
+import { TopicFactory } from '@ben/domain-topic/application/__tests__/factories/topic'
 import { BuildTopicIndexUseCase } from '../build-topic-index'
 
 let topicRepository: InMemoryTopicRepository

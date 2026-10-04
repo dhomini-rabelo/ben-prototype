@@ -1,4 +1,4 @@
-import { TopicSummaryRepository } from '@/adapters/repositories/topic-summary-repository'
+import { TopicSummaryRepository } from '@ben/domain-topic/application/repositories/topic-summary'
 import { HistoryContextResult } from '@ben/adapters'
 import { createID } from '@ben/domain-base'
 import { UseCase } from '@ben/domain-base'

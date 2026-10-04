@@ -3,9 +3,9 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { createID } from '@ben/domain-base'
 import { some } from '@ben/modules-tests'
 
-import { InMemoryTopicRepository } from '@/domain/__tests__/repositories/topic'
-import { InMemoryTopicSummaryRepository } from '@/domain/__tests__/repositories/topic-summary'
-import { TopicFactory } from '@/domain/__tests__/factories/topic'
+import { InMemoryTopicRepository } from '@ben/domain-topic/application/__tests__/repositories/topic'
+import { InMemoryTopicSummaryRepository } from '@ben/domain-topic/application/__tests__/repositories/topic-summary'
+import { TopicFactory } from '@ben/domain-topic/application/__tests__/factories/topic'
 import { PersistTopicSummariesUseCase } from '../persist-topic-summaries'
 
 let topicRepository: InMemoryTopicRepository

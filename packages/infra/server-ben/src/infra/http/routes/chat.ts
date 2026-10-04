@@ -2,9 +2,9 @@ import { PersistCapturesUseCase } from '@ben/domain-chat/application/use-cases/c
 import { GetAgentPreferencesUseCase } from '@ben/domain-user/application/use-cases/agent-preferences/get-agent-preferences'
 import { PersistBenMessageUseCase } from '@ben/domain-chat/application/use-cases/messages/persist-ben-message'
 import { PersistUserMessageUseCase } from '@ben/domain-chat/application/use-cases/messages/persist-user-message'
-import { BuildTopicIndexUseCase } from '@/domain/use-cases/topics/build-topic-index'
-import { GetHistoryContextUseCase } from '@/domain/use-cases/topics/get-history-context'
-import { PersistTopicSummariesUseCase } from '@/domain/use-cases/topics/persist-topic-summaries'
+import { BuildTopicIndexUseCase } from '@ben/domain-topic/application/use-cases/topics/build-topic-index'
+import { GetHistoryContextUseCase } from '@ben/domain-topic/application/use-cases/topics/get-history-context'
+import { PersistTopicSummariesUseCase } from '@ben/domain-topic/application/use-cases/topics/persist-topic-summaries'
 import {
   messageRepository,
   noteRepository,

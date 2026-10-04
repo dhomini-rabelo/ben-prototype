@@ -4,8 +4,8 @@ import { Factory, some } from '@ben/modules-tests'
 import {
   TopicSummary,
   TopicSummaryProps,
-} from '@/domain/entities/topic-summary'
-import { TopicSummaryRepository } from '@/adapters/repositories/topic-summary-repository'
+} from '@ben/domain-topic/enterprise/entities/topic-summary'
+import { TopicSummaryRepository } from '@ben/domain-topic/application/repositories/topic-summary'
 
 export function createTopicSummaryData(
   data: Partial<TopicSummaryProps> = {},

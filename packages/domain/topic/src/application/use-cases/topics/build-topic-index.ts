@@ -1,4 +1,4 @@
-import { TopicRepository } from '@/adapters/repositories/topic-repository'
+import { TopicRepository } from '@ben/domain-topic/application/repositories/topic'
 import { TopicKey } from '@ben/adapters'
 import { createID } from '@ben/domain-base'
 import { UseCase } from '@ben/domain-base'

@@ -1,7 +1,7 @@
 import { EntityWithStatic } from '@ben/domain-base'
 
-import { TopicSummary } from '@/domain/entities/topic-summary'
-import { TopicSummaryRepository } from '@/adapters/repositories/topic-summary-repository'
+import { TopicSummary } from '@ben/domain-topic/enterprise/entities/topic-summary'
+import { TopicSummaryRepository } from '@ben/domain-topic/application/repositories/topic-summary'
 
 import { SqliteRepository } from './sqlite-repository'
 

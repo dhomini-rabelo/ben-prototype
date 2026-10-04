@@ -1,8 +1,8 @@
 import { EntityWithStatic } from '@ben/domain-base'
 import { InMemoryRepository } from '@ben/domain-base'
 
-import { Topic } from '@/domain/entities/topic'
-import { TopicRepository } from '@/adapters/repositories/topic-repository'
+import { Topic } from '@ben/domain-topic/enterprise/entities/topic'
+import { TopicRepository } from '@ben/domain-topic/application/repositories/topic'
 
 export class InMemoryTopicRepository
   extends InMemoryRepository<Topic>

@@ -20,6 +20,7 @@
     "@ben/domain-base": "workspace:*",
     "@ben/domain-chat": "workspace:*",
     "@ben/domain-task": "workspace:*",
+    "@ben/domain-topic": "workspace:*",
     "@ben/domain-user": "workspace:*",
     "@ben/modules-env": "workspace:*",
     "@ben/modules-utils": "workspace:*",

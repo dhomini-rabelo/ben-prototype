@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it } from 'vitest'
 
 import { createID } from '@ben/domain-base'
 
-import { InMemoryTopicSummaryRepository } from '@/domain/__tests__/repositories/topic-summary'
-import { TopicSummaryFactory } from '@/domain/__tests__/factories/topic-summary'
+import { InMemoryTopicSummaryRepository } from '@ben/domain-topic/application/__tests__/repositories/topic-summary'
+import { TopicSummaryFactory } from '@ben/domain-topic/application/__tests__/factories/topic-summary'
 import { GetHistoryContextUseCase } from '../get-history-context'
 
 let topicSummaryRepository: InMemoryTopicSummaryRepository

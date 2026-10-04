@@ -1,5 +1,5 @@
-import { TopicRepository } from '@/adapters/repositories/topic-repository'
-import { TopicSummaryRepository } from '@/adapters/repositories/topic-summary-repository'
+import { TopicRepository } from '@ben/domain-topic/application/repositories/topic'
+import { TopicSummaryRepository } from '@ben/domain-topic/application/repositories/topic-summary'
 import { createID } from '@ben/domain-base'
 import { UseCase } from '@ben/domain-base'
 
