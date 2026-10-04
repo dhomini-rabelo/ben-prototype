@@ -1,8 +1,10 @@
 import { VerifyAuthenticationUseCase } from '@ben/domain-user/application/use-cases/auth/verify-authentication'
 import { userRepository } from '@/infra/http/repositories'
 import { env } from '@ben/modules-env'
-import { FirebaseAuthProviderService } from '@/infra/services/firebase-auth-provider'
-import { JsonWebTokenJwtService } from '@/infra/services/jwt'
+import {
+  FirebaseAuthProviderService,
+  JsonWebTokenJwtService,
+} from '@ben/infra-adapters'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 

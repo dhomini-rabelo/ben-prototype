@@ -1,5 +1,5 @@
 import { TranscribeAudioUseCase } from '@ben/domain-transcription/application/use-cases/transcription/transcribe-audio'
-import { AssemblyAITranscriptionProvider } from '@/infra/services/assemblyai-transcription-provider'
+import { AssemblyAITranscriptionProvider } from '@ben/infra-adapters'
 import { ValidationError } from '@ben/domain-base'
 import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'

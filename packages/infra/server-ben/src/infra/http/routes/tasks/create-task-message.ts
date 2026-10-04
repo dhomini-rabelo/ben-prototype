@@ -2,7 +2,7 @@ import { GetAgentPreferencesUseCase } from '@ben/domain-user/application/use-cas
 import { CreateTaskMessageUseCase } from '@ben/domain-task/application/use-cases/tasks/create-task-message'
 import { TaskPresenter } from '@/infra/http/presenters/task-presenter'
 import { taskRepository, userRepository } from '@/infra/http/repositories'
-import { BenAgentProviderService } from '@/infra/services/ben-agent-provider'
+import { BenAgentProviderService } from '@ben/infra-adapters'
 import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'

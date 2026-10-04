@@ -19,6 +19,7 @@
     "@ben/domain-topic": "workspace:*",
     "@ben/domain-transcription": "workspace:*",
     "@ben/domain-user": "workspace:*",
+    "@ben/infra-adapters": "workspace:*",
     "@ben/infra-db": "workspace:*",
     "@ben/modules-env": "workspace:*",
     "@ben/modules-utils": "workspace:*",

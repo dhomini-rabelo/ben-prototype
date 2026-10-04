@@ -1,5 +1,5 @@
 import { TopicKey } from '@ben/adapters'
-import { BEN_SYSTEM_PROMPT } from '@/infra/services/ben-agent-provider/ben-system-prompt'
+import { BEN_SYSTEM_PROMPT } from '@ben/infra-adapters/services/ben-agent-provider/ben-system-prompt'
 
 export const buildSystemPrompt = (topicIndex: TopicKey[]): string => {
   const renderedIndex =

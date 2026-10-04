@@ -15,7 +15,7 @@ import {
   userRepository,
 } from '@/infra/http/repositories'
 import { AgentReplyPresenter } from '@/infra/http/presenters/agent-reply-presenter'
-import { BenAgentProviderService } from '@/infra/services/ben-agent-provider'
+import { BenAgentProviderService } from '@ben/infra-adapters'
 import { createID } from '@ben/domain-base'
 import { HttpStatus } from '@ben/modules-utils'
 import { NextFunction, Request, Response } from 'express'

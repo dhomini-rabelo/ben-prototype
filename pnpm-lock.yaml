@@ -195,6 +195,46 @@ importers:
         specifier: ^3.2.7
         version: 3.2.7(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.33.0)(supports-color@8.1.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)
 
+  packages/infra/adapters:
+    dependencies:
+      '@ai-sdk/google':
+        specifier: ^3.0.80
+        version: 3.0.130(zod@4.6.5)
+      '@ben/adapters':
+        specifier: workspace:*
+        version: link:../../adapters
+      '@ben/modules-env':
+        specifier: workspace:*
+        version: link:../../modules/env
+      '@openrouter/ai-sdk-provider':
+        specifier: ^2.9.0
+        version: 2.10.0(ai@6.0.300(zod@4.6.5))(zod@4.6.5)
+      ai:
+        specifier: ^6.0.193
+        version: 6.0.300(zod@4.6.5)
+      assemblyai:
+        specifier: ^4.33.3
+        version: 4.41.5
+      firebase-admin:
+        specifier: ^13.10.0
+        version: 13.10.0(@firebase/app-compat@0.5.18)(@firebase/app@0.16.2)(supports-color@8.1.1)
+      jsonwebtoken:
+        specifier: ^9.0.3
+        version: 9.0.3
+      zod:
+        specifier: ^4.3.6
+        version: 4.6.5
+    devDependencies:
+      '@types/jsonwebtoken':
+        specifier: ^9.0.10
+        version: 9.0.10
+      '@types/node':
+        specifier: ^22.15.29
+        version: 22.20.5
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   packages/infra/db:
     dependencies:
       '@ben/domain-base':
@@ -464,6 +504,9 @@ importers:
       '@ben/domain-user':
         specifier: workspace:*
         version: link:../../domain/user
+      '@ben/infra-adapters':
+        specifier: workspace:*
+        version: link:../adapters
       '@ben/infra-db':
         specifier: workspace:*
         version: link:../db
