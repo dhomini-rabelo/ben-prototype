@@ -6,21 +6,23 @@ import { TopicRepository } from '@ben/domain-topic/application/repositories/topi
 import { TopicSummaryRepository } from '@ben/domain-topic/application/repositories/topic-summary'
 import { UserRepository } from '@ben/domain-user/application/repositories/user'
 import { env } from '@ben/modules-env'
-import { getPrismaClient } from '@/infra/services/prisma'
-import { InMemoryMessageRepository } from '@/infra/services/repositories/in-memory-message-repository'
-import { InMemoryNoteRepository } from '@/infra/services/repositories/in-memory-note-repository'
-import { InMemoryReminderRepository } from '@/infra/services/repositories/in-memory-reminder-repository'
-import { InMemoryTaskRepository } from '@/infra/services/repositories/in-memory-task-repository'
-import { InMemoryTopicRepository } from '@/infra/services/repositories/in-memory-topic-repository'
-import { InMemoryTopicSummaryRepository } from '@/infra/services/repositories/in-memory-topic-summary-repository'
-import { InMemoryUserRepository } from '@/infra/services/repositories/in-memory-user-repository'
-import { SqliteMessageRepository } from '@/infra/services/repositories/sqlite-message-repository'
-import { SqliteNoteRepository } from '@/infra/services/repositories/sqlite-note-repository'
-import { SqliteReminderRepository } from '@/infra/services/repositories/sqlite-reminder-repository'
-import { SqliteTaskRepository } from '@/infra/services/repositories/sqlite-task-repository'
-import { SqliteTopicRepository } from '@/infra/services/repositories/sqlite-topic-repository'
-import { SqliteTopicSummaryRepository } from '@/infra/services/repositories/sqlite-topic-summary-repository'
-import { SqliteUserRepository } from '@/infra/services/repositories/sqlite-user-repository'
+import {
+  InMemoryMessageRepository,
+  InMemoryNoteRepository,
+  InMemoryReminderRepository,
+  InMemoryTaskRepository,
+  InMemoryTopicRepository,
+  InMemoryTopicSummaryRepository,
+  InMemoryUserRepository,
+  SqliteMessageRepository,
+  SqliteNoteRepository,
+  SqliteReminderRepository,
+  SqliteTaskRepository,
+  SqliteTopicRepository,
+  SqliteTopicSummaryRepository,
+  SqliteUserRepository,
+  getPrismaClient,
+} from '@ben/infra-db'
 
 const useSqlite = env.PERSISTENCE_DRIVER === 'sqlite'
 const prisma = useSqlite ? getPrismaClient() : null

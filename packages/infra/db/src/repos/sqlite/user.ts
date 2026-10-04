@@ -3,7 +3,7 @@ import { EntityWithStatic } from '@ben/domain-base'
 import { User } from '@ben/domain-user/enterprise/entities/user'
 import { UserRepository } from '@ben/domain-user/application/repositories/user'
 
-import { SqliteRepository } from './sqlite-repository'
+import { SqliteRepository } from '@ben/infra-db/repos/sqlite/sqlite-repository'
 
 export class SqliteUserRepository
   extends SqliteRepository<User>

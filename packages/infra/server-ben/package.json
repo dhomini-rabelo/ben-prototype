@@ -5,13 +5,10 @@
   "main": "src/infra/http/server.ts",
   "scripts": {
     "dev": "NODE_ENV=development tsx watch src/infra/http/server.ts",
-    "postinstall": "prisma generate --no-hints",
-    "generate": "prisma generate --no-hints",
     "build": "tsup src/infra/http/server.ts --format esm --target node24 --out-dir dist --clean",
     "start": "node dist/server.js",
-    "typecheck": "prisma generate --no-hints && tsc -p tsconfig.json --noEmit",
-    "migrate:deploy": "prisma migrate deploy",
-    "smoke:sqlite": "tsx src/infra/scripts/smoke-sqlite.ts"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "migrate:deploy": "pnpm --filter @ben/infra-db migrate:deploy"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.80",
@@ -22,14 +19,12 @@
     "@ben/domain-topic": "workspace:*",
     "@ben/domain-transcription": "workspace:*",
     "@ben/domain-user": "workspace:*",
+    "@ben/infra-db": "workspace:*",
     "@ben/modules-env": "workspace:*",
     "@ben/modules-utils": "workspace:*",
     "@openrouter/ai-sdk-provider": "^2.9.0",
-    "@prisma/adapter-better-sqlite3": "7.10.0",
-    "@prisma/client": "7.10.0",
     "ai": "^6.0.193",
     "assemblyai": "^4.33.3",
-    "better-sqlite3": "13.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
@@ -40,14 +35,12 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "9.6.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/lodash-es": "^4.17.12",
     "@types/multer": "^2.1.0",
     "@types/node": "^22.15.29",
-    "prisma": "7.10.0",
     "tsup": "^8.5.1",
     "tsx": "^4.19.4",
     "typescript": "^5.9.3"

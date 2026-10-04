@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@/generated/prisma/client'
+import { Prisma, PrismaClient } from '@ben/infra-db/generated/prisma/client'
 
 import { Entity, EntityWithStatic } from '@ben/domain-base'
 import { ID, createID } from '@ben/domain-base'
@@ -26,7 +26,11 @@ import {
 } from '@ben/domain-base'
 import { RepeatedResource, ResourceNotFoundError } from '@ben/domain-base'
 
-import { SqliteRow, TypeMap, TypeTag } from './sqlite-repository-types'
+import {
+  SqliteRow,
+  TypeMap,
+  TypeTag,
+} from '@ben/infra-db/repos/sqlite/sqlite-repository-types'
 
 const IDENTIFIER_PATTERN = /^[A-Za-z_][A-Za-z0-9_]*$/
 

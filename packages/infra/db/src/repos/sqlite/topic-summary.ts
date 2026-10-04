@@ -3,7 +3,7 @@ import { EntityWithStatic } from '@ben/domain-base'
 import { TopicSummary } from '@ben/domain-topic/enterprise/entities/topic-summary'
 import { TopicSummaryRepository } from '@ben/domain-topic/application/repositories/topic-summary'
 
-import { SqliteRepository } from './sqlite-repository'
+import { SqliteRepository } from '@ben/infra-db/repos/sqlite/sqlite-repository'
 
 export class SqliteTopicSummaryRepository
   extends SqliteRepository<TopicSummary>

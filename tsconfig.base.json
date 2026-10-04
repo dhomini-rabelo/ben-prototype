@@ -27,6 +27,8 @@
       "@ben/domain-transcription/*": ["./packages/domain/transcription/src/*"],
       "@ben/domain-user": ["./packages/domain/user/src/index.ts"],
       "@ben/domain-user/*": ["./packages/domain/user/src/*"],
+      "@ben/infra-db": ["./packages/infra/db/src/index.ts"],
+      "@ben/infra-db/*": ["./packages/infra/db/src/*"],
       "@ben/modules-utils": ["./packages/modules/utils/src/index.ts"],
       "@ben/modules-utils/*": ["./packages/modules/utils/src/*"],
       "@ben/modules-env": ["./packages/modules/env/src/index.ts"],

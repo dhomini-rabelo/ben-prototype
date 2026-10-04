@@ -3,7 +3,7 @@ import { EntityWithStatic } from '@ben/domain-base'
 import { Reminder } from '@ben/domain-chat/enterprise/entities/reminder'
 import { ReminderRepository } from '@ben/domain-chat/application/repositories/reminder'
 
-import { SqliteRepository } from './sqlite-repository'
+import { SqliteRepository } from '@ben/infra-db/repos/sqlite/sqlite-repository'
 
 export class SqliteReminderRepository
   extends SqliteRepository<Reminder>

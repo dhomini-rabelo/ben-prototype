@@ -1,7 +1,9 @@
 import { defineConfig } from 'prisma/config'
 
+import { resolveDatabaseUrl } from './src/client/database-url'
+
 export default defineConfig({
   schema: 'prisma/schema.prisma',
   migrations: { path: 'prisma/migrations' },
-  datasource: { url: process.env.DATABASE_URL ?? 'file:./prisma/dev.db' },
+  datasource: { url: resolveDatabaseUrl() },
 })

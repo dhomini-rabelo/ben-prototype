@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, rmSync } from 'node:fs'
 
-import { PrismaClient } from '@/generated/prisma/client'
+import { PrismaClient } from '@ben/infra-db/generated/prisma/client'
 
 import {
   Task,
@@ -21,10 +21,10 @@ import {
 } from '@ben/domain-base'
 import { RepeatedResource, ResourceNotFoundError } from '@ben/domain-base'
 
-import { createPrismaClient } from '@/infra/services/prisma'
-import { SqliteReminderRepository } from '@/infra/services/repositories/sqlite-reminder-repository'
-import { SqliteTaskRepository } from '@/infra/services/repositories/sqlite-task-repository'
-import { SqliteUserRepository } from '@/infra/services/repositories/sqlite-user-repository'
+import { createPrismaClient } from '@ben/infra-db/client/prisma'
+import { SqliteReminderRepository } from '@ben/infra-db/repos/sqlite/reminder'
+import { SqliteTaskRepository } from '@ben/infra-db/repos/sqlite/task'
+import { SqliteUserRepository } from '@ben/infra-db/repos/sqlite/user'
 
 const TMP_DIR = '.tmp'
 const DB_FILE = `${TMP_DIR}/smoke-sqlite.db`
