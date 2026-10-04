@@ -1,14 +1,14 @@
 import { Bell, List, NotebookPen, Type } from "lucide-react";
-import { cn } from "@/layout/utils/cn";
-import type { CaptureCardIcon, CaptureKind, TaskShape } from "./capture-card.types";
+import { cn } from "@/layout/utils/styles";
+import type { IconComponent, CaptureKind, TaskShape } from "@/layout/components/capture-card/capture-card";
 
-const KIND_ICON: Record<CaptureKind, CaptureCardIcon> = {
+const KIND_ICON: Record<CaptureKind, IconComponent> = {
   note: NotebookPen,
   reminder: Bell,
   task: Type,
 };
 
-const TASK_SHAPE_ICON: Record<TaskShape, CaptureCardIcon> = {
+const TASK_SHAPE_ICON: Record<TaskShape, IconComponent> = {
   text: Type,
   list: List,
 };

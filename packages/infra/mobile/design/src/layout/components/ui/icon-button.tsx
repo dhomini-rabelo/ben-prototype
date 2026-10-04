@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "@/layout/utils/cn";
+import { cn } from "@/layout/utils/styles";
 
 type IconButtonProps = {
   label: string;

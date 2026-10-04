@@ -1,10 +1,38 @@
-import { cn } from "@/layout/utils/cn";
+import type { ComponentType } from "react";
+import { cn } from "@/layout/utils/styles";
 import { Typography } from "@/layout/components/ui/typography";
-import { CaptureCardActionButton } from "./capture-card-action-button";
-import { CaptureCardErrorButton } from "./capture-card-error-button";
-import { CaptureCardHeader } from "./capture-card-header";
-import { CaptureCardIcon } from "./capture-card-icon";
-import type { CaptureCardProps } from "./capture-card.types";
+import { CaptureCardActionButton } from "@/layout/components/capture-card/capture-card-action-button";
+import { CaptureCardErrorButton } from "@/layout/components/capture-card/capture-card-error-button";
+import { CaptureCardHeader } from "@/layout/components/capture-card/capture-card-header";
+import { CaptureCardIcon } from "@/layout/components/capture-card/capture-card-icon";
+
+export type CaptureKind = "note" | "reminder" | "task";
+export type TaskShape = "text" | "list";
+export type CaptureCardState =
+  | "default"
+  | "pending"
+  | "error"
+  | "active"
+  | "finished"
+  | "fired";
+
+export type IconComponent = ComponentType<{
+  className?: string;
+  strokeWidth?: number;
+}>;
+
+export type CaptureCardProps = {
+  kind: CaptureKind;
+  title: string;
+  meta?: string;
+  state?: CaptureCardState;
+  taskShape?: TaskShape;
+  actionLabel?: string;
+  supportingText?: string;
+  onAction?: () => void;
+  errorMessage?: string;
+  className?: string;
+};
 
 export function CaptureCard({
   kind,

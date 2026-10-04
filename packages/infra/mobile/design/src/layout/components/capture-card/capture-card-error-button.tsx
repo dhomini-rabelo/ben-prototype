@@ -1,5 +1,5 @@
 import { RotateCw } from "lucide-react";
-import type { CaptureKind } from "./capture-card.types";
+import type { CaptureKind } from "@/layout/components/capture-card/capture-card";
 
 const DEFAULT_ERROR_MESSAGES: Record<CaptureKind, string> = {
   note: "couldn't save this note — retry",

@@ -1,5 +1,5 @@
 import { Typography } from "@/layout/components/ui/typography";
-import type { CaptureKind } from "./capture-card.types";
+import type { CaptureKind } from "@/layout/components/capture-card/capture-card";
 
 const KIND_LABEL: Record<CaptureKind, string> = {
   note: "Note",

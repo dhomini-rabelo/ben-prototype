@@ -1,5 +1,5 @@
 import type { ElementType, ReactNode } from "react";
-import { cn } from "@/layout/utils/cn";
+import { cn } from "@/layout/utils/styles";
 
 export type TypographyVariant =
   | "wordmark"

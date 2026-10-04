@@ -1,0 +1,43 @@
+import { ActiveTaskPeek } from "@/layout/components/workspace/active-task-peek";
+import { ChatInput } from "@/layout/components/chat/chat-input";
+import { MessageBubble } from "@/layout/components/chat/message-bubble";
+import { TypingIndicator } from "@/layout/components/ui/typing-indicator";
+import { Typography } from "@/layout/components/ui/typography";
+import { ChatShell } from "@/layout/components/common/chat-shell";
+
+export function ChatAwaitingReplyPage() {
+  return (
+    <ChatShell
+      peek={
+        <ActiveTaskPeek
+          variant="summary"
+          count={3}
+          title="Draft the Q3 brief"
+        />
+      }
+      footer={<ChatInput />}
+    >
+      <section className="flex flex-1 flex-col justify-end gap-4 pt-2">
+        <MessageBubble from="ben">
+          morning. what's on the list today?
+        </MessageBubble>
+        <MessageBubble from="user">
+          remind me to pick up milk on the way home around 6
+        </MessageBubble>
+        <div className="flex w-full justify-start">
+          <div className="flex flex-col items-start gap-1">
+            <div className="ml-1">
+              <Typography
+                variant="label-caps"
+                className="text-on-surface-variant"
+              >
+                Ben
+              </Typography>
+            </div>
+            <TypingIndicator />
+          </div>
+        </div>
+      </section>
+    </ChatShell>
+  );
+}
