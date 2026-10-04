@@ -17,7 +17,11 @@ type UsageLike = {
 
 type StepResultLike = {
   text: string
-  toolCalls: readonly { toolCallId: string; toolName: string; input: unknown }[]
+  toolCalls: readonly {
+    toolCallId: string
+    toolName: string
+    input: unknown
+  }[]
   toolResults: readonly {
     toolCallId: string
     toolName: string
@@ -75,15 +79,18 @@ function buildUsage(usage: UsageLike): AgentCallUsage {
 }
 
 function sumUsage(steps: AgentCallStep[]): AgentCallUsage {
-  const add = (a: number | null, b: number | null) =>
-    a === null && b === null ? null : (a ?? 0) + (b ?? 0)
+  const add = (first: number | null, second: number | null) =>
+    first === null && second === null ? null : (first ?? 0) + (second ?? 0)
 
   return steps.reduce<AgentCallUsage>(
-    (acc, step) => ({
-      inputTokens: add(acc.inputTokens, step.usage.inputTokens),
-      outputTokens: add(acc.outputTokens, step.usage.outputTokens),
-      totalTokens: add(acc.totalTokens, step.usage.totalTokens),
-      reasoningTokens: add(acc.reasoningTokens, step.usage.reasoningTokens),
+    (accumulator, step) => ({
+      inputTokens: add(accumulator.inputTokens, step.usage.inputTokens),
+      outputTokens: add(accumulator.outputTokens, step.usage.outputTokens),
+      totalTokens: add(accumulator.totalTokens, step.usage.totalTokens),
+      reasoningTokens: add(
+        accumulator.reasoningTokens,
+        step.usage.reasoningTokens,
+      ),
     }),
     {
       inputTokens: null,
@@ -94,7 +101,7 @@ function sumUsage(steps: AgentCallStep[]): AgentCallUsage {
   )
 }
 
-export function buildAgentCallSteps(params: {
+export function buildAgentCallSteps(input: {
   phase: AgentCallPhase
   systemPrompt: string
   tools: AgentCallToolDefinition[]
@@ -105,29 +112,29 @@ export function buildAgentCallSteps(params: {
   firstStepNumber: number
   fallbackAt: Date
 }): AgentCallStep[] {
-  const lastIndex = params.result.steps.length - 1
+  const lastIndex = input.result.steps.length - 1
 
-  return params.result.steps.map((step, index) => {
-    const recorded = params.recorded[index]
-    const startedAt = recorded?.startedAt ?? params.fallbackAt
+  return input.result.steps.map((step, index) => {
+    const recorded = input.recorded[index]
+    const startedAt = recorded?.startedAt ?? input.fallbackAt
     const finishedAt =
       recorded?.finishedAt ??
-      params.recorded[index + 1]?.startedAt ??
-      params.fallbackAt
+      input.recorded[index + 1]?.startedAt ??
+      input.fallbackAt
 
     return {
-      phase: params.phase,
-      stepNumber: params.firstStepNumber + index,
+      phase: input.phase,
+      stepNumber: input.firstStepNumber + index,
       input: {
-        systemPrompt: params.systemPrompt,
+        systemPrompt: input.systemPrompt,
         messages: buildMessages(recorded?.messages ?? []),
-        tools: params.tools,
-        outputSchema: params.outputSchema,
+        tools: input.tools,
+        outputSchema: input.outputSchema,
         requestBody: step.request.body ?? null,
       },
       output: {
         text: step.text,
-        object: index === lastIndex ? params.object : null,
+        object: index === lastIndex ? input.object : null,
         toolCalls: step.toolCalls.map((toolCall) => ({
           toolCallId: toolCall.toolCallId,
           toolName: toolCall.toolName,
@@ -151,7 +158,7 @@ export function buildAgentCallSteps(params: {
   })
 }
 
-export function buildAgentCallTrace(params: {
+export function buildAgentCallTrace(input: {
   steps: AgentCallStep[]
   startedAt: Date
   finishedAt: Date
@@ -160,13 +167,13 @@ export function buildAgentCallTrace(params: {
   return {
     status: 'ok',
     error: null,
-    modelId: params.steps[params.steps.length - 1]?.modelId ?? null,
-    modelSlug: params.selection.modelSlug,
-    effort: params.selection.effort,
-    startedAt: params.startedAt.toISOString(),
-    finishedAt: params.finishedAt.toISOString(),
-    latencyMs: params.finishedAt.getTime() - params.startedAt.getTime(),
-    totalUsage: sumUsage(params.steps),
-    steps: params.steps,
+    modelId: input.steps[input.steps.length - 1]?.modelId ?? null,
+    modelSlug: input.selection.modelSlug,
+    effort: input.selection.effort,
+    startedAt: input.startedAt.toISOString(),
+    finishedAt: input.finishedAt.toISOString(),
+    latencyMs: input.finishedAt.getTime() - input.startedAt.getTime(),
+    totalUsage: sumUsage(input.steps),
+    steps: input.steps,
   }
 }

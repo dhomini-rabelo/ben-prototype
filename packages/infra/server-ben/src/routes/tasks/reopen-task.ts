@@ -12,20 +12,20 @@ const taskParamsSchema = z.object({
 const reopenTaskUseCase = new ReopenTaskUseCase(taskRepository)
 
 export async function reopenTask(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
     const result = await reopenTaskUseCase.execute({
-      userId: req.userId,
-      taskId: taskParamsSchema.parse(req.params).id,
+      userId: request.userId,
+      taskId: taskParamsSchema.parse(request.params).id,
     })
 
-    return res
+    return response
       .status(HttpStatus.OK)
       .json({ item: TaskPresenter.toHttp(result.item) })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

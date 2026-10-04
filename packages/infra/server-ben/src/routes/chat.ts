@@ -78,41 +78,45 @@ function extractLatestUserMessageText(
   return text.length > 0 ? text : null
 }
 
-export async function chat(req: Request, res: Response, next: NextFunction) {
+export async function chat(
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) {
   try {
-    const body = chatBodySchema.parse(req.body)
+    const body = chatBodySchema.parse(request.body)
     const message = extractLatestUserMessageText(body.messages)
 
     if (!message) {
-      return res
+      return response
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: 'No user message provided.' })
     }
 
     await persistUserMessageUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
       content: message,
     })
 
     const topicIndex = await buildTopicIndexUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
     })
 
     const preferences = await getAgentPreferencesUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
     })
 
     const { reply, trace } = await agentService.generateReply({
-      userId: req.userId,
+      userId: request.userId,
       message,
       topicIndex,
       resolveHistoryContext: ({ topics }) =>
-        getHistoryContextUseCase.execute({ userId: req.userId, topics }),
+        getHistoryContextUseCase.execute({ userId: request.userId, topics }),
       model: preferences.item,
     })
 
     const capturesResult = await persistCapturesUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
       newReminders: reply.newReminders,
       newNotes: reply.newNotes,
       newTasks: reply.newTasks,
@@ -121,7 +125,7 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
     const primaryCapture = capturesResult.items[0] ?? null
 
     const benMessageResult = await persistBenMessageUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
       content: reply.message,
       capture: primaryCapture
         ? { kind: primaryCapture.kind, itemId: createID(primaryCapture.itemId) }
@@ -130,12 +134,12 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
     })
 
     await persistTopicSummariesUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
       topics: reply.historyTopics,
       messageId: benMessageResult.item.id.toValue(),
     })
 
-    return res
+    return response
       .status(HttpStatus.OK)
       .json(
         AgentReplyPresenter.toHttp(
@@ -144,7 +148,7 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
           benMessageResult.item.id.toValue(),
         ),
       )
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

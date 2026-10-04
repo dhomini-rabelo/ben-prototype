@@ -1,6 +1,6 @@
 import { AnyRecord } from './types'
 
-export function showObject(object: any) {
+export function showObject(object: unknown) {
   return JSON.stringify(object, null, 2)
 }
 

@@ -57,12 +57,12 @@ let caseCounter = 0
 
 async function runCase(
   description: string,
-  fn: () => Promise<void>,
+  run: () => Promise<void>,
 ): Promise<void> {
   caseCounter += 1
   const label = String(caseCounter).padStart(2, '0')
   try {
-    await fn()
+    await run()
     results.push({ label, description, passed: true })
     console.log(`PASS  ${label} ${description}`)
   } catch (error) {
@@ -78,7 +78,7 @@ function assert(condition: unknown, message: string): asserts condition {
 
 async function assertRejectsWith(
   action: () => Promise<unknown>,
-  ErrorClass: abstract new (...args: any[]) => Error,
+  ErrorClass: abstract new (...args: never[]) => Error,
 ): Promise<void> {
   try {
     await action()
@@ -93,9 +93,9 @@ async function assertRejectsWith(
   throw new Error(`expected ${ErrorClass.name}, but nothing was thrown`)
 }
 
-function sameIdSet(a: { id: ID }[], b: { id: ID }[]): boolean {
-  const idsA = new Set(a.map((item) => item.id.toValue()))
-  const idsB = new Set(b.map((item) => item.id.toValue()))
+function sameIdSet(first: { id: ID }[], second: { id: ID }[]): boolean {
+  const idsA = new Set(first.map((item) => item.id.toValue()))
+  const idsB = new Set(second.map((item) => item.id.toValue()))
   if (idsA.size !== idsB.size) return false
   return [...idsA].every((id) => idsB.has(id))
 }
@@ -382,7 +382,7 @@ async function runTaskQueryCases(
     })
     assert(
       sameIdSet(rows, [dataset.t2, dataset.t4]),
-      `expected t2 and t4, got ${rows.map((r) => r.props.title).join(', ')}`,
+      `expected t2 and t4, got ${rows.map((row) => row.props.title).join(', ')}`,
     )
   })
 

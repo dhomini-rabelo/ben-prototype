@@ -14,7 +14,7 @@ const domainErrorStatusCodeMap: Record<DangerErrors, HttpStatus> = {
 export function formatZodError<Schema>(payload: ZodFormattedError<Schema>) {
   return Object.entries(payload).reduce(
     (
-      acc: {
+      accumulator: {
         [key: string]: string[] | { [key: string]: string[] }
       },
       entryData,
@@ -31,13 +31,13 @@ export function formatZodError<Schema>(payload: ZodFormattedError<Schema>) {
       if (!Array.isArray(errorBody)) {
         if (Object.keys(errorBody).length === 1 && '_errors' in errorBody) {
           const errorBodyData = errorBody as { _errors: string[] }
-          acc[fieldName] = errorBodyData._errors
+          accumulator[fieldName] = errorBodyData._errors
         } else {
           const errorBodyData = errorBody as {
             [key: string]: { _errors: string[] }
           }
 
-          acc[fieldName] = Object.fromEntries(
+          accumulator[fieldName] = Object.fromEntries(
             Object.entries(errorBodyData).map((entryData) => {
               const [subFieldName, errorBodyData] = entryData as [
                 string,
@@ -60,15 +60,15 @@ export function formatZodError<Schema>(payload: ZodFormattedError<Schema>) {
                 return [
                   subFieldName,
                   Object.entries(errorData).reduce(
-                    (acc, [arrayFieldName, errorBodyData]) => {
+                    (accumulator, [arrayFieldName, errorBodyData]) => {
                       if (
                         '_errors' in errorBodyData &&
                         Array.isArray(errorBodyData._errors) &&
                         errorBodyData._errors.length > 0
                       ) {
-                        acc[arrayFieldName] = errorBodyData._errors
+                        accumulator[arrayFieldName] = errorBodyData._errors
                       }
-                      return acc
+                      return accumulator
                     },
                     {} as { [arrayFieldNameWithError: string]: string[] },
                   ),
@@ -80,19 +80,19 @@ export function formatZodError<Schema>(payload: ZodFormattedError<Schema>) {
           )
         }
       } else if (errorBody.length > 0) {
-        acc.body = errorBody
+        accumulator.body = errorBody
       }
 
-      return acc
+      return accumulator
     },
     {},
   )
 }
 
 export function errorHandler(
-  err: Error,
+  error: Error,
   _req: Request,
-  res: Response,
+  httpResponse: Response,
 
   _next: NextFunction,
 ) {
@@ -101,30 +101,30 @@ export function errorHandler(
     body: { message: 'Internal Server Error' },
   }
 
-  console.error(err)
+  console.error(error)
 
-  if (err instanceof ZodError) {
+  if (error instanceof ZodError) {
     response.status = HttpStatus.BAD_REQUEST
-    response.body = formatZodError(err.format())
-  } else if (err instanceof ValidationError) {
+    response.body = formatZodError(error.format())
+  } else if (error instanceof ValidationError) {
     response.status = HttpStatus.BAD_REQUEST
     response.body = {
-      [err.response.errorField]: [
-        `${err.response.code}#${err.response.variables?.join(',')}`,
+      [error.response.errorField]: [
+        `${error.response.code}#${error.response.variables?.join(',')}`,
       ],
     }
-  } else if (err instanceof DomainError) {
+  } else if (error instanceof DomainError) {
     response.status =
-      domainErrorStatusCodeMap[err.response.errorType!] || HttpStatus.CONFLICT
+      domainErrorStatusCodeMap[error.response.errorType!] || HttpStatus.CONFLICT
     response.body = {
-      message: err.response.code,
+      message: error.response.code,
     }
-  } else if (err instanceof ResourceNotFoundError) {
+  } else if (error instanceof ResourceNotFoundError) {
     response.status = HttpStatus.NOT_FOUND
     response.body = {
       message: 'RESOURCE_NOT_FOUND',
     }
   }
 
-  return res.status(response.status).json(response.body)
+  return httpResponse.status(response.status).json(response.body)
 }

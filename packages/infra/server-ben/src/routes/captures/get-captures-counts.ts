@@ -15,19 +15,19 @@ const getCapturesCountsUseCase = new GetCapturesCountsUseCase(
 )
 
 export async function getCapturesCounts(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
     const result = await getCapturesCountsUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
     })
 
-    return res
+    return response
       .status(HttpStatus.OK)
       .json({ item: CapturesCountsPresenter.toHttp(result.item) })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

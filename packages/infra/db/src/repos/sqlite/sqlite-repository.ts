@@ -144,39 +144,39 @@ export abstract class SqliteRepository<
 
   async findMany(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    params?: QueryFilters<EntityClass['props']>,
+    filters?: QueryFilters<EntityClass['props']>,
   ): Promise<EntityClass[]> {
-    const rows = await this.selectPage(props, params)
+    const rows = await this.selectPage(props, filters)
     return rows.map((row) => this.toDomain(row))
   }
 
   async findManyWithPagination(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    params?: QueryFilters<EntityClass['props']>,
+    filters?: QueryFilters<EntityClass['props']>,
   ): Promise<PaginationResponse<EntityClass>> {
     const where = this.buildWhere(props)
     const totalItems = await this.countWhere(where)
-    const rows = await this.selectPage(props, params)
+    const rows = await this.selectPage(props, filters)
     return {
       items: rows.map((row) => this.toDomain(row)),
       totalItems,
-      page: params?.page ?? 1,
+      page: filters?.page ?? 1,
     }
   }
 
   async findManyWithCursorPagination(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    params?: CursorQueryFilters<EntityClass['props']>,
+    filters?: CursorQueryFilters<EntityClass['props']>,
   ): Promise<CursorPaginationResponse<EntityClass>> {
     const where = this.buildWhere(props)
-    const orderByField = params?.orderBy as string | undefined
-    const orderSql = this.buildOrderBy(orderByField, params?.order, true)
+    const orderByField = filters?.orderBy as string | undefined
+    const orderSql = this.buildOrderBy(orderByField, filters?.order, true)
     const startIndex = await this.resolveCursorStartIndex(
       where,
       orderSql,
-      params?.cursor,
+      filters?.cursor,
     )
-    const limit = params?.limit
+    const limit = filters?.limit
 
     const limitOffsetSql = limit
       ? Prisma.sql`LIMIT ${limit + 1} OFFSET ${startIndex}`
@@ -296,9 +296,9 @@ export abstract class SqliteRepository<
     }
     if (typeof value === 'object') {
       return Object.fromEntries(
-        Object.entries(value as AnyRecord).map(([key, val]) => [
+        Object.entries(value as AnyRecord).map(([key, entryValue]) => [
           key,
-          this.serializeValue(val, joinPath(path, key), types),
+          this.serializeValue(entryValue, joinPath(path, key), types),
         ]),
       )
     }
@@ -341,15 +341,15 @@ export abstract class SqliteRepository<
 
   private async selectPage(
     props: AnyRecord,
-    params?: QueryFilters<AnyRecord>,
+    filters?: QueryFilters<AnyRecord>,
   ): Promise<SqliteRow[]> {
     const where = this.buildWhere(props)
     const orderSql = this.buildOrderBy(
-      params?.orderBy as string | undefined,
-      params?.order,
+      filters?.orderBy as string | undefined,
+      filters?.order,
       false,
     )
-    const limitOffsetSql = this.buildLimitOffset(params?.limit, params?.page)
+    const limitOffsetSql = this.buildLimitOffset(filters?.limit, filters?.page)
     return this.client.$queryRaw<SqliteRow[]>(
       Prisma.sql`SELECT "id", "props", "types" FROM ${this.table} WHERE ${where} ${orderSql} ${limitOffsetSql}`,
     )
@@ -404,7 +404,7 @@ export abstract class SqliteRepository<
   ): Prisma.Sql {
     switch (query.queryType) {
       case QueryTypes.CONTAINS: {
-        const input = (query as ContainsQuery).params.input
+        const input = (query as ContainsQuery).criteria.input
         const pattern = `%${escapeLikePattern(input.toLowerCase())}%`
         return Prisma.sql`LOWER(${column}) LIKE ${pattern} ESCAPE '\\'`
       }
@@ -412,34 +412,34 @@ export abstract class SqliteRepository<
         return this.buildComparable(
           field,
           column,
-          (query as LowerOrEqualQuery).params.input,
+          (query as LowerOrEqualQuery).criteria.input,
           '<=',
         )
       case QueryTypes.GREATER:
         return this.buildComparable(
           field,
           column,
-          (query as GreaterQuery).params.input,
+          (query as GreaterQuery).criteria.input,
           '>',
         )
       case QueryTypes.BETWEEN: {
-        const { from, to } = (query as BetweenQuery).params
+        const { from, to } = (query as BetweenQuery).criteria
         return this.buildBetween(field, column, from, to)
       }
       case QueryTypes.IN: {
-        const input = (query as InQuery).params.input
+        const input = (query as InQuery).criteria.input
         if (input.length === 0) return Prisma.sql`1 = 0`
         return Prisma.sql`${column} IN (${Prisma.join(input.map(encodeValue))})`
       }
       case QueryTypes.NOT_IN: {
-        const input = (query as NotInQuery).params.input
+        const input = (query as NotInQuery).criteria.input
         if (input.length === 0) return Prisma.sql`1 = 1`
         return Prisma.sql`(${column} IS NULL OR ${column} NOT IN (${Prisma.join(input.map(encodeValue))}))`
       }
       case QueryTypes.NOT_NULL:
         return Prisma.sql`${column} IS NOT NULL`
       case QueryTypes.NOT_EQUAL: {
-        const input = (query as NotEqualQuery).params.input
+        const input = (query as NotEqualQuery).criteria.input
         if (input === null) return Prisma.sql`${column} IS NOT NULL`
         return Prisma.sql`(${column} IS NULL OR ${column} != ${encodeValue(input)})`
       }

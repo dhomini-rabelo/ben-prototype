@@ -12,20 +12,20 @@ const messageParamsSchema = z.object({
 const getMessageTraceUseCase = new GetMessageTraceUseCase(messageRepository)
 
 export async function getMessageTrace(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
     const result = await getMessageTraceUseCase.execute({
-      userId: req.userId,
-      messageId: messageParamsSchema.parse(req.params).id,
+      userId: request.userId,
+      messageId: messageParamsSchema.parse(request.params).id,
     })
 
-    return res
+    return response
       .status(HttpStatus.OK)
       .json({ item: MessageTracePresenter.toHttp(result.item) })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

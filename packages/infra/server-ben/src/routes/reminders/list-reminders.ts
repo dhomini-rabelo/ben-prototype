@@ -7,21 +7,21 @@ import { NextFunction, Request, Response } from 'express'
 const listRemindersUseCase = new ListRemindersUseCase(reminderRepository)
 
 export async function listReminders(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
     const result = await listRemindersUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
     })
 
-    return res.status(HttpStatus.OK).json({
+    return response.status(HttpStatus.OK).json({
       items: result.items.map((reminder) =>
         ReminderPresenter.toListItemHttp(reminder),
       ),
     })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

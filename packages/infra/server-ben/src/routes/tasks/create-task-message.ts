@@ -24,29 +24,29 @@ const messageBodySchema = z.object({
 })
 
 export async function createTaskMessage(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
-    const body = messageBodySchema.parse(req.body)
+    const body = messageBodySchema.parse(request.body)
 
     const preferences = await getAgentPreferencesUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
     })
 
     const result = await createTaskMessageUseCase.execute({
-      userId: req.userId,
-      taskId: taskParamsSchema.parse(req.params).id,
+      userId: request.userId,
+      taskId: taskParamsSchema.parse(request.params).id,
       message: body.content,
       model: preferences.item,
     })
 
-    return res.status(HttpStatus.OK).json({
+    return response.status(HttpStatus.OK).json({
       item: TaskPresenter.toHttp(result.item),
       benMessage: result.benMessage,
     })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

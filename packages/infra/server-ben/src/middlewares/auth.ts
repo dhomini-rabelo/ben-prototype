@@ -34,25 +34,25 @@ const verifyAuthenticationUseCase = new VerifyAuthenticationUseCase(
 )
 
 export async function authMiddleware(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
-    const headers = headersSchema.parse(req.headers)
+    const headers = headersSchema.parse(request.headers)
     const result = await verifyAuthenticationUseCase.execute({
       jwtToken: headers.jwtauthenticationtoken,
       providerToken: headers.providerauthenticationtoken,
     })
 
-    req.userId = result.userId
+    request.userId = result.userId
 
     if (result.jwtToken !== headers.jwtauthenticationtoken) {
-      res.setHeader('updatedjwtauthenticationtoken', result.jwtToken)
+      response.setHeader('updatedjwtauthenticationtoken', result.jwtToken)
     }
 
     next()
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

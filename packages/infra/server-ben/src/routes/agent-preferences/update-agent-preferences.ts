@@ -15,23 +15,23 @@ const bodySchema = z.object({
 })
 
 export async function updateAgentPreferences(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
-    const body = bodySchema.parse(req.body)
+    const body = bodySchema.parse(request.body)
 
     const result = await updateAgentPreferencesUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
       modelSlug: body.modelSlug,
       effort: body.effort,
     })
 
-    return res
+    return response
       .status(HttpStatus.OK)
       .json({ item: AgentPreferencesPresenter.toHttp(result.item) })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

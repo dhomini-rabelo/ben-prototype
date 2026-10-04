@@ -8,22 +8,22 @@ const transcriptionProvider = new AssemblyAITranscriptionProvider()
 const transcribeAudioUseCase = new TranscribeAudioUseCase(transcriptionProvider)
 
 export async function transcription(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
-    if (!req.file) {
+    if (!request.file) {
       throw new ValidationError({ errorField: 'audio', code: 'REQUIRED' })
     }
 
     const result = await transcribeAudioUseCase.execute({
-      audio: req.file.buffer,
-      mimeType: req.file.mimetype,
+      audio: request.file.buffer,
+      mimeType: request.file.mimetype,
     })
 
-    return res.status(HttpStatus.OK).json({ text: result.text })
-  } catch (err) {
-    next(err)
+    return response.status(HttpStatus.OK).json({ text: result.text })
+  } catch (error) {
+    next(error)
   }
 }

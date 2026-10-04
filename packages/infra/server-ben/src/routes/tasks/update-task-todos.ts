@@ -23,23 +23,23 @@ const todosBodySchema = z.object({
 })
 
 export async function updateTaskTodos(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
-    const body = todosBodySchema.parse(req.body)
+    const body = todosBodySchema.parse(request.body)
 
     const result = await updateTaskTodosUseCase.execute({
-      userId: req.userId,
-      taskId: taskParamsSchema.parse(req.params).id,
+      userId: request.userId,
+      taskId: taskParamsSchema.parse(request.params).id,
       todoItems: body.todoItems,
     })
 
-    return res
+    return response
       .status(HttpStatus.OK)
       .json({ item: TaskPresenter.toHttp(result.item) })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

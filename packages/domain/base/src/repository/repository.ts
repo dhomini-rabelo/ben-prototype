@@ -73,17 +73,17 @@ export abstract class Repository<EntityClass extends Entity> {
 
   abstract findMany(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    params?: QueryFilters<EntityClass['props']>,
+    filters?: QueryFilters<EntityClass['props']>,
   ): Promise<EntityClass[]>
 
   abstract findManyWithPagination(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    params?: QueryFilters<EntityClass['props']>,
+    filters?: QueryFilters<EntityClass['props']>,
   ): Promise<PaginationResponse<EntityClass>>
 
   abstract findManyWithCursorPagination(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    params?: CursorQueryFilters<EntityClass['props']>,
+    filters?: CursorQueryFilters<EntityClass['props']>,
   ): Promise<CursorPaginationResponse<EntityClass>>
 
   abstract count(
@@ -96,7 +96,7 @@ export abstract class Repository<EntityClass extends Entity> {
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
   ): Promise<void>
 
-  abstract clone<T = any>(clientRepository?: T): Repository<EntityClass>
+  abstract clone<T = unknown>(clientRepository?: T): Repository<EntityClass>
 }
 
 export abstract class InMemoryRepository<
@@ -107,40 +107,40 @@ export abstract class InMemoryRepository<
 
   private queryHandler: Record<
     QueryTypes,
-    (query: Query, propValue: any) => boolean
+    (query: Query, propValue: unknown) => boolean
   > = {
     [QueryTypes.CONTAINS]: (query, propValue) => {
       if (!(query instanceof ContainsQuery)) return false
       return (
         typeof propValue === 'string' &&
-        propValue.toLowerCase().includes(query.params.input.toLowerCase())
+        propValue.toLowerCase().includes(query.criteria.input.toLowerCase())
       )
     },
     [QueryTypes.LOWER_OR_EQUAL]: (query, propValue) => {
       if (!(query instanceof LowerOrEqualQuery)) return false
       return (
         (typeof propValue === 'number' &&
-          typeof query.params.input === 'number' &&
-          propValue <= query.params.input) ||
+          typeof query.criteria.input === 'number' &&
+          propValue <= query.criteria.input) ||
         (propValue instanceof Date &&
-          query.params.input instanceof Date &&
-          propValue.getTime() <= query.params.input.getTime())
+          query.criteria.input instanceof Date &&
+          propValue.getTime() <= query.criteria.input.getTime())
       )
     },
     [QueryTypes.GREATER]: (query, propValue) => {
       if (!(query instanceof GreaterQuery)) return false
       return (
         (typeof propValue === 'number' &&
-          typeof query.params.input === 'number' &&
-          propValue > query.params.input) ||
+          typeof query.criteria.input === 'number' &&
+          propValue > query.criteria.input) ||
         (propValue instanceof Date &&
-          query.params.input instanceof Date &&
-          propValue.getTime() > query.params.input.getTime())
+          query.criteria.input instanceof Date &&
+          propValue.getTime() > query.criteria.input.getTime())
       )
     },
     [QueryTypes.BETWEEN]: (query, propValue) => {
       if (!(query instanceof BetweenQuery)) return false
-      const { from, to } = query.params
+      const { from, to } = query.criteria
       return (
         (typeof propValue === 'number' &&
           typeof from === 'number' &&
@@ -157,21 +157,21 @@ export abstract class InMemoryRepository<
     [QueryTypes.IN]: (query, propValue) => {
       if (!(query instanceof InQuery)) return false
       return (
-        Array.isArray(query.params.input) &&
-        query.params.input.includes(propValue)
+        Array.isArray(query.criteria.input) &&
+        query.criteria.input.includes(propValue as string | number)
       )
     },
     [QueryTypes.NOT_IN]: (query, propValue) => {
       if (!(query instanceof NotInQuery)) return false
       return (
-        Array.isArray(query.params.input) &&
-        !query.params.input.includes(propValue)
+        Array.isArray(query.criteria.input) &&
+        !query.criteria.input.includes(propValue as string | number)
       )
     },
     [QueryTypes.NOT_NULL]: (_query, propValue) => propValue !== null,
     [QueryTypes.NOT_EQUAL]: (query, propValue) => {
       if (!(query instanceof NotEqualQuery)) return false
-      const { input } = query.params
+      const { input } = query.criteria
       if (input instanceof ID) return propValue !== input.toValue()
       return propValue !== input
     },
@@ -238,35 +238,35 @@ export abstract class InMemoryRepository<
 
   async findMany(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    params?: QueryFilters<EntityClass['props']>,
+    filters?: QueryFilters<EntityClass['props']>,
   ): Promise<EntityClass[]> {
     const items = this.items.filter((item) => this.compare(item, props))
-    return this.applyQueryParams(items, params)
+    return this.applyQueryParams(items, filters)
   }
 
   async findManyWithPagination(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    params?: QueryFilters<EntityClass['props']>,
+    filters?: QueryFilters<EntityClass['props']>,
   ): Promise<PaginationResponse<EntityClass>> {
     const filtered = this.items.filter((item) => this.compare(item, props))
     const totalItems = filtered.length
-    const currentPage = params?.page ?? 1
-    const paginatedItems = await this.applyQueryParams(filtered, params)
+    const currentPage = filters?.page ?? 1
+    const paginatedItems = await this.applyQueryParams(filtered, filters)
     return { items: paginatedItems, totalItems, page: currentPage }
   }
 
   async findManyWithCursorPagination(
     props: Partial<Complement<WithID<EntityClass['props']>, Query>>,
-    params?: CursorQueryFilters<EntityClass['props']>,
+    filters?: CursorQueryFilters<EntityClass['props']>,
   ): Promise<CursorPaginationResponse<EntityClass>> {
     const filtered = this.items.filter((item) => this.compare(item, props))
     const ordered = await this.applyQueryParams(filtered, {
-      orderBy: params?.orderBy,
-      order: params?.order,
+      orderBy: filters?.orderBy,
+      order: filters?.order,
     })
 
-    const startIndex = this.resolveCursorStartIndex(ordered, params?.cursor)
-    const limit = params?.limit ?? ordered.length
+    const startIndex = this.resolveCursorStartIndex(ordered, filters?.cursor)
+    const limit = filters?.limit ?? ordered.length
     const page = ordered.slice(startIndex, startIndex + limit + 1)
 
     const hasMore = page.length > limit
@@ -278,7 +278,7 @@ export abstract class InMemoryRepository<
       hasMore,
       nextCursor:
         hasMore && lastItem
-          ? this.buildCursor(lastItem, params?.orderBy)
+          ? this.buildCursor(lastItem, filters?.orderBy)
           : null,
     }
   }
@@ -308,27 +308,27 @@ export abstract class InMemoryRepository<
 
   protected async applyQueryParams(
     items: EntityClass[],
-    params?: QueryFilters<EntityClass['props']>,
+    filters?: QueryFilters<EntityClass['props']>,
   ): Promise<EntityClass[]> {
-    if (params?.orderBy) {
-      items = items.slice().sort((a, b) => {
-        const dir = params.order === 'asc' ? 1 : -1
-        const va = a.getProp(params.orderBy as string)
-        const vb = b.getProp(params.orderBy as string)
+    if (filters?.orderBy) {
+      items = items.slice().sort((first, second) => {
+        const direction = filters.order === 'asc' ? 1 : -1
+        const va = first.getProp(filters.orderBy as string)
+        const vb = second.getProp(filters.orderBy as string)
         if (va === vb) return 0
         if (typeof va === 'string' && typeof vb === 'string')
-          return va.localeCompare(vb) * dir
+          return va.localeCompare(vb) * direction
         if (va instanceof Date && vb instanceof Date)
-          return (va.getTime() - vb.getTime()) * dir
+          return (va.getTime() - vb.getTime()) * direction
         if (typeof va === 'number' && typeof vb === 'number')
-          return (va - vb) * dir
-        if (va !== null && vb === null) return -1 * dir
-        if (va === null && vb !== null) return 1 * dir
-        return (va > vb ? 1 : -1) * dir
+          return (va - vb) * direction
+        if (va !== null && vb === null) return -1 * direction
+        if (va === null && vb !== null) return 1 * direction
+        return (va > vb ? 1 : -1) * direction
       })
     }
-    const limit = params?.limit
-    const start = (params?.page ?? 1) - 1
+    const limit = filters?.limit
+    const start = (filters?.page ?? 1) - 1
     return limit ? items.slice(start * limit, start * limit + limit) : items
   }
 
@@ -367,7 +367,7 @@ export abstract class InMemoryRepository<
   ): boolean {
     return Object.entries(props)
       .filter(([, value]) => value !== undefined)
-      .every(([fieldName, fieldValue]: [string, any]) => {
+      .every(([fieldName, fieldValue]: [string, unknown]) => {
         const prop = item.getProp(fieldName)
 
         if (prop instanceof ID && fieldValue instanceof ID) {

@@ -24,15 +24,15 @@ const resolveCaptureUseCase = new ResolveCaptureUseCase(
 )
 
 export async function listMessages(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
-    const query = listQuerySchema.parse(req.query)
+    const query = listQuerySchema.parse(request.query)
 
     const result = await listMessagesUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
       limit: query.limit,
       cursor: query.cursor,
     })
@@ -50,12 +50,12 @@ export async function listMessages(
       }),
     )
 
-    return res.status(HttpStatus.OK).json({
+    return response.status(HttpStatus.OK).json({
       items,
       hasMore: result.hasMore,
       nextCursor: result.nextCursor,
     })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

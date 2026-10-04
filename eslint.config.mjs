@@ -106,7 +106,7 @@ const allowedAbbreviations = new Set([
   'doc',
   'docs',
 ])
-export const idDenylist = abbreviatedNames.filter(
+const idDenylist = abbreviatedNames.filter(
   (name) => !allowedAbbreviations.has(name),
 )
 
@@ -185,13 +185,27 @@ export default tseslint.config(
     files: backendFiles,
     plugins: { local: { rules: { 'no-comments': noComments } } },
     rules: {
-      'local/no-comments': 'off',
-      'id-length': 'off',
-      'id-denylist': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off',
-      '@typescript-eslint/no-namespace': 'off',
+      'local/no-comments': 'error',
+      'id-length': [
+        'error',
+        { min: 2, exceptions: ['_'], properties: 'never' },
+      ],
+      'id-denylist': ['error', ...idDenylist],
+      '@typescript-eslint/no-explicit-any': 'error',
     },
+  },
+  {
+    files: [
+      'packages/domain/base/src/entity/aggregate-root.ts',
+      'packages/domain/base/src/entity/entity.ts',
+      'packages/domain/base/src/entity/value-object.ts',
+      'packages/modules/utils/src/types.ts',
+    ],
+    rules: { '@typescript-eslint/no-explicit-any': 'off' },
+  },
+  {
+    files: ['packages/infra/server-ben/src/middlewares/auth.ts'],
+    rules: { '@typescript-eslint/no-namespace': 'off' },
   },
   ...mobileConfigs,
   {

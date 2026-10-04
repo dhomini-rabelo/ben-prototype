@@ -16,23 +16,23 @@ const contentBodySchema = z.object({
 })
 
 export async function updateTaskContent(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
-    const body = contentBodySchema.parse(req.body)
+    const body = contentBodySchema.parse(request.body)
 
     const result = await updateTaskContentUseCase.execute({
-      userId: req.userId,
-      taskId: taskParamsSchema.parse(req.params).id,
+      userId: request.userId,
+      taskId: taskParamsSchema.parse(request.params).id,
       textContent: body.textContent,
     })
 
-    return res
+    return response
       .status(HttpStatus.OK)
       .json({ item: TaskPresenter.toHttp(result.item) })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

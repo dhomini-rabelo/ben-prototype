@@ -17,7 +17,7 @@ export class ContainsQuery extends Query {
   readonly queryType = QueryTypes.CONTAINS
 
   constructor(
-    public readonly params: {
+    public readonly criteria: {
       input: string
     },
   ) {
@@ -29,7 +29,7 @@ export class LowerOrEqualQuery extends Query {
   readonly queryType = QueryTypes.LOWER_OR_EQUAL
 
   constructor(
-    public readonly params: {
+    public readonly criteria: {
       input: number | Date
     },
   ) {
@@ -41,7 +41,7 @@ export class GreaterQuery extends Query {
   readonly queryType = QueryTypes.GREATER
 
   constructor(
-    public readonly params: {
+    public readonly criteria: {
       input: number | Date
     },
   ) {
@@ -53,7 +53,7 @@ export class BetweenQuery extends Query {
   readonly queryType = QueryTypes.BETWEEN
 
   constructor(
-    public readonly params: {
+    public readonly criteria: {
       from: number | Date
       to: number | Date
     },
@@ -66,7 +66,7 @@ export class InQuery extends Query {
   readonly queryType = QueryTypes.IN
 
   constructor(
-    public readonly params: {
+    public readonly criteria: {
       input: (number | string)[]
     },
   ) {
@@ -78,7 +78,7 @@ export class NotInQuery extends Query {
   readonly queryType = QueryTypes.NOT_IN
 
   constructor(
-    public readonly params: {
+    public readonly criteria: {
       input: (number | string)[]
     },
   ) {
@@ -98,8 +98,8 @@ export class NotEqualQuery extends Query {
   readonly queryType = QueryTypes.NOT_EQUAL
 
   constructor(
-    public readonly params: {
-      input: any
+    public readonly criteria: {
+      input: unknown
     },
   ) {
     super()

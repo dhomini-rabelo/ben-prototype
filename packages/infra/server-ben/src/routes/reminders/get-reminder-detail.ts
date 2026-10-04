@@ -14,20 +14,20 @@ const getReminderDetailUseCase = new GetReminderDetailUseCase(
 )
 
 export async function getReminderDetail(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
     const result = await getReminderDetailUseCase.execute({
-      userId: req.userId,
-      reminderId: reminderParamsSchema.parse(req.params).id,
+      userId: request.userId,
+      reminderId: reminderParamsSchema.parse(request.params).id,
     })
 
-    return res
+    return response
       .status(HttpStatus.OK)
       .json({ item: ReminderPresenter.toHttp(result.item) })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

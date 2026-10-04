@@ -46,8 +46,8 @@ app.use(
 )
 app.use(json({ limit: '100mb' }))
 
-app.get('/health', (_req, res) => {
-  return res.status(HttpStatus.OK).json({ status: 'ok' })
+app.get('/health', (_req, response) => {
+  return response.status(HttpStatus.OK).json({ status: 'ok' })
 })
 
 app.post('/auth/login-or-register', loginOrRegister)

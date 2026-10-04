@@ -12,20 +12,20 @@ const noteParamsSchema = z.object({
 const getNoteDetailUseCase = new GetNoteDetailUseCase(noteRepository)
 
 export async function getNoteDetail(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
     const result = await getNoteDetailUseCase.execute({
-      userId: req.userId,
-      noteId: noteParamsSchema.parse(req.params).id,
+      userId: request.userId,
+      noteId: noteParamsSchema.parse(request.params).id,
     })
 
-    return res
+    return response
       .status(HttpStatus.OK)
       .json({ item: NotePresenter.toHttp(result.item) })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

@@ -7,19 +7,19 @@ import { NextFunction, Request, Response } from 'express'
 const listNotesUseCase = new ListNotesUseCase(noteRepository)
 
 export async function listNotes(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
     const result = await listNotesUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
     })
 
-    return res.status(HttpStatus.OK).json({
+    return response.status(HttpStatus.OK).json({
       items: result.items.map((note) => NotePresenter.toListItemHttp(note)),
     })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

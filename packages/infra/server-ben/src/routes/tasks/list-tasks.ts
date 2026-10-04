@@ -12,22 +12,22 @@ const listQuerySchema = z.object({
 const listTasksUseCase = new ListTasksUseCase(taskRepository)
 
 export async function listTasks(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
-    const query = listQuerySchema.parse(req.query)
+    const query = listQuerySchema.parse(request.query)
 
     const result = await listTasksUseCase.execute({
-      userId: req.userId,
+      userId: request.userId,
       status: query.status ?? 'active',
     })
 
-    return res.status(HttpStatus.OK).json({
+    return response.status(HttpStatus.OK).json({
       items: result.items.map((task) => TaskPresenter.toListItemHttp(task)),
     })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }

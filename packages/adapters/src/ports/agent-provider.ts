@@ -10,10 +10,6 @@ export type AgentModelSelection = {
   effort: AgentEffort
 }
 
-/**
- * Identifies a recurring subject for a user.
- * Documented shape: `kind:category:slug` (e.g. `reminder:work:meeting`).
- */
 export type TopicKey = string
 
 export type HistoryContextResult = Record<

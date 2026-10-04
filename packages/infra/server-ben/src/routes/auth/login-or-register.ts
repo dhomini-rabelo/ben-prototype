@@ -27,20 +27,20 @@ const loginOrRegisterUseCase = new LoginOrRegisterUseCase(
 )
 
 export async function loginOrRegister(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ) {
   try {
-    const body = bodySchema.parse(req.body)
+    const body = bodySchema.parse(request.body)
     const result = await loginOrRegisterUseCase.execute({ token: body.token })
 
-    return res.status(HttpStatus.OK).json({
+    return response.status(HttpStatus.OK).json({
       process: result.process,
       user: UserPresenter.toHttp(result.user),
       accessToken: result.accessToken,
     })
-  } catch (err) {
-    next(err)
+  } catch (error) {
+    next(error)
   }
 }
