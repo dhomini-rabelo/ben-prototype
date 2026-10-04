@@ -1,4 +1,7 @@
-import { Reminder, ReminderProps } from '@/domain/entities/reminder'
+import {
+  Reminder,
+  ReminderProps,
+} from '@ben/domain-chat/enterprise/entities/reminder'
 import { Serialize, WithID } from '@ben/domain-base'
 import { OverWrite } from '@ben/modules-utils'
 

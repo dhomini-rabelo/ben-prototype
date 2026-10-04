@@ -1,5 +1,5 @@
 import { AgentReply } from '@ben/adapters'
-import { CaptureView } from '@/adapters/capture-view'
+import { CaptureView } from '@ben/domain-chat/application/types/capture-view'
 
 export class AgentReplyPresenter {
   static toHttp(

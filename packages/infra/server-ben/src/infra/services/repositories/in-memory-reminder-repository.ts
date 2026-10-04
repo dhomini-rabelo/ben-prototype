@@ -1,8 +1,8 @@
 import { EntityWithStatic } from '@ben/domain-base'
 import { InMemoryRepository } from '@ben/domain-base'
 
-import { Reminder } from '@/domain/entities/reminder'
-import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
+import { Reminder } from '@ben/domain-chat/enterprise/entities/reminder'
+import { ReminderRepository } from '@ben/domain-chat/application/repositories/reminder'
 
 export class InMemoryReminderRepository
   extends InMemoryRepository<Reminder>

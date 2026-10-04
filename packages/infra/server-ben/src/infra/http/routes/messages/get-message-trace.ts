@@ -1,4 +1,4 @@
-import { GetMessageTraceUseCase } from '@/domain/use-cases/messages/get-message-trace'
+import { GetMessageTraceUseCase } from '@ben/domain-chat/application/use-cases/messages/get-message-trace'
 import { MessageTracePresenter } from '@/infra/http/presenters/message-trace-presenter'
 import { messageRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@ben/modules-utils'

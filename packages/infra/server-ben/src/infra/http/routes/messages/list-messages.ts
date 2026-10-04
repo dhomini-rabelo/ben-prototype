@@ -1,5 +1,5 @@
-import { ResolveCaptureUseCase } from '@/domain/use-cases/captures/resolve-capture'
-import { ListMessagesUseCase } from '@/domain/use-cases/messages/list-messages'
+import { ResolveCaptureUseCase } from '@ben/domain-chat/application/use-cases/captures/resolve-capture'
+import { ListMessagesUseCase } from '@ben/domain-chat/application/use-cases/messages/list-messages'
 import { MessagePresenter } from '@/infra/http/presenters/message-presenter'
 import {
   messageRepository,

@@ -1,4 +1,4 @@
-import { GetReminderDetailUseCase } from '@/domain/use-cases/captures/get-reminder-detail'
+import { GetReminderDetailUseCase } from '@ben/domain-chat/application/use-cases/captures/get-reminder-detail'
 import { ReminderPresenter } from '@/infra/http/presenters/reminder-presenter'
 import { reminderRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@ben/modules-utils'

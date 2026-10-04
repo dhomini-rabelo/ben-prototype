@@ -1,4 +1,4 @@
-import { CapturesCounts } from '@/domain/use-cases/captures/get-captures-counts'
+import { CapturesCounts } from '@ben/domain-chat/application/use-cases/captures/get-captures-counts'
 
 export class CapturesCountsPresenter {
   static toHttp(counts: CapturesCounts): CapturesCounts {

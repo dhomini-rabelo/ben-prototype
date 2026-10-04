@@ -1,5 +1,8 @@
-import { CaptureView } from '@/adapters/capture-view'
-import { Message, MessageProps } from '@/domain/entities/message'
+import { CaptureView } from '@ben/domain-chat/application/types/capture-view'
+import {
+  Message,
+  MessageProps,
+} from '@ben/domain-chat/enterprise/entities/message'
 import { Serialize, WithID } from '@ben/domain-base'
 import { OverWrite } from '@ben/modules-utils'
 

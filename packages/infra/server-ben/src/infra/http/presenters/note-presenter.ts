@@ -1,4 +1,4 @@
-import { Note, NoteProps } from '@/domain/entities/note'
+import { Note, NoteProps } from '@ben/domain-chat/enterprise/entities/note'
 import { Serialize, WithID } from '@ben/domain-base'
 import { OverWrite } from '@ben/modules-utils'
 

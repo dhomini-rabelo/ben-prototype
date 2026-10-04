@@ -1,4 +1,7 @@
-import { Message, MessageProps } from '@/domain/entities/message'
+import {
+  Message,
+  MessageProps,
+} from '@ben/domain-chat/enterprise/entities/message'
 import { Serialize, WithID } from '@ben/domain-base'
 
 export class MessageTracePresenter {

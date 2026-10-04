@@ -1,4 +1,4 @@
-import { ListNotesUseCase } from '@/domain/use-cases/captures/list-notes'
+import { ListNotesUseCase } from '@ben/domain-chat/application/use-cases/captures/list-notes'
 import { NotePresenter } from '@/infra/http/presenters/note-presenter'
 import { noteRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@ben/modules-utils'

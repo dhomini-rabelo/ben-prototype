@@ -1,4 +1,4 @@
-import { GetCapturesCountsUseCase } from '@/domain/use-cases/captures/get-captures-counts'
+import { GetCapturesCountsUseCase } from '@ben/domain-chat/application/use-cases/captures/get-captures-counts'
 import { CapturesCountsPresenter } from '@/infra/http/presenters/captures-counts-presenter'
 import {
   noteRepository,

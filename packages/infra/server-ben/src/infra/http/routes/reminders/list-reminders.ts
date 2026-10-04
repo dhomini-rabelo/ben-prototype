@@ -1,4 +1,4 @@
-import { ListRemindersUseCase } from '@/domain/use-cases/captures/list-reminders'
+import { ListRemindersUseCase } from '@ben/domain-chat/application/use-cases/captures/list-reminders'
 import { ReminderPresenter } from '@/infra/http/presenters/reminder-presenter'
 import { reminderRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@ben/modules-utils'

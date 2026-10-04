@@ -1,7 +1,7 @@
 import { EntityWithStatic } from '@ben/domain-base'
 
-import { Reminder } from '@/domain/entities/reminder'
-import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
+import { Reminder } from '@ben/domain-chat/enterprise/entities/reminder'
+import { ReminderRepository } from '@ben/domain-chat/application/repositories/reminder'
 
 import { SqliteRepository } from './sqlite-repository'
 

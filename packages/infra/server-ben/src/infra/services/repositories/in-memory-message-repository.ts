@@ -1,8 +1,8 @@
 import { EntityWithStatic } from '@ben/domain-base'
 import { InMemoryRepository } from '@ben/domain-base'
 
-import { Message } from '@/domain/entities/message'
-import { MessageRepository } from '@/adapters/repositories/message-repository'
+import { Message } from '@ben/domain-chat/enterprise/entities/message'
+import { MessageRepository } from '@ben/domain-chat/application/repositories/message'
 
 export class InMemoryMessageRepository
   extends InMemoryRepository<Message>
