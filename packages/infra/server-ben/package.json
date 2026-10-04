@@ -10,7 +10,6 @@
     "build": "tsup src/infra/http/server.ts --format esm --target node24 --out-dir dist --clean",
     "start": "node dist/server.js",
     "typecheck": "prisma generate --no-hints && tsc -p tsconfig.json --noEmit",
-    "test:unit": "vitest run",
     "migrate:deploy": "prisma migrate deploy",
     "smoke:sqlite": "tsx src/infra/scripts/smoke-sqlite.ts"
   },
@@ -21,6 +20,7 @@
     "@ben/domain-chat": "workspace:*",
     "@ben/domain-task": "workspace:*",
     "@ben/domain-topic": "workspace:*",
+    "@ben/domain-transcription": "workspace:*",
     "@ben/domain-user": "workspace:*",
     "@ben/modules-env": "workspace:*",
     "@ben/modules-utils": "workspace:*",
@@ -40,7 +40,6 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@ben/modules-tests": "workspace:*",
     "@types/better-sqlite3": "9.6.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
@@ -51,7 +50,6 @@
     "prisma": "7.10.0",
     "tsup": "^8.5.1",
     "tsx": "^4.19.4",
-    "typescript": "^5.9.3",
-    "vitest": "^3.2.7"
+    "typescript": "^5.9.3"
   }
 }

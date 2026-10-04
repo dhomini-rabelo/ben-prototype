@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { FakeTranscriptionProvider, expectError } from '@ben/modules-tests'
 import { ValidationError } from '@ben/domain-base'
 
-import { TranscribeAudioUseCase } from '@/domain/use-cases/transcription/transcribe-audio'
+import { TranscribeAudioUseCase } from '@ben/domain-transcription/application/use-cases/transcription/transcribe-audio'
 
 describe('TranscribeAudioUseCase', () => {
   let transcriptionProvider: FakeTranscriptionProvider

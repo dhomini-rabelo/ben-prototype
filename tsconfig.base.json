@@ -23,6 +23,8 @@
       "@ben/domain-task/*": ["./packages/domain/task/src/*"],
       "@ben/domain-topic": ["./packages/domain/topic/src/index.ts"],
       "@ben/domain-topic/*": ["./packages/domain/topic/src/*"],
+      "@ben/domain-transcription": ["./packages/domain/transcription/src/index.ts"],
+      "@ben/domain-transcription/*": ["./packages/domain/transcription/src/*"],
       "@ben/domain-user": ["./packages/domain/user/src/index.ts"],
       "@ben/domain-user/*": ["./packages/domain/user/src/*"],
       "@ben/modules-utils": ["./packages/modules/utils/src/index.ts"],
