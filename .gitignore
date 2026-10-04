@@ -1,3 +1,11 @@
-.claude/tmp/
+node_modules/
+dist/
 dist-apk/
+.env
+.env.development
+*.db
+*.db-journal
+.tmp/
+packages/infra/db/src/generated/
+.claude/tmp/
 .claude/settings.local.json

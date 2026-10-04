@@ -1,0 +1,29 @@
+{
+  "name": "ben",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@11.18.0",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "dev": "pnpm --filter @ben/server-ben dev",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "pnpm -r --if-present test:unit",
+    "build": "pnpm -r --if-present build",
+    "db:migrate": "pnpm --filter @ben/infra-db migrate:deploy"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@tsconfig/node24": "^24.0.0",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.39.4",
+    "eslint-plugin-prettier": "^5.5.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.6.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.0"
+  }
+}
