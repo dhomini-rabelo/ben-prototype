@@ -1,25 +1,26 @@
 # Backend Adapters and Services Structure
 
-How the `project-backend` ports-and-adapters layers are organized. The **port** (the contract the domain depends on) lives in `src/adapters/`; the **implementation** lives in `src/infra/services/`. **All file and folder names use kebab-case**; only exported identifiers (classes, interfaces) follow their own casing.
+How the backend ports-and-adapters layers are organized. A provider **port** (the contract the domain depends on) lives in `packages/adapters/src/ports/`; a repository port lives in its domain module (`packages/domain/<module>/src/application/repositories/`). The **implementations** live in `packages/infra/adapters/src/services/` (providers) and `packages/infra/db/src/repos/` (repositories). **All file and folder names use kebab-case**; only exported identifiers (classes, interfaces) follow their own casing.
 
 ## Folder layout
 
 ```
-src/
-├── adapters/
-│   ├── {provider}.ts              # port: interface or abstract class + Payload/Response types
-│   └── repositories/
-│       └── {entity}-repository.ts # port: abstract class extending Repository<Entity>
+packages/
+├── adapters/src/ports/
+│   └── {provider}.ts              # port: interface or abstract class + Payload/Response types
+├── domain/<module>/src/application/repositories/
+│   └── {entity}.ts                # port: abstract class extending Repository<Entity>
 └── infra/
-    └── services/
-        ├── {provider-impl}.ts                 # concrete implementation of a provider port
-        └── repositories/
-            └── in-memory-{entity}-repository.ts # concrete repository implementation
+    ├── adapters/src/services/
+    │   └── {provider-impl}.ts     # concrete implementation of a provider port
+    └── db/src/repos/
+        ├── in-memory/{entity}.ts  # in-memory repository implementation
+        └── sqlite/{entity}.ts     # SQLite repository implementation
 ```
 
 ## Provider ports
 
-A provider port is one file under `adapters/` that declares the contract the domain needs from an external capability (auth, transcription, agent, jwt). It exports the typed `Payload`/`Response` shapes next to the contract, declared as an `interface` (or an `abstract class` when the service is stateful).
+A provider port is one file under `packages/adapters/src/ports/` that declares the contract the domain needs from an external capability (auth, transcription, agent, jwt). It exports the typed `Payload`/`Response` shapes next to the contract, declared as an `interface` (or an `abstract class` when the service is stateful).
 
 ```ts
 export type GetUserFromTokenPayload = {
@@ -43,8 +44,8 @@ export interface AuthProviderService {
 Each repository port is one file under `adapters/repositories/`, named after its entity (`{entity}-repository.ts`). It is an `abstract class` that extends the generic `Repository<Entity>` base and adds entity-specific methods only when needed.
 
 ```ts
-import { Repository } from '@/modules/domain/repository/repository'
-import { Task } from '@/domain/entities/task'
+import { Repository } from '@ben/domain-base'
+import { Task } from '@ben/domain-task/enterprise/entities/task'
 
 export abstract class TaskRepository extends Repository<Task> {}
 ```

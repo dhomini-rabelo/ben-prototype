@@ -1,11 +1,11 @@
 # Backend HTTP Layer Structure
 
-How the `project-backend` HTTP layer under `src/infra/http/` is organized. **All file and folder names use kebab-case**; only exported identifiers stay in their own casing.
+How the HTTP layer of `packages/infra/server-ben` (`src/`) is organized. **All file and folder names use kebab-case**; only exported identifiers stay in their own casing.
 
 ## Folder layout
 
 ```
-src/infra/http/
+packages/infra/server-ben/src/
 ├── app.ts                         # Express app: route registration + error handler
 ├── server.ts                      # server entry point
 ├── repositories.ts                # single source of repository instances
@@ -20,7 +20,7 @@ src/infra/http/
 
 ## routes/
 
-Each route handler is a single file under a **feature folder** (`routes/{feature}/{operation}.ts`), named after the HTTP operation (`list-tasks.ts`, `get-task-detail.ts`, `update-task-content.ts`). The file exports one named handler function. The handler-level conventions (schemas, instantiation, flow) are documented in the [http-route-handler](../../code-write-code/coding-patterns/http-route-handler.md) coding pattern.
+Each route handler is a single file under a **feature folder** (`routes/{feature}/{operation}.ts`), named after the HTTP operation (`list-tasks.ts`, `get-task-detail.ts`, `update-task-content.ts`). The file exports one named handler function. The handler-level conventions (schemas, instantiation, flow) are documented in the [http-route-handler](../../code-write-code/coding-patterns/backend/http-route-handler.md) coding pattern.
 
 ## repositories.ts
 
@@ -33,7 +33,7 @@ export const noteRepository = new InMemoryNoteRepository()
 
 ## presenters/
 
-One presenter per entity (`presenters/{entity}-presenter.ts`) maps domain entities to HTTP response DTOs. See the [http-presenter](../../code-write-code/coding-patterns/http-presenter.md) coding pattern.
+One presenter per entity (`presenters/{entity}-presenter.ts`) maps domain entities to HTTP response DTOs. See the [http-presenter](../../code-write-code/coding-patterns/backend/http-presenter.md) coding pattern.
 
 ## app.ts
 

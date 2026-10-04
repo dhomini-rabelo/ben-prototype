@@ -12,10 +12,10 @@ Do not redeclare these shapes inline — import the shared types and type the
 
 | Type | Shape | Import from | Use for |
 | --- | --- | --- | --- |
-| `ItemResponse<T>` | `{ item: T }` | `@/modules/domain/responses` | create / update / patch / get of one object |
-| `ListingResponse<T>` | `{ items: T[] }` | `@/modules/domain/responses` | a non-paginated listing |
-| `CursorPaginationResponse<T>` | `{ items: T[]; hasMore: boolean; nextCursor: string \| null }` | `@/modules/domain/repository/repository` | cursor-based pagination |
-| `PaginationResponse<T>` | `{ items: T[]; totalItems: number; page: number }` | `@/modules/domain/repository/repository` | offset / page-based pagination |
+| `ItemResponse<T>` | `{ item: T }` | `@ben/domain-base` | create / update / patch / get of one object |
+| `ListingResponse<T>` | `{ items: T[] }` | `@ben/domain-base` | a non-paginated listing |
+| `CursorPaginationResponse<T>` | `{ items: T[]; hasMore: boolean; nextCursor: string \| null }` | `@ben/domain-base` | cursor-based pagination |
+| `PaginationResponse<T>` | `{ items: T[]; totalItems: number; page: number }` | `@ben/domain-base` | offset / page-based pagination |
 
 `ItemResponse` and `ListingResponse` accept any `T` (entities are class
 instances). `CursorPaginationResponse` and `PaginationResponse` constrain their
@@ -32,7 +32,7 @@ type instead of redeclaring it: `ItemResponse<Task> & { benMessage: string }`.
   count or a flag), but the object itself always lives under `item`.
 
 ```typescript
-import { ItemResponse } from '@/modules/domain/responses'
+import { ItemResponse } from '@ben/domain-base'
 
 // Wrong way
 async execute(payload: Payload): Promise<Task> {
@@ -64,7 +64,7 @@ async execute(payload: Payload): Promise<Response> {
   `items`, never as a bare array.
 
 ```typescript
-import { ListingResponse } from '@/modules/domain/responses'
+import { ListingResponse } from '@ben/domain-base'
 
 // Wrong way
 async execute(payload: Payload): Promise<Task[]> {
@@ -93,7 +93,7 @@ async execute(payload: Payload): Promise<ListingResponse<Task>> {
   shape, so the use case forwards it under the shared type.
 
 ```typescript
-import { CursorPaginationResponse } from '@/modules/domain/repository/repository'
+import { CursorPaginationResponse } from '@ben/domain-base'
 
 // Correct way
 async execute(payload: Payload): Promise<CursorPaginationResponse<Message>> {
@@ -116,7 +116,7 @@ async execute(payload: Payload): Promise<CursorPaginationResponse<Message>> {
   count under `totalItems`, and the current page under `page`.
 
 ```typescript
-import { PaginationResponse } from '@/modules/domain/repository/repository'
+import { PaginationResponse } from '@ben/domain-base'
 
 // Correct way
 async execute(payload: Payload): Promise<PaginationResponse<Task>> {

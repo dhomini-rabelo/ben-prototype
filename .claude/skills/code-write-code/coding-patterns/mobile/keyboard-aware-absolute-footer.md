@@ -1,6 +1,6 @@
 # Keyboard-Aware Absolute Footer Pattern
 
-How `project-mobile` lifts an absolutely-positioned input footer above the keyboard.
+How `packages/infra/mobile/ben` lifts an absolutely-positioned input footer above the keyboard.
 
 ## Why not KeyboardAvoidingView
 

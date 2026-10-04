@@ -1,6 +1,6 @@
 # Page Stores Structure
 
-How a `project-mobile` page organizes its client state when it grows beyond a single store. This sits next to the [page structure](./page-structure.md) `states/` convention: use `states/` for ephemeral Jotai UI atoms, and `stores/` for the page's Zustand domain stores. **All file and folder names use kebab-case**.
+How a `packages/infra/mobile/ben` page organizes its client state when it grows beyond a single store. This sits next to the [page structure](./page-structure.md) `states/` convention: use `states/` for ephemeral Jotai UI atoms, and `stores/` for the page's Zustand domain stores. **All file and folder names use kebab-case**.
 
 ## Folder layout
 

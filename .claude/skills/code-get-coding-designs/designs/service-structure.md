@@ -2,7 +2,7 @@
 
 ## The idea
 
-When an infrastructure service file (e.g. an adapter implementation under `src/infra/services/`) grows large because it bundles the service class together with all of its supporting pieces — schemas, prompt builders, tools, client setup — split it into a folder.
+When an infrastructure service file (e.g. an adapter implementation under `packages/infra/adapters/src/services/`) grows large because it bundles the service class together with all of its supporting pieces — schemas, prompt builders, tools, client setup — split it into a folder.
 
 The goal is to make the **main class easy to view**: `index.ts` reads as a clear summary of what the service does, and each operation's supporting code moves into its own subfolder and subfiles next to that operation.
 

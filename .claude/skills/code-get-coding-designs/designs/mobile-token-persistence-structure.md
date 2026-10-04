@@ -1,6 +1,6 @@
 # Mobile Token Persistence Structure
 
-How `project-mobile` persists auth state in `src/storage/`. Sensitive tokens and ordinary user data are split across **two native stores**, and the token store keeps an **in-memory synchronous cache** so a synchronous axios interceptor can read a token from an otherwise async-only API. **All file and folder names use kebab-case.**
+How `packages/infra/mobile/ben` persists auth state in `src/storage/`. Sensitive tokens and ordinary user data are split across **two native stores**, and the token store keeps an **in-memory synchronous cache** so a synchronous axios interceptor can read a token from an otherwise async-only API. **All file and folder names use kebab-case.**
 
 ## Folder layout
 

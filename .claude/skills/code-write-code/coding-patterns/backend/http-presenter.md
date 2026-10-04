@@ -1,6 +1,6 @@
 # HTTP Presenter Patterns
 
-How to write a presenter in `project-backend` (`src/infra/http/presenters/{entity}-presenter.ts`). A presenter maps a domain entity to the JSON shape sent over HTTP, keeping serialization out of use-cases and route handlers.
+How to write a presenter in `packages/infra/server-ben` (`src/presenters/{entity}-presenter.ts`). A presenter maps a domain entity to the JSON shape sent over HTTP, keeping serialization out of use-cases and route handlers.
 
 ## Use a stateless class with static methods
 
@@ -35,11 +35,11 @@ export class TaskPresenter {
 
 ## Type the return shape from the entity props
 
-- Always derive the return type from the entity props with the shared `Serialize` and `WithID` helpers (imported from `@/modules/domain/types`), never a separate hand-maintained DTO interface. `Serialize<...>` converts `ID`/`Date` to `string`, and `WithID<Props>` adds the serialized `id`.
+- Always derive the return type from the entity props with the shared `Serialize` and `WithID` helpers (imported from `@ben/domain-base`), never a separate hand-maintained DTO interface. `Serialize<...>` converts `ID`/`Date` to `string`, and `WithID<Props>` adds the serialized `id`.
 - Serialize values at the boundary: `id.toValue()` for ids, `.toISOString()` for dates.
 
 ```typescript
-import { Serialize, WithID } from '@/modules/domain/types'
+import { Serialize, WithID } from '@ben/domain-base'
 ```
 
 ## Always shape with `Omit`, never `Pick`

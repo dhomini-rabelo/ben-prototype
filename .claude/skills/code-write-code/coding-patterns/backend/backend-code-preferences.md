@@ -1,6 +1,6 @@
 # Back-end Code Preferences
 
-Preferences for `project-backend`, captured from review corrections. They complement the focused back-end patterns; when a rule here overlaps a dedicated pattern, the dedicated pattern still applies for its own topic. See also the [general](./general-code-preferences.md) and [front-end](./frontend-code-preferences.md) preferences.
+Preferences for the backend packages (`packages/domain/*`, `packages/infra/*`), captured from review corrections. They complement the focused back-end patterns; when a rule here overlaps a dedicated pattern, the dedicated pattern still applies for its own topic. See also the [general](../general-code-preferences.md) and [front-end](../frontend/frontend-code-preferences.md) preferences.
 
 ## Domain folder boundaries
 
@@ -12,7 +12,7 @@ Preferences for `project-backend`, captured from review corrections. They comple
 
 ## One use-case, one responsibility
 
-A use-case file that does two things should be two use-cases. Each implements the shared use-case interface (`src/modules/domain/use-case.ts`).
+A use-case file that does two things should be two use-cases. Each implements the shared use-case interface (`packages/domain/base/src/use-case/use-case.ts`).
 
 ## Enforce ownership with a compound repository query, not per-entity loaders
 
@@ -37,7 +37,7 @@ export interface CreateTaskResponseData { ... }
 
 ## Type HTTP presenters via `Serialize`/`WithID` and `Omit`
 
-Type presenter responses from the entity props with `Serialize` / `WithID` from `@/modules/domain/types`, and use `Omit` (not `Pick`) so adding a new entity field raises a type error that forces it into the serializer.
+Type presenter responses from the entity props with `Serialize` / `WithID` from `@ben/domain-base`, and use `Omit` (not `Pick`) so adding a new entity field raises a type error that forces it into the serializer.
 
 ```typescript
 // Wrong way — Pick silently ignores new fields

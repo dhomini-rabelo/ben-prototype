@@ -1,6 +1,6 @@
 # Mobile Bottom Sheet Overlay Pattern
 
-How `project-mobile` builds a reusable slide-up bottom sheet that hosts arbitrary content.
+How `packages/infra/mobile/ben` builds a reusable slide-up bottom sheet that hosts arbitrary content.
 
 ## One reusable overlay, not inline blocks
 

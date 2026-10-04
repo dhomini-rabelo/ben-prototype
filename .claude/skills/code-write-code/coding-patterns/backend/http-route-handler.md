@@ -1,6 +1,6 @@
 # HTTP Route Handler Patterns
 
-How to write a route handler file in `project-backend` (`src/infra/http/routes/{feature}/{operation}.ts`). The folder layout is covered by the [backend HTTP layer structure](../../code-get-coding-designs/designs/backend-http-layer-structure.md) design; these patterns cover the file contents.
+How to write a route handler file in `packages/infra/server-ben` (`src/routes/{feature}/{operation}.ts`). The folder layout is covered by the [backend HTTP layer structure](../../../code-get-coding-designs/designs/backend-http-layer-structure.md) design; these patterns cover the file contents.
 
 ## Declare schemas and dependencies at module level
 

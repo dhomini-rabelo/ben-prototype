@@ -1,6 +1,6 @@
 # Domain Entity Declaration Patterns
 
-How to declare a domain entity in `project-backend`. Use these patterns whenever you add or refactor an entity under `src/domain/entities/`.
+How to declare a domain entity in a `packages/domain/<module>` package. Use these patterns whenever you add or refactor an entity under `src/enterprise/entities/`.
 
 ## Extend the domain base class with a typed Props
 

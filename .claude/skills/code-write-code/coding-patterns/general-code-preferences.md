@@ -1,6 +1,6 @@
 # General Code Preferences
 
-Cross-cutting preferences captured from review corrections. They complement the focused patterns and designs; when a rule here overlaps a dedicated pattern, the dedicated pattern still applies for its own topic. See also the [front-end](./frontend-code-preferences.md) and [back-end](./backend-code-preferences.md) preferences.
+Cross-cutting preferences captured from review corrections. They complement the focused patterns and designs; when a rule here overlaps a dedicated pattern, the dedicated pattern still applies for its own topic. See also the [front-end](./frontend/frontend-code-preferences.md) and [back-end](./backend/backend-code-preferences.md) preferences.
 
 ## Apply a change across every matching file and layer
 
@@ -20,7 +20,7 @@ interface UserProps {
 
 ## Sync the consuming client(s) when a backend contract changes
 
-A backend response/contract change is not done until the consuming `project-mobile` client is updated to match, in the same task.
+A backend response/contract change is not done until the consuming `packages/infra/mobile/ben` client is updated to match, in the same task.
 
 ## Web-search the correct approach instead of guessing
 
@@ -37,7 +37,7 @@ When asked to add something to an existing file or doc, preserve its current str
 import { createID } from '../../../modules/domain/id'
 
 // Correct way
-import { createID } from '@/modules/domain/id'
+import { createID } from '@ben/domain-base'
 ```
 
 ## Delete the original file after splitting it

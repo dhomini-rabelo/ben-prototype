@@ -1,6 +1,6 @@
 # Mobile Icon Color and Size Patterns
 
-How `project-mobile` colors and sizes vector icons (`lucide-react-native` / `react-native-svg`).
+How `packages/infra/mobile/ben` colors and sizes vector icons (`lucide-react-native` / `react-native-svg`).
 
 ## Why className does not work on icons
 
