@@ -27,7 +27,7 @@ Read [coding designs](../code-get-coding-designs/SKILL.md), the [monorepo struct
 
 Use the factory's default workspace boundaries, adapted to responsibilities that actually exist:
 
-- `packages/domain/<module>` owns entities, repository ports, use cases, and business validation. Keep entity-specific repository ports with their domain module. Shared primitives belong in `packages/domain/base`; copy [examples/domain-base](../../../examples/domain-base/) (SQL-like default; NoSQL-like is a separate type under `./nosql`, not a second implementation of the same `InMemoryRepository`).
+- `packages/domain/<module>` owns entities, repository ports, use cases, and business validation. Keep entity-specific repository ports with their domain module. Shared primitives belong in `packages/domain/base`; use [packages/domain/base](../../../packages/domain/base/) (`@ben/domain-base`) as the reference (SQL-like repository contract; a NoSQL-like contract would be a separate sibling, not a second implementation of the same `InMemoryRepository`).
 - `packages/adapters` owns external-service contracts and must not import feature-domain modules. Concrete service and repository implementations belong under `packages/infra/<implementation>`.
 - Web and mobile apps live under infrastructure with their own UI conventions. Preserve framework-required route and native project layouts; do not impose backend layers on UI code or let clients import server implementations.
 - Create shared packages only for a defined shared responsibility. Check indirect imports and public entrypoints as well as direct dependencies to keep the workspace graph acyclic.

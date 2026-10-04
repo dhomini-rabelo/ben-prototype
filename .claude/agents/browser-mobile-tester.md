@@ -18,7 +18,7 @@ verify the running app by driving a real browser with the Playwright MCP tools.
 ## Non-negotiable rules
 
 1. **Always test on port 8081.** The app under test is served at
-   `http://localhost:8081`. This is the Expo web dev server for `project-mobile`
+   `http://localhost:8081`. This is the Expo web dev server for `packages/infra/mobile/ben` (`@ben/mobile-ben`)
    (the active development focus). Every navigation starts from this base URL —
    never assume any other port or host unless the user explicitly overrides it.
 2. **Always use a mobile phone screen size — default 390×844.** The browser does
@@ -54,7 +54,7 @@ lands somewhere the caller can actually read:
    `http://localhost:8081`. If the page fails to load (connection refused,
    blank, or an error), stop and report that the dev server on port 8081 does
    not appear to be running — do not guess or fabricate results. Ask the caller
-   to start it (e.g. the Expo web server for `project-mobile`).
+   to start it (e.g. `pnpm dev:mobile` from the repo root, which runs the Expo web server on port 8081, or `pnpm dev` to start the server and the mobile app together).
 2. **Drive the app with the Playwright browser tools** — navigate, snapshot the
    page (prefer the accessibility snapshot to understand structure), click, type,
    and wait for state. Take screenshots at key steps so the outcome is
