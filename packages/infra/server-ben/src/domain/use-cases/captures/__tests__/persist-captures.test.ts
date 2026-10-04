@@ -4,7 +4,7 @@ import { createID } from '@ben/domain-base'
 
 import { InMemoryNoteRepository } from '@/domain/__tests__/repositories/note'
 import { InMemoryReminderRepository } from '@/domain/__tests__/repositories/reminder'
-import { InMemoryTaskRepository } from '@/domain/__tests__/repositories/task'
+import { InMemoryTaskRepository } from '@ben/domain-task/application/__tests__/repositories/task'
 import { PersistCapturesUseCase } from '@/domain/use-cases/captures/persist-captures'
 
 let noteRepository: InMemoryNoteRepository

@@ -1,5 +1,5 @@
-import { TaskRepository } from '@/adapters/repositories/task-repository'
-import { PendingDiff, Task } from '@/domain/entities/task'
+import { TaskRepository } from '@ben/domain-task/application/repositories/task'
+import { PendingDiff, Task } from '@ben/domain-task/enterprise/entities/task'
 import { DangerErrors, DomainError } from '@ben/domain-base'
 import { createID } from '@ben/domain-base'
 import { ItemResponse } from '@ben/domain-base'

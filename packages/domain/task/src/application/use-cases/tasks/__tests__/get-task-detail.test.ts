@@ -3,9 +3,9 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { ResourceNotFoundError } from '@ben/domain-base'
 import { expectError, some } from '@ben/modules-tests'
 
-import { InMemoryTaskRepository } from '@/domain/__tests__/repositories/task'
-import { TaskFactory } from '@/domain/__tests__/factories/task'
-import { GetTaskDetailUseCase } from '@/domain/use-cases/tasks/get-task-detail'
+import { InMemoryTaskRepository } from '@ben/domain-task/application/__tests__/repositories/task'
+import { TaskFactory } from '@ben/domain-task/application/__tests__/factories/task'
+import { GetTaskDetailUseCase } from '@ben/domain-task/application/use-cases/tasks/get-task-detail'
 import { createID } from '@ben/domain-base'
 
 describe('GetTaskDetailUseCase', () => {

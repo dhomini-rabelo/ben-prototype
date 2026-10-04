@@ -1,7 +1,7 @@
 import { MessageRepository } from '@/adapters/repositories/message-repository'
 import { NoteRepository } from '@/adapters/repositories/note-repository'
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
-import { TaskRepository } from '@/adapters/repositories/task-repository'
+import { TaskRepository } from '@ben/domain-task/application/repositories/task'
 import { TopicRepository } from '@/adapters/repositories/topic-repository'
 import { TopicSummaryRepository } from '@/adapters/repositories/topic-summary-repository'
 import { UserRepository } from '@ben/domain-user/application/repositories/user'

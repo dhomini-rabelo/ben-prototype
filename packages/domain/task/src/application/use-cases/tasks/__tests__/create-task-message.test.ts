@@ -5,10 +5,10 @@ import { ResourceNotFoundError } from '@ben/domain-base'
 import { FakeAgentService, expectError, some } from '@ben/modules-tests'
 
 import { TaskTurnReply } from '@ben/adapters'
-import { PendingDiff } from '@/domain/entities/task'
+import { PendingDiff } from '@ben/domain-task/enterprise/entities/task'
 import { AgentModelSelection } from '@ben/adapters'
-import { TaskFactory } from '@/domain/__tests__/factories/task'
-import { InMemoryTaskRepository } from '@/domain/__tests__/repositories/task'
+import { TaskFactory } from '@ben/domain-task/application/__tests__/factories/task'
+import { InMemoryTaskRepository } from '@ben/domain-task/application/__tests__/repositories/task'
 import { CreateTaskMessageUseCase } from '../create-task-message'
 
 const model: AgentModelSelection = {

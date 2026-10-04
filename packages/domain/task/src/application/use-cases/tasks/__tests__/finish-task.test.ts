@@ -4,9 +4,9 @@ import { createID } from '@ben/domain-base'
 import { ResourceNotFoundError } from '@ben/domain-base'
 import { expectError, some } from '@ben/modules-tests'
 
-import { InMemoryTaskRepository } from '@/domain/__tests__/repositories/task'
-import { TaskFactory } from '@/domain/__tests__/factories/task'
-import { FinishTaskUseCase } from '@/domain/use-cases/tasks/finish-task'
+import { InMemoryTaskRepository } from '@ben/domain-task/application/__tests__/repositories/task'
+import { TaskFactory } from '@ben/domain-task/application/__tests__/factories/task'
+import { FinishTaskUseCase } from '@ben/domain-task/application/use-cases/tasks/finish-task'
 
 describe('FinishTaskUseCase', () => {
   let taskRepository: InMemoryTaskRepository

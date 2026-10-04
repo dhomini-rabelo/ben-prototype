@@ -1,4 +1,4 @@
-import { UpdateTaskTodosUseCase } from '@/domain/use-cases/tasks/update-task-todos'
+import { UpdateTaskTodosUseCase } from '@ben/domain-task/application/use-cases/tasks/update-task-todos'
 import { TaskPresenter } from '@/infra/http/presenters/task-presenter'
 import { taskRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@ben/modules-utils'

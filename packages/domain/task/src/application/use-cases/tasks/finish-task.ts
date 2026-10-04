@@ -1,5 +1,5 @@
-import { TaskRepository } from '@/adapters/repositories/task-repository'
-import { Task } from '@/domain/entities/task'
+import { TaskRepository } from '@ben/domain-task/application/repositories/task'
+import { Task } from '@ben/domain-task/enterprise/entities/task'
 import { createID } from '@ben/domain-base'
 import { ItemResponse } from '@ben/domain-base'
 import { UseCase } from '@ben/domain-base'
@@ -9,7 +9,7 @@ interface Payload {
   taskId: string
 }
 
-export class RejectTaskDiffUseCase implements UseCase<ItemResponse<Task>> {
+export class FinishTaskUseCase implements UseCase<ItemResponse<Task>> {
   constructor(private taskRepository: TaskRepository) {}
 
   async execute(payload: Payload): Promise<ItemResponse<Task>> {
@@ -18,9 +18,12 @@ export class RejectTaskDiffUseCase implements UseCase<ItemResponse<Task>> {
       userId: createID(payload.userId),
     })
 
+    const now = new Date()
+
     const item = await this.taskRepository.update(task.id, {
-      pendingDiff: null,
-      lastActivityAt: new Date(),
+      status: 'finished',
+      finishedAt: now,
+      lastActivityAt: now,
     })
 
     return { item }

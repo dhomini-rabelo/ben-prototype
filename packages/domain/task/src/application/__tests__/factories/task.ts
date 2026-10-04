@@ -1,8 +1,8 @@
 import { createID } from '@ben/domain-base'
 import { Factory, some } from '@ben/modules-tests'
 
-import { Task, TaskProps } from '@/domain/entities/task'
-import { TaskRepository } from '@/adapters/repositories/task-repository'
+import { Task, TaskProps } from '@ben/domain-task/enterprise/entities/task'
+import { TaskRepository } from '@ben/domain-task/application/repositories/task'
 
 export function createTaskData(data: Partial<TaskProps> = {}): TaskProps {
   return {

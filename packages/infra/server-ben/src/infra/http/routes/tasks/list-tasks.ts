@@ -1,4 +1,4 @@
-import { ListTasksUseCase } from '@/domain/use-cases/tasks/list-tasks'
+import { ListTasksUseCase } from '@ben/domain-task/application/use-cases/tasks/list-tasks'
 import { TaskPresenter } from '@/infra/http/presenters/task-presenter'
 import { taskRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@ben/modules-utils'

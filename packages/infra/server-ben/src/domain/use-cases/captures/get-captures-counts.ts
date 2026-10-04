@@ -1,6 +1,6 @@
 import { NoteRepository } from '@/adapters/repositories/note-repository'
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
-import { TaskRepository } from '@/adapters/repositories/task-repository'
+import { TaskRepository } from '@ben/domain-task/application/repositories/task'
 import { ID, createID } from '@ben/domain-base'
 import { NotEqualQuery } from '@ben/domain-base'
 import { ItemResponse } from '@ben/domain-base'

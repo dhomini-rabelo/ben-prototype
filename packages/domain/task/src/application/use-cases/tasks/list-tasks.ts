@@ -1,5 +1,5 @@
-import { TaskRepository } from '@/adapters/repositories/task-repository'
-import { Task } from '@/domain/entities/task'
+import { TaskRepository } from '@ben/domain-task/application/repositories/task'
+import { Task } from '@ben/domain-task/enterprise/entities/task'
 import { createID } from '@ben/domain-base'
 import { NotEqualQuery } from '@ben/domain-base'
 import { ListingResponse } from '@ben/domain-base'

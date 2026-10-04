@@ -1,4 +1,4 @@
-import { FinishTaskUseCase } from '@/domain/use-cases/tasks/finish-task'
+import { FinishTaskUseCase } from '@ben/domain-task/application/use-cases/tasks/finish-task'
 import { TaskPresenter } from '@/infra/http/presenters/task-presenter'
 import { taskRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@ben/modules-utils'

@@ -2,9 +2,9 @@ import { beforeEach, describe, expect, it } from 'vitest'
 
 import { createID } from '@ben/domain-base'
 
-import { InMemoryTaskRepository } from '@/domain/__tests__/repositories/task'
-import { TaskFactory } from '@/domain/__tests__/factories/task'
-import { ListTasksUseCase } from '@/domain/use-cases/tasks/list-tasks'
+import { InMemoryTaskRepository } from '@ben/domain-task/application/__tests__/repositories/task'
+import { TaskFactory } from '@ben/domain-task/application/__tests__/factories/task'
+import { ListTasksUseCase } from '@ben/domain-task/application/use-cases/tasks/list-tasks'
 
 describe('ListTasksUseCase', () => {
   let taskRepository: InMemoryTaskRepository

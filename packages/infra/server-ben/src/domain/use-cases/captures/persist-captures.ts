@@ -1,7 +1,7 @@
 import { CaptureView } from '@/adapters/capture-view'
 import { NoteRepository } from '@/adapters/repositories/note-repository'
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'
-import { TaskRepository } from '@/adapters/repositories/task-repository'
+import { TaskRepository } from '@ben/domain-task/application/repositories/task'
 import { NoteDraft, ReminderDraft, TaskDraft } from '@ben/adapters'
 import { ID, createID } from '@ben/domain-base'
 import { ListingResponse } from '@ben/domain-base'

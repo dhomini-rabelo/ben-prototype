@@ -1,4 +1,4 @@
-import { GetTaskDetailUseCase } from '@/domain/use-cases/tasks/get-task-detail'
+import { GetTaskDetailUseCase } from '@ben/domain-task/application/use-cases/tasks/get-task-detail'
 import { TaskPresenter } from '@/infra/http/presenters/task-presenter'
 import { taskRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@ben/modules-utils'

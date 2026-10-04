@@ -1,4 +1,4 @@
-import { ReopenTaskUseCase } from '@/domain/use-cases/tasks/reopen-task'
+import { ReopenTaskUseCase } from '@ben/domain-task/application/use-cases/tasks/reopen-task'
 import { TaskPresenter } from '@/infra/http/presenters/task-presenter'
 import { taskRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@ben/modules-utils'

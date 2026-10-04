@@ -2,7 +2,11 @@ import { existsSync, mkdirSync, rmSync } from 'node:fs'
 
 import { PrismaClient } from '@/generated/prisma/client'
 
-import { Task, TaskProps, PendingDiff } from '@/domain/entities/task'
+import {
+  Task,
+  TaskProps,
+  PendingDiff,
+} from '@ben/domain-task/enterprise/entities/task'
 
 import { ID, createID } from '@ben/domain-base'
 import {

@@ -1,4 +1,7 @@
-import { Task, TaskContentType } from '@/domain/entities/task'
+import {
+  Task,
+  TaskContentType,
+} from '@ben/domain-task/enterprise/entities/task'
 import { DangerErrors, DomainError } from '@ben/domain-base'
 
 export function ensureTaskContentType(

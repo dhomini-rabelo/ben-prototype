@@ -1,5 +1,5 @@
 import { Repository } from '@ben/domain-base'
 
-import { Task } from '@/domain/entities/task'
+import { Task } from '@ben/domain-task/enterprise/entities/task'
 
 export abstract class TaskRepository extends Repository<Task> {}

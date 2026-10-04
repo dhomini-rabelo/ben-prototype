@@ -1,11 +1,11 @@
 import { AgentService, ProposedTaskChanges, TaskTurnReply } from '@ben/adapters'
-import { TaskRepository } from '@/adapters/repositories/task-repository'
+import { TaskRepository } from '@ben/domain-task/application/repositories/task'
 import {
   PendingDiff,
   Task,
   TaskDiffChanges,
   TodoItemWithDiff,
-} from '@/domain/entities/task'
+} from '@ben/domain-task/enterprise/entities/task'
 import { AgentModelSelection } from '@ben/adapters'
 import { createID } from '@ben/domain-base'
 import { ItemResponse } from '@ben/domain-base'

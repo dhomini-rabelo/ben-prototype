@@ -5,19 +5,25 @@ import { createID } from '@ben/domain-base'
 import { ResourceNotFoundError } from '@ben/domain-base'
 import { expectError, some } from '@ben/modules-tests'
 
-import { TaskFactory } from '@/domain/__tests__/factories/task'
-import { InMemoryTaskRepository } from '@/domain/__tests__/repositories/task'
-import { UpdateTaskContentUseCase } from '../update-task-content'
+import { TodoItem } from '@ben/domain-task/enterprise/entities/task'
+import { TaskFactory } from '@ben/domain-task/application/__tests__/factories/task'
+import { InMemoryTaskRepository } from '@ben/domain-task/application/__tests__/repositories/task'
+import { UpdateTaskTodosUseCase } from '../update-task-todos'
 
-describe('UpdateTaskContentUseCase', () => {
+const newTodoItems: TodoItem[] = [
+  { id: 'a', title: 'First', done: true, order: 0 },
+  { id: 'b', title: 'Second', done: false, order: 1 },
+]
+
+describe('UpdateTaskTodosUseCase', () => {
   let taskRepository: InMemoryTaskRepository
   let taskFactory: TaskFactory
-  let sut: UpdateTaskContentUseCase
+  let sut: UpdateTaskTodosUseCase
 
   beforeEach(() => {
     taskRepository = new InMemoryTaskRepository()
     taskFactory = new TaskFactory(taskRepository)
-    sut = new UpdateTaskContentUseCase(taskRepository)
+    sut = new UpdateTaskTodosUseCase(taskRepository)
   })
 
   afterEach(() => {
@@ -25,20 +31,26 @@ describe('UpdateTaskContentUseCase', () => {
   })
 
   describe('successful', () => {
-    it('updates the text content, clears the pending diff and sets status active', async () => {
+    it('updates the todo items, clears the pending diff and sets status active', async () => {
       const now = new Date('2026-02-03T10:00:00.000Z')
       vi.useFakeTimers()
       vi.setSystemTime(now)
       const userId = createID()
       const task = await taskFactory.create({
         userId,
-        contentType: 'text',
-        textContent: 'old',
+        contentType: 'todo',
+        textContent: null,
+        todoItems: [{ id: 'old', title: 'Old', done: false, order: 0 }],
         status: 'created',
         pendingDiff: {
           turnId: some.uuid(),
           proposedBy: 'ben',
-          changes: { contentType: 'text', before: 'old', after: 'proposed' },
+          changes: {
+            contentType: 'todo',
+            items: [
+              { id: 'x', title: 'X', done: false, order: 0, diff: 'added' },
+            ],
+          },
           createdAt: new Date(),
         },
       })
@@ -46,26 +58,26 @@ describe('UpdateTaskContentUseCase', () => {
       const { item } = await sut.execute({
         userId: userId.toValue(),
         taskId: task.id.toValue(),
-        textContent: 'new content',
+        todoItems: newTodoItems,
       })
 
-      expect(item.props.textContent).toBe('new content')
+      expect(item.props.todoItems).toEqual(newTodoItems)
       expect(item.props.pendingDiff).toBeNull()
       expect(item.props.status).toBe('active')
       expect(item.props.lastActivityAt).toEqual(now)
       const stored = await taskRepository.get({ id: task.id })
-      expect(stored.props.textContent).toBe('new content')
+      expect(stored.props.todoItems).toEqual(newTodoItems)
     })
   })
 
   describe('validation', () => {
-    it('rejects a todo task', async () => {
+    it('rejects a text task', async () => {
       const userId = createID()
       const task = await taskFactory.create({
         userId,
-        contentType: 'todo',
-        textContent: null,
-        todoItems: [{ id: 'a', title: 'Item', done: false, order: 0 }],
+        contentType: 'text',
+        textContent: 'some text',
+        todoItems: null,
         status: 'created',
       })
 
@@ -75,7 +87,7 @@ describe('UpdateTaskContentUseCase', () => {
             .execute({
               userId: userId.toValue(),
               taskId: task.id.toValue(),
-              textContent: 'new content',
+              todoItems: newTodoItems,
             })
             .then(() => undefined),
         DomainError,
@@ -94,7 +106,7 @@ describe('UpdateTaskContentUseCase', () => {
             .execute({
               userId: some.uuid(),
               taskId: some.uuid(),
-              textContent: some.text(),
+              todoItems: newTodoItems,
             })
             .then(() => undefined),
         ResourceNotFoundError,
@@ -103,8 +115,9 @@ describe('UpdateTaskContentUseCase', () => {
 
     it('rejects a task that belongs to another user', async () => {
       const task = await taskFactory.create({
-        contentType: 'text',
-        textContent: 'old',
+        contentType: 'todo',
+        textContent: null,
+        todoItems: [],
       })
 
       await expectError(
@@ -113,13 +126,13 @@ describe('UpdateTaskContentUseCase', () => {
             .execute({
               userId: some.uuid(),
               taskId: task.id.toValue(),
-              textContent: 'new content',
+              todoItems: newTodoItems,
             })
             .then(() => undefined),
         ResourceNotFoundError,
       )
       const stored = await taskRepository.get({ id: task.id })
-      expect(stored.props.textContent).toBe('old')
+      expect(stored.props.todoItems).toEqual([])
     })
   })
 })

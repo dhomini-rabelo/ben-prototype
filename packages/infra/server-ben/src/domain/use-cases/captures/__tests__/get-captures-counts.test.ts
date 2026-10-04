@@ -4,10 +4,10 @@ import { createID } from '@ben/domain-base'
 
 import { InMemoryNoteRepository } from '@/domain/__tests__/repositories/note'
 import { InMemoryReminderRepository } from '@/domain/__tests__/repositories/reminder'
-import { InMemoryTaskRepository } from '@/domain/__tests__/repositories/task'
+import { InMemoryTaskRepository } from '@ben/domain-task/application/__tests__/repositories/task'
 import { NoteFactory } from '@/domain/__tests__/factories/note'
 import { ReminderFactory } from '@/domain/__tests__/factories/reminder'
-import { TaskFactory } from '@/domain/__tests__/factories/task'
+import { TaskFactory } from '@ben/domain-task/application/__tests__/factories/task'
 import { GetCapturesCountsUseCase } from '@/domain/use-cases/captures/get-captures-counts'
 
 let noteRepository: InMemoryNoteRepository

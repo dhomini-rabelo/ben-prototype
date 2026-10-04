@@ -1,4 +1,8 @@
-import { PendingDiff, Task, TaskProps } from '@/domain/entities/task'
+import {
+  PendingDiff,
+  Task,
+  TaskProps,
+} from '@ben/domain-task/enterprise/entities/task'
 import { Serialize, WithID } from '@ben/domain-base'
 import { OverWrite } from '@ben/modules-utils'
 

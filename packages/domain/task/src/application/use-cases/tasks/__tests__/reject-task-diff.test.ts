@@ -4,10 +4,10 @@ import { createID } from '@ben/domain-base'
 import { ResourceNotFoundError } from '@ben/domain-base'
 import { expectError, some } from '@ben/modules-tests'
 
-import { PendingDiff } from '@/domain/entities/task'
-import { InMemoryTaskRepository } from '@/domain/__tests__/repositories/task'
-import { TaskFactory } from '@/domain/__tests__/factories/task'
-import { RejectTaskDiffUseCase } from '@/domain/use-cases/tasks/reject-task-diff'
+import { PendingDiff } from '@ben/domain-task/enterprise/entities/task'
+import { InMemoryTaskRepository } from '@ben/domain-task/application/__tests__/repositories/task'
+import { TaskFactory } from '@ben/domain-task/application/__tests__/factories/task'
+import { RejectTaskDiffUseCase } from '@ben/domain-task/application/use-cases/tasks/reject-task-diff'
 
 function buildPendingDiff(): PendingDiff {
   return {

@@ -6,6 +6,8 @@
       "@ben/adapters/*": ["../../../packages/adapters/src/*"],
       "@ben/domain-base": ["../../../packages/domain/base/src/index.ts"],
       "@ben/domain-base/*": ["../../../packages/domain/base/src/*"],
+      "@ben/domain-task": ["../../../packages/domain/task/src/index.ts"],
+      "@ben/domain-task/*": ["../../../packages/domain/task/src/*"],
       "@ben/domain-user": ["../../../packages/domain/user/src/index.ts"],
       "@ben/domain-user/*": ["../../../packages/domain/user/src/*"],
       "@ben/modules-utils": ["../../../packages/modules/utils/src/index.ts"],
