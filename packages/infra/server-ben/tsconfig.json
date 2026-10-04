@@ -1,31 +1,4 @@
 {
   "extends": "../../../tsconfig.base.json",
-  "compilerOptions": {
-    "paths": {
-      "@ben/adapters": ["../../../packages/adapters/src/index.ts"],
-      "@ben/adapters/*": ["../../../packages/adapters/src/*"],
-      "@ben/domain-base": ["../../../packages/domain/base/src/index.ts"],
-      "@ben/domain-base/*": ["../../../packages/domain/base/src/*"],
-      "@ben/domain-chat": ["../../../packages/domain/chat/src/index.ts"],
-      "@ben/domain-chat/*": ["../../../packages/domain/chat/src/*"],
-      "@ben/domain-task": ["../../../packages/domain/task/src/index.ts"],
-      "@ben/domain-task/*": ["../../../packages/domain/task/src/*"],
-      "@ben/domain-topic": ["../../../packages/domain/topic/src/index.ts"],
-      "@ben/domain-topic/*": ["../../../packages/domain/topic/src/*"],
-      "@ben/domain-transcription": ["../../../packages/domain/transcription/src/index.ts"],
-      "@ben/domain-transcription/*": ["../../../packages/domain/transcription/src/*"],
-      "@ben/domain-user": ["../../../packages/domain/user/src/index.ts"],
-      "@ben/domain-user/*": ["../../../packages/domain/user/src/*"],
-      "@ben/infra-adapters": ["../../../packages/infra/adapters/src/index.ts"],
-      "@ben/infra-adapters/*": ["../../../packages/infra/adapters/src/*"],
-      "@ben/infra-db": ["../../../packages/infra/db/src/index.ts"],
-      "@ben/infra-db/*": ["../../../packages/infra/db/src/*"],
-      "@ben/modules-utils": ["../../../packages/modules/utils/src/index.ts"],
-      "@ben/modules-utils/*": ["../../../packages/modules/utils/src/*"],
-      "@ben/modules-env": ["../../../packages/modules/env/src/index.ts"],
-      "@ben/modules-env/*": ["../../../packages/modules/env/src/*"],
-      "@/*": ["./src/*"]
-    }
-  },
-  "include": ["src"]
+  "include": ["src/**/*.ts", "tsup.config.ts"]
 }

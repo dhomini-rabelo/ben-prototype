@@ -36,7 +36,8 @@
       "@ben/modules-env": ["./packages/modules/env/src/index.ts"],
       "@ben/modules-env/*": ["./packages/modules/env/src/*"],
       "@ben/modules-tests": ["./packages/modules/tests/src/index.ts"],
-      "@ben/modules-tests/*": ["./packages/modules/tests/src/*"]
+      "@ben/modules-tests/*": ["./packages/modules/tests/src/*"],
+      "@ben/server-ben/*": ["./packages/infra/server-ben/src/*"]
     }
   }
 }

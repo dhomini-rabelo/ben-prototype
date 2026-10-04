@@ -1,0 +1,31 @@
+import { GetNoteDetailUseCase } from '@ben/domain-chat/application/use-cases/captures/get-note-detail'
+import { NotePresenter } from '@ben/server-ben/presenters/note-presenter'
+import { noteRepository } from '@ben/server-ben/repositories'
+import { HttpStatus } from '@ben/modules-utils'
+import { NextFunction, Request, Response } from 'express'
+import { z } from 'zod'
+
+const noteParamsSchema = z.object({
+  id: z.string(),
+})
+
+const getNoteDetailUseCase = new GetNoteDetailUseCase(noteRepository)
+
+export async function getNoteDetail(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const result = await getNoteDetailUseCase.execute({
+      userId: req.userId,
+      noteId: noteParamsSchema.parse(req.params).id,
+    })
+
+    return res
+      .status(HttpStatus.OK)
+      .json({ item: NotePresenter.toHttp(result.item) })
+  } catch (err) {
+    next(err)
+  }
+}

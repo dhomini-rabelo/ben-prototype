@@ -1,0 +1,46 @@
+import { LoginOrRegisterUseCase } from '@ben/domain-user/application/use-cases/auth/login-or-register'
+import { UserPresenter } from '@ben/server-ben/presenters/user-presenter'
+import { userRepository } from '@ben/server-ben/repositories'
+import { env } from '@ben/modules-env'
+import {
+  FirebaseAuthProviderService,
+  JsonWebTokenJwtService,
+} from '@ben/infra-adapters'
+import { HttpStatus } from '@ben/modules-utils'
+import { NextFunction, Request, Response } from 'express'
+import { z } from 'zod'
+
+const bodySchema = z.object({
+  token: z.string(),
+})
+
+const authProviderService = new FirebaseAuthProviderService()
+const jwtService = new JsonWebTokenJwtService({
+  privateKey: env.JWT_PRIVATE_KEY,
+  expirationTimeInSeconds: env.JWT_EXPIRATION_TIME_IN_SECONDS,
+})
+
+const loginOrRegisterUseCase = new LoginOrRegisterUseCase(
+  userRepository,
+  authProviderService,
+  jwtService,
+)
+
+export async function loginOrRegister(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const body = bodySchema.parse(req.body)
+    const result = await loginOrRegisterUseCase.execute({ token: body.token })
+
+    return res.status(HttpStatus.OK).json({
+      process: result.process,
+      user: UserPresenter.toHttp(result.user),
+      accessToken: result.accessToken,
+    })
+  } catch (err) {
+    next(err)
+  }
+}

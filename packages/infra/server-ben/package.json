@@ -2,10 +2,10 @@
   "name": "@ben/server-ben",
   "type": "module",
   "version": "1.0.0",
-  "main": "src/infra/http/server.ts",
+  "main": "src/server.ts",
   "scripts": {
-    "dev": "NODE_ENV=development tsx watch src/infra/http/server.ts",
-    "build": "tsup src/infra/http/server.ts --format esm --target node24 --out-dir dist --clean",
+    "dev": "NODE_ENV=development tsx watch src/server.ts",
+    "build": "tsup",
     "start": "node dist/server.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "migrate:deploy": "pnpm --filter @ben/infra-db migrate:deploy"
