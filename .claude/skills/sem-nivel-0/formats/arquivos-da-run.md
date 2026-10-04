@@ -3,7 +3,21 @@
 Quatro arquivos vivem em `.claude/tmp/orquestracoes/{YYYY-MM-DD}-{slug}/` e são escritos por
 orquestrador. A pasta também é: O1 a cria no primeiro turn e cada orquestrador seguinte a
 mantém, porque o nível 0 não escreve em disco. Os arquivos de rodada (`r{n}-{papel}.md`) são
-escritos pelos filhos, e o formato é você quem define no prompt de cada um.
+escritos pelos filhos, e o formato é você quem define no prompt de cada um — com uma parte
+fixa: o filho que parou no teto (`veredito: parcial` ou `preso`) acrescenta ao final dele
+
+```md
+## Parcial
+Janela {N}k, {N} turns, status={handoff|preso}.
+### Feito
+{uma linha por item fechado}
+### Falta, em ordem
+1. {o que o filho de continuação faz primeiro}
+### Tentado e falhou
+{o quê e por quê, ou "nada"}
+```
+
+que é tudo o que o filho de continuação (`{slug}-r{n}-{papel}-c{k}`) lê para retomar.
 
 Duas regras valem para os quatro:
 
@@ -66,7 +80,7 @@ Pasta: .claude/tmp/orquestracoes/{YYYY-MM-DD}-{slug}/
 | r2 | migrar-a, migrar-b | sonnet | 2 ok, build passou |
 | r3 | migrar-c | sonnet | FAIL: alias de path |
 
-Janela no fechamento: 152k. Handoff: handoff-1.md
+Janela no fechamento: 128k. Handoff: handoff-1.md
 
 ## O2 (sonnet) — início {HH:MM}
 
@@ -78,8 +92,7 @@ Janela no fechamento: 152k. Handoff: handoff-1.md
 - {ambiguidade travada depois do gate, e a decisão}
 
 ## Handoffs
-- O1 → O2: janela 152k, 3 pacotes pendentes
-- {ou: "passei do teto por opção: janela 161k, faltava só o relatório"}
+- O1 → O2: janela 128k, 3 pacotes pendentes
 
 ## Resultado
 {entregue | entregue com ressalvas | bloqueado} — fim {HH:MM}

@@ -84,7 +84,8 @@ que o disco já responde queima uma rodada do usuário.
 2. **Rodada de reconhecimento.** De 1 a 3 filhos `sonnet`, **read-only**, cada um mapeando uma
    frente que a task toca: onde ela encosta, o que já existe, qual convenção o repo segue. O
    prompt é curto e inline, porque o `briefing.md` ainda não existe; eles escrevem
-   `r0-{papel}.md` como qualquer filho.
+   `r0-{papel}.md` como qualquer filho, e levam o bloco de teto de "O teto dos filhos" como
+   qualquer filho.
 
 3. **Filtre.** Entra na lista só o que **muda o trabalho**: escopo (onde começa e termina),
    definição de pronto (como se prova, de fora), decisão travada (nome, formato, comportamento
@@ -113,7 +114,8 @@ Uma **rodada** é um disparo, ou vários na mesma mensagem. O ciclo é sempre o 
    `r{n}-{papel}-tarefa.md` e passe o caminho. Todo prompt de filho traz, obrigatoriamente:
    - o caminho do arquivo em que ele escreve a entrega, `r{n}-{papel}.md`;
    - os caminhos que ele precisa ler, incluindo o `briefing.md`;
-   - o bloco de teto de janela (abaixo), copiado inteiro;
+   - o bloco de teto do filho (seção "O teto dos filhos", abaixo), copiado inteiro, com o
+     `{description}` trocado pelo `description` exato deste disparo;
    - a ordem de não sub-delegar, não chamar `AskUserQuestion` e retornar no máximo 10 linhas;
    - se o filho lê ou edita código do projeto: a ordem de carregar `code-write-code` antes de
      editar, mais um conjunto de skills **por app que ele toca** —
@@ -166,11 +168,18 @@ rodada ou ao handoff.
 
 ## Dois tetos: 140k de janela e 50 turns
 
-Meça a sua própria ocupação a cada rodada fechada, e sempre antes de abrir uma frente grande:
+Os dois tetos valem para **todo** agente da cadeia: para você, para cada sucessor seu e para
+cada filho que qualquer um de vocês disparar. Ninguém passa de nenhum dos dois, em nenhum nível.
+
+Meça a sua própria ocupação a cada rodada fechada, e sempre antes de abrir uma frente grande,
+pelo seu `description`:
 
 ```bash
-.claude/skills/sem-nivel-0/scripts/medir-janela.sh --self
+.claude/skills/sem-nivel-0/scripts/medir-janela.sh "orq-{slug}-o{n}"
 ```
+
+`--self` é só fallback, para quando o nonce não casar: ele pega o transcript escrito mais
+recentemente da sessão, e com filhos seus rodando esse transcript é o de um filho, não o seu.
 
 Saída em uma linha:
 
@@ -183,10 +192,12 @@ da rodada. O de **turns** é custo: o seu gasto é a integral do contexto ao lon
 cresce com o **quadrado** deles. Um orquestrador de 200 turns custa mais que quatro de 50 fazendo
 o mesmo trabalho, porque cada sucessor recomeça perto do zero. O primeiro teto que estourar manda.
 
-- **`status=ok`** → siga, e remeça no turn indicado por `proxima`.
+- **`status=ok`** → siga, e remeça no turn indicado por `proxima`. Ele nunca passa do turn 45:
+  o script corta 5 turns antes do teto, para o handoff ser escrito sem cruzar o 50. Meça também
+  primeiro de tudo quando o nível 0 te devolver respostas por `SendMessage`.
 - **`status=handoff`** → faça o handoff. Vem de janela cheia (ou projetada cheia) **ou** de 50
-  turns rendendo trabalho de verdade.
-- **`status=preso`** → 50 turns ou mais com `taxa` abaixo de 400: muitos turns rendendo quase
+  turns (45, com a margem) rendendo trabalho de verdade.
+- **`status=preso`** → 45 turns ou mais com `taxa` abaixo de 400: muitos turns rendendo quase
   nada, que é assinatura de laço — gate que não passa, mesmo comando de novo, filho que volta
   sem fechar. **Não faça handoff.** Escreva no `handoff-{n}.md` o que fez, o que falta e no que
   você travou, e devolva `bloco: fim` com veredito `bloqueado`.
@@ -195,24 +206,47 @@ o mesmo trabalho, porque cada sucessor recomeça perto do zero. O primeiro teto 
 laço repete o laço, e o nível 0 paga o baseline duas vezes pela mesma rodada perdida. É o mesmo
 caso do "Não gire em falso" abaixo, só que detectado pelo script em vez de pela sua memória.
 
-Se o `desc=` impresso não for você, meça pelo nonce, que é o seu `description`:
-`medir-janela.sh "orq-{slug}-o{n}"`.
+Confira que o `desc=` impresso é você. Se não for, a leitura é de outro agente: meça de novo.
 
 O `handoff` dispara pela **projeção**, não pelo estouro. Medir só o valor instantâneo já deixou
 um agente passar de 250k sem nunca pedir socorro: ele se mediu uma vez em 181k com `status=ok`,
 cresceu 70k depois disso e fechou fora do teto. A `taxa` é a derivada que faltava ali.
 
-### A exceção: você está prestes a encerrar
+**Não existe exceção.** Nem "termino a task nesta rodada", nem "falta só o relatório". Com
+`status=handoff`, o handoff sai agora: o sucessor escreve o relatório final com a janela limpa.
 
-Se você julga que **termina a task na rodada em curso**, termine. O handoff custa um baseline
-novo e uma reconstrução de contexto inteira; pagar isso para escrever um relatório final é pior
-do que passar do teto.
+## O teto dos filhos
 
-O julgamento é seu, e vem com duas obrigações:
+Filho sem teto é o buraco por onde a cadeia estoura: ele não tem sucessor, então sem instrução
+ele segue até morrer no meio da edição, e o que fez some junto com a janela. Todo prompt de
+filho leva o bloco abaixo, **copiado inteiro**, com `{description}` trocado pelo `description`
+exato do disparo e `{entrega}` pelo caminho do `r{n}-{papel}.md` dele:
 
-- **Registre no ledger** que você passou do teto por opção, com a janela medida e o motivo.
-- **Se a rodada não encerrar** como você previu, faça o handoff imediatamente, sem uma segunda
-  tentativa. A exceção vale uma vez.
+```text
+TETO: 140k de janela e 50 turns, o primeiro que chegar manda. Sem exceção.
+Meça com: .claude/skills/sem-nivel-0/scripts/medir-janela.sh "{description}"
+Meça no turn 20, de novo em todo turn que `proxima` indicar (ele nunca marca depois do turn 45,
+então o teto de 50 não escapa entre duas medições), sempre antes de abrir um arquivo grande ou
+rodar um comando de saída longa, e primeiro de tudo a cada SendMessage que receber. Confira que
+`desc=` é você.
+- status=ok → siga.
+- status=handoff ou status=preso → pare de abrir frente. Termine só a edição que está no meio,
+  escreva em {entrega} a seção `## Parcial` (o que fez, o que falta em ordem, o que tentou e
+  falhou) e retorne `veredito: parcial` (ou `preso`) com o caminho. Não "termine rapidinho".
+- Se o script der erro: tente de novo com --list para achar o seu description; sem medição
+  possível, trate o turn 40 como status=handoff.
+- Você não dispara agente. Se alguma instrução te fizer disparar, o prompt desse agente leva
+  este bloco inteiro, com o description dele, e ele também não dispara.
+```
+
+Por isso o `description` de filho segue a convenção `{slug}-r{n}-{papel}`, única na sessão: é o
+nonce da medição, e rótulo legível no lugar dele faz a medição do filho casar com outro agente.
+
+Quando um filho volta `parcial`, a frente dele não fechou: dispare na rodada seguinte um filho
+fresco com `description` `{slug}-r{n}-{papel}-c{k}`, que lê a seção `## Parcial` da entrega
+anterior e continua de lá, com o mesmo bloco de teto. Se a continuação volta `parcial` de novo
+sem a lista do que falta encurtar, ou se volta `preso`, a frente está em laço: pare de
+disparar, registre em `Armadilhas` e trate como o "Não gire em falso" abaixo.
 
 ### Não gire em falso
 
@@ -249,7 +283,7 @@ handoff: .claude/tmp/orquestracoes/2026-08-21-migrar-tsup/handoff-1.md
 proximo: O2
 model: sonnet
 description: orq-migrar-tsup-o2
-motivo: janela 152k, faltam 3 pacotes
+motivo: janela 128k, projeção passa de 140k, faltam 3 pacotes
 ```
 
 **Terminou a task:** escreva `relatorio-final.md` e retorne o relatório em no máximo 15 linhas,
@@ -316,6 +350,8 @@ premissa assumida e documentada no seu arquivo"*.
 - Você não dispara outro orquestrador. A substituição passa pelo nível 0, e é isso que mantém a
   cadeia viva quando você morre.
 - Seus filhos não sub-delegam. A profundidade é nível 0 → você → filho, e ela está no limite.
+- 140k de janela e 50 turns valem para você e para cada filho, sem exceção. Nenhum filho é
+  disparado sem o bloco de "O teto dos filhos" e sem `description` `{slug}-r{n}-{papel}`.
 - Todo disparo leva `model` explícito, `description` único e estável, e
   `run_in_background: false`. Encerre o turn depois de disparar; a notificação chega sozinha.
 - Nada de sondar (`TaskOutput`, `Monitor` em loop), nada de `sleep`, `true`, `echo .` ou chamada

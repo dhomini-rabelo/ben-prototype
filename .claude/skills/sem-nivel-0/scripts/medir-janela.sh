@@ -16,6 +16,9 @@
 # Teto de janela: TETO=180000 medir-janela.sh <nonce>   (default 140000)
 # Teto de turns: TETO_TURNS=80 medir-janela.sh <nonce>   (default 50)
 # Taxa mínima para não ser laço: TAXA_MIN=800 medir-janela.sh <nonce>   (default 400)
+# Margem antes do teto de turns: MARGEM_TURNS=5 medir-janela.sh <nonce>   (default 5)
+#   O status vira handoff/preso em `turns >= TETO_TURNS - MARGEM_TURNS` (45), para
+#   sobrar turns de escrever o handoff SEM passar de 50, e `proxima` nunca passa de 45.
 # Passo de medição: PASSO=40 medir-janela.sh <nonce>   (default 25 turns)
 #   O passo tem que caber DUAS vezes no teto de turns, senão a segunda medição
 #   já nasce do outro lado dele: com TETO_TURNS=50, um passo de 40 mediria em 40
@@ -133,7 +136,7 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 TETO="${TETO:-140000}" PASSO="${PASSO:-25}" PISO="${PISO:-60}" \
-TETO_TURNS="${TETO_TURNS:-50}" TAXA_MIN="${TAXA_MIN:-400}" \
+TETO_TURNS="${TETO_TURNS:-50}" TAXA_MIN="${TAXA_MIN:-400}" MARGEM_TURNS="${MARGEM_TURNS:-5}" \
 ALVO="$alvo" CWD="$PWD" python3 <<'PY'
 import glob, json, os, sys
 
@@ -142,6 +145,7 @@ passo = max(1, int(os.environ["PASSO"]))
 piso = int(os.environ["PISO"])
 teto_turns = int(os.environ["TETO_TURNS"])
 taxa_min = int(os.environ["TAXA_MIN"])
+margem_turns = max(0, int(os.environ["MARGEM_TURNS"]))
 alvo = os.environ["ALVO"]
 cwd = os.environ["CWD"]
 
@@ -319,8 +323,14 @@ taxa = 0
 if turns - meio >= 2:
     taxa = max(0, (janela - janelas[meio]) // (turns - meio))
 
-proj = janela + taxa * passo
-proxima = turns + passo
+# O teto de turns é um LIMITE, não um alvo: o agente não pode passar do turn 50, e
+# escrever o handoff consome turns. Por isso o corte efetivo é `teto_turns - margem`
+# (default 45), e a próxima medição nunca é marcada para depois dele. Com o passo
+# puro, um agente medido nos turns 20 e 45 só mediria de novo no 70 — e cruzaria o
+# 50 sem que nenhuma medição o visse.
+corte_turns = max(1, teto_turns - margem_turns)
+proxima = min(turns + passo, corte_turns) if turns < corte_turns else turns
+proj = janela + taxa * max(1, proxima - turns)
 pct = janela * 100 // teto if teto else 0
 
 # O valor absoluto sempre manda. A projeção só decide DEPOIS do piso — antes dele a
@@ -332,7 +342,7 @@ pct = janela * 100 // teto if teto else 0
 # (handoff, o sucessor continua) do laço de baixo rendimento (preso, pare e reporte).
 if janela >= teto or (pct >= piso and proj >= teto):
     status = "handoff"
-elif turns >= teto_turns:
+elif turns >= corte_turns:
     status = "preso" if taxa < taxa_min else "handoff"
 else:
     status = "ok"

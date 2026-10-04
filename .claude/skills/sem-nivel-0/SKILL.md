@@ -1,6 +1,6 @@
 ---
 name: sem-nivel-0
-description: 'Executa uma task longa mantendo o nível 0 limpo. Você não investiga, não lê arquivo de projeto, não interpreta o pedido, não escreve em disco e não acumula estado: você dispara o orquestrador O1 com a descrição verbatim e daí em diante só encaminha, usando três tools e nenhuma outra (Agent, AskUserQuestion, SendMessage). A pasta da run em .claude/tmp/orquestracoes/ é dos orquestradores: O1 a cria e quem estiver rodando a mantém. O gate de ambiguidade é do O1, que reconhece o código e volta com um bloco de perguntas já no schema da AskUserQuestion, para você perguntar e devolver as respostas. Quando um orquestrador chega num dos tetos que ele mesmo mede — 140k de janela ou 50 rodadas de uso de tools —, ele escreve o estado num handoff em disco e devolve o spawn do sucessor; você copia três campos e dispara O2, O3, sem nunca abrir o arquivo. Use quando a task não cabe em uma janela só: migração ampla, auditoria, refatoração de muitas rodadas, execução longa de ponta a ponta.'
+description: 'Executa uma task longa mantendo o nível 0 limpo. Você não investiga, não lê arquivo de projeto, não interpreta o pedido, não escreve em disco e não acumula estado: você dispara o orquestrador O1 com a descrição verbatim e daí em diante só encaminha, usando três tools e nenhuma outra (Agent, AskUserQuestion, SendMessage). A pasta da run em .claude/tmp/orquestracoes/ é dos orquestradores: O1 a cria e quem estiver rodando a mantém. O gate de ambiguidade é do O1, que reconhece o código e volta com um bloco de perguntas já no schema da AskUserQuestion, para você perguntar e devolver as respostas. Todo subagente da cadeia, orquestrador ou filho de trabalho, obedece aos mesmos dois tetos, sem exceção — 140k de janela e 50 rodadas de uso de tools, medidos por ele mesmo. Quando um orquestrador chega num deles, ele escreve o estado num handoff em disco e devolve o spawn do sucessor; você copia três campos e dispara O2, O3, sem nunca abrir o arquivo. Use quando a task não cabe em uma janela só: migração ampla, auditoria, refatoração de muitas rodadas, execução longa de ponta a ponta.'
 disable-model-invocation: true
 ---
 
@@ -129,7 +129,7 @@ handoff: .claude/tmp/orquestracoes/2026-08-21-migrar-tsup/handoff-1.md
 proximo: O2
 model: sonnet
 description: orq-migrar-tsup-o2
-motivo: janela 152k, faltam 3 pacotes
+motivo: janela 128k, projeção passa de 140k, faltam 3 pacotes
 ```
 
 Copie `model`, `description` e `handoff` para um disparo novo:
@@ -213,6 +213,11 @@ correto, **enquanto o filho roda**, é encerrar o turn.
   Um fork herda o contexto inteiro do pai e roda no modelo do pai: é a forma mais cara possível
   de não fazer nada.
 
+**Todo subagente tem teto: 140k de janela e 50 turns**, em todos os níveis, sem exceção. Você
+não mede nem fiscaliza isso: o orquestrador mede a si mesmo e põe o teto no prompt de cada filho
+que dispara. A sua parte é só uma: todo disparo seu é de orquestrador, e o prompt dele aponta
+para `prompts/orquestrador.md`, que é onde as duas regras vivem.
+
 **Profundidade máxima é 3**: nível 0 → orquestrador → filho de trabalho. O filho não
 sub-delega, e o orquestrador não dispara outro orquestrador (a substituição passa por você, é
 o que mantém a cadeia viva quando um deles morre).
@@ -262,7 +267,7 @@ Nível 0:
       → retorna bloco: perguntas, 1 pergunta (o pacote com plugin custom)
   E2  AskUserQuestion com a pergunta que O1 escreveu; resposta verbatim por SendMessage
       → O1 escreve briefing.md, migra 6 pacotes em 3 rodadas de filhos
-      → retorna bloco: handoff, motivo "janela 152k, faltam 3 pacotes"
+      → retorna bloco: handoff, motivo "janela 128k, projeção passa de 140k, faltam 3 pacotes"
   E2  dispara orq-migrar-tsup-o2 (gp, sonnet) só com o caminho do handoff-1.md
       → O2 fecha os 3 pacotes restantes, roda a rodada de prova
       → retorna bloco: fim
