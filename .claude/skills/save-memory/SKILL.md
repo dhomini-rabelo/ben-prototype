@@ -1,139 +1,64 @@
 ---
 name: save-memory
-description: Grava uma informação persistente do projeto em .claude/memory, na categoria certa entre environment, business-rules, decisions, user-preferences, fails-and-lessons, vocabulary e rules, e indexa no README daquela categoria. Use quando o usuário pedir para salvar, guardar, registrar, documentar ou lembrar algo sobre o repositório, o produto, o ambiente, uma decisão, um erro que aconteceu ou o jeito de trabalhar.
+description: Registra e atualiza informações duradouras do projeto em .claude/memory, classificadas por categoria e indexadas para consulta futura. Use quando o usuário pedir para salvar, guardar, registrar ou lembrar requisitos de ambiente, regras de negócio, decisões, regras de trabalho, preferências, lições ou vocabulário do projeto.
 ---
 
-# Save memory
+# Salvar memória
 
-Memória é o que o próximo agente precisa saber e não vai descobrir no tempo que tem: o que o ambiente exige, o que o produto decide, por que a escolha foi aquela, o que já quebrou, o que um termo significa aqui e como o usuário quer o trabalho feito.
+Preserve o que uma próxima sessão precisa saber e não consegue deduzir facilmente do código: requisitos, escolhas e seus motivos, orientações duradouras e aprendizados. Todos os caminhos abaixo são relativos à raiz do repositório, salvo os links entre arquivos.
 
-Tudo mora em `.claude/memory/`, dividido em sete categorias. **Escolher a categoria é a decisão inteira desta skill**: arquivo na categoria errada é arquivo que ninguém abre.
+## Categorias
 
-## As sete categorias
+Escolha a categoria pelo efeito de ignorar a informação:
 
-A pergunta que classifica: **o que quebra se ninguém souber disso?**
+| Categoria | O que guardar |
+| --- | --- |
+| `environment/` | Requisitos para desenvolver, executar, testar ou publicar: configuração, serviços, comandos e limitações do ambiente. |
+| `business-rules/` | Comportamentos que o produto deve aplicar: critérios, limites, valores padrão, contratos e efeitos de ações. |
+| `decisions/` | Escolhas técnicas ou de organização e seus motivos, incluindo alternativas consideradas. |
+| `rules/` | Orientações permanentes para quem trabalha no repositório, incluindo convenções de código e estrutura. |
+| `dev-preferences/` | Preferências do desenvolvedor em formato genérico: um padrão por arquivo, ilustrado com nomes. |
+| `fails-and-lessons/` | Falhas já observadas, suas causas e como evitá-las ou resolvê-las. |
+| `vocabulary/` | Significado de termos usados no projeto. |
 
-- **`environment/`** — quebra a máquina, o build ou o deploy. Env obrigatória, porta, comando que precisa rodar antes, pegadinha de simulador ou de device, serviço externo que precisa estar de pé.
+Todas ficam em `.claude/memory/`. O `README.md` dessa pasta indexa as categorias; o `README.md` de cada categoria indexa seus registros.
 
-- **`business-rules/`** — quebra o que o produto decide. Critério que libera ou barra uma ação, limite, default, ordem dos passos, efeito colateral, contrato que outro projeto consome.
+Uma decisão explica **por que uma escolha foi feita**; uma regra diz **como trabalhar daqui em diante**. Uma preferência se aplica ao desenvolvedor; uma regra vale para o trabalho no repositório. Regras de negócio descrevem o comportamento do produto, não o modo de escrever código. Um requisito pertence ao ambiente; o episódio que revelou esse requisito pertence às lições. Uma definição pertence ao vocabulário; o comportamento associado a ela pertence às regras de negócio.
 
-- **`decisions/`** — quebra por alguém desfazer sem saber o porquê. Escolha técnica já tomada, com as alternativas descartadas e o motivo.
+Quando houver aspectos distintos, separe-os por categoria e ligue os arquivos por links relativos. Mantenha cada informação em um único registro principal para evitar versões divergentes.
 
-- **`rules/`** — quebra por o agente trabalhar de outro jeito. Ordem permanente que vale para quem mexer neste repo.
+## Fluxo
 
-- **`user-preferences/`** — quebra a entrega para este usuário. Gosto dele sobre idioma, formato, nível de detalhe, o que confirmar antes de executar.
+1. Identifique a informação duradoura e seu escopo a partir do pedido e das evidências disponíveis. Consulte o código para resolver dúvidas verificáveis; pergunte ao usuário apenas quando faltar uma decisão que mude o significado ou o alcance do registro.
+2. Leia `.claude/memory/README.md` e os índices das categorias pertinentes. Procure registros existentes sobre o assunto antes de criar outro.
+3. Escolha a categoria e o nome `.claude/memory/{categoria}/{topico-em-kebab-case}.md`. Este repositório tem três projetos: use o prefixo `backend-`, `mobile-` ou `design-` quando a informação vale para um projeto só (exemplo: `mobile-token-secure-store-cache.md`). Sem prefixo quando vale para o repositório inteiro ou atravessa mais de um projeto; nesse caso, a primeira linha do arquivo diz onde ela vale. Em `dev-preferences/` o nome descreve o padrão e não leva prefixo. Declare no conteúdo onde a informação se aplica; não presuma um componente ativo.
+4. Leia o registro existente antes de alterá-lo. Atualize a parte relevante, preservando o conteúdo válido. Se o usuário corrigiu explicitamente uma memória, incorpore a correção; se houver contradição sem resolução clara, esclareça antes de substituir.
+5. Escreva o registro em português, com um título e um assunto por arquivo. Não copie transcrições inteiras nem invente motivos, causas, caminhos ou detalhes ausentes. Em `dev-preferences/`, o nome do arquivo descreve o padrão (`nomes-genericos-para-classes-e-funcoes-em-adapters.md`), não um episódio, vendor ou fluxo.
+6. Adicione ou atualize o link no `README.md` da categoria. Preserve entradas de outros assuntos e corrija links se renomear um registro. O índice da raiz só precisa mudar quando as categorias mudarem.
+7. Confira os links locais, o escopo e a consistência com registros relacionados. Informe quais arquivos foram criados ou atualizados e o que foi preservado.
 
-- **`fails-and-lessons/`** — quebra de novo do mesmo jeito. Algo que já falhou: o sintoma, a causa e o que fazer no lugar.
+Se a estrutura ainda não existir, crie `.claude/memory/README.md` com links para as sete categorias da tabela e um `README.md` em cada pasta. Os índices começam sem registros; não preencha memórias com exemplos fictícios. Não substitua índices existentes. Se nenhuma categoria comportar a informação duradoura, confirme com o usuário antes de acrescentar uma categoria e seu índice.
 
-- **`vocabulary/`** — quebra a conversa. O que um termo significa neste produto.
+## Conteúdo dos registros
 
-### Desempates
+Use parágrafos, listas ou blocos de código conforme o assunto. Comece pelo escopo e pela informação que a próxima sessão precisa aplicar. Inclua, quando conhecido:
 
-Os pares abaixo são os que colidem de verdade. Quando o pedido cair num deles e a leitura ainda ficar dividida, use `AskUserQuestion`.
+- **Decisões:** a escolha, o motivo e as alternativas consideradas.
+- **Lições:** o sintoma observado, a causa confirmada e a solução ou prevenção. Se a causa ainda for desconhecida, diga isso; não transforme uma hipótese em fato.
+- **Regras de negócio:** a regra, sua justificativa e o local de implementação, se já existir e tiver sido verificado. Diferencie comportamento esperado de comportamento implementado.
 
-1. **Decisão x regra.** A decisão olha para trás ("ficamos com Zustand em vez de Redux porque..."). A regra olha para frente ("todo estado de página novo entra num store da própria página"). Se a decisão também gera uma ordem, grave a decisão em `decisions/` e cite o arquivo dela na regra.
+Confirme caminhos e comandos apresentados como existentes. Caminhos planejados podem ser registrados como propostas, claramente identificados. Não registre segredos, tokens ou credenciais; quando necessário, documente apenas o nome da configuração e como obtê-la pelo procedimento do projeto.
 
-2. **Regra x preferência.** A regra vale para qualquer um que mexa no repo. A preferência é deste usuário, e outra pessoa no mesmo projeto poderia trabalhar de outro jeito sem estar errada.
+Padrões de código e organização de pastas podem ser decisões ou regras quando houver orientação duradoura a preservar. Evite copiar inventários de arquivos ou documentação que já tenha uma fonte mantida: registre o contexto ou o motivo que falta e faça referência à fonte.
 
-3. **Regra de negócio x regra.** `business-rules/` é o que o produto decide para quem usa o app. `rules/` é o que o agente faz enquanto escreve código.
+Status temporário, lista de tarefas em andamento e relatos sem aprendizado duradouro não pertencem a essas categorias. Para pedidos mistos, salve a parte duradoura e explique o que ficou de fora. Se o pedido for apenas um estado temporário, esclareça onde o usuário quer acompanhá-lo.
 
-4. **Ambiente x lição.** `environment/` guarda o requisito ("precisa do emulador aberto antes de `npm run android`"). `fails-and-lessons/` guarda o episódio ("rodei sem o emulador, o erro que apareceu foi X, e ele não diz a causa real").
+## Índices das categorias
 
-5. **Vocabulário x regra de negócio.** `vocabulary/` define o termo. `business-rules/` diz o que o sistema faz com ele.
-
-### O que não é memória
-
-- **Estrutura de pasta, nome de arquivo, jeito de declarar componente ou tipo** é design ou padrão de código: skill [`task-add-coding-pattern-or-design`](../task-add-coding-pattern-or-design/SKILL.md).
-- **Descrição de o que cada sub-projeto é e onde ficam suas pastas** é contexto de projeto: skill [`code-get-project-context`](../code-get-project-context/SKILL.md).
-- **Status de trabalho em andamento** não é memória em categoria nenhuma. Memória é o que continua verdade depois que a task acaba.
-
-## Escopo: o prefixo do nome do arquivo
-
-O repo tem três sub-projetos, e o nome do arquivo carrega a qual deles a memória se aplica:
-
-- `backend-`, `mobile-`, `design-` quando vale para um projeto só. Exemplo: `mobile-expo-secure-store-cache.md`.
-- **Sem prefixo** quando vale para o repo inteiro ou atravessa mais de um projeto. Nesse caso, a primeira linha do arquivo diz onde ela vale.
-
-Se o pedido não deixa claro qual projeto, pergunte com `AskUserQuestion` antes de nomear o arquivo. `project-mobile` é o foco ativo, mas isso não autoriza assumir que a memória é dele.
-
-## Workflow
-
-1. **Classifique a categoria** com a pergunta do "o que quebra" e os desempates acima.
-
-2. **Resolva o nome do arquivo**: `.claude/memory/{categoria}/{prefixo-}{topico-em-kebab-case}.md`. "Cache do token no secure store" em `project-mobile` vira `mobile-token-secure-store-cache.md`.
-
-3. **Leia o `README.md` da categoria** e procure uma entrada que já seja dona do assunto. O objetivo é não criar arquivo novo para um tópico que já tem dono.
-
-4. **Grave o conteúdo**:
-   - Arquivo já existe: leia primeiro e atualize a seção relevante, sem sobrescrever o resto. Se não estiver claro se é substituir ou mesclar, use `AskUserQuestion`.
-   - Arquivo novo: crie com um título `#` que nomeia o tópico em linguagem humana.
-
-5. **Indexe no `README.md` da categoria**, com uma linha que diga o gatilho e a consequência (ver [Formato do índice](#formato-do-índice)). Nunca remova entradas de outros tópicos.
-
-6. **Pedido com mais de uma metade**: grave uma entrada por categoria e ligue uma à outra por link relativo. "A geração só roda com o token válido, e o token só aparece se o Firebase estiver configurado no `.env`" carrega uma regra de negócio e um requisito de ambiente. Cada metade vai para a pasta dela.
-
-O `README.md` da raiz de `.claude/memory/` indexa as **categorias**, não as entradas. Ele só muda quando uma categoria nova nasce, e categoria nova só nasce com o usuário confirmando por `AskUserQuestion`.
-
-## Regras
-
-- Escreva em **português**, com um assunto por arquivo.
-- Use a skill [`utils-write-documentation`](../utils-write-documentation/SKILL.md) para o tom e a formatação.
-- Registre só o que continua verdade depois que a task acabar.
-- Nunca invente link, caminho de arquivo, nome de env ou detalhe que o usuário não deu. O que faltar, pergunte ou deixe de fora.
-- Prefira atualizar um arquivo existente a criar um quase-duplicado.
-- Todo caminho de arquivo que entrar no texto tem que existir: confirme com grep ou glob antes de escrever.
-
-## Formato do arquivo
-
-Não existe estrutura obrigatória. Organize do jeito que servir ao conteúdo: parágrafo curto, lista, bloco de código.
+Cada entrada deve ajudar a decidir quando abrir o arquivo:
 
 ```md
-# Título do tópico
-
-Uma ou duas frases dizendo quando isso se aplica e o que acontece sem isso.
+- [Título do tópico](./topico.md) — consultar ao trabalhar neste assunto para evitar este problema.
 ```
 
-Três categorias pedem um recheio específico, porque sem ele a entrada não serve:
-
-- **`decisions/`** — a escolha, as alternativas descartadas e o porquê. Sem o porquê, a próxima pessoa reabre a discussão do zero.
-- **`fails-and-lessons/`** — o sintoma que apareceu, a causa real e o que fazer no lugar. O sintoma entra porque é por ele que o próximo agente vai procurar.
-- **`business-rules/`** — a regra, o motivo dela e onde o código a aplica.
-
-## Formato do índice
-
-O `README.md` de cada categoria existe para o agente decidir o que abrir sem abrir:
-
-```md
-- [Título do tópico](./prefixo-topico.md) — quando abrir o arquivo, e o que quebra sem ele.
-```
-
-A linha diz duas coisas: o **gatilho**, ou seja, quando a memória se aplica, e a **consequência** de tocar no assunto sem ela. A resposta em si mora no arquivo.
-
-O teste: se dá para executar a task só com a linha do índice, reescreva a linha.
-
-## Exemplos
-
-- "Salva que o `project-mobile` precisa do emulador Android aberto antes do `npm run android`."
-  - Requisito de máquina, um projeto só: `environment/mobile-android-emulator-prereq.md`.
-
-- "Registra que a gravação de áudio para de transcrever acima de 10 minutos."
-  - Limite que o produto aplica: `business-rules/mobile-audio-max-duration.md`.
-
-- "Guarda que eu prefiro que você me pergunte antes de instalar qualquer dependência nova."
-  - Gosto do usuário, não lei do repo: `user-preferences/confirmar-dependencia-nova.md`.
-
-- "Anota que passei duas horas num erro de token porque o `expo-secure-store` não lê síncrono."
-  - Episódio com causa e contorno: `fails-and-lessons/mobile-secure-store-leitura-assincrona.md`.
-
-- "Salva que 'capture' aqui é nota, lembrete e task juntos."
-  - Termo do produto: `vocabulary/capture.md`.
-
-- "Salva que toda página nova tem uma pasta `components/` e uma `hooks/` dentro dela."
-  - Isso é estrutura de código, não memória: use `task-add-coding-pattern-or-design`.
-
-## Saída de emergência
-
-- **Nenhuma das sete categorias serve.** Pare e pergunte com `AskUserQuestion` se é para criar uma categoria nova. Categoria nova custa uma pasta, um `README.md` e uma linha no índice da raiz.
-- **Duas categorias servem igualmente bem.** Pergunte em vez de escolher por conta. Entrada duplicada em duas pastas envelhece de um lado só.
-- **A informação contradiz uma entrada existente.** Pare e resolva com `AskUserQuestion`. Duas memórias que se contradizem valem menos que nenhuma.
-- **A informação parece presa à task atual.** Confirme com o usuário se ela realmente pertence à memória.
+Adapte a descrição ao gatilho e à consequência reais. A orientação completa fica no registro, não no índice. Remova o aviso de categoria vazia ao adicionar o primeiro registro.

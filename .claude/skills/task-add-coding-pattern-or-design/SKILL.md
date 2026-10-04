@@ -2,6 +2,7 @@
 name: task-add-coding-pattern-or-design
 description: Create one or more new coding designs or coding patterns and register them in the right skill. Use when the user wants to capture a structural/architectural convention (coding design) or a code-level convention (coding pattern) so future work stays consistent.
 disable-model-invocation: true
+user-invocable: true
 ---
 
 # Add Coding Pattern or Design Skill
@@ -10,7 +11,7 @@ disable-model-invocation: true
 
 This skill turns a described convention into a documented **coding design** or **coding pattern**, places it in the correct location, and registers it so the relevant skill can discover it later. It supports creating several designs and patterns in a single run.
 
-Use the [`utils-write-documentation`](../utils-write-documentation/SKILL.md) skill to shape the tone, structure, and formatting of every file you create or edit.
+Run only when the user explicitly invokes `/task-add-coding-pattern-or-design`. Write focused documentation with the convention, its scope, and a minimal example when useful.
 
 ## Step 1 — Classify each convention
 
@@ -19,7 +20,7 @@ For every convention the user describes, decide which type it is:
 - **Coding design** — a **structural / architectural** convention. It defines how files, folders, layers, or modules are organized and composed (e.g. page structure, folder hierarchy, layer boundaries).
 - **Coding pattern** — a **code-level** convention. It defines how code is written within a file (e.g. naming, component declaration, props strategy, control flow).
 
-When unsure whether something is a design or a pattern, ask the user with `AskUserQuestion` instead of guessing.
+Classify by what the convention governs: project structure or code within that structure. Split a convention that covers both into linked references. Ask the user only when missing intent changes the convention itself.
 
 ## Step 2 — Decide where it lives
 
@@ -33,9 +34,9 @@ When unsure whether something is a design or a pattern, ask the user with `AskUs
 A coding pattern goes to **one of two places**:
 
 - **Append to [`general-coding-practices.md`](../code-write-code/general-coding-practices.md)** when it is a small, atomic code rule that needs only a short description and a wrong/correct example (like naming or destructuring rules). No registration step is needed — this file is already loaded by `code-write-code`.
-- **Create a separate file** at `.claude/skills/code-write-code/coding-patterns/{pattern-name}.md` (kebab-case) when the pattern is larger, has multiple sections or examples, or covers a distinct topic. Then register it under **Coding Patterns** in [`code-write-code/SKILL.md`](../code-write-code/SKILL.md) with a **When to Use** line and a markdown link to the file.
+- **Create a separate file** under `.claude/skills/code-write-code/coding-patterns/` (kebab-case) when the pattern is larger, has multiple sections or examples, or covers a distinct topic. Keep cross-cutting patterns at the root; place React and client-side patterns in `frontend/`, server and domain patterns in `backend/`, and React Native or mobile-specific patterns in `mobile/`. Then register it under the corresponding **Coding Patterns** group in [`code-write-code/SKILL.md`](../code-write-code/SKILL.md) with a **When to Use** line and a markdown link to the file.
 
-If it is unclear whether a pattern is small enough for `general-coding-practices.md` or deserves its own file, ask the user.
+Choose the destination based on the amount of explanation needed and the existing organization.
 
 ## Step 3 — Write the content
 
@@ -44,7 +45,7 @@ If it is unclear whether a pattern is small enough for `general-coding-practices
 Match the existing files:
 
 - Coding design files describe layout and composition with headings, fenced directory trees, and `tsx` examples (see [`page-structure.md`](../code-get-coding-designs/designs/page-structure.md)).
-- Coding pattern files use a short heading per rule, with **wrong way / correct way** code blocks (see [`react-components.md`](../code-write-code/coding-patterns/react-components.md) and [`general-coding-practices.md`](../code-write-code/general-coding-practices.md)).
+- Coding pattern files use a short heading per rule, with **wrong way / correct way** code blocks (see [`react-components.md`](../code-write-code/coding-patterns/frontend/react-components.md) and [`general-coding-practices.md`](../code-write-code/general-coding-practices.md)).
 - Write everything in **English** with self-explanatory code and no inline comments beyond `// Wrong way` / `// Correct way` markers.
 
 ## Step 4 — Handle multiple at once
@@ -72,7 +73,7 @@ When the user provides several conventions:
 - **Form Structure Patterns**:
   - Purpose: Define how forms are organized into fields, sections, and submit handlers.
   - When to Use: Use when creating or refactoring forms to keep structure consistent.
-  - Coding structures: `${PROJECT_ROOT}/.claude/skills/code-get-coding-designs/designs/form-structure.md`
+  - Coding structures: [Form structure](./designs/form-structure.md)
 ```
 
 ### Coding pattern entry in `code-write-code/SKILL.md`

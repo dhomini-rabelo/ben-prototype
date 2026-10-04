@@ -1,26 +1,17 @@
-# Memory
+# Memória do projeto
 
-O que o agente precisa saber sobre este repo e não descobre lendo o código no tempo que tem. **Leia as entradas relevantes antes de planejar ou executar qualquer task que toque no assunto delas.**
+Este índice organiza informações duradouras para consulta entre sessões. Abra a categoria pertinente e use seu índice para escolher os registros relacionados à tarefa. Para gravar algo aqui, use a skill [`save-memory`](../skills/save-memory/SKILL.md).
 
-Para gravar algo aqui, use a skill [`save-memory`](../skills/save-memory/SKILL.md). Ela decide a categoria, nomeia o arquivo e atualiza o índice da categoria.
+O prefixo do nome do arquivo diz a qual sub-projeto a memória se aplica: `backend-`, `mobile-`, `design-`. Sem prefixo significa que ela vale para o repositório inteiro ou atravessa mais de um projeto.
 
-## Como ler
+| Categoria | Quando consultar |
+| --- | --- |
+| [Ambiente](./environment/README.md) | Ao configurar, executar, testar ou publicar o projeto. |
+| [Regras de negócio](./business-rules/README.md) | Ao alterar comportamentos, critérios ou contratos do produto. |
+| [Decisões](./decisions/README.md) | Ao avaliar escolhas existentes ou propor mudanças que possam desfazê-las. |
+| [Regras de trabalho](./rules/README.md) | Ao aplicar convenções e orientações permanentes do repositório. |
+| [Preferências do desenvolvedor](./dev-preferences/README.md) | Ao ajustar a comunicação, a entrega ou o modo de colaboração. |
+| [Falhas e lições](./fails-and-lessons/README.md) | Ao investigar sintomas conhecidos ou evitar problemas já encontrados. |
+| [Vocabulário](./vocabulary/README.md) | Ao interpretar termos específicos do projeto. |
 
-- Cada categoria tem o próprio `README.md` com as entradas. Abra só a categoria que interessa à sua task.
-- O prefixo do nome do arquivo diz a qual sub-projeto a memória se aplica: `backend-`, `mobile-`, `design-`. **Sem prefixo** significa que ela vale para o repo inteiro ou atravessa mais de um projeto.
-
-## Categorias
-
-- **[`environment/`](./environment/README.md)** — o que a máquina, o build e o deploy exigem. Env obrigatória, porta, comando que precisa rodar antes, serviço externo de pé.
-
-- **[`business-rules/`](./business-rules/README.md)** — o que o produto decide. Critério, limite, default, ordem dos passos, efeito colateral, contrato entre projetos.
-
-- **[`decisions/`](./decisions/README.md)** — escolha técnica já tomada, com as alternativas descartadas e o porquê.
-
-- **[`rules/`](./rules/README.md)** — ordem permanente de como trabalhar neste repo.
-
-- **[`user-preferences/`](./user-preferences/README.md)** — como este usuário quer o trabalho feito e entregue.
-
-- **[`fails-and-lessons/`](./fails-and-lessons/README.md)** — o que já falhou, por quê, e o que fazer no lugar.
-
-- **[`vocabulary/`](./vocabulary/README.md)** — o que cada termo significa neste produto.
+Cada categoria mantém links para seus próprios registros.
