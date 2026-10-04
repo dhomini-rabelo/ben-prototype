@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { expectError, some } from '@/modules/tests'
+import { expectError, some } from '@ben/modules-tests'
 import { ValidationError } from '@ben/domain-base'
 import { ResourceNotFoundError } from '@ben/domain-base'
 

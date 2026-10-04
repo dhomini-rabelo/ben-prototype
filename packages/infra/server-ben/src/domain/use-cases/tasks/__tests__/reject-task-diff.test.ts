@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { createID } from '@ben/domain-base'
 import { ResourceNotFoundError } from '@ben/domain-base'
-import { expectError, some } from '@/modules/tests'
+import { expectError, some } from '@ben/modules-tests'
 
 import { PendingDiff } from '@/domain/entities/task'
 import { InMemoryTaskRepository } from '@/domain/__tests__/repositories/task'

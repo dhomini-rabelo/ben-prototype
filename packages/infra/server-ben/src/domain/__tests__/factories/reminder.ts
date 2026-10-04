@@ -1,5 +1,5 @@
 import { createID } from '@ben/domain-base'
-import { Factory, some } from '@/modules/tests'
+import { Factory, some } from '@ben/modules-tests'
 
 import { Reminder, ReminderProps } from '@/domain/entities/reminder'
 import { ReminderRepository } from '@/adapters/repositories/reminder-repository'

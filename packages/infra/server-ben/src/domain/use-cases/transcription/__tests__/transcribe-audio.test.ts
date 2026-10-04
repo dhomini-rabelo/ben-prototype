@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { FakeTranscriptionProvider, expectError } from '@/modules/tests'
+import { FakeTranscriptionProvider, expectError } from '@ben/modules-tests'
 import { ValidationError } from '@ben/domain-base'
 
 import { TranscribeAudioUseCase } from '@/domain/use-cases/transcription/transcribe-audio'

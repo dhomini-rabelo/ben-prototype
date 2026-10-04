@@ -333,6 +333,9 @@ importers:
         specifier: ^4.3.6
         version: 4.6.5
     devDependencies:
+      '@ben/modules-tests':
+        specifier: workspace:*
+        version: link:../../modules/tests
       '@types/better-sqlite3':
         specifier: 9.6.0
         version: 9.6.0
@@ -378,6 +381,19 @@ importers:
       zod:
         specifier: ^4.3.6
         version: 4.6.5
+    devDependencies:
+      '@types/node':
+        specifier: ^22.15.29
+        version: 22.20.5
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/modules/tests:
+    dependencies:
+      '@ben/adapters':
+        specifier: workspace:*
+        version: link:../../adapters
     devDependencies:
       '@types/node':
         specifier: ^22.15.29

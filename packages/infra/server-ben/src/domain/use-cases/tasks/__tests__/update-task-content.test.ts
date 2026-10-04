@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { DangerErrors, DomainError } from '@ben/domain-base'
 import { createID } from '@ben/domain-base'
 import { ResourceNotFoundError } from '@ben/domain-base'
-import { expectError, some } from '@/modules/tests'
+import { expectError, some } from '@ben/modules-tests'
 
 import { TaskFactory } from '@/domain/__tests__/factories/task'
 import { InMemoryTaskRepository } from '@/domain/__tests__/repositories/task'

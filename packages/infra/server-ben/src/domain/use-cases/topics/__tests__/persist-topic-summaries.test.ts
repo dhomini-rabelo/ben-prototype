@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { createID } from '@ben/domain-base'
-import { some } from '@/modules/tests'
+import { some } from '@ben/modules-tests'
 
 import { InMemoryTopicRepository } from '@/domain/__tests__/repositories/topic'
 import { InMemoryTopicSummaryRepository } from '@/domain/__tests__/repositories/topic-summary'

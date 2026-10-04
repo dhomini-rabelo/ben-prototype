@@ -1,5 +1,5 @@
 import { createID } from '@ben/domain-base'
-import { Factory, some } from '@/modules/tests'
+import { Factory, some } from '@ben/modules-tests'
 
 import { Task, TaskProps } from '@/domain/entities/task'
 import { TaskRepository } from '@/adapters/repositories/task-repository'

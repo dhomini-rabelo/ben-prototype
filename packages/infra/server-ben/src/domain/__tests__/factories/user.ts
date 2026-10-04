@@ -1,4 +1,4 @@
-import { Factory, some } from '@/modules/tests'
+import { Factory, some } from '@ben/modules-tests'
 
 import { User, UserProps } from '@/domain/entities/user'
 import { UserRepository } from '@/adapters/repositories/user-repository'

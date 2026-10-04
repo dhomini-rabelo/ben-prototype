@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 
 import { createID } from '@ben/domain-base'
 import { ResourceNotFoundError } from '@ben/domain-base'
-import { expectError } from '@/modules/tests'
+import { expectError } from '@ben/modules-tests'
 
 import { InMemoryNoteRepository } from '@/domain/__tests__/repositories/note'
 import { NoteFactory } from '@/domain/__tests__/factories/note'

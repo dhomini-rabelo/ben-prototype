@@ -5,7 +5,7 @@ import {
   FakeJwtService,
   expectError,
   some,
-} from '@/modules/tests'
+} from '@ben/modules-tests'
 import { DangerErrors, DomainError } from '@ben/domain-base'
 
 import { InMemoryUserRepository } from '@/domain/__tests__/repositories/user'
