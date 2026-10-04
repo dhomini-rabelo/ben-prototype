@@ -6,7 +6,7 @@
   "packageManager": "pnpm@11.18.0",
   "engines": { "node": ">=24" },
   "scripts": {
-    "dev": "pnpm --filter @ben/server-ben dev",
+    "dev": "concurrently -n server,mobile -c blue,magenta \"pnpm --filter @ben/server-ben dev\" \"pnpm --filter @ben/mobile-ben dev\"",
     "dev:mobile": "pnpm --filter @ben/mobile-ben dev",
     "dev:design": "pnpm --filter @ben/mobile-design dev",
     "typecheck": "pnpm -r --if-present typecheck",
