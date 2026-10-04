@@ -76,6 +76,31 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  packages/domain/user:
+    dependencies:
+      '@ben/adapters':
+        specifier: workspace:*
+        version: link:../../adapters
+      '@ben/domain-base':
+        specifier: workspace:*
+        version: link:../base
+      '@ben/modules-utils':
+        specifier: workspace:*
+        version: link:../../modules/utils
+    devDependencies:
+      '@ben/modules-tests':
+        specifier: workspace:*
+        version: link:../../modules/tests
+      '@types/node':
+        specifier: ^22.15.29
+        version: 22.20.5
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.7
+        version: 3.2.7(@types/node@22.20.5)(jiti@2.7.0)(lightningcss@1.33.0)(supports-color@8.1.1)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)
+
   packages/infra/mobile/ben:
     dependencies:
       '@ai-sdk/react':
@@ -284,6 +309,9 @@ importers:
       '@ben/domain-base':
         specifier: workspace:*
         version: link:../../domain/base
+      '@ben/domain-user':
+        specifier: workspace:*
+        version: link:../../domain/user
       '@ben/modules-env':
         specifier: workspace:*
         version: link:../../modules/env

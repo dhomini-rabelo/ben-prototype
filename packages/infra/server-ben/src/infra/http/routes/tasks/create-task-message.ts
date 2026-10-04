@@ -1,4 +1,4 @@
-import { GetAgentPreferencesUseCase } from '@/domain/use-cases/agent-preferences/get-agent-preferences'
+import { GetAgentPreferencesUseCase } from '@ben/domain-user/application/use-cases/agent-preferences/get-agent-preferences'
 import { CreateTaskMessageUseCase } from '@/domain/use-cases/tasks/create-task-message'
 import { TaskPresenter } from '@/infra/http/presenters/task-presenter'
 import { taskRepository, userRepository } from '@/infra/http/repositories'

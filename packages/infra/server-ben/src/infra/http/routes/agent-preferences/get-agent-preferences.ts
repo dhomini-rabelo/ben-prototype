@@ -1,4 +1,4 @@
-import { GetAgentPreferencesUseCase } from '@/domain/use-cases/agent-preferences/get-agent-preferences'
+import { GetAgentPreferencesUseCase } from '@ben/domain-user/application/use-cases/agent-preferences/get-agent-preferences'
 import { AgentPreferencesPresenter } from '@/infra/http/presenters/agent-preferences-presenter'
 import { userRepository } from '@/infra/http/repositories'
 import { HttpStatus } from '@ben/modules-utils'

@@ -1,5 +1,5 @@
 import { PersistCapturesUseCase } from '@/domain/use-cases/captures/persist-captures'
-import { GetAgentPreferencesUseCase } from '@/domain/use-cases/agent-preferences/get-agent-preferences'
+import { GetAgentPreferencesUseCase } from '@ben/domain-user/application/use-cases/agent-preferences/get-agent-preferences'
 import { PersistBenMessageUseCase } from '@/domain/use-cases/messages/persist-ben-message'
 import { PersistUserMessageUseCase } from '@/domain/use-cases/messages/persist-user-message'
 import { BuildTopicIndexUseCase } from '@/domain/use-cases/topics/build-topic-index'

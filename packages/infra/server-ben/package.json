@@ -18,6 +18,7 @@
     "@ai-sdk/google": "^3.0.80",
     "@ben/adapters": "workspace:*",
     "@ben/domain-base": "workspace:*",
+    "@ben/domain-user": "workspace:*",
     "@ben/modules-env": "workspace:*",
     "@ben/modules-utils": "workspace:*",
     "@openrouter/ai-sdk-provider": "^2.9.0",

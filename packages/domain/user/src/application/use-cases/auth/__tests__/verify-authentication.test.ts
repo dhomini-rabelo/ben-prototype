@@ -9,9 +9,9 @@ import {
 import { DangerErrors, DomainError } from '@ben/domain-base'
 import { ResourceNotFoundError } from '@ben/domain-base'
 
-import { InMemoryUserRepository } from '@/domain/__tests__/repositories/user'
-import { UserFactory } from '@/domain/__tests__/factories/user'
-import { VerifyAuthenticationUseCase } from '@/domain/use-cases/auth/verify-authentication'
+import { InMemoryUserRepository } from '@ben/domain-user/application/__tests__/repositories/user'
+import { UserFactory } from '@ben/domain-user/application/__tests__/factories/user'
+import { VerifyAuthenticationUseCase } from '@ben/domain-user/application/use-cases/auth/verify-authentication'
 
 describe('VerifyAuthenticationUseCase', () => {
   let userRepository: InMemoryUserRepository

@@ -1,6 +1,6 @@
 import { AgentModelSelection } from '@ben/adapters'
-import { UserRepository } from '@/adapters/repositories/user-repository'
-import { resolveAgentSelection } from '@/domain/utils/agent-models'
+import { UserRepository } from '@ben/domain-user/application/repositories/user'
+import { resolveAgentSelection } from '@ben/domain-user/application/utils/agent-models'
 import { createID } from '@ben/domain-base'
 import { ItemResponse } from '@ben/domain-base'
 import { UseCase } from '@ben/domain-base'

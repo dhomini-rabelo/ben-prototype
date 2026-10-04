@@ -1,8 +1,8 @@
 import { EntityWithStatic } from '@ben/domain-base'
 import { InMemoryRepository } from '@ben/domain-base'
 
-import { User } from '@/domain/entities/user'
-import { UserRepository } from '@/adapters/repositories/user-repository'
+import { User } from '@ben/domain-user/enterprise/entities/user'
+import { UserRepository } from '@ben/domain-user/application/repositories/user'
 
 export class InMemoryUserRepository
   extends InMemoryRepository<User>

@@ -1,4 +1,4 @@
-import { LoginOrRegisterUseCase } from '@/domain/use-cases/auth/login-or-register'
+import { LoginOrRegisterUseCase } from '@ben/domain-user/application/use-cases/auth/login-or-register'
 import { UserPresenter } from '@/infra/http/presenters/user-presenter'
 import { userRepository } from '@/infra/http/repositories'
 import { env } from '@ben/modules-env'

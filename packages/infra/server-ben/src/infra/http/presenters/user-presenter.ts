@@ -1,4 +1,4 @@
-import { User, UserProps } from '@/domain/entities/user'
+import { User, UserProps } from '@ben/domain-user/enterprise/entities/user'
 import { Serialize, WithID } from '@ben/domain-base'
 
 export class UserPresenter {

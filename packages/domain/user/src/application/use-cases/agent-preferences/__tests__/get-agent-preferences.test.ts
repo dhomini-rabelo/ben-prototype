@@ -3,9 +3,9 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { expectError, some } from '@ben/modules-tests'
 import { ResourceNotFoundError } from '@ben/domain-base'
 
-import { InMemoryUserRepository } from '@/domain/__tests__/repositories/user'
-import { UserFactory } from '@/domain/__tests__/factories/user'
-import { GetAgentPreferencesUseCase } from '@/domain/use-cases/agent-preferences/get-agent-preferences'
+import { InMemoryUserRepository } from '@ben/domain-user/application/__tests__/repositories/user'
+import { UserFactory } from '@ben/domain-user/application/__tests__/factories/user'
+import { GetAgentPreferencesUseCase } from '@ben/domain-user/application/use-cases/agent-preferences/get-agent-preferences'
 import { AgentModelSlug } from '@ben/adapters'
 
 describe('GetAgentPreferencesUseCase', () => {

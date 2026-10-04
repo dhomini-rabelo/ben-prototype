@@ -1,5 +1,8 @@
 import { AgentModelSelection } from '@ben/adapters'
-import { AgentModelOption, AGENT_MODELS } from '@/domain/utils/agent-models'
+import {
+  AgentModelOption,
+  AGENT_MODELS,
+} from '@ben/domain-user/application/utils/agent-models'
 
 export class AgentPreferencesPresenter {
   static toHttp(

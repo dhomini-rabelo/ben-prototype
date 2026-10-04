@@ -1,8 +1,8 @@
 import { AuthProviderService, GetUserFromTokenResponse } from '@ben/adapters'
 import { JwtService } from '@ben/adapters'
-import { UserRepository } from '@/adapters/repositories/user-repository'
-import { User } from '@/domain/entities/user'
-import { getUserFromProviderTokenOrThrow } from '@/domain/utils/auth'
+import { UserRepository } from '@ben/domain-user/application/repositories/user'
+import { User } from '@ben/domain-user/enterprise/entities/user'
+import { getUserFromProviderTokenOrThrow } from '@ben/domain-user/application/utils/auth'
 import { UseCase } from '@ben/domain-base'
 
 interface Payload {

@@ -17,6 +17,8 @@
       "@ben/adapters/*": ["./packages/adapters/src/*"],
       "@ben/domain-base": ["./packages/domain/base/src/index.ts"],
       "@ben/domain-base/*": ["./packages/domain/base/src/*"],
+      "@ben/domain-user": ["./packages/domain/user/src/index.ts"],
+      "@ben/domain-user/*": ["./packages/domain/user/src/*"],
       "@ben/modules-utils": ["./packages/modules/utils/src/index.ts"],
       "@ben/modules-utils/*": ["./packages/modules/utils/src/*"],
       "@ben/modules-env": ["./packages/modules/env/src/index.ts"],

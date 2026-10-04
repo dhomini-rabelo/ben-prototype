@@ -4,9 +4,9 @@ import { expectError, some } from '@ben/modules-tests'
 import { ValidationError } from '@ben/domain-base'
 import { ResourceNotFoundError } from '@ben/domain-base'
 
-import { InMemoryUserRepository } from '@/domain/__tests__/repositories/user'
-import { UserFactory } from '@/domain/__tests__/factories/user'
-import { UpdateAgentPreferencesUseCase } from '@/domain/use-cases/agent-preferences/update-agent-preferences'
+import { InMemoryUserRepository } from '@ben/domain-user/application/__tests__/repositories/user'
+import { UserFactory } from '@ben/domain-user/application/__tests__/factories/user'
+import { UpdateAgentPreferencesUseCase } from '@ben/domain-user/application/use-cases/agent-preferences/update-agent-preferences'
 
 describe('UpdateAgentPreferencesUseCase', () => {
   let userRepository: InMemoryUserRepository

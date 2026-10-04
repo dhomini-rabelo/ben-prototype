@@ -1,7 +1,7 @@
 import { Factory, some } from '@ben/modules-tests'
 
-import { User, UserProps } from '@/domain/entities/user'
-import { UserRepository } from '@/adapters/repositories/user-repository'
+import { User, UserProps } from '@ben/domain-user/enterprise/entities/user'
+import { UserRepository } from '@ben/domain-user/application/repositories/user'
 
 export function createUserData(data: Partial<UserProps> = {}): UserProps {
   return {

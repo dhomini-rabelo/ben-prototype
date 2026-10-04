@@ -8,9 +8,9 @@ import {
 } from '@ben/modules-tests'
 import { DangerErrors, DomainError } from '@ben/domain-base'
 
-import { InMemoryUserRepository } from '@/domain/__tests__/repositories/user'
-import { UserFactory } from '@/domain/__tests__/factories/user'
-import { LoginOrRegisterUseCase } from '@/domain/use-cases/auth/login-or-register'
+import { InMemoryUserRepository } from '@ben/domain-user/application/__tests__/repositories/user'
+import { UserFactory } from '@ben/domain-user/application/__tests__/factories/user'
+import { LoginOrRegisterUseCase } from '@ben/domain-user/application/use-cases/auth/login-or-register'
 
 describe('LoginOrRegisterUseCase', () => {
   let userRepository: InMemoryUserRepository
