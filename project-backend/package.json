@@ -8,6 +8,7 @@
     "postinstall": "prisma generate",
     "build": "tsup src/infra/http/server.ts --format esm --target node24 --out-dir dist --clean",
     "start": "node dist/server.js",
+    "test": "vitest run",
     "lint:fix": "eslint ./src --ext .ts --fix"
   },
   "dependencies": {
@@ -48,6 +49,7 @@
     "prisma": "7.10.0",
     "tsup": "^8.5.1",
     "tsx": "^4.19.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.7"
   }
 }
