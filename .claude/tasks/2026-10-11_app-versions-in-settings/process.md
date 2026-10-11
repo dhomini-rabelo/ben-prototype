@@ -16,8 +16,8 @@ Git: branch feat/add-version-in-settings | commit-base d2dbfe8
 - [x] Lint + type-check
 - [x] Commit: implement
 - [x] Validate r1 (CHANGES_REQUIRED) + fix round 1
-- [ ] Commit: validate
-- [ ] System test mode decided (user wants screenshots → browser)
+- [x] Validate r2 APPROVED_WITH_RESALVAS + commit
+- [x] System test mode: browser only
 - [ ] tests-01 — verdict.md PASS
 - [ ] Context update (Sonnet)
 - [ ] Commit: context

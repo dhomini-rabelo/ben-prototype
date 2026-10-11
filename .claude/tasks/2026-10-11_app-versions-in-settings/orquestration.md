@@ -43,3 +43,12 @@ Skill: simple-loop
 
 - Option A: import com `.ts` explícito + allowImportingTsExtensions; rename (appVersion, index)
 - expo config exit 0 version 1.1.0 | typecheck exit 0 (per implementer) → validate r2
+
+## 2026-10-11 — validator (validate-app-versions-in-settings-r2)
+
+- Verdict: APPROVED_WITH_RESALVAS | Pointer: `review-r2.md` | rodadas: 2 (sinal registrado)
+- Ressalvas: eas.json sem `node` fixado (config exige Node ≥22.18) — reportar ao usuário; design/ defasado (fora do escopo)
+
+## 2026-10-11 — system test mode
+
+- Mode: browser only (mobile sem testes automatizados; usuário pediu prova com imagens) → tests-01

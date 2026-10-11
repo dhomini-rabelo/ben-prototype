@@ -15,3 +15,4 @@ Skill: simple-loop
 | 2026-10-11 | planner | plan-app-versions-in-settings | ae82bcbf1f030fdd8 | opus | general-purpose | 45k | 1 escopo |
 | 2026-10-11 | implementer | impl-mobile-app-versions-app-versions-in-settings | a9d93d806659230fe | sonnet | general-purpose | 28k | scope: mobile-app-versions |
 | 2026-10-11 | validator | validate-app-versions-in-settings-r1 | a16e8838cd8459c22 | opus | general-purpose | 35k | CHANGES_REQUIRED |
+| 2026-10-11 | validator | validate-app-versions-in-settings-r2 | ab2906e3f52743c74 | opus | general-purpose | 31k | APPROVED_WITH_RESALVAS |
