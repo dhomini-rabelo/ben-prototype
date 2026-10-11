@@ -62,3 +62,7 @@ Textos (o implementador pode polir a redação sem mudar o sentido):
 
 ## Modo de teste de sistema
 UI via `browser-mobile-tester` (Playwright, :8081, 390x844), com o login injetado no localStorage. O backend é opcional, porque a seção é estática.
+
+## Notes do implementador (após tests-01)
+- app-version-item.tsx: removido numberOfLines do título para ele quebrar em várias linhas; a linha agora alinha ao topo (items-start, py-3) para chevron, versão e data não se desencontrarem.
+- Título com min-w-0 flex-1 para quebrar sem empurrar a data. Typecheck exit 0; eslint --fix sem ajustes.

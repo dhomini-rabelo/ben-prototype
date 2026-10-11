@@ -18,13 +18,13 @@ export function AppVersionItem({ version, defaultOpen }: AppVersionItemProps) {
       <Pressable
         accessibilityRole="button"
         accessibilityState={{ expanded: isOpen }}
-        className="min-h-12 flex-row items-center gap-2 py-2"
+        className="min-h-12 flex-row items-start gap-2 py-3"
         onPress={() => setIsOpen((current) => !current)}
       >
         {isOpen ? (
-          <ChevronDown size={16} color={onSurfaceVariant} />
+          <ChevronDown className="mt-0.5" size={16} color={onSurfaceVariant} />
         ) : (
-          <ChevronRight size={16} color={onSurfaceVariant} />
+          <ChevronRight className="mt-0.5" size={16} color={onSurfaceVariant} />
         )}
         <Typography
           variant="label-caps"
@@ -34,8 +34,7 @@ export function AppVersionItem({ version, defaultOpen }: AppVersionItemProps) {
         </Typography>
         <Typography
           variant="body-md"
-          numberOfLines={1}
-          className="flex-1 font-semibold text-on-surface"
+          className="min-w-0 flex-1 font-semibold text-on-surface"
         >
           {version.title}
         </Typography>

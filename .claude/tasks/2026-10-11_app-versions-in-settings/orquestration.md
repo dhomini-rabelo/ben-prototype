@@ -57,3 +57,8 @@ Skill: simple-loop
 
 - Result: PASS (casos 1-5) | Pointer: `tests-01/verdict.md` + 6 screenshots
 - Defeito menor: título da v1.1.0 truncado com reticências em 390px — prejudica o objetivo (identificar a feature) → fix (título quebra linha) + tests-02
+
+## 2026-10-11 — fix after tests-01 (impl reused via SendMessage)
+
+- app-version-item.tsx: título quebra linha (sem numberOfLines); notes em plan.md | tsc/lint verificados pelo orchestrator
+- Next: tests-02 (fresh tester, tester-retry)
