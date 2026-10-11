@@ -29,7 +29,7 @@ export const workspaceStrings: Localized<typeof en> = {
   en,
   'pt-BR': {
     loading: 'carregando seu workspace…',
-    loadError: 'não consegui carregar essa',
+    loadError: 'não deu para carregar essa',
     retry: 'Tentar de novo',
     backToChat: 'Voltar ao chat',
     more: 'Mais',
@@ -44,10 +44,10 @@ export const workspaceStrings: Localized<typeof en> = {
     voiceInput: 'Entrada de voz',
     offline:
       'Você está offline. O envio fica pausado até você voltar a ficar online.',
-    micGlitched: 'o mic falhou — tente de novo ou digite',
+    micGlitched: 'o microfone falhou — tente de novo ou digite',
     micDenied:
-      'o Ben ainda não consegue te ouvir — ligue o mic nas configurações do aparelho.',
-    voiceError: 'não entendi — toque para tentar de novo ou digite',
+      'O Ben ainda não consegue ouvir você — ative o microfone nas configurações do aparelho.',
+    voiceError: 'não consegui entender — toque para tentar de novo ou digite',
     sendError: 'o Ben não respondeu — toque para tentar de novo',
     subThreadRetry: 'tentar de novo',
     you: 'Você',

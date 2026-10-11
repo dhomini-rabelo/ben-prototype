@@ -18,7 +18,7 @@ Pedido: feature de trocar idioma — inglês (default) e português BR. Usuário
 - [x] Lint + type-check
 - [x] Commit: implement
 - [ ] Validate + code-pattern review (fresh Opus)
-- [ ] Fix round (Sonnet) — only if CHANGES_REQUIRED
+- [x] Fix round (Sonnet) — only if CHANGES_REQUIRED
 - [ ] Re-validate — only if there was a fix round
 - [ ] Commit: validate
 - [ ] Decide system test mode

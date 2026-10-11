@@ -1,8 +1,8 @@
 import type { Localized } from '@/core/languages'
 
 const en = {
-  viewInput: 'Ver input',
-  viewOutput: 'Ver output',
+  viewInput: 'View input',
+  viewOutput: 'View output',
   modelCall: 'Model call',
   close: 'Close',
   input: 'Input',

@@ -6,7 +6,8 @@ import type { TaskListItem } from '@/api/responses/task'
 import { Typography } from '@/layout/components/ui/typography'
 import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
 import { onSurfaceVariant } from '@/layout/utils/colors'
-import { relativeTime } from '@/layout/utils/format-time'
+import type { Language } from '@/core/languages'
+import { formatTimeStrings } from '@/layout/strings/format-time-strings'
 import { cn } from '@/layout/utils/styles'
 import { taskPickerStrings } from '@/pages/chat/strings/task-picker-strings'
 
@@ -26,6 +27,26 @@ const SHAPE_ICON: Record<
 > = {
   text: Type,
   todo: List,
+}
+
+function activityLabel(
+  iso: string,
+  language: Language,
+  activeAgo: (relative: string) => string,
+): string {
+  const time = formatTimeStrings[language]
+  const minutes = Math.floor((Date.now() - new Date(iso).getTime()) / 60000)
+  if (minutes < 1) {
+    return time.justNow
+  }
+  if (minutes < 60) {
+    return activeAgo(time.minutesAgo(minutes))
+  }
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) {
+    return activeAgo(time.hoursAgo(hours))
+  }
+  return activeAgo(time.daysAgo(Math.floor(hours / 24)))
 }
 
 export function TaskPickerList({ tasks, onSelect }: TaskPickerListProps) {
@@ -64,7 +85,11 @@ export function TaskPickerList({ tasks, onSelect }: TaskPickerListProps) {
                 variant="label-caps"
                 className="normal-case text-on-surface-variant"
               >
-                {strings.activeAgo(relativeTime(task.lastActivityAt, language))}
+                {activityLabel(
+                  task.lastActivityAt,
+                  language,
+                  strings.activeAgo,
+                )}
               </Typography>
             </View>
           </Pressable>

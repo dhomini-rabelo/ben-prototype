@@ -2,12 +2,15 @@ import { useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { CopyButton } from '@/layout/components/ui/copy-button'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { uiStrings } from '@/layout/strings/ui-strings'
 
 type CodeBlockProps = { value: unknown; showCopy?: boolean }
 
 const MAX_LINES = 16
 
 export function CodeBlock({ value, showCopy = true }: CodeBlockProps) {
+  const strings = useStrings(uiStrings)
   const [isExpanded, setIsExpanded] = useState(false)
   const text = useMemo(() => JSON.stringify(value ?? null, null, 2), [value])
   const canCollapse = text.split('\n').length > MAX_LINES
@@ -33,7 +36,7 @@ export function CodeBlock({ value, showCopy = true }: CodeBlockProps) {
           onPress={() => setIsExpanded((current) => !current)}
         >
           <Typography variant="label-caps" className="text-on-surface-variant">
-            {isExpanded ? 'Show less' : 'Show more'}
+            {isExpanded ? strings.showLess : strings.showMore}
           </Typography>
         </Pressable>
       )}

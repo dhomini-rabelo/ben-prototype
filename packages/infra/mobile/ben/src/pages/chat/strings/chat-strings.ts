@@ -48,7 +48,7 @@ export const chatStrings: Localized<typeof en> = {
     menu: 'Menu',
     send: 'Enviar',
     voiceInput: 'Entrada de voz',
-    typingLabel: 'o Ben está digitando',
+    typingLabel: 'Ben está digitando',
     peekEmpty: 'nada em andamento — o Ben está ouvindo',
     peekActive: 'ativa',
     peekActiveCount: (count) => `${count} ${count === 1 ? 'ativa' : 'ativas'}`,

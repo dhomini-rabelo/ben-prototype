@@ -49,3 +49,7 @@ Skill: simple-loop
 - Bloqueantes: code-block.tsx:36 "Show more/less" hardcoded; message-trace-strings.ts:4-5 en "Ver input/output" → "View input/output"
 - Decisões do orquestrador (sem perguntar): reverter mudança de texto en do task-picker-list (manter comportamento anterior); aplicar consistência de copy pt-BR apontada; canal Android "Reminders" fica fora (texto do SO, não do app)
 - Next: 1 implementer fresh (-fix1) cobrindo B1+B2 (B2 >80k → fresh); depois validate r2
+
+## fix1 (impl-review-fixes-language-switch-fix1)
+
+- 4 itens corrigidos; lint 0, tsc 0. Next: validate r2 (fresh)

@@ -19,7 +19,7 @@ export const loginStrings: Localized<typeof en> = {
     tagline: 'o cérebro do seu dia corrido — fale, o Ben organiza',
     permissionDenied: 'parece que não deu certo — quer tentar de novo?',
     signingIn: 'Entrando...',
-    continueWithGoogle: 'Continuar com Google',
+    continueWithGoogle: 'Continuar com o Google',
     waitingOnGoogle: 'ainda esperando o Google…',
     devSignIn: 'Entrar como dev (Expo Go)',
     copyright: '© 2026 Ben. O cérebro do seu dia corrido.',
