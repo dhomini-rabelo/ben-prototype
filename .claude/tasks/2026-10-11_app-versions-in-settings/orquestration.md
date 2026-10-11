@@ -72,3 +72,8 @@ Skill: simple-loop
 
 - mobile-ben | updated (só mudanças da task; revisão completa do app não feita) | description.md, project-structure.md, last-reviewed.json
 - Close.
+
+## 2026-10-11 — ajuste de layout pedido pelo usuário + tests-03
+
+- Item: título à esquerda; versão + chevron (down/up) à direita; data só quando expandido | lint/tsc exit=0
+- tests-03 PASS (test-app-versions-in-settings-browser-r03) | `tests-03/verdict.md` + 4 screenshots

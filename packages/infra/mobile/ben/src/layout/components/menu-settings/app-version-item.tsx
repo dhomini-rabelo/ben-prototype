@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight } from 'lucide-react-native'
+import { ChevronDown, ChevronUp } from 'lucide-react-native'
 import { useState } from 'react'
 import { Pressable, View } from 'react-native'
 import type { AppVersion } from '@/core/app-versions'
@@ -18,36 +18,38 @@ export function AppVersionItem({ version, defaultOpen }: AppVersionItemProps) {
       <Pressable
         accessibilityRole="button"
         accessibilityState={{ expanded: isOpen }}
-        className="min-h-12 flex-row items-start gap-2 py-3"
+        className="min-h-12 flex-row items-start gap-3 py-3"
         onPress={() => setIsOpen((current) => !current)}
       >
-        {isOpen ? (
-          <ChevronDown className="mt-0.5" size={16} color={onSurfaceVariant} />
-        ) : (
-          <ChevronRight className="mt-0.5" size={16} color={onSurfaceVariant} />
-        )}
-        <Typography
-          variant="label-caps"
-          className="font-mono normal-case text-on-surface-variant"
-        >
-          v{version.version}
-        </Typography>
         <Typography
           variant="body-md"
           className="min-w-0 flex-1 font-semibold text-on-surface"
         >
           {version.title}
         </Typography>
-        <Typography
-          variant="label-caps"
-          className="normal-case text-on-surface-variant/70"
-        >
-          {version.date}
-        </Typography>
+        <View className="flex-row items-center gap-2 pt-0.5">
+          <Typography
+            variant="label-caps"
+            className="font-mono normal-case text-on-surface-variant"
+          >
+            v{version.version}
+          </Typography>
+          {isOpen ? (
+            <ChevronUp size={16} color={onSurfaceVariant} />
+          ) : (
+            <ChevronDown size={16} color={onSurfaceVariant} />
+          )}
+        </View>
       </Pressable>
 
       {isOpen && (
-        <View className="pb-2">
+        <View className="gap-1 pb-3">
+          <Typography
+            variant="label-caps"
+            className="normal-case text-on-surface-variant/70"
+          >
+            {version.date}
+          </Typography>
           <Typography variant="body-md" className="text-on-surface-variant">
             {version.description}
           </Typography>
