@@ -27,6 +27,7 @@ Git: branch feat/add-version-in-settings | commit-base d2dbfe8
 
 | Run | Result | Notes |
 |-----|--------|-------|
+| tests-01 | PASS | título v1.1.0 truncado em 390px → fix + tests-02 |
 
 ## Notes
 

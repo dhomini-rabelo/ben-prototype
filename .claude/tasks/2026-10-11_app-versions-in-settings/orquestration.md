@@ -52,3 +52,8 @@ Skill: simple-loop
 ## 2026-10-11 — system test mode
 
 - Mode: browser only (mobile sem testes automatizados; usuário pediu prova com imagens) → tests-01
+
+## 2026-10-11 — tests-01 (test-app-versions-in-settings-browser-r01)
+
+- Result: PASS (casos 1-5) | Pointer: `tests-01/verdict.md` + 6 screenshots
+- Defeito menor: título da v1.1.0 truncado com reticências em 390px — prejudica o objetivo (identificar a feature) → fix (título quebra linha) + tests-02

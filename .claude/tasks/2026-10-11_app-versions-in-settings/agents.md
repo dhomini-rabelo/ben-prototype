@@ -16,3 +16,4 @@ Skill: simple-loop
 | 2026-10-11 | implementer | impl-mobile-app-versions-app-versions-in-settings | a9d93d806659230fe | sonnet | general-purpose | 28k | scope: mobile-app-versions |
 | 2026-10-11 | validator | validate-app-versions-in-settings-r1 | a16e8838cd8459c22 | opus | general-purpose | 35k | CHANGES_REQUIRED |
 | 2026-10-11 | validator | validate-app-versions-in-settings-r2 | ab2906e3f52743c74 | opus | general-purpose | 31k | APPROVED_WITH_RESALVAS |
+| 2026-10-11 | tester | test-app-versions-in-settings-browser-r01 | a7113c01670cd9ed2 | sonnet | browser-mobile-tester | 47k | tests-01 PASS c/ defeito menor |
