@@ -62,3 +62,8 @@ Skill: simple-loop
 
 - app-version-item.tsx: título quebra linha (sem numberOfLines); notes em plan.md | tsc/lint verificados pelo orchestrator
 - Next: tests-02 (fresh tester, tester-retry)
+
+## 2026-10-11 — tests-02 (test-app-versions-in-settings-browser-r02)
+
+- Result: PASS, 0 defeitos | Pointer: `tests-02/verdict.md` + 6 screenshots (scroll com sheet cheio via mock Playwright)
+- Next: context update

@@ -18,7 +18,7 @@ Git: branch feat/add-version-in-settings | commit-base d2dbfe8
 - [x] Validate r1 (CHANGES_REQUIRED) + fix round 1
 - [x] Validate r2 APPROVED_WITH_RESALVAS + commit
 - [x] System test mode: browser only
-- [ ] tests-01 — verdict.md PASS
+- [x] tests-01 PASS (defeito menor) → fix → tests-02 PASS
 - [ ] Context update (Sonnet)
 - [ ] Commit: context
 - [ ] Close + user summary
@@ -28,6 +28,7 @@ Git: branch feat/add-version-in-settings | commit-base d2dbfe8
 | Run | Result | Notes |
 |-----|--------|-------|
 | tests-01 | PASS | título v1.1.0 truncado em 390px → fix + tests-02 |
+| tests-02 | PASS | título completo; scroll ok |
 
 ## Notes
 
