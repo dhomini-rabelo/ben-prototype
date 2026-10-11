@@ -24,3 +24,4 @@ Skill: simple-loop
 | 2026-10-11 | validator | validate-language-switch-r2 | a60ff05965806d98d | opus | general-purpose | 40k | APPROVED_WITH_RESALVAS (3 menores) |
 | 2026-10-11 | tester | test-language-switch-browser-r01 | a63be3edeb2a901bc | sonnet | browser-mobile-tester | 85k | tests-01 PASS |
 | 2026-10-11 | implementer | impl-trace-plural-language-switch-fix2 | adcf728770898a773 | sonnet | general-purpose | 28k | fix após tests-01; tsc 0 |
+| 2026-10-11 | tester | test-language-switch-browser-r02 | afffd9fb323c31848 | sonnet | browser-mobile-tester | 50k | tests-02 PASS |

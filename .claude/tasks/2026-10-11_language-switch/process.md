@@ -23,7 +23,7 @@ Pedido: feature de trocar idioma — inglês (default) e português BR. Usuário
 - [x] Commit: validate
 - [x] Decide system test mode
 - [x] tests-01 — run + verdict.md
-- [ ] Commit: system-test (per attempt)
+- [x] Commit: system-test (per attempt)
 - [ ] Context update (Sonnet)
 - [ ] Commit: context
 - [ ] Close + user summary
@@ -33,6 +33,7 @@ Pedido: feature de trocar idioma — inglês (default) e português BR. Usuário
 | Run | Result | Notes |
 |-----|--------|-------|
 | tests-01 | PASS | 7 casos; bug plural pt-BR no trace meta → fix + tests-02 |
+| tests-02 | PASS | plural + fases do trace en/pt-BR; persistência |
 
 ## Notes
 

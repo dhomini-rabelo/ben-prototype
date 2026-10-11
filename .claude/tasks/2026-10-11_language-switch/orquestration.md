@@ -75,3 +75,8 @@ Skill: simple-loop
 
 - Plural en/pt-BR no trace meta (en também corrigido: "1 message"); fases context/format no dicionário. lint 0, tsc 0
 - Next: tests-02 focado (fresh, tester-retry)
+
+## tests-02 (test-language-switch-browser-r02)
+
+- Result: PASS — `tests-02/verdict.md` (+ screenshots/)
+- Next: context update (sonnet)
