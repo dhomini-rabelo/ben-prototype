@@ -18,8 +18,12 @@ export function AppVersionsSection() {
         </Typography>
       </View>
       <View>
-        {APP_VERSIONS.map((v, i) => (
-          <AppVersionItem key={v.version} version={v} defaultOpen={i === 0} />
+        {APP_VERSIONS.map((appVersion, index) => (
+          <AppVersionItem
+            key={appVersion.version}
+            version={appVersion}
+            defaultOpen={index === 0}
+          />
         ))}
       </View>
     </View>

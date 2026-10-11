@@ -1,5 +1,5 @@
 import type { ExpoConfig } from 'expo/config'
-import { CURRENT_APP_VERSION } from './src/core/app-versions'
+import { CURRENT_APP_VERSION } from './src/core/app-versions.ts'
 
 const config: ExpoConfig = {
   name: 'Ben',

@@ -15,7 +15,7 @@ Git: branch feat/add-version-in-settings | commit-base d2dbfe8
 - [x] Implement (Sonnet)
 - [x] Lint + type-check
 - [x] Commit: implement
-- [ ] Validate (fresh Opus)
+- [x] Validate r1 (CHANGES_REQUIRED) + fix round 1
 - [ ] Commit: validate
 - [ ] System test mode decided (user wants screenshots → browser)
 - [ ] tests-01 — verdict.md PASS

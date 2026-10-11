@@ -32,3 +32,14 @@ Skill: simple-loop
 - Files: 6 (3 novos, 3 editados) em packages/infra/mobile/ben
 - lint:fix exit=0 | typecheck exit=0 (orchestrator)
 - Next: validate
+
+## 2026-10-11 — validator (validate-app-versions-in-settings-r1)
+
+- Verdict: CHANGES_REQUIRED | Pointer: `review-r1.md`
+- Blocker: app.config.ts:2 — `npx expo config` falha (import TS sem extensão); minor: nomes abreviados em app-versions-section.tsx:21
+- Next: fix round via SendMessage ao implementer (28k, poucos turns) → validate r2
+
+## 2026-10-11 — fix round 1 (impl reused via SendMessage)
+
+- Option A: import com `.ts` explícito + allowImportingTsExtensions; rename (appVersion, index)
+- expo config exit 0 version 1.1.0 | typecheck exit 0 (per implementer) → validate r2
