@@ -6,6 +6,7 @@ import {
   firesAtRelative,
   relativeTime,
 } from '@/layout/utils/format-time'
+import { useLanguage } from '@/layout/hooks/use-strings'
 import {
   cancelReminderNotification,
   rescheduleReminderNotification,
@@ -22,6 +23,7 @@ type ReminderDetailProps = {
 }
 
 export function ReminderDetail({ reminderId, onClose }: ReminderDetailProps) {
+  const language = useLanguage()
   const { actions, state } = useReminderDetailData(reminderId)
   const reminder = state.data?.item
   const isNotFound =
@@ -56,12 +58,14 @@ export function ReminderDetail({ reminderId, onClose }: ReminderDetailProps) {
           title={reminder.title}
           body={reminder.body ?? undefined}
           status={reminder.status}
-          firesAtRelative={firesAtRelative(reminder.firesAt)}
+          firesAtRelative={firesAtRelative(reminder.firesAt, language)}
           firesAtAbsolute={
-            reminder.firesAt ? absoluteDateTime(reminder.firesAt) : undefined
+            reminder.firesAt
+              ? absoluteDateTime(reminder.firesAt, language)
+              : undefined
           }
-          capturedAtAbsolute={absoluteDateTime(reminder.capturedAt)}
-          capturedAtRelative={relativeTime(reminder.capturedAt)}
+          capturedAtAbsolute={absoluteDateTime(reminder.capturedAt, language)}
+          capturedAtRelative={relativeTime(reminder.capturedAt, language)}
         />
       ) : null}
     </ItemDetailRoot>

@@ -30,3 +30,9 @@ Skill: simple-loop
 - Question batch: nenhum (override do usuário) — premissas no plan.md
 - Pointers: `plan.md`, `prompts/{a-i18n-infra-and-settings,b1-strings-layout,b2-strings-chat,b3-strings-task-workspace}.md`
 - Next: implement A sozinho, depois B1/B2/B3 em paralelo
+
+## implementer A (impl-a-i18n-infra-and-settings-language-switch)
+
+- 8 arquivos novos + menu-settings, auth-bootstrap, app-versions, format-time e callers; tocou também menu-notes-list e menu-reminders-list (callers de format-time, necessário p/ tsc)
+- Orquestrador: lint:fix exit 0, typecheck exit 0. Pendente p/ validator: `expo config` (app.config.ts → app-versions.ts)
+- Next: B1/B2/B3 em paralelo

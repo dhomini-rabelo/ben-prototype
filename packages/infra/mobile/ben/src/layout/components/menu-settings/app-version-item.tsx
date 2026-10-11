@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Pressable, View } from 'react-native'
 import type { AppVersion } from '@/core/app-versions'
 import { Typography } from '@/layout/components/ui/typography'
+import { useLanguage } from '@/layout/hooks/use-strings'
 import { onSurfaceVariant } from '@/layout/utils/colors'
 
 type AppVersionItemProps = {
@@ -11,6 +12,7 @@ type AppVersionItemProps = {
 }
 
 export function AppVersionItem({ version, defaultOpen }: AppVersionItemProps) {
+  const language = useLanguage()
   const [isOpen, setIsOpen] = useState(defaultOpen ?? false)
 
   return (
@@ -25,7 +27,7 @@ export function AppVersionItem({ version, defaultOpen }: AppVersionItemProps) {
           variant="body-md"
           className="min-w-0 flex-1 font-semibold text-on-surface"
         >
-          {version.title}
+          {version.title[language]}
         </Typography>
         <View className="flex-row items-center gap-2 pt-0.5">
           <Typography
@@ -51,7 +53,7 @@ export function AppVersionItem({ version, defaultOpen }: AppVersionItemProps) {
             {version.date}
           </Typography>
           <Typography variant="body-md" className="text-on-surface-variant">
-            {version.description}
+            {version.description[language]}
           </Typography>
         </View>
       )}

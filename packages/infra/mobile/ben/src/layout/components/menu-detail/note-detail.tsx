@@ -1,6 +1,7 @@
 import { isAxiosError } from 'axios'
 import { useNoteDetailData } from '@/layout/hooks/api/use-note-detail-data'
 import { absoluteDateTime, relativeTime } from '@/layout/utils/format-time'
+import { useLanguage } from '@/layout/hooks/use-strings'
 import { ItemDetailContent } from './item-detail-content'
 import { ItemDetailError } from './item-detail-error'
 import { ItemDetailGone } from './item-detail-gone'
@@ -13,6 +14,7 @@ type NoteDetailProps = {
 }
 
 export function NoteDetail({ noteId, onClose }: NoteDetailProps) {
+  const language = useLanguage()
   const { actions, state } = useNoteDetailData(noteId)
   const note = state.data?.item
   const isNotFound =
@@ -33,8 +35,8 @@ export function NoteDetail({ noteId, onClose }: NoteDetailProps) {
         <ItemDetailContent
           title={note.title}
           body={note.body}
-          capturedAtAbsolute={absoluteDateTime(note.capturedAt)}
-          capturedAtRelative={relativeTime(note.capturedAt)}
+          capturedAtAbsolute={absoluteDateTime(note.capturedAt, language)}
+          capturedAtRelative={relativeTime(note.capturedAt, language)}
         />
       ) : null}
     </ItemDetailRoot>

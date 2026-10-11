@@ -15,6 +15,7 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Typography } from '@/layout/components/ui/typography'
 import { absoluteDateTime } from '@/layout/utils/format-time'
+import { useLanguage } from '@/layout/hooks/use-strings'
 import { MessageActionsMenuItem } from '@/pages/chat/components/message-actions-menu/message-actions-menu-item'
 import { useMessageTraceStore } from '@/pages/chat/stores/message-trace-store'
 
@@ -26,6 +27,7 @@ const ENTER_DURATION = 160
 const EXIT_DURATION = 120
 
 export function MessageActionsMenu() {
+  const language = useLanguage()
   const actionsTarget = useMessageTraceStore((store) => store.actionsTarget)
   const closeActions = useMessageTraceStore((store) => store.closeActions)
   const openTrace = useMessageTraceStore((store) => store.openTrace)
@@ -118,7 +120,7 @@ export function MessageActionsMenu() {
               variant="label-caps"
               className="px-3 pt-2 pb-1 text-on-surface-variant"
             >
-              {absoluteDateTime(actionsTarget.createdAt)}
+              {absoluteDateTime(actionsTarget.createdAt, language)}
             </Typography>
           )}
           <MessageActionsMenuItem

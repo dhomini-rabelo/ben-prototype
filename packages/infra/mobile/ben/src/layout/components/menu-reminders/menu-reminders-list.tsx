@@ -2,6 +2,7 @@ import type { ReminderListItem } from '@/api/models/reminder'
 import { MenuListRow } from '@/layout/components/menu-list/menu-list-row'
 import { Typography } from '@/layout/components/ui/typography'
 import { firesAtRelative, relativeTime } from '@/layout/utils/format-time'
+import { useLanguage } from '@/layout/hooks/use-strings'
 import { View } from 'react-native'
 
 type MenuRemindersListProps = {
@@ -13,6 +14,7 @@ export function MenuRemindersList({
   reminders,
   onSelect,
 }: MenuRemindersListProps) {
+  const language = useLanguage()
   const upcoming = reminders.filter(
     (reminder) => reminder.status === 'upcoming',
   )
@@ -34,9 +36,9 @@ export function MenuRemindersList({
                 key={reminder.id}
                 kind="reminder"
                 title={reminder.title}
-                trailing={firesAtRelative(reminder.firesAt)}
+                trailing={firesAtRelative(reminder.firesAt, language)}
                 emphasizeTrailing
-                supporting={`captured ${relativeTime(reminder.capturedAt)}`}
+                supporting={`captured ${relativeTime(reminder.capturedAt, language)}`}
                 onPress={() => onSelect(reminder.id)}
               />
             ))}
@@ -58,7 +60,7 @@ export function MenuRemindersList({
                 key={reminder.id}
                 kind="reminder"
                 title={reminder.title}
-                trailing={firesAtRelative(reminder.firesAt)}
+                trailing={firesAtRelative(reminder.firesAt, language)}
                 supporting="fired"
                 muted
                 onPress={() => onSelect(reminder.id)}

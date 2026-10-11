@@ -1,6 +1,7 @@
 import type { NoteListItem } from '@/api/models/note'
 import { MenuListRow } from '@/layout/components/menu-list/menu-list-row'
 import { relativeTime } from '@/layout/utils/format-time'
+import { useLanguage } from '@/layout/hooks/use-strings'
 import { View } from 'react-native'
 
 type MenuNotesListProps = {
@@ -9,6 +10,7 @@ type MenuNotesListProps = {
 }
 
 export function MenuNotesList({ notes, onSelect }: MenuNotesListProps) {
+  const language = useLanguage()
   return (
     <View className="flex flex-col pt-2">
       {notes.map((note) => (
@@ -17,7 +19,7 @@ export function MenuNotesList({ notes, onSelect }: MenuNotesListProps) {
           kind="note"
           title={note.title}
           bodyPreview={note.body}
-          trailing={relativeTime(note.capturedAt)}
+          trailing={relativeTime(note.capturedAt, language)}
           onPress={() => onSelect(note.id)}
         />
       ))}

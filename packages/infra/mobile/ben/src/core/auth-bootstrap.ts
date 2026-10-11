@@ -3,6 +3,7 @@ import { router } from 'expo-router'
 import { setUnauthorizedHandler } from '@/api/client'
 import { ROUTES } from '@/core/routes'
 import { useAuthStore } from '@/layout/stores/auth-store'
+import { useLanguageStore } from '@/layout/stores/language-store'
 import { requestNotificationPermission } from '@/services/notifications-service'
 import { loadTokenIntoMemory } from '@/storage/token-storage'
 
@@ -20,6 +21,7 @@ export function useAuthBootstrap() {
     async function bootstrap() {
       await loadTokenIntoMemory()
       await useAuthStore.getState().hydrate()
+      await useLanguageStore.getState().hydrate()
       if (isActive) {
         setIsReady(true)
       }

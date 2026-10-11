@@ -2,6 +2,7 @@ import type { TaskListItem } from '@/api/responses/task'
 import { MenuListRow } from '@/layout/components/menu-list/menu-list-row'
 import { Typography } from '@/layout/components/ui/typography'
 import { relativeTime } from '@/layout/utils/format-time'
+import { useLanguage } from '@/layout/hooks/use-strings'
 import { View } from 'react-native'
 
 type MenuTasksListProps = {
@@ -14,6 +15,7 @@ function taskKind(task: TaskListItem) {
 }
 
 export function MenuTasksList({ tasks, onSelect }: MenuTasksListProps) {
+  const language = useLanguage()
   const active = tasks.filter((task) => task.status !== 'finished')
   const finished = tasks.filter((task) => task.status === 'finished')
 
@@ -33,7 +35,7 @@ export function MenuTasksList({ tasks, onSelect }: MenuTasksListProps) {
                 key={task.id}
                 kind={taskKind(task)}
                 title={task.title}
-                supporting={`active · ${relativeTime(task.lastActivityAt)}`}
+                supporting={`active · ${relativeTime(task.lastActivityAt, language)}`}
                 onPress={() => onSelect(task.id)}
               />
             ))}
@@ -55,7 +57,7 @@ export function MenuTasksList({ tasks, onSelect }: MenuTasksListProps) {
                 key={task.id}
                 kind={taskKind(task)}
                 title={task.title}
-                supporting={`finished ${relativeTime(task.lastActivityAt)}`}
+                supporting={`finished ${relativeTime(task.lastActivityAt, language)}`}
                 muted
                 onPress={() => onSelect(task.id)}
               />

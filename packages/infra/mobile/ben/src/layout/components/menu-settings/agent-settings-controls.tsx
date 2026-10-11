@@ -8,6 +8,8 @@ import { AgentEffortChips } from '@/layout/components/menu-settings/agent-effort
 import { AgentModelOption } from '@/layout/components/menu-settings/agent-model-option'
 import { Typography } from '@/layout/components/ui/typography'
 import { RotateCw } from 'lucide-react-native'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { settingsStrings } from '@/layout/strings/settings-strings'
 import { textError } from '@/layout/utils/colors'
 
 type AgentSettingsControlsProps = {
@@ -31,6 +33,7 @@ export function AgentSettingsControls({
   onSelectEffort,
   onRetry,
 }: AgentSettingsControlsProps) {
+  const strings = useStrings(settingsStrings)
   const selectedModel = models.find((model) => model.slug === modelSlug)
 
   return (
@@ -49,7 +52,7 @@ export function AgentSettingsControls({
 
       <View className="gap-2">
         <Typography variant="label-caps" className="text-on-surface-variant">
-          {isSaving ? 'Effort · saving…' : 'Effort'}
+          {isSaving ? strings.effortSaving : strings.effort}
         </Typography>
         <AgentEffortChips
           efforts={selectedModel?.efforts ?? []}
@@ -62,7 +65,7 @@ export function AgentSettingsControls({
       {hasSaveError && (
         <View className="flex-row items-center justify-between gap-3 rounded-xl border border-text-error/30 bg-surface-error px-3.5 py-2.5">
           <Typography variant="body-md" className="text-text-error">
-            didn&apos;t save that — try again?
+            {strings.saveFailed}
           </Typography>
           <Pressable
             accessibilityRole="button"
@@ -74,7 +77,7 @@ export function AgentSettingsControls({
               variant="label-caps"
               className="font-mono text-text-error"
             >
-              retry
+              {strings.retry}
             </Typography>
           </Pressable>
         </View>

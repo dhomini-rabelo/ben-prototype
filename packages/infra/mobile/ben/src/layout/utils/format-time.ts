@@ -1,33 +1,37 @@
+import { LANGUAGE_LOCALES, type Language } from '@/core/languages'
+import { formatTimeStrings } from '@/layout/strings/format-time-strings'
+
 const MINUTE = 60_000
 const HOUR = 60 * MINUTE
 const DAY = 24 * HOUR
 
-export function relativeTime(iso: string): string {
+export function relativeTime(iso: string, language: Language): string {
+  const strings = formatTimeStrings[language]
   const diff = Date.now() - new Date(iso).getTime()
   if (diff < MINUTE) {
-    return 'just now'
+    return strings.justNow
   }
   if (diff < HOUR) {
-    return `${Math.floor(diff / MINUTE)}m ago`
+    return strings.minutesAgo(Math.floor(diff / MINUTE))
   }
   if (diff < DAY) {
-    return `${Math.floor(diff / HOUR)}h ago`
+    return strings.hoursAgo(Math.floor(diff / HOUR))
   }
   const days = Math.floor(diff / DAY)
   if (days === 1) {
-    return 'yesterday'
+    return strings.yesterday
   }
   if (days < 7) {
-    return `${days}d ago`
+    return strings.daysAgo(days)
   }
   if (days < 14) {
-    return '1w ago'
+    return strings.weeksAgo(1)
   }
-  return `${Math.floor(days / 7)}w ago`
+  return strings.weeksAgo(Math.floor(days / 7))
 }
 
-export function absoluteDateTime(iso: string): string {
-  return new Date(iso).toLocaleString(undefined, {
+export function absoluteDateTime(iso: string, language: Language): string {
+  return new Date(iso).toLocaleString(LANGUAGE_LOCALES[language], {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -36,19 +40,23 @@ export function absoluteDateTime(iso: string): string {
   })
 }
 
-export function firesAtRelative(iso: string | null): string {
+export function firesAtRelative(
+  iso: string | null,
+  language: Language,
+): string {
+  const strings = formatTimeStrings[language]
   if (!iso) {
-    return 'no time set'
+    return strings.noTimeSet
   }
   const diff = new Date(iso).getTime() - Date.now()
   if (diff <= 0) {
-    return relativeTime(iso)
+    return relativeTime(iso, language)
   }
   if (diff < HOUR) {
-    return `in ${Math.max(1, Math.floor(diff / MINUTE))}m`
+    return strings.inMinutes(Math.max(1, Math.floor(diff / MINUTE)))
   }
   if (diff < DAY) {
-    return `in ${Math.floor(diff / HOUR)}h`
+    return strings.inHours(Math.floor(diff / HOUR))
   }
-  return absoluteDateTime(iso)
+  return absoluteDateTime(iso, language)
 }

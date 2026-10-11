@@ -7,6 +7,7 @@ import { SegmentedControl } from '@/layout/components/ui/segmented-control'
 import { Typography } from '@/layout/components/ui/typography'
 import { onSurfaceVariant } from '@/layout/utils/colors'
 import { absoluteDateTime } from '@/layout/utils/format-time'
+import { useLanguage } from '@/layout/hooks/use-strings'
 import { ItemDetailError } from '@/layout/components/menu-detail/item-detail-error'
 import { ItemDetailGone } from '@/layout/components/menu-detail/item-detail-gone'
 import { MenuSheet } from '@/layout/components/menu/menu-sheet'
@@ -29,6 +30,7 @@ export function MessageTraceSheet({
   initialTab,
   onClose,
 }: MessageTraceSheetProps) {
+  const language = useLanguage()
   const { height } = useWindowDimensions()
   const [tab, setTab] = useState<MessageTraceTab>(initialTab)
   const { state, actions } = useMessageTraceData(messageId)
@@ -89,7 +91,7 @@ export function MessageTraceSheet({
                 variant="code"
                 className="px-5 pb-4 text-on-surface-variant"
               >
-                {`${messageId}${createdAt ? ` · ${absoluteDateTime(createdAt)}` : ''}`}
+                {`${messageId}${createdAt ? ` · ${absoluteDateTime(createdAt, language)}` : ''}`}
               </Typography>
             </View>
           )}

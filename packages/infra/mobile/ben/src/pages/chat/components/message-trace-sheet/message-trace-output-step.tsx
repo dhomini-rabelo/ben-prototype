@@ -5,10 +5,12 @@ import { CodeBlock } from '@/layout/components/ui/code-block'
 import { CollapsibleSection } from '@/layout/components/ui/collapsible-section'
 import { Typography } from '@/layout/components/ui/typography'
 import { absoluteDateTime } from '@/layout/utils/format-time'
+import { useLanguage } from '@/layout/hooks/use-strings'
 
 type MessageTraceOutputStepProps = { step: AgentCallStep }
 
 export function MessageTraceOutputStep({ step }: MessageTraceOutputStepProps) {
+  const language = useLanguage()
   const { usage } = step
 
   const summaryRows: [string, string][] = [
@@ -17,8 +19,8 @@ export function MessageTraceOutputStep({ step }: MessageTraceOutputStepProps) {
       'tokens',
       `${usage.inputTokens ?? '—'} / ${usage.outputTokens ?? '—'} / ${usage.totalTokens ?? '—'}`,
     ],
-    ['started', absoluteDateTime(step.startedAt)],
-    ['finished', absoluteDateTime(step.finishedAt)],
+    ['started', absoluteDateTime(step.startedAt, language)],
+    ['finished', absoluteDateTime(step.finishedAt, language)],
     ['latency', `${(step.latencyMs / 1000).toFixed(1)}s`],
   ]
 

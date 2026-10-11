@@ -9,6 +9,8 @@ import {
 } from 'react-native'
 import { MenuSheet } from '@/layout/components/menu/menu-sheet'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { settingsStrings } from '@/layout/strings/settings-strings'
 import { onSurfaceVariant, textError } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 
@@ -22,6 +24,7 @@ type SettingsSheetProps = {
   avatarUrl?: string
   signOutState?: SignOutState
   agentSection?: ReactNode
+  languageSection?: ReactNode
   versionsSection?: ReactNode
   className?: string
   onSignOut?: () => void
@@ -36,23 +39,26 @@ export function SettingsSheet({
   avatarUrl,
   signOutState = 'idle',
   agentSection,
+  languageSection,
   versionsSection,
   className,
   onSignOut,
   onRetry,
   onClose,
 }: SettingsSheetProps) {
+  const strings = useStrings(settingsStrings)
   const { height } = useWindowDimensions()
 
   return (
     <MenuSheet className={className}>
       <View className="flex-row items-center justify-between px-5 pt-1 pb-3">
         <Typography variant="label-caps" className="text-on-surface-variant">
-          Settings
+          {strings.title}
         </Typography>
         {onClose ? (
           <Pressable
             accessibilityRole="button"
+            accessibilityLabel={strings.closeLabel}
             onPress={onClose}
             className="size-8 items-center justify-center rounded-full active:bg-surface-container-low"
           >
@@ -111,7 +117,7 @@ export function SettingsSheet({
                     variant="label-caps"
                     className="normal-case text-on-surface-variant/70"
                   >
-                    couldn&apos;t load full profile
+                    {strings.profileUnavailable}
                   </Typography>
                 )}
               </View>
@@ -125,11 +131,13 @@ export function SettingsSheet({
               variant="label-caps"
               className="text-on-surface-variant"
             >
-              Ben&apos;s model
+              {strings.modelTitle}
             </Typography>
             {agentSection}
           </View>
         ) : null}
+
+        {languageSection}
 
         {versionsSection}
 
@@ -147,7 +155,9 @@ export function SettingsSheet({
               variant="body-md"
               className="font-semibold text-on-surface"
             >
-              {signOutState === 'pending' ? 'signing out…' : 'Sign out'}
+              {signOutState === 'pending'
+                ? strings.signingOut
+                : strings.signOut}
             </Typography>
             <LogOut size={16} color={onSurfaceVariant} />
           </Pressable>
@@ -155,7 +165,7 @@ export function SettingsSheet({
           {signOutState === 'failed' && (
             <View className="mt-3 flex-row items-center justify-between gap-3 rounded-xl border border-text-error/30 bg-surface-error px-3.5 py-2.5">
               <Typography variant="body-md" className="text-text-error">
-                didn&apos;t sign you out — try again?
+                {strings.signOutFailed}
               </Typography>
               <Pressable
                 accessibilityRole="button"
@@ -167,7 +177,7 @@ export function SettingsSheet({
                   variant="label-caps"
                   className="font-mono text-text-error"
                 >
-                  retry
+                  {strings.retry}
                 </Typography>
               </Pressable>
             </View>
