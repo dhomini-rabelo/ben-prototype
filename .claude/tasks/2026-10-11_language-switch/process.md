@@ -17,10 +17,10 @@ Pedido: feature de trocar idioma — inglês (default) e português BR. Usuário
 - [x] Implement (Sonnet) — one agent per scope
 - [x] Lint + type-check
 - [x] Commit: implement
-- [ ] Validate + code-pattern review (fresh Opus)
+- [x] Validate + code-pattern review (fresh Opus)
 - [x] Fix round (Sonnet) — only if CHANGES_REQUIRED
-- [ ] Re-validate — only if there was a fix round
-- [ ] Commit: validate
+- [x] Re-validate — only if there was a fix round
+- [x] Commit: validate
 - [ ] Decide system test mode
 - [ ] tests-01 — run + verdict.md
 - [ ] Commit: system-test (per attempt)

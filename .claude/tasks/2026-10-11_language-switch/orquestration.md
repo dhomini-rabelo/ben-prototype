@@ -53,3 +53,10 @@ Skill: simple-loop
 ## fix1 (impl-review-fixes-language-switch-fix1)
 
 - 4 itens corrigidos; lint 0, tsc 0. Next: validate r2 (fresh)
+
+## validator (validate-language-switch-r2)
+
+- Verdict: APPROVED_WITH_RESALVAS — `review-r2.md`; bloqueantes r1 resolvidos, varredura sem texto em inglês hardcoded
+- Resalvas aceitas sem correção: "fica pausado" vs "fica em pausa" (copy), ordem de imports em task-picker-list, `activityLabel` duplica parte de relativeTime (intencional)
+- Rodadas: 2 (sinal registrado: fugiu do mecânico por copy/strings remanescentes)
+- Next: system test — modo Docker+browser só (UI; mobile sem testes automatizados), browser-mobile-tester em :8081

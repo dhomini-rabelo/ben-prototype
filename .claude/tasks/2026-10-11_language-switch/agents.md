@@ -21,3 +21,4 @@ Skill: simple-loop
 | 2026-10-11 | implementer | impl-b2-strings-chat-language-switch | ace050ac10bcc9693 | sonnet | general-purpose | 86k | escopo B2; tsc 0 |
 | 2026-10-11 | validator | validate-language-switch-r1 | a00ec1c4106b40968 | opus | general-purpose | 72k | CHANGES_REQUIRED (2) |
 | 2026-10-11 | implementer | impl-review-fixes-language-switch-fix1 | a6d9597a3b2ace534 | sonnet | general-purpose | 29k | fix round r1; tsc 0 |
+| 2026-10-11 | validator | validate-language-switch-r2 | a60ff05965806d98d | opus | general-purpose | 40k | APPROVED_WITH_RESALVAS (3 menores) |
