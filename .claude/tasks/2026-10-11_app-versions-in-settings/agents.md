@@ -18,3 +18,4 @@ Skill: simple-loop
 | 2026-10-11 | validator | validate-app-versions-in-settings-r2 | ab2906e3f52743c74 | opus | general-purpose | 31k | APPROVED_WITH_RESALVAS |
 | 2026-10-11 | tester | test-app-versions-in-settings-browser-r01 | a7113c01670cd9ed2 | sonnet | browser-mobile-tester | 47k | tests-01 PASS c/ defeito menor |
 | 2026-10-11 | tester | test-app-versions-in-settings-browser-r02 | abc1bbaf1b3e8ed89 | sonnet | browser-mobile-tester | 44k | tests-02 PASS |
+| 2026-10-11 | context | ctx-app-versions-in-settings | a0d00d60ff1cde14e | sonnet | general-purpose | 30k | updated |

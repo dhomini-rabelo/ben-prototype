@@ -1,0 +1,16 @@
+{
+  "apps": {
+    "mobile-ben": {
+      "sourcePath": "packages/infra/mobile/ben",
+      "contextPath": "mobile/ben",
+      "reviews": [
+        {
+          "reviewedHead": "85578f52cd1e0a36c89547afa6c5f819d93f23ce",
+          "reviewedAt": "2026-10-11T02:38:33Z",
+          "outcome": "updated",
+          "localPaths": []
+        }
+      ]
+    }
+  }
+}

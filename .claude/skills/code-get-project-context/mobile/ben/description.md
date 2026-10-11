@@ -8,7 +8,7 @@
 
 A implementação mobile do Ben, em React Native (Expo). Combina peças agnósticas de plataforma (cliente de API e contratos, estado com Zustand/Jotai, hooks do React Query, máquina de estados de voz, tokens de design) com apresentação e peças específicas de plataforma (primitivas de UI, navegação, áudio, auth, storage). Consome a API do [backend](../../backend/description.md).
 
-Cobre: login com Google, chat com o agente Ben, o workspace de tarefas e o menu de navegação (tarefas, notas, lembretes, com detalhe e configurações), mais notificações locais para lembretes.
+Cobre: login com Google, chat com o agente Ben, o workspace de tarefas e o menu de navegação (tarefas, notas, lembretes, com detalhe e configurações), mais notificações locais para lembretes. A folha de configurações escolhe modelo e esforço do agente e lista as versões do app ("App versions"), cada uma expansível para ler o que mudou. Convenção: a cada release com funcionalidades testáveis, adicione uma entrada no topo de `APP_VERSIONS`, pois ela define a versão do Expo.
 
 ## Regras visuais
 

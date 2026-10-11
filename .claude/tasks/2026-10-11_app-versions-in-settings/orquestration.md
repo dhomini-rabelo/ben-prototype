@@ -67,3 +67,8 @@ Skill: simple-loop
 
 - Result: PASS, 0 defeitos | Pointer: `tests-02/verdict.md` + 6 screenshots (scroll com sheet cheio via mock Playwright)
 - Next: context update
+
+## 2026-10-11 — context (ctx-app-versions-in-settings)
+
+- mobile-ben | updated (só mudanças da task; revisão completa do app não feita) | description.md, project-structure.md, last-reviewed.json
+- Close.

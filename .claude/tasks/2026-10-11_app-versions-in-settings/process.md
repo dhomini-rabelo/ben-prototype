@@ -19,9 +19,9 @@ Git: branch feat/add-version-in-settings | commit-base d2dbfe8
 - [x] Validate r2 APPROVED_WITH_RESALVAS + commit
 - [x] System test mode: browser only
 - [x] tests-01 PASS (defeito menor) → fix → tests-02 PASS
-- [ ] Context update (Sonnet)
-- [ ] Commit: context
-- [ ] Close + user summary
+- [x] Context update (Sonnet)
+- [x] Commit: context
+- [x] Close + user summary
 
 ## Test attempts
 
