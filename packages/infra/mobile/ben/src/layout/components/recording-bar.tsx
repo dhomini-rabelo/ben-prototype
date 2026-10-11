@@ -12,7 +12,9 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import * as Haptics from 'expo-haptics'
+import { useStrings } from '@/layout/hooks/use-strings'
 import { useVoiceStore } from '@/layout/stores/voice-store'
+import { recordingStrings } from '@/layout/strings/recording-strings'
 import { onPrimary, onSurfaceVariant } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 import { Typography } from './ui/typography'
@@ -38,6 +40,7 @@ type RecordingBarProps = {
 }
 
 export function RecordingBar({ className }: RecordingBarProps) {
+  const strings = useStrings(recordingStrings)
   const elapsedSeconds = useVoiceStore((store) => store.recordingSeconds)
   const stopRecording = useVoiceStore((store) => store.stopRecording)
   const cancelRecording = useVoiceStore((store) => store.cancelRecording)
@@ -113,7 +116,7 @@ export function RecordingBar({ className }: RecordingBarProps) {
                 style={dotStyle}
               />
               <Typography variant="label-caps" className="text-text-error">
-                Recording
+                {strings.recording}
               </Typography>
             </View>
             <Typography
@@ -137,7 +140,7 @@ export function RecordingBar({ className }: RecordingBarProps) {
 
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Cancel recording"
+            accessibilityLabel={strings.cancelRecording}
             onPress={handleCancel}
             className="flex-row items-center justify-center gap-2"
           >
@@ -146,7 +149,7 @@ export function RecordingBar({ className }: RecordingBarProps) {
               variant="label-caps"
               className="text-on-surface-variant"
             >
-              Slide up to cancel
+              {strings.slideUpToCancel}
             </Typography>
           </Pressable>
         </Animated.View>
@@ -154,7 +157,7 @@ export function RecordingBar({ className }: RecordingBarProps) {
 
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Stop recording"
+        accessibilityLabel={strings.stopRecording}
         onPress={handleStop}
         className="size-12 shrink-0 items-center justify-center rounded-full bg-text-error"
       >

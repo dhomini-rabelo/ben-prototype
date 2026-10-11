@@ -3,10 +3,13 @@ import { useState } from 'react'
 import { TextInput, View } from 'react-native'
 import { onSurfaceVariant } from '@/layout/utils/colors'
 import { useTaskTodosStore } from '@/pages/task-workspace/stores/task-todos-store'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { todoStrings } from '@/pages/task-workspace/strings/todo-strings'
 
 const ON_SURFACE_VARIANT_70 = 'rgba(68, 71, 72, 0.7)'
 
 export function AddTodoRow() {
+  const strings = useStrings(todoStrings)
   const addTodo = useTaskTodosStore((s) => s.addTodo)
   const [value, setValue] = useState('')
 
@@ -26,7 +29,7 @@ export function AddTodoRow() {
       </View>
       <TextInput
         value={value}
-        placeholder="add item"
+        placeholder={strings.addItem}
         placeholderTextColor={ON_SURFACE_VARIANT_70}
         onChangeText={setValue}
         onSubmitEditing={commit}

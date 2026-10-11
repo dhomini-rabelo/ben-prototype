@@ -2,7 +2,8 @@ import type { ReminderListItem } from '@/api/models/reminder'
 import { MenuListRow } from '@/layout/components/menu-list/menu-list-row'
 import { Typography } from '@/layout/components/ui/typography'
 import { firesAtRelative, relativeTime } from '@/layout/utils/format-time'
-import { useLanguage } from '@/layout/hooks/use-strings'
+import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
+import { menuStrings } from '@/layout/strings/menu-strings'
 import { View } from 'react-native'
 
 type MenuRemindersListProps = {
@@ -15,6 +16,7 @@ export function MenuRemindersList({
   onSelect,
 }: MenuRemindersListProps) {
   const language = useLanguage()
+  const strings = useStrings(menuStrings)
   const upcoming = reminders.filter(
     (reminder) => reminder.status === 'upcoming',
   )
@@ -28,7 +30,7 @@ export function MenuRemindersList({
             variant="label-caps"
             className="px-3 pt-2 text-on-surface-variant"
           >
-            Upcoming
+            {strings.upcomingHeading}
           </Typography>
           <View className="flex flex-col">
             {upcoming.map((reminder) => (
@@ -38,7 +40,9 @@ export function MenuRemindersList({
                 title={reminder.title}
                 trailing={firesAtRelative(reminder.firesAt, language)}
                 emphasizeTrailing
-                supporting={`captured ${relativeTime(reminder.capturedAt, language)}`}
+                supporting={strings.capturedSupporting(
+                  relativeTime(reminder.capturedAt, language),
+                )}
                 onPress={() => onSelect(reminder.id)}
               />
             ))}
@@ -52,7 +56,7 @@ export function MenuRemindersList({
             variant="label-caps"
             className="mt-4 px-3 text-on-surface-variant"
           >
-            Fired
+            {strings.firedHeading}
           </Typography>
           <View className="flex flex-col">
             {fired.map((reminder) => (
@@ -61,7 +65,7 @@ export function MenuRemindersList({
                 kind="reminder"
                 title={reminder.title}
                 trailing={firesAtRelative(reminder.firesAt, language)}
-                supporting="fired"
+                supporting={strings.firedSupporting}
                 muted
                 onPress={() => onSelect(reminder.id)}
               />

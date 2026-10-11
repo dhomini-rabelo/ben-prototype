@@ -5,8 +5,11 @@ import { useWorkspaceTask } from '@/pages/task-workspace/hooks/use-workspace-tas
 import { taskDraftAtom } from '@/pages/task-workspace/states/task-workspace-state'
 import { useTaskChatStore } from '@/pages/task-workspace/stores/task-chat-store'
 import { SubThreadBanner } from './sub-thread-banner/sub-thread-banner'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { workspaceStrings } from '@/pages/task-workspace/strings/workspace-strings'
 
 function WorkspaceSubThreadBannerComponent() {
+  const strings = useStrings(workspaceStrings)
   const task = useWorkspaceTask()
   const voiceStatus = useVoiceStore(selectVoiceStatus)
   const retryVoice = useVoiceStore((store) => store.retryVoice)
@@ -27,7 +30,7 @@ function WorkspaceSubThreadBannerComponent() {
     return (
       <SubThreadBanner
         variant="error"
-        text="couldn't catch that — tap to retry or type it instead"
+        text={strings.voiceError}
         onRetry={retryVoice}
       />
     )
@@ -39,7 +42,7 @@ function WorkspaceSubThreadBannerComponent() {
     return (
       <SubThreadBanner
         variant="error"
-        text="Ben didn't reply — tap to retry"
+        text={strings.sendError}
         onRetry={() => void sendText(draft)}
       />
     )

@@ -4,13 +4,16 @@ import { MenuListEmpty } from '@/layout/components/menu-list/menu-list-empty'
 import { MenuListError } from '@/layout/components/menu-list/menu-list-error'
 import { MenuListLoading } from '@/layout/components/menu-list/menu-list-loading'
 import { MenuListShell } from '@/layout/components/menu-list/menu-list-shell'
+import { useStrings } from '@/layout/hooks/use-strings'
 import { useTaskListData } from '@/layout/hooks/api/use-task-list-data'
 import { useMenuStore } from '@/layout/stores/menu-store'
+import { menuStrings } from '@/layout/strings/menu-strings'
 import { MenuTasksList } from './menu-tasks-list'
 
 export function MenuTasksView() {
   const router = useRouter()
   const { actions, state } = useTaskListData()
+  const strings = useStrings(menuStrings)
   const goBackToMenu = useMenuStore((store) => store.goBackToMenu)
   const tasks = state.data?.items ?? []
 
@@ -20,18 +23,18 @@ export function MenuTasksView() {
   }
 
   return (
-    <MenuListShell title="Tasks" onBack={goBackToMenu}>
+    <MenuListShell title={strings.tasks} onBack={goBackToMenu}>
       {state.isLoading ? (
         <MenuListLoading />
       ) : state.isError ? (
         <MenuListError
-          message="couldn't load your tasks"
+          message={strings.tasksLoadError}
           onRetry={() => actions.refetch()}
         />
       ) : tasks.length === 0 ? (
         <MenuListEmpty
-          title="no tasks yet"
-          description="talk to Ben — he'll set one up when something needs working on."
+          title={strings.tasksEmptyTitle}
+          description={strings.tasksEmptyDescription}
         />
       ) : (
         <MenuTasksList tasks={tasks} onSelect={handleSelectTask} />

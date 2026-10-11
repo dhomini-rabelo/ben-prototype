@@ -1,14 +1,9 @@
 import { RotateCw } from 'lucide-react-native'
 import { Pressable, Text } from 'react-native'
+import { useStrings } from '@/layout/hooks/use-strings'
 import { textError } from '@/layout/utils/colors'
+import { captureCardStrings } from '@/pages/chat/strings/capture-card-strings'
 import { useCaptureCard } from './contexts/capture-card-context'
-import type { CaptureKind } from './types'
-
-const DEFAULT_ERROR_MESSAGES: Record<CaptureKind, string> = {
-  note: "couldn't save this note — retry",
-  reminder: "couldn't save this reminder — retry",
-  task: "couldn't set this up — retry",
-}
 
 type CaptureCardErrorButtonProps = {
   errorMessage?: string
@@ -19,6 +14,7 @@ export function CaptureCardErrorButton({
   errorMessage,
   onAction,
 }: CaptureCardErrorButtonProps) {
+  const strings = useStrings(captureCardStrings)
   const { kind, state } = useCaptureCard()
 
   if (state !== 'error') {
@@ -32,7 +28,7 @@ export function CaptureCardErrorButton({
     >
       <RotateCw size={14} color={textError} />
       <Text className="text-label-caps font-mono uppercase text-text-error">
-        {errorMessage ?? DEFAULT_ERROR_MESSAGES[kind]}
+        {errorMessage ?? strings.errorMessage[kind]}
       </Text>
     </Pressable>
   )

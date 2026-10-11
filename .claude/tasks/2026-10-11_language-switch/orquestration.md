@@ -36,3 +36,9 @@ Skill: simple-loop
 - 8 arquivos novos + menu-settings, auth-bootstrap, app-versions, format-time e callers; tocou também menu-notes-list e menu-reminders-list (callers de format-time, necessário p/ tsc)
 - Orquestrador: lint:fix exit 0, typecheck exit 0. Pendente p/ validator: `expo config` (app.config.ts → app-versions.ts)
 - Next: B1/B2/B3 em paralelo
+
+## implementers B1/B2/B3 (paralelo)
+
+- B1 layout/menu/login/recording: 8 dicionários, tsc 0. B2 chat: 4 dicionários, tsc 0 ("Ver input/Ver output" mantidos em `en` — sinalizar ao validator). B3 task-workspace: 2 dicionários + diffSummary(language), tsc 0.
+- Orquestrador: lint:fix exit 0, typecheck exit 0
+- Next: validate r1 (opus)

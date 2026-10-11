@@ -4,6 +4,8 @@ import { Typography } from '@/layout/components/ui/typography'
 import { cn } from '@/layout/utils/styles'
 import { useWorkspaceTask } from '@/pages/task-workspace/hooks/use-workspace-task'
 import { useTaskContentStore } from '@/pages/task-workspace/stores/task-content-store'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { workspaceStrings } from '@/pages/task-workspace/strings/workspace-strings'
 
 const ON_SURFACE_VARIANT_60 = 'rgba(68, 71, 72, 0.6)'
 
@@ -12,6 +14,7 @@ type TextContentProps = {
 }
 
 export function TextContent({ readOnly }: TextContentProps) {
+  const strings = useStrings(workspaceStrings)
   const task = useWorkspaceTask()
   const editText = useTaskContentStore((s) => s.editText)
 
@@ -73,7 +76,7 @@ export function TextContent({ readOnly }: TextContentProps) {
         editable={!readOnly}
         multiline
         textAlignVertical="top"
-        placeholder="tell Ben what to put here…"
+        placeholder={strings.textPlaceholder}
         placeholderTextColor={ON_SURFACE_VARIANT_60}
         onChangeText={setValue}
         onBlur={handleSave}

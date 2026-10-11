@@ -9,6 +9,8 @@ import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
 import { cn } from '@/layout/utils/styles'
 import { useWorkspaceInput } from '@/pages/task-workspace/hooks/use-workspace-input'
 import { useWorkspaceTask } from '@/pages/task-workspace/hooks/use-workspace-task'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { workspaceStrings } from '@/pages/task-workspace/strings/workspace-strings'
 
 type WorkspaceFooterProps = {
   onStartRecording?: () => void
@@ -17,6 +19,7 @@ type WorkspaceFooterProps = {
 function WorkspaceFooterComponent({ onStartRecording }: WorkspaceFooterProps) {
   const { draft, handleDraftChange, handleSend } = useWorkspaceInput()
   const task = useWorkspaceTask()
+  const strings = useStrings(workspaceStrings)
   const voiceStatus = useVoiceStore(selectVoiceStatus)
   const canRecord = useCanRecord()
 
@@ -36,12 +39,16 @@ function WorkspaceFooterComponent({ onStartRecording }: WorkspaceFooterProps) {
     >
       <ChatInput.AttachButton />
       <ChatInput.Input
-        placeholder={isFinished ? 'reopen to keep editing' : 'Ask Ben to edit…'}
+        placeholder={
+          isFinished
+            ? strings.footerPlaceholderFinished
+            : strings.footerPlaceholder
+        }
       />
       <View className="flex-row items-center">
         {hasText ? (
           <IconButton
-            label="Send"
+            label={strings.send}
             onPress={isFinished ? undefined : handleSend}
             className={cn('ml-2 bg-primary', isFinished && 'opacity-60')}
           >
@@ -49,7 +56,7 @@ function WorkspaceFooterComponent({ onStartRecording }: WorkspaceFooterProps) {
           </IconButton>
         ) : (
           <IconButton
-            label="Voice input"
+            label={strings.voiceInput}
             onPress={isFinished || !canRecord ? undefined : onStartRecording}
             className={cn(
               'ml-2 bg-primary',

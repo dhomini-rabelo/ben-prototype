@@ -1,19 +1,10 @@
 import { ChevronRight, Play } from 'lucide-react-native'
 import { Pressable, Text } from 'react-native'
+import { useStrings } from '@/layout/hooks/use-strings'
 import { onPrimary, onSurfaceVariant } from '@/layout/utils/colors'
+import { captureCardStrings } from '@/pages/chat/strings/capture-card-strings'
 import { cn } from '@/layout/utils/styles'
 import { useCaptureCard } from './contexts/capture-card-context'
-import type { CaptureCardState } from './types'
-
-const DEFAULT_TASK_ACTION_LABEL: Record<CaptureCardState, string> = {
-  default: 'Start',
-  pending: 'Start',
-  active: 'Continue',
-  finished: 'View',
-  error: 'Start',
-  fired: 'Start',
-}
-
 type CaptureCardActionButtonProps = {
   actionLabel?: string
   onAction?: () => void
@@ -23,6 +14,7 @@ export function CaptureCardActionButton({
   actionLabel,
   onAction,
 }: CaptureCardActionButtonProps) {
+  const strings = useStrings(captureCardStrings)
   const { kind, state } = useCaptureCard()
 
   if (kind !== 'task' || state === 'error') {
@@ -32,7 +24,7 @@ export function CaptureCardActionButton({
   const isPending = state === 'pending'
   const isActive = state === 'active'
   const isFinished = state === 'finished'
-  const resolvedActionLabel = actionLabel ?? DEFAULT_TASK_ACTION_LABEL[state]
+  const resolvedActionLabel = actionLabel ?? strings.actionLabel[state]
   const labelColor = isFinished ? 'text-on-surface-variant' : 'text-on-primary'
   const iconColor = isFinished ? onSurfaceVariant : onPrimary
 

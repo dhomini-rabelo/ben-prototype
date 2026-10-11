@@ -2,11 +2,14 @@ import type { AgentCallTrace } from '@/api/models/message-trace'
 import { CircleAlert } from 'lucide-react-native'
 import { View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
 import { textError } from '@/layout/utils/colors'
+import { messageTraceStrings } from '@/pages/chat/strings/message-trace-strings'
 
 type MessageTraceMetaStripProps = { trace: AgentCallTrace }
 
 export function MessageTraceMetaStrip({ trace }: MessageTraceMetaStripProps) {
+  const strings = useStrings(messageTraceStrings)
   const isError = trace.status === 'error'
 
   return (
@@ -16,7 +19,7 @@ export function MessageTraceMetaStrip({ trace }: MessageTraceMetaStripProps) {
           variant="label-caps"
           className="normal-case text-on-surface-variant"
         >
-          {trace.modelSlug ?? trace.modelId ?? 'unknown model'}
+          {trace.modelSlug ?? trace.modelId ?? strings.unknownModel}
         </Typography>
       </View>
 
@@ -26,7 +29,7 @@ export function MessageTraceMetaStrip({ trace }: MessageTraceMetaStripProps) {
             variant="label-caps"
             className="normal-case text-on-surface-variant"
           >
-            {`effort · ${trace.effort}`}
+            {strings.effort(trace.effort)}
           </Typography>
         </View>
       )}

@@ -1,6 +1,8 @@
 import { View } from 'react-native'
 import type { ReminderStatus } from '@/api/models/reminder'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { menuDetailStrings } from '@/layout/strings/menu-detail-strings'
 import { cn } from '@/layout/utils/styles'
 
 type ItemDetailReminderMetaProps = {
@@ -14,6 +16,7 @@ export function ItemDetailReminderMeta({
   firesAtAbsolute,
   status,
 }: ItemDetailReminderMetaProps) {
+  const strings = useStrings(menuDetailStrings)
   const isFired = status === 'fired'
 
   return (
@@ -44,7 +47,7 @@ export function ItemDetailReminderMeta({
                 isFired ? 'text-on-surface-variant/70' : 'text-primary',
               )}
             >
-              {status}
+              {isFired ? strings.statusFired : strings.statusUpcoming}
             </Typography>
           </View>
         )}

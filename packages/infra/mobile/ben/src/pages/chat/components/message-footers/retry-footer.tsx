@@ -4,10 +4,13 @@ import { Typography } from '@/layout/components/ui/typography'
 import { textError } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 import { useVoiceStore } from '@/layout/stores/voice-store'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { chatStrings } from '@/pages/chat/strings/chat-strings'
 
 type RetryFooterProps = { className?: string }
 
 export function RetryFooter({ className }: RetryFooterProps) {
+  const strings = useStrings(chatStrings)
   const retryVoice = useVoiceStore((store) => store.retryVoice)
 
   return (
@@ -17,7 +20,7 @@ export function RetryFooter({ className }: RetryFooterProps) {
     >
       <RotateCw size={14} color={textError} />
       <Typography variant="label-caps" className="text-text-error">
-        Tap to retry
+        {strings.tapToRetry}
       </Typography>
     </Pressable>
   )

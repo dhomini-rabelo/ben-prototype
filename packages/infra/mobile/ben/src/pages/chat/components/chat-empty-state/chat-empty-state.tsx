@@ -3,11 +3,13 @@ import { Bell, MessageCircle, NotebookPen } from 'lucide-react-native'
 import { useState } from 'react'
 import { View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
 import {
   SuggestedAction,
   type SuggestedActionIcon,
 } from '@/pages/chat/components/suggested-action'
 import { draftAtom } from '@/pages/chat/states/chat-state'
+import { chatStrings } from '@/pages/chat/strings/chat-strings'
 
 type SuggestedActionId = 'remind' | 'note'
 
@@ -18,22 +20,22 @@ type SuggestedActionData = {
   prefill: string
 }
 
-const SUGGESTED_ACTIONS: SuggestedActionData[] = [
-  {
-    id: 'remind',
-    icon: Bell,
-    label: 'Remind me to...',
-    prefill: 'Remind me to ',
-  },
-  {
-    id: 'note',
-    icon: NotebookPen,
-    label: 'Create a note about...',
-    prefill: 'Create a note about ',
-  },
-]
-
 export function ChatEmptyState() {
+  const strings = useStrings(chatStrings)
+  const suggestedActions: SuggestedActionData[] = [
+    {
+      id: 'remind',
+      icon: Bell,
+      label: strings.remindLabel,
+      prefill: strings.remindPrefill,
+    },
+    {
+      id: 'note',
+      icon: NotebookPen,
+      label: strings.noteLabel,
+      prefill: strings.notePrefill,
+    },
+  ]
   const setDraft = useSetAtom(draftAtom)
   const [hasSelectedAction, setHasSelectedAction] = useState(false)
 
@@ -53,13 +55,13 @@ export function ChatEmptyState() {
         </View>
         <View className="max-w-[280px] flex-col items-center gap-2">
           <Typography variant="tagline" className="text-on-surface text-center">
-            No recent messages.
+            {strings.emptyTitle}
           </Typography>
           <Typography
             variant="body-md"
             className="text-on-surface-variant text-center"
           >
-            Let&apos;s get started — tap the mic or type to tell Ben anything.
+            {strings.emptyBody}
           </Typography>
         </View>
       </View>
@@ -70,9 +72,9 @@ export function ChatEmptyState() {
             variant="label-caps"
             className="ml-1 mb-1 text-on-surface-variant"
           >
-            Suggested Actions
+            {strings.suggestedActionsTitle}
           </Typography>
-          {SUGGESTED_ACTIONS.map((action) => (
+          {suggestedActions.map((action) => (
             <SuggestedAction
               key={action.id}
               icon={action.icon}

@@ -7,7 +7,7 @@ import { SegmentedControl } from '@/layout/components/ui/segmented-control'
 import { Typography } from '@/layout/components/ui/typography'
 import { onSurfaceVariant } from '@/layout/utils/colors'
 import { absoluteDateTime } from '@/layout/utils/format-time'
-import { useLanguage } from '@/layout/hooks/use-strings'
+import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
 import { ItemDetailError } from '@/layout/components/menu-detail/item-detail-error'
 import { ItemDetailGone } from '@/layout/components/menu-detail/item-detail-gone'
 import { MenuSheet } from '@/layout/components/menu/menu-sheet'
@@ -16,6 +16,7 @@ import { MessageTraceInput } from '@/pages/chat/components/message-trace-sheet/m
 import { MessageTraceLoading } from '@/pages/chat/components/message-trace-sheet/message-trace-loading'
 import { MessageTraceMetaStrip } from '@/pages/chat/components/message-trace-sheet/message-trace-meta-strip'
 import { MessageTraceOutput } from '@/pages/chat/components/message-trace-sheet/message-trace-output'
+import { messageTraceStrings } from '@/pages/chat/strings/message-trace-strings'
 
 type MessageTraceSheetProps = {
   messageId: string
@@ -31,6 +32,7 @@ export function MessageTraceSheet({
   onClose,
 }: MessageTraceSheetProps) {
   const language = useLanguage()
+  const strings = useStrings(messageTraceStrings)
   const { height } = useWindowDimensions()
   const [tab, setTab] = useState<MessageTraceTab>(initialTab)
   const { state, actions } = useMessageTraceData(messageId)
@@ -49,10 +51,14 @@ export function MessageTraceSheet({
                 variant="label-caps"
                 className="text-on-surface-variant"
               >
-                Model call
+                {strings.modelCall}
               </Typography>
             </View>
-            <IconButton label="Close" onPress={onClose} className="size-11">
+            <IconButton
+              label={strings.close}
+              onPress={onClose}
+              className="size-11"
+            >
               <X size={16} color={onSurfaceVariant} />
             </IconButton>
           </View>
@@ -65,8 +71,8 @@ export function MessageTraceSheet({
               value={tab}
               onChange={setTab}
               options={[
-                { value: 'input', label: 'Input' },
-                { value: 'output', label: 'Output' },
+                { value: 'input', label: strings.input },
+                { value: 'output', label: strings.output },
               ]}
             />
           )}
@@ -75,7 +81,7 @@ export function MessageTraceSheet({
             <MessageTraceLoading />
           ) : state.isError ? (
             <ItemDetailError
-              message="couldn't load this trace — tap to retry"
+              message={strings.loadError}
               onRetry={() => actions.refetch()}
             />
           ) : trace ? (
@@ -86,7 +92,7 @@ export function MessageTraceSheet({
             )
           ) : (
             <View className="gap-2">
-              <ItemDetailGone message="no trace for this one — it was sent before Ben started recording model calls." />
+              <ItemDetailGone message={strings.noTrace} />
               <Typography
                 variant="code"
                 className="px-5 pb-4 text-on-surface-variant"

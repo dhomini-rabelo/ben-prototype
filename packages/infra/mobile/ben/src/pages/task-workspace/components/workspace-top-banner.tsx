@@ -4,8 +4,11 @@ import { View } from 'react-native'
 import { ChatBanner } from '@/layout/components/chat-banner'
 import { useConnectivityStore } from '@/layout/stores/connectivity-store'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { workspaceStrings } from '@/pages/task-workspace/strings/workspace-strings'
 
 function WorkspaceTopBannerComponent() {
+  const strings = useStrings(workspaceStrings)
   const isOffline = useConnectivityStore((store) => store.isOffline)
   const voiceStatus = useVoiceStore(selectVoiceStatus)
   const micPermission = useVoiceStore((store) => store.micPermission)
@@ -24,24 +27,19 @@ function WorkspaceTopBannerComponent() {
       {isOffline ? (
         <ChatBanner.Root tone="warn">
           <ChatBanner.Icon icon={WifiOff} />
-          <ChatBanner.Text>
-            You&apos;re offline. Sending is paused until you&apos;re back
-            online.
-          </ChatBanner.Text>
+          <ChatBanner.Text>{strings.offline}</ChatBanner.Text>
         </ChatBanner.Root>
       ) : isVoiceError ? (
         <ChatBanner.Root tone="error">
           <ChatBanner.Icon icon={AlertCircle} />
-          <ChatBanner.Text>mic glitched — try again or type it</ChatBanner.Text>
-          <ChatBanner.Action label="Retry" onPress={retryVoice} />
+          <ChatBanner.Text>{strings.micGlitched}</ChatBanner.Text>
+          <ChatBanner.Action label={strings.retry} onPress={retryVoice} />
           <ChatBanner.Dismiss onPress={dismissError} />
         </ChatBanner.Root>
       ) : isMicDenied ? (
         <ChatBanner.Root tone="warn">
           <ChatBanner.Icon icon={TriangleAlert} />
-          <ChatBanner.Text>
-            Ben can&apos;t hear you yet — turn on mic in device settings.
-          </ChatBanner.Text>
+          <ChatBanner.Text>{strings.micDenied}</ChatBanner.Text>
           <ChatBanner.Dismiss />
         </ChatBanner.Root>
       ) : null}

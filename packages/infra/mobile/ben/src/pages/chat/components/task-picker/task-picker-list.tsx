@@ -4,8 +4,11 @@ import { Pressable, ScrollView, View } from 'react-native'
 import type { TaskContentType } from '@/api/models/task'
 import type { TaskListItem } from '@/api/responses/task'
 import { Typography } from '@/layout/components/ui/typography'
+import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
 import { onSurfaceVariant } from '@/layout/utils/colors'
+import { relativeTime } from '@/layout/utils/format-time'
 import { cn } from '@/layout/utils/styles'
+import { taskPickerStrings } from '@/pages/chat/strings/task-picker-strings'
 
 type TaskPickerListProps = {
   tasks: TaskListItem[]
@@ -25,22 +28,9 @@ const SHAPE_ICON: Record<
   todo: List,
 }
 
-function relativeTime(iso: string): string {
-  const minutes = Math.floor((Date.now() - new Date(iso).getTime()) / 60000)
-  if (minutes < 1) {
-    return 'just now'
-  }
-  if (minutes < 60) {
-    return `active · ${minutes}m ago`
-  }
-  const hours = Math.floor(minutes / 60)
-  if (hours < 24) {
-    return `active · ${hours}h ago`
-  }
-  return `active · ${Math.floor(hours / 24)}d ago`
-}
-
 export function TaskPickerList({ tasks, onSelect }: TaskPickerListProps) {
+  const strings = useStrings(taskPickerStrings)
+  const language = useLanguage()
   return (
     <ScrollView
       style={{ maxHeight: 420 }}
@@ -74,7 +64,7 @@ export function TaskPickerList({ tasks, onSelect }: TaskPickerListProps) {
                 variant="label-caps"
                 className="normal-case text-on-surface-variant"
               >
-                {relativeTime(task.lastActivityAt)}
+                {strings.activeAgo(relativeTime(task.lastActivityAt, language))}
               </Typography>
             </View>
           </Pressable>

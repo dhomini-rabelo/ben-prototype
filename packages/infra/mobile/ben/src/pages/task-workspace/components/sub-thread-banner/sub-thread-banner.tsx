@@ -5,6 +5,8 @@ import { Typography } from '@/layout/components/ui/typography'
 import { cn } from '@/layout/utils/styles'
 import { BouncingDots } from '@/pages/chat/components/bouncing-dots'
 import { textError } from '@/layout/utils/colors'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { workspaceStrings } from '@/pages/task-workspace/strings/workspace-strings'
 
 type SubThreadBannerProps = {
   variant?: 'ben-reply' | 'user-pending' | 'ben-typing' | 'error'
@@ -17,6 +19,7 @@ function SubThreadBannerComponent({
   text,
   onRetry,
 }: SubThreadBannerProps) {
+  const strings = useStrings(workspaceStrings)
   const isError = variant === 'error'
 
   return (
@@ -36,7 +39,7 @@ function SubThreadBannerComponent({
             : 'bg-surface-container-high text-on-surface-variant',
         )}
       >
-        {variant === 'user-pending' ? 'You' : 'Ben'}
+        {variant === 'user-pending' ? strings.you : 'Ben'}
       </Text>
       <View className="flex-1">
         {variant === 'ben-typing' ? (
@@ -47,7 +50,7 @@ function SubThreadBannerComponent({
               variant="label-caps"
               className="text-on-surface-variant"
             >
-              Hearing you
+              {strings.hearingYou}
             </Typography>
             <BouncingDots size={6} />
           </View>
@@ -72,7 +75,7 @@ function SubThreadBannerComponent({
         >
           <RotateCw size={12} color={textError} />
           <Text className="text-label-caps font-mono uppercase text-text-error">
-            retry
+            {strings.subThreadRetry}
           </Text>
         </Pressable>
       )}

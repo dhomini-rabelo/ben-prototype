@@ -2,6 +2,8 @@ import { Mic, Send } from 'lucide-react-native'
 import { Pressable } from 'react-native'
 import { useCanRecord } from '@/layout/hooks/use-can-record'
 import { useConnectivityStore } from '@/layout/stores/connectivity-store'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { chatInputStrings } from '@/layout/strings/chat-input-strings'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
 import { onPrimary } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
@@ -12,6 +14,7 @@ export function ChatInputActionButton() {
   const voiceStatus = useVoiceStore(selectVoiceStatus)
   const isOffline = useConnectivityStore((store) => store.isOffline)
 
+  const strings = useStrings(chatInputStrings)
   const canRecord = useCanRecord()
 
   const { draft, onSend, disabled } = useChatInputContext()
@@ -28,7 +31,7 @@ export function ChatInputActionButton() {
     return (
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Send"
+        accessibilityLabel={strings.send}
         onPress={onSend}
         disabled={sendDisabled}
         className={cn(baseClassName, sendDisabled && 'opacity-60')}
@@ -42,7 +45,7 @@ export function ChatInputActionButton() {
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel="Voice input"
+      accessibilityLabel={strings.voiceInput}
       onPress={startRecording}
       disabled={recordDisabled}
       className={cn(baseClassName, recordDisabled && 'opacity-60')}

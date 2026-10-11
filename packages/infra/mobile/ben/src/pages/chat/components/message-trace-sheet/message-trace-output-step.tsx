@@ -5,29 +5,31 @@ import { CodeBlock } from '@/layout/components/ui/code-block'
 import { CollapsibleSection } from '@/layout/components/ui/collapsible-section'
 import { Typography } from '@/layout/components/ui/typography'
 import { absoluteDateTime } from '@/layout/utils/format-time'
-import { useLanguage } from '@/layout/hooks/use-strings'
+import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
+import { messageTraceStrings } from '@/pages/chat/strings/message-trace-strings'
 
 type MessageTraceOutputStepProps = { step: AgentCallStep }
 
 export function MessageTraceOutputStep({ step }: MessageTraceOutputStepProps) {
   const language = useLanguage()
+  const strings = useStrings(messageTraceStrings)
   const { usage } = step
 
   const summaryRows: [string, string][] = [
-    ['finish reason', step.output.finishReason],
+    [strings.finishReason, step.output.finishReason],
     [
-      'tokens',
+      strings.tokens,
       `${usage.inputTokens ?? '—'} / ${usage.outputTokens ?? '—'} / ${usage.totalTokens ?? '—'}`,
     ],
-    ['started', absoluteDateTime(step.startedAt, language)],
-    ['finished', absoluteDateTime(step.finishedAt, language)],
-    ['latency', `${(step.latencyMs / 1000).toFixed(1)}s`],
+    [strings.started, absoluteDateTime(step.startedAt, language)],
+    [strings.finished, absoluteDateTime(step.finishedAt, language)],
+    [strings.latency, `${(step.latencyMs / 1000).toFixed(1)}s`],
   ]
 
   return (
     <View>
       <Typography variant="label-caps" className="pt-2 text-on-surface-variant">
-        {`Step ${step.stepNumber + 1} · ${step.phase}`}
+        {strings.step(step.stepNumber + 1, step.phase)}
       </Typography>
 
       <View className="gap-1 py-2">
@@ -44,7 +46,7 @@ export function MessageTraceOutputStep({ step }: MessageTraceOutputStepProps) {
       </View>
 
       <CollapsibleSection
-        title="Text response"
+        title={strings.textResponse}
         icon={MessageSquare}
         defaultOpen
         copyValue={step.output.text}
@@ -55,14 +57,14 @@ export function MessageTraceOutputStep({ step }: MessageTraceOutputStepProps) {
       </CollapsibleSection>
 
       {step.output.object != null && (
-        <CollapsibleSection title="Object" icon={Braces} defaultOpen>
+        <CollapsibleSection title={strings.object} icon={Braces} defaultOpen>
           <CodeBlock value={step.output.object} />
         </CollapsibleSection>
       )}
 
       {step.output.toolCalls.length > 0 && (
         <CollapsibleSection
-          title="Tool calls"
+          title={strings.toolCalls}
           icon={Wrench}
           defaultOpen
           meta={String(step.output.toolCalls.length)}
@@ -85,12 +87,12 @@ export function MessageTraceOutputStep({ step }: MessageTraceOutputStepProps) {
       )}
 
       {step.output.warnings.length > 0 && (
-        <CollapsibleSection title="Warnings" icon={CircleAlert}>
+        <CollapsibleSection title={strings.warnings} icon={CircleAlert}>
           <CodeBlock value={step.output.warnings} />
         </CollapsibleSection>
       )}
 
-      <CollapsibleSection title="Raw response JSON" icon={Braces}>
+      <CollapsibleSection title={strings.rawResponse} icon={Braces}>
         <CodeBlock value={step.output} />
       </CollapsibleSection>
     </View>

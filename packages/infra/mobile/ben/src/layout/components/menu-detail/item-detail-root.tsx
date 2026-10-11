@@ -4,6 +4,8 @@ import { View } from 'react-native'
 import { MenuSheet } from '@/layout/components/menu/menu-sheet'
 import { IconButton } from '@/layout/components/ui/icon-button'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { menuDetailStrings } from '@/layout/strings/menu-detail-strings'
 import { onSurfaceVariant } from '@/layout/utils/colors'
 
 type ItemKind = 'note' | 'reminder'
@@ -15,12 +17,12 @@ type ItemDetailRootProps = {
   className?: string
 }
 
-const KIND_META: Record<
+const KIND_ICON: Record<
   ItemKind,
-  { label: string; icon: ComponentType<{ size?: number; color?: string }> }
+  ComponentType<{ size?: number; color?: string }>
 > = {
-  note: { label: 'Note', icon: NotebookPen },
-  reminder: { label: 'Reminder', icon: Bell },
+  note: NotebookPen,
+  reminder: Bell,
 }
 
 export function ItemDetailRoot({
@@ -29,7 +31,8 @@ export function ItemDetailRoot({
   onClose,
   className,
 }: ItemDetailRootProps) {
-  const { label, icon: Icon } = KIND_META[kind]
+  const strings = useStrings(menuDetailStrings)
+  const Icon = KIND_ICON[kind]
 
   return (
     <MenuSheet className={className}>
@@ -39,10 +42,10 @@ export function ItemDetailRoot({
             <Icon size={16} color={onSurfaceVariant} />
           </View>
           <Typography variant="label-caps" className="text-on-surface-variant">
-            {label}
+            {strings[kind]}
           </Typography>
         </View>
-        <IconButton label="Close" onPress={onClose} className="size-8">
+        <IconButton label={strings.close} onPress={onClose} className="size-8">
           <X size={16} color={onSurfaceVariant} />
         </IconButton>
       </View>

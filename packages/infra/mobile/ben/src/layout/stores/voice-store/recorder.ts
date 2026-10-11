@@ -1,3 +1,5 @@
+import { recordingStrings } from '@/layout/strings/recording-strings'
+import { getStrings } from '@/layout/utils/get-strings'
 import {
   beginRecording,
   discardRecording,
@@ -7,7 +9,6 @@ import {
 import type { MicPermission } from '@/services/audio-service'
 
 const MIN_RECORDING_MILLIS = 500
-const CAPTURE_ERROR_MESSAGE = 'Could not access the microphone.'
 
 interface RecorderCallbacks {
   onPermission: (permission: MicPermission) => void
@@ -39,7 +40,7 @@ export async function startRecorder(
     isCancelled = false
     return true
   } catch {
-    callbacks.onError(CAPTURE_ERROR_MESSAGE)
+    callbacks.onError(getStrings(recordingStrings).micError)
     await releaseRecorder()
     return false
   }
@@ -60,14 +61,14 @@ export async function stopRecorder() {
     }
 
     if (!uri || durationMillis < MIN_RECORDING_MILLIS) {
-      callbacks.onError(CAPTURE_ERROR_MESSAGE)
+      callbacks.onError(getStrings(recordingStrings).micError)
       return
     }
 
     callbacks.onStop(uri)
   } catch {
     if (!isCancelled) {
-      callbacks.onError(CAPTURE_ERROR_MESSAGE)
+      callbacks.onError(getStrings(recordingStrings).micError)
     }
   }
 }

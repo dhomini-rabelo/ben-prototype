@@ -15,9 +15,10 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Typography } from '@/layout/components/ui/typography'
 import { absoluteDateTime } from '@/layout/utils/format-time'
-import { useLanguage } from '@/layout/hooks/use-strings'
+import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
 import { MessageActionsMenuItem } from '@/pages/chat/components/message-actions-menu/message-actions-menu-item'
 import { useMessageTraceStore } from '@/pages/chat/stores/message-trace-store'
+import { messageTraceStrings } from '@/pages/chat/strings/message-trace-strings'
 
 const MENU_WIDTH = 240
 const MENU_GAP = 8
@@ -28,6 +29,7 @@ const EXIT_DURATION = 120
 
 export function MessageActionsMenu() {
   const language = useLanguage()
+  const strings = useStrings(messageTraceStrings)
   const actionsTarget = useMessageTraceStore((store) => store.actionsTarget)
   const closeActions = useMessageTraceStore((store) => store.closeActions)
   const openTrace = useMessageTraceStore((store) => store.openTrace)
@@ -124,12 +126,12 @@ export function MessageActionsMenu() {
             </Typography>
           )}
           <MessageActionsMenuItem
-            label="Ver input"
+            label={strings.viewInput}
             icon={FileInput}
             onPress={() => openTrace('input')}
           />
           <MessageActionsMenuItem
-            label="Ver output"
+            label={strings.viewOutput}
             icon={FileOutput}
             onPress={() => openTrace('output')}
           />

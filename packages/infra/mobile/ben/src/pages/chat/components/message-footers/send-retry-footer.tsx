@@ -4,10 +4,13 @@ import { Typography } from '@/layout/components/ui/typography'
 import { cn } from '@/layout/utils/styles'
 import { useMessagesStore } from '@/pages/chat/stores/messages-store'
 import { textError } from '@/layout/utils/colors'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { chatStrings } from '@/pages/chat/strings/chat-strings'
 
 type SendRetryFooterProps = { className?: string }
 
 export function SendRetryFooter({ className }: SendRetryFooterProps) {
+  const strings = useStrings(chatStrings)
   const retrySend = useMessagesStore((store) => store.retrySend)
 
   return (
@@ -17,7 +20,7 @@ export function SendRetryFooter({ className }: SendRetryFooterProps) {
     >
       <RotateCw size={14} color={textError} />
       <Typography variant="label-caps" className="text-text-error">
-        Ben didn&apos;t reply — tap to retry
+        {strings.sendRetry}
       </Typography>
     </Pressable>
   )

@@ -7,8 +7,12 @@ import { useWorkspaceTask } from '@/pages/task-workspace/hooks/use-workspace-tas
 import { useTaskDiffStore } from '@/pages/task-workspace/stores/task-diff-store'
 import { diffSummary } from '@/pages/task-workspace/utils/diff-summary'
 import { onPrimary, onSurface } from '@/layout/utils/colors'
+import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
+import { todoStrings } from '@/pages/task-workspace/strings/todo-strings'
 
 function DiffBarComponent() {
+  const language = useLanguage()
+  const strings = useStrings(todoStrings)
   const task = useWorkspaceTask()
   const isMutating = useTaskDiffStore((store) => store.isMutating)
   const approveDiff = useTaskDiffStore((store) => store.approveDiff)
@@ -18,7 +22,7 @@ function DiffBarComponent() {
     return null
   }
 
-  const summary = diffSummary(task)
+  const summary = diffSummary(task, language)
 
   return (
     <View className="gap-2 rounded-2xl border border-diff-added-outline/70 bg-diff-added px-3 py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
@@ -28,7 +32,7 @@ function DiffBarComponent() {
       <View className="flex-row gap-2">
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Reject"
+          accessibilityLabel={strings.reject}
           onPress={rejectDiff}
           disabled={isMutating}
           className={cn(
@@ -38,12 +42,12 @@ function DiffBarComponent() {
         >
           <X size={16} strokeWidth={2} color={onSurface} />
           <Text className="text-button font-semibold text-on-surface">
-            Reject
+            {strings.reject}
           </Text>
         </Pressable>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Approve"
+          accessibilityLabel={strings.approve}
           onPress={approveDiff}
           disabled={isMutating}
           className={cn(
@@ -53,7 +57,7 @@ function DiffBarComponent() {
         >
           <Check size={16} strokeWidth={2} color={onPrimary} />
           <Text className="text-button font-semibold text-on-primary">
-            Approve
+            {strings.approve}
           </Text>
         </Pressable>
       </View>

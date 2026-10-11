@@ -5,6 +5,8 @@ import { Typography } from '@/layout/components/ui/typography'
 import { onPrimary } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 import type { TodoItemDiff } from '@/api/models/task'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { todoStrings } from '@/pages/task-workspace/strings/todo-strings'
 
 type TodoListItemProps = {
   title: string
@@ -22,6 +24,7 @@ function TodoListItemComponent({
   onToggle,
 }: TodoListItemProps) {
   const isAdded = diff === 'added'
+  const strings = useStrings(todoStrings)
   const isRemoved = diff === 'removed'
   const isDiff = isAdded || isRemoved
   const isMuted = done || finished
@@ -36,7 +39,7 @@ function TodoListItemComponent({
     >
       <Pressable
         accessibilityRole="checkbox"
-        accessibilityLabel={done ? 'Mark not done' : 'Mark done'}
+        accessibilityLabel={done ? strings.markNotDone : strings.markDone}
         accessibilityState={{ checked: !!done, disabled: isDiff }}
         onPress={onToggle}
         disabled={isDiff}

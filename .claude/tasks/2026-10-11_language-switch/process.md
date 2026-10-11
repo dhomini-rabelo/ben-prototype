@@ -14,9 +14,9 @@ Pedido: feature de trocar idioma — inglês (default) e português BR. Usuário
 - [x] Plan — final plan.md + one ready prompt per scope
 - [x] Extract block written in orquestration.md
 - [x] Commit: plan
-- [ ] Implement (Sonnet) — one agent per scope
-- [ ] Lint + type-check
-- [ ] Commit: implement
+- [x] Implement (Sonnet) — one agent per scope
+- [x] Lint + type-check
+- [x] Commit: implement
 - [ ] Validate + code-pattern review (fresh Opus)
 - [ ] Fix round (Sonnet) — only if CHANGES_REQUIRED
 - [ ] Re-validate — only if there was a fix round

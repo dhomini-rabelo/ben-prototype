@@ -1,0 +1,56 @@
+import type { Localized } from '@/core/languages'
+
+const en = {
+  loading: 'loading your workspace…',
+  loadError: "couldn't load this one",
+  retry: 'Retry',
+  backToChat: 'Back to chat',
+  more: 'More',
+  reopenTask: 'Reopen task',
+  finishTask: 'Finish task',
+  finished: 'finished',
+  done: "nice. that one's done.",
+  textPlaceholder: 'tell Ben what to put here…',
+  footerPlaceholder: 'Ask Ben to edit…',
+  footerPlaceholderFinished: 'reopen to keep editing',
+  send: 'Send',
+  voiceInput: 'Voice input',
+  offline: "You're offline. Sending is paused until you're back online.",
+  micGlitched: 'mic glitched — try again or type it',
+  micDenied: "Ben can't hear you yet — turn on mic in device settings.",
+  voiceError: "couldn't catch that — tap to retry or type it instead",
+  sendError: "Ben didn't reply — tap to retry",
+  subThreadRetry: 'retry',
+  you: 'You',
+  hearingYou: 'Hearing you',
+}
+
+export const workspaceStrings: Localized<typeof en> = {
+  en,
+  'pt-BR': {
+    loading: 'carregando seu workspace…',
+    loadError: 'não consegui carregar essa',
+    retry: 'Tentar de novo',
+    backToChat: 'Voltar ao chat',
+    more: 'Mais',
+    reopenTask: 'Reabrir tarefa',
+    finishTask: 'Concluir tarefa',
+    finished: 'concluída',
+    done: 'boa. essa está concluída.',
+    textPlaceholder: 'diga ao Ben o que colocar aqui…',
+    footerPlaceholder: 'Peça ao Ben para editar…',
+    footerPlaceholderFinished: 'reabra para continuar editando',
+    send: 'Enviar',
+    voiceInput: 'Entrada de voz',
+    offline:
+      'Você está offline. O envio fica pausado até você voltar a ficar online.',
+    micGlitched: 'o mic falhou — tente de novo ou digite',
+    micDenied:
+      'o Ben ainda não consegue te ouvir — ligue o mic nas configurações do aparelho.',
+    voiceError: 'não entendi — toque para tentar de novo ou digite',
+    sendError: 'o Ben não respondeu — toque para tentar de novo',
+    subThreadRetry: 'tentar de novo',
+    you: 'Você',
+    hearingYou: 'Ouvindo você',
+  },
+}

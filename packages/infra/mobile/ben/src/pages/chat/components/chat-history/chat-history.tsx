@@ -3,6 +3,7 @@ import type { RefObject } from 'react'
 import { FlatList, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
+import { useStrings } from '@/layout/hooks/use-strings'
 import { ROUTES } from '@/core/routes'
 import { CaptureCard } from '@/pages/chat/components/capture-card'
 import { MessageTracePressable } from '@/pages/chat/components/chat-history/message-trace-pressable'
@@ -13,6 +14,7 @@ import { TranscribingFooter } from '@/pages/chat/components/message-footers/tran
 import { TypingIndicator } from '@/pages/chat/components/typing-indicator'
 import { useChatList } from '@/pages/chat/hooks/use-chat-list'
 import { useMessagesStore } from '@/pages/chat/stores/messages-store'
+import { chatStrings } from '@/pages/chat/strings/chat-strings'
 import { getMessageText } from '@/pages/chat/utils/chat-messages'
 import type { BenUiMessage } from '@/pages/chat/utils/chat-messages'
 
@@ -22,6 +24,7 @@ type ChatHistoryProps = {
 }
 
 export function ChatHistory({ listRef, bottomInset = 0 }: ChatHistoryProps) {
+  const strings = useStrings(chatStrings)
   const voiceStatus = useVoiceStore(selectVoiceStatus)
   const isAwaitingReply = useMessagesStore((store) => store.isAwaitingReply)
   const sendError = useMessagesStore((store) => store.sendError)
@@ -109,7 +112,7 @@ export function ChatHistory({ listRef, bottomInset = 0 }: ChatHistoryProps) {
           )}
           {voiceStatus === 'error' && (
             <MessageBubble from="user" state="error" footer={<RetryFooter />}>
-              couldn&apos;t catch that — tap to retry or type it instead
+              {strings.voiceErrorBubble}
             </MessageBubble>
           )}
           {isAwaitingReply && (

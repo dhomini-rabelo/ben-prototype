@@ -25,11 +25,14 @@ import { WorkspaceTopBar } from '@/pages/task-workspace/components/workspace-top
 import { resetTaskWorkspace } from '@/pages/task-workspace/stores/reset-task-workspace'
 import { useTaskChatStore } from '@/pages/task-workspace/stores/task-chat-store'
 import { useTaskStore } from '@/pages/task-workspace/stores/task-store'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { workspaceStrings } from '@/pages/task-workspace/strings/workspace-strings'
 
 const FOOTER_GAP = 16
 
 export function TaskWorkspace() {
   const router = useRouter()
+  const strings = useStrings(workspaceStrings)
   const taskId = useTaskStore((store) => store.taskId)
   const setTaskId = useTaskStore((store) => store.setTaskId)
   const { state, actions } = useTaskDetailData(taskId)
@@ -62,7 +65,7 @@ export function TaskWorkspace() {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-surface px-6">
         <Typography variant="body-md" className="text-on-surface-variant">
-          loading your workspace…
+          {strings.loading}
         </Typography>
       </SafeAreaView>
     )
@@ -72,15 +75,17 @@ export function TaskWorkspace() {
     return (
       <SafeAreaView className="flex-1 items-center justify-center gap-4 bg-surface px-6">
         <Typography variant="body-md" className="text-on-surface-variant">
-          couldn&apos;t load this one
+          {strings.loadError}
         </Typography>
         <View className="flex-row gap-2">
-          <Button onPress={() => void actions.refetch()}>Retry</Button>
+          <Button onPress={() => void actions.refetch()}>
+            {strings.retry}
+          </Button>
           <Button
             className="bg-surface-container-high"
             onPress={() => router.replace(ROUTES.chat)}
           >
-            Back to chat
+            {strings.backToChat}
           </Button>
         </View>
       </SafeAreaView>

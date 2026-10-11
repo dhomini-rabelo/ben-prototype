@@ -1,6 +1,8 @@
 import { RotateCw } from 'lucide-react-native'
 import { Pressable, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { menuDetailStrings } from '@/layout/strings/menu-detail-strings'
 import { textError } from '@/layout/utils/colors'
 
 type ItemDetailErrorProps = {
@@ -9,11 +11,13 @@ type ItemDetailErrorProps = {
 }
 
 export function ItemDetailError({ message, onRetry }: ItemDetailErrorProps) {
+  const strings = useStrings(menuDetailStrings)
+
   return (
     <View className="mx-5 mb-5 flex-row items-start gap-3 rounded-xl border border-text-error/30 bg-surface-error px-3.5 py-3">
       <View className="flex-1 gap-1">
         <Typography variant="body-md" className="text-text-error">
-          {message ?? "couldn't load this one — tap to retry"}
+          {message ?? strings.loadError}
         </Typography>
         <Pressable
           accessibilityRole="button"
@@ -25,7 +29,7 @@ export function ItemDetailError({ message, onRetry }: ItemDetailErrorProps) {
             variant="label-caps"
             className="font-mono text-text-error"
           >
-            retry
+            {strings.retry}
           </Typography>
         </Pressable>
       </View>

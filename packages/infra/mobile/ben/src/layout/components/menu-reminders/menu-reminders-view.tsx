@@ -4,13 +4,16 @@ import { MenuListError } from '@/layout/components/menu-list/menu-list-error'
 import { MenuListLoading } from '@/layout/components/menu-list/menu-list-loading'
 import { MenuListShell } from '@/layout/components/menu-list/menu-list-shell'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
 import { useReminderListData } from '@/layout/hooks/api/use-reminder-list-data'
 import { useMenuStore } from '@/layout/stores/menu-store'
+import { menuStrings } from '@/layout/strings/menu-strings'
 import { syncReminderNotifications } from '@/services/notifications-service'
 import { MenuRemindersList } from './menu-reminders-list'
 
 export function MenuRemindersView() {
   const { actions, state } = useReminderListData()
+  const strings = useStrings(menuStrings)
   const goBackToMenu = useMenuStore((store) => store.goBackToMenu)
   const openDetail = useMenuStore((store) => store.openDetail)
   const reminders = state.data?.items ?? []
@@ -23,27 +26,27 @@ export function MenuRemindersView() {
   }, [state.isLoading, state.isError, state.data])
 
   return (
-    <MenuListShell title="Reminders" onBack={goBackToMenu}>
+    <MenuListShell title={strings.reminders} onBack={goBackToMenu}>
       {state.isLoading ? (
         <MenuListLoading />
       ) : state.isError ? (
         <MenuListError
-          message="couldn't load your reminders"
+          message={strings.remindersLoadError}
           onRetry={() => actions.refetch()}
         />
       ) : reminders.length === 0 ? (
         <MenuListEmpty
-          title="no reminders yet"
+          title={strings.remindersEmptyTitle}
           description={
             <>
-              say{' '}
+              {strings.remindersEmptySay}{' '}
               <Typography
                 variant="body-md"
                 className="font-mono text-[14px] text-on-surface"
               >
-                &quot;remind me to…&quot;
+                {strings.remindersEmptyPhrase}
               </Typography>{' '}
-              and Ben&apos;ll catch it.
+              {strings.remindersEmptyCatch}
             </>
           }
         />

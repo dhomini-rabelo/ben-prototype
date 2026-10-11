@@ -5,7 +5,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BrandMark } from '@/layout/components/brand-mark'
 import { IconButton } from '@/layout/components/ui/icon-button'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
 import type { MenuEntryId } from '@/layout/stores/menu-store'
+import { menuStrings } from '@/layout/strings/menu-strings'
 import { onSurfaceVariant, primary } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 import { CountBadge, type CountValue } from './menu-sidebar-count-badge'
@@ -20,21 +22,11 @@ type MenuSidebarProps = {
   onClose?: () => void
 }
 
-const ENTRIES: {
-  id: MenuEntryId
-  label: string
-  icon: ComponentType<IconProps>
-  formatCount?: (n: number) => string
-}[] = [
-  {
-    id: 'tasks',
-    label: 'Tasks',
-    icon: ListTodo,
-    formatCount: (n) => `${n} active`,
-  },
-  { id: 'notes', label: 'Notes', icon: NotebookPen },
-  { id: 'reminders', label: 'Reminders', icon: Bell },
-  { id: 'settings', label: 'Settings', icon: Settings },
+const ENTRY_ICONS: { id: MenuEntryId; icon: ComponentType<IconProps> }[] = [
+  { id: 'tasks', icon: ListTodo },
+  { id: 'notes', icon: NotebookPen },
+  { id: 'reminders', icon: Bell },
+  { id: 'settings', icon: Settings },
 ]
 
 export function MenuSidebar({
@@ -45,6 +37,13 @@ export function MenuSidebar({
   onClose,
 }: MenuSidebarProps) {
   const insets = useSafeAreaInsets()
+  const strings = useStrings(menuStrings)
+  const entries = ENTRY_ICONS.map(({ id, icon }) => ({
+    id,
+    icon,
+    label: strings[id],
+    formatCount: id === 'tasks' ? strings.activeCount : undefined,
+  }))
 
   const effectiveCounts: Partial<Record<MenuEntryId, CountValue>> =
     variant === 'loading'
@@ -66,14 +65,14 @@ export function MenuSidebar({
           <BrandMark logoWidth={24} logoHeight={19} />
         </View>
         {onClose && (
-          <IconButton label="Close menu" onPress={onClose}>
+          <IconButton label={strings.closeMenu} onPress={onClose}>
             <X size={24} color={primary} />
           </IconButton>
         )}
       </View>
 
       <View className="px-2 pt-2">
-        {ENTRIES.map(({ id, label, icon: Icon, formatCount }) => {
+        {entries.map(({ id, label, icon: Icon, formatCount }) => {
           const value = effectiveCounts[id]
           const showCount = id !== 'settings'
           return (

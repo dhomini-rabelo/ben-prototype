@@ -14,6 +14,8 @@ import Animated, {
 } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { taskPickerStrings } from '@/pages/chat/strings/task-picker-strings'
 
 type TaskPickerSheetProps = {
   isOpen: boolean
@@ -30,6 +32,7 @@ export function TaskPickerSheet({
   onClose,
   children,
 }: TaskPickerSheetProps) {
+  const strings = useStrings(taskPickerStrings)
   const insets = useSafeAreaInsets()
   const translateY = useSharedValue(0)
   const backdropOpacity = useSharedValue(0)
@@ -89,14 +92,14 @@ export function TaskPickerSheet({
                   variant="label-caps"
                   className="text-on-surface-variant"
                 >
-                  Active tasks
+                  {strings.title}
                 </Typography>
                 {count != null && count > 0 && (
                   <Typography
                     variant="label-caps"
                     className="normal-case text-on-surface-variant/70"
                   >
-                    {count} · most recent first
+                    {strings.countSummary(count)}
                   </Typography>
                 )}
               </View>

@@ -15,8 +15,11 @@ import { cn } from '@/layout/utils/styles'
 import { useWorkspaceTask } from '@/pages/task-workspace/hooks/use-workspace-task'
 import { useTaskLifecycleStore } from '@/pages/task-workspace/stores/task-lifecycle-store'
 import { onSurface, onSurfaceVariant } from '@/layout/utils/colors'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { workspaceStrings } from '@/pages/task-workspace/strings/workspace-strings'
 
 function WorkspaceTopBarComponent() {
+  const strings = useStrings(workspaceStrings)
   const task = useWorkspaceTask()
   const finish = useTaskLifecycleStore((store) => store.finish)
   const reopen = useTaskLifecycleStore((store) => store.reopen)
@@ -46,7 +49,7 @@ function WorkspaceTopBarComponent() {
     <View className="relative h-14 flex-row items-center justify-between gap-2 px-2">
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Back to chat"
+        accessibilityLabel={strings.backToChat}
         onPress={() => router.replace(ROUTES.chat)}
         className="size-10 shrink-0 items-center justify-center rounded-full active:bg-surface-container-low"
       >
@@ -66,14 +69,14 @@ function WorkspaceTopBarComponent() {
         </Typography>
         {isFinished && (
           <Text className="shrink-0 rounded-full bg-surface-container-high px-1.5 py-px font-mono text-[10px] uppercase tracking-wider text-on-surface-variant">
-            finished
+            {strings.finished}
           </Text>
         )}
       </View>
 
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="More"
+        accessibilityLabel={strings.more}
         onPress={() => setIsMenuOpen((open) => !open)}
         className="size-10 shrink-0 items-center justify-center rounded-full active:bg-surface-container-low"
       >
@@ -92,7 +95,9 @@ function WorkspaceTopBarComponent() {
               )}
             >
               <RotateCcw size={16} strokeWidth={2} color={onSurface} />
-              <Text className="text-body-md text-on-surface">Reopen task</Text>
+              <Text className="text-body-md text-on-surface">
+                {strings.reopenTask}
+              </Text>
             </Pressable>
           ) : (
             <Pressable
@@ -104,7 +109,9 @@ function WorkspaceTopBarComponent() {
               )}
             >
               <CheckCircle2 size={16} strokeWidth={2} color={onSurface} />
-              <Text className="text-body-md text-on-surface">Finish task</Text>
+              <Text className="text-body-md text-on-surface">
+                {strings.finishTask}
+              </Text>
             </Pressable>
           )}
         </View>

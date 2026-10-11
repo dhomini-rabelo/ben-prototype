@@ -3,6 +3,8 @@ import type { ReactNode } from 'react'
 import { useRef } from 'react'
 import type { GestureResponderEvent } from 'react-native'
 import { Pressable, View } from 'react-native'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { chatStrings } from '@/pages/chat/strings/chat-strings'
 import type { MessageAnchor } from '@/pages/chat/stores/message-trace-store'
 import { useMessageTraceStore } from '@/pages/chat/stores/message-trace-store'
 
@@ -17,6 +19,7 @@ export function MessageTracePressable({
   createdAt,
   children,
 }: MessageTracePressableProps) {
+  const strings = useStrings(chatStrings)
   const viewRef = useRef<View>(null)
 
   function openMenu(anchor: MessageAnchor) {
@@ -50,10 +53,8 @@ export function MessageTracePressable({
       ref={viewRef}
       className="w-full"
       onLongPress={handleLongPress}
-      accessibilityHint="Long press to inspect the model call"
-      accessibilityActions={[
-        { name: 'longpress', label: 'Inspect model call' },
-      ]}
+      accessibilityHint={strings.traceHint}
+      accessibilityActions={[{ name: 'longpress', label: strings.traceAction }]}
       onAccessibilityAction={(event) => {
         if (event.nativeEvent.actionName === 'longpress') handleLongPress()
       }}

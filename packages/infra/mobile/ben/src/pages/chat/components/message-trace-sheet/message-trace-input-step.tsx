@@ -4,10 +4,13 @@ import type { AgentCallStep } from '@/api/models/message-trace'
 import { CodeBlock } from '@/layout/components/ui/code-block'
 import { CollapsibleSection } from '@/layout/components/ui/collapsible-section'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
+import { messageTraceStrings } from '@/pages/chat/strings/message-trace-strings'
 
 type MessageTraceInputStepProps = { step: AgentCallStep }
 
 export function MessageTraceInputStep({ step }: MessageTraceInputStepProps) {
+  const strings = useStrings(messageTraceStrings)
   const totalChars =
     step.input.systemPrompt.length +
     step.input.messages.reduce((sum, message) => sum + message.text.length, 0)
@@ -15,15 +18,19 @@ export function MessageTraceInputStep({ step }: MessageTraceInputStepProps) {
   return (
     <View>
       <Typography variant="label-caps" className="pt-2 text-on-surface-variant">
-        {`Step ${step.stepNumber + 1} · ${step.phase}`}
+        {strings.step(step.stepNumber + 1, step.phase)}
       </Typography>
 
       <Typography variant="code" className="py-2 text-on-surface-variant">
-        {`${step.input.messages.length} messages · ${step.input.tools.length} tools · ${totalChars} chars`}
+        {strings.inputSummary(
+          step.input.messages.length,
+          step.input.tools.length,
+          totalChars,
+        )}
       </Typography>
 
       <CollapsibleSection
-        title="Messages"
+        title={strings.messages}
         icon={MessageSquare}
         defaultOpen
         meta={String(step.input.messages.length)}
@@ -32,7 +39,7 @@ export function MessageTraceInputStep({ step }: MessageTraceInputStepProps) {
           <CollapsibleSection
             key={index}
             title={message.role}
-            meta={`${message.text.length} chars`}
+            meta={strings.chars(message.text.length)}
             preview={message.text}
             copyValue={message.text}
           >
@@ -51,9 +58,9 @@ export function MessageTraceInputStep({ step }: MessageTraceInputStepProps) {
       </CollapsibleSection>
 
       <CollapsibleSection
-        title="System prompt"
+        title={strings.systemPrompt}
         icon={ScrollText}
-        meta={`${step.input.systemPrompt.length} chars`}
+        meta={strings.chars(step.input.systemPrompt.length)}
         copyValue={step.input.systemPrompt}
       >
         <Typography variant="body-md" selectable className="text-on-surface">
@@ -63,7 +70,7 @@ export function MessageTraceInputStep({ step }: MessageTraceInputStepProps) {
 
       {step.input.tools.length > 0 && (
         <CollapsibleSection
-          title="Tools"
+          title={strings.tools}
           icon={Wrench}
           meta={String(step.input.tools.length)}
         >
@@ -80,12 +87,12 @@ export function MessageTraceInputStep({ step }: MessageTraceInputStepProps) {
       )}
 
       {step.input.outputSchema != null && (
-        <CollapsibleSection title="Output schema" icon={Braces}>
+        <CollapsibleSection title={strings.outputSchema} icon={Braces}>
           <CodeBlock value={step.input.outputSchema} />
         </CollapsibleSection>
       )}
 
-      <CollapsibleSection title="Raw request JSON" icon={Braces}>
+      <CollapsibleSection title={strings.rawRequest} icon={Braces}>
         <CodeBlock value={step.input.requestBody ?? step.input} />
       </CollapsibleSection>
     </View>

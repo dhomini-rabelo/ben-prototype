@@ -1,7 +1,9 @@
 import { ChevronUp, Hammer } from 'lucide-react-native'
 import { Pressable, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
+import { useStrings } from '@/layout/hooks/use-strings'
 import { cn } from '@/layout/utils/styles'
+import { chatStrings } from '@/pages/chat/strings/chat-strings'
 
 type ActiveTaskPeekProps = {
   variant?: 'empty' | 'summary' | 'skeleton'
@@ -18,6 +20,7 @@ export function ActiveTaskPeek({
   className,
   onOpen,
 }: ActiveTaskPeekProps) {
+  const strings = useStrings(chatStrings)
   return (
     <Pressable
       accessibilityRole="button"
@@ -32,7 +35,7 @@ export function ActiveTaskPeek({
         <View className="h-4 w-40 rounded bg-outline-variant" />
       ) : variant === 'empty' ? (
         <Typography variant="body-md" className="text-on-surface-variant">
-          nothing in progress — Ben&apos;s listening
+          {strings.peekEmpty}
         </Typography>
       ) : (
         <View className="min-w-0 flex-row items-center gap-2.5">
@@ -48,7 +51,9 @@ export function ActiveTaskPeek({
               variant="label-caps"
               className="shrink-0 text-on-surface-variant"
             >
-              {count != null ? `${count} active` : 'active'}
+              {count != null
+                ? strings.peekActiveCount(count)
+                : strings.peekActive}
             </Typography>
             {title && (
               <Typography

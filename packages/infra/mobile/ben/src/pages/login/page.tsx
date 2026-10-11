@@ -5,13 +5,9 @@ import { Button } from '@/layout/components/ui/button'
 import { Typography } from '@/layout/components/ui/typography'
 import { useDevAuth } from '@/layout/hooks/use-dev-auth'
 import { useGoogleAuth } from '@/layout/hooks/use-google-auth'
+import { useStrings } from '@/layout/hooks/use-strings'
 import { onPrimary, primary } from '@/layout/utils/colors'
-
-const FOOTER_LINKS = [
-  { label: 'Privacy Policy', url: '#' },
-  { label: 'Terms of Service', url: '#' },
-  { label: 'Help Center', url: '#' },
-]
+import { loginStrings } from './strings/login-strings'
 
 export function Login() {
   const {
@@ -23,6 +19,12 @@ export function Login() {
     error,
   } = useGoogleAuth()
   const devAuth = useDevAuth()
+  const strings = useStrings(loginStrings)
+  const footerLinks = [
+    { label: strings.privacyPolicy, url: '#' },
+    { label: strings.termsOfService, url: '#' },
+    { label: strings.helpCenter, url: '#' },
+  ]
 
   return (
     <View className="flex-1 items-center justify-center bg-background px-6">
@@ -36,7 +38,7 @@ export function Login() {
             variant="tagline"
             className="max-w-[280px] text-center text-secondary"
           >
-            your busy-day brain — say it, Ben files it
+            {strings.tagline}
           </Typography>
         </View>
 
@@ -47,7 +49,7 @@ export function Login() {
               className="w-full rounded-lg border border-outline-variant bg-surface-container-low px-4 py-3"
             >
               <Typography variant="body-md" className="text-on-surface-variant">
-                looks like that didn&apos;t go through — want to try again?
+                {strings.permissionDenied}
               </Typography>
             </View>
           )}
@@ -62,7 +64,7 @@ export function Login() {
                 className="size-5 text-on-primary"
                 color={onPrimary}
               />
-              {isLoading ? 'Signing in...' : 'Continue with Google'}
+              {isLoading ? strings.signingIn : strings.continueWithGoogle}
             </Button>
           )}
           {isExtendedWait && (
@@ -70,7 +72,7 @@ export function Login() {
               variant="body-md"
               className="text-center text-secondary"
             >
-              still waiting on Google…
+              {strings.waitingOnGoogle}
             </Typography>
           )}
           {devAuth.isAvailable && (
@@ -81,7 +83,7 @@ export function Login() {
                 void devAuth.signIn()
               }}
             >
-              Dev sign-in (Expo Go)
+              {strings.devSignIn}
             </Typography>
           )}
         </View>
@@ -91,10 +93,10 @@ export function Login() {
             variant="label-caps"
             className="font-sans normal-case tracking-normal text-secondary"
           >
-            © 2026 Ben. Your busy-day brain.
+            {strings.copyright}
           </Typography>
           <View className="flex-row items-center gap-4">
-            {FOOTER_LINKS.map((link) => (
+            {footerLinks.map((link) => (
               <Typography
                 key={link.label}
                 variant="label-caps"

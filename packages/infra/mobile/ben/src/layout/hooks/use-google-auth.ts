@@ -5,7 +5,9 @@ import { API_ROUTES } from '@/api/routes'
 import type { User } from '@/api/models/user'
 import { devWarn } from '@/core/logger'
 import { ROUTES } from '@/core/routes'
+import { authStrings } from '@/layout/strings/auth-strings'
 import { useAuthStore } from '@/layout/stores/auth-store'
+import { getStrings } from '@/layout/utils/get-strings'
 import {
   isGoogleAuthAvailable,
   signInWithGoogle,
@@ -67,7 +69,7 @@ export function useGoogleAuth() {
     if (result.status === 'error') {
       setState({
         status: 'error',
-        error: 'Authentication failed. Please try again.',
+        error: getStrings(authStrings).authFailed,
       })
       return
     }
@@ -93,7 +95,7 @@ export function useGoogleAuth() {
       })
       setState({
         status: 'error',
-        error: 'Authentication failed. Please try again.',
+        error: getStrings(authStrings).authFailed,
       })
     }
   }
