@@ -22,6 +22,7 @@ type SettingsSheetProps = {
   avatarUrl?: string
   signOutState?: SignOutState
   agentSection?: ReactNode
+  versionsSection?: ReactNode
   className?: string
   onSignOut?: () => void
   onRetry?: () => void
@@ -35,6 +36,7 @@ export function SettingsSheet({
   avatarUrl,
   signOutState = 'idle',
   agentSection,
+  versionsSection,
   className,
   onSignOut,
   onRetry,
@@ -128,6 +130,8 @@ export function SettingsSheet({
             {agentSection}
           </View>
         ) : null}
+
+        {versionsSection}
 
         <View className="px-5">
           <Pressable

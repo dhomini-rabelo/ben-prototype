@@ -26,3 +26,9 @@ Skill: simple-loop
 - Question batch: 4 tópicos; usuário escolheu todas as recomendadas (constante única | semver+data curto | seção inline | só mobile)
 - Pointers: `plan.md`, `prompts/mobile-app-versions.md` ×1
 - Next: implement
+
+## 2026-10-11 — implementer (impl-mobile-app-versions-app-versions-in-settings)
+
+- Files: 6 (3 novos, 3 editados) em packages/infra/mobile/ben
+- lint:fix exit=0 | typecheck exit=0 (orchestrator)
+- Next: validate

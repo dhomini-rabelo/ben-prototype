@@ -12,9 +12,9 @@ Git: branch feat/add-version-in-settings | commit-base d2dbfe8
 - [x] Plan — plan.md + scope prompts
 - [x] Extract block in orquestration.md
 - [x] Commit: plan
-- [ ] Implement (Sonnet)
-- [ ] Lint + type-check
-- [ ] Commit: implement
+- [x] Implement (Sonnet)
+- [x] Lint + type-check
+- [x] Commit: implement
 - [ ] Validate (fresh Opus)
 - [ ] Commit: validate
 - [ ] System test mode decided (user wants screenshots → browser)

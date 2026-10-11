@@ -4,6 +4,7 @@ import { ROUTES } from '@/core/routes'
 import { AgentSettingsControls } from '@/layout/components/menu-settings/agent-settings-controls'
 import { AgentSettingsError } from '@/layout/components/menu-settings/agent-settings-error'
 import { AgentSettingsLoading } from '@/layout/components/menu-settings/agent-settings-loading'
+import { AppVersionsSection } from '@/layout/components/menu-settings/app-versions-section'
 import { useAgentPreferences } from '@/layout/hooks/use-agent-preferences'
 import { useAuthStore } from '@/layout/stores/auth-store'
 import { SettingsSheet } from './settings-sheet'
@@ -57,6 +58,7 @@ export function SettingsView({ onClose }: SettingsViewProps) {
       avatarUrl={user?.avatarUrl ?? undefined}
       signOutState={signOutState}
       agentSection={agentSection}
+      versionsSection={<AppVersionsSection />}
       onSignOut={handleSignOut}
       onRetry={handleSignOut}
       onClose={onClose}

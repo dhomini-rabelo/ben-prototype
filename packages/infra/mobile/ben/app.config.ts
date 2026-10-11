@@ -1,11 +1,12 @@
 import type { ExpoConfig } from 'expo/config'
+import { CURRENT_APP_VERSION } from './src/core/app-versions'
 
 const config: ExpoConfig = {
   name: 'Ben',
   slug: 'ben',
   owner: 'dhomini07',
   scheme: 'ben',
-  version: '1.0.0',
+  version: CURRENT_APP_VERSION,
   orientation: 'portrait',
   userInterfaceStyle: 'light',
   icon: './assets/icon.png',

@@ -13,3 +13,4 @@ Skill: simple-loop
 |------|------|----------------------|----------|-------|---------------|--------|-------|
 | 2026-10-11 | recon | recon-app-versions-in-settings | a9bd907ada66d4102 | sonnet | general-purpose | 43k | veredito: complexa |
 | 2026-10-11 | planner | plan-app-versions-in-settings | ae82bcbf1f030fdd8 | opus | general-purpose | 45k | 1 escopo |
+| 2026-10-11 | implementer | impl-mobile-app-versions-app-versions-in-settings | a9d93d806659230fe | sonnet | general-purpose | 28k | scope: mobile-app-versions |
