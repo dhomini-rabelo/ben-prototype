@@ -60,3 +60,13 @@ Skill: simple-loop
 - Resalvas aceitas sem correção: "fica pausado" vs "fica em pausa" (copy), ordem de imports em task-picker-list, `activityLabel` duplica parte de relativeTime (intencional)
 - Rodadas: 2 (sinal registrado: fugiu do mecânico por copy/strings remanescentes)
 - Next: system test — modo Docker+browser só (UI; mobile sem testes automatizados), browser-mobile-tester em :8081
+
+## system test mode
+
+- Mode: Docker+browser só — mudança só de UI no Expo; mobile sem testes automatizados
+
+## tests-01 (test-language-switch-browser-r01)
+
+- Result: PASS — `tests-01/verdict.md` (+ screenshots/); backend mockado via Playwright, login re-injetado
+- Achado: trace meta em pt-BR "1 mensagens · 1 ferramentas" (plural); "CONTEXT" sem tradução. Decisão: corrigir ambos; "Input"/"Output" ficam (termo técnico, igual "Ver input"); datas ISO ficam; 404 `/tasks//detail` provavelmente pré-existente — fora do escopo
+- Next: fix-after-test (sonnet fresh) → tests-02 focado

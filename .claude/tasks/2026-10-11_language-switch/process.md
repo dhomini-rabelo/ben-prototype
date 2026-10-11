@@ -21,8 +21,8 @@ Pedido: feature de trocar idioma — inglês (default) e português BR. Usuário
 - [x] Fix round (Sonnet) — only if CHANGES_REQUIRED
 - [x] Re-validate — only if there was a fix round
 - [x] Commit: validate
-- [ ] Decide system test mode
-- [ ] tests-01 — run + verdict.md
+- [x] Decide system test mode
+- [x] tests-01 — run + verdict.md
 - [ ] Commit: system-test (per attempt)
 - [ ] Context update (Sonnet)
 - [ ] Commit: context
@@ -32,6 +32,7 @@ Pedido: feature de trocar idioma — inglês (default) e português BR. Usuário
 
 | Run | Result | Notes |
 |-----|--------|-------|
+| tests-01 | PASS | 7 casos; bug plural pt-BR no trace meta → fix + tests-02 |
 
 ## Notes
 
