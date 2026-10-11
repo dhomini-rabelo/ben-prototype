@@ -19,3 +19,4 @@ Skill: simple-loop
 | 2026-10-11 | implementer | impl-b3-strings-task-workspace-language-switch | a3b2df87a20ac295b | sonnet | general-purpose | 41k | escopo B3; tsc 0 |
 | 2026-10-11 | implementer | impl-b1-strings-layout-language-switch | ac6ce37d03bcea699 | sonnet | general-purpose | 67k | escopo B1; tsc 0 |
 | 2026-10-11 | implementer | impl-b2-strings-chat-language-switch | ace050ac10bcc9693 | sonnet | general-purpose | 86k | escopo B2; tsc 0 |
+| 2026-10-11 | validator | validate-language-switch-r1 | a00ec1c4106b40968 | opus | general-purpose | 72k | CHANGES_REQUIRED (2) |

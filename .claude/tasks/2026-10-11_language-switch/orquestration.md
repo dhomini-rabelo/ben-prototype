@@ -42,3 +42,10 @@ Skill: simple-loop
 - B1 layout/menu/login/recording: 8 dicionários, tsc 0. B2 chat: 4 dicionários, tsc 0 ("Ver input/Ver output" mantidos em `en` — sinalizar ao validator). B3 task-workspace: 2 dicionários + diffSummary(language), tsc 0.
 - Orquestrador: lint:fix exit 0, typecheck exit 0
 - Next: validate r1 (opus)
+
+## validator (validate-language-switch-r1)
+
+- Verdict: CHANGES_REQUIRED — `review-r1.md`
+- Bloqueantes: code-block.tsx:36 "Show more/less" hardcoded; message-trace-strings.ts:4-5 en "Ver input/output" → "View input/output"
+- Decisões do orquestrador (sem perguntar): reverter mudança de texto en do task-picker-list (manter comportamento anterior); aplicar consistência de copy pt-BR apontada; canal Android "Reminders" fica fora (texto do SO, não do app)
+- Next: 1 implementer fresh (-fix1) cobrindo B1+B2 (B2 >80k → fresh); depois validate r2
