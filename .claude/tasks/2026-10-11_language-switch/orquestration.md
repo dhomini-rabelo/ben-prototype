@@ -80,3 +80,8 @@ Skill: simple-loop
 
 - Result: PASS — `tests-02/verdict.md` (+ screenshots/)
 - Next: context update (sonnet)
+
+## context (ctx-language-switch)
+
+- updated — mobile-ben: description.md (seção Idioma da interface), project-structure.md, last-reviewed.json @ b1f7b9a
+- Close: todas as etapas concluídas

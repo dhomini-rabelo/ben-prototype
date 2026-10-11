@@ -24,9 +24,9 @@ Pedido: feature de trocar idioma — inglês (default) e português BR. Usuário
 - [x] Decide system test mode
 - [x] tests-01 — run + verdict.md
 - [x] Commit: system-test (per attempt)
-- [ ] Context update (Sonnet)
-- [ ] Commit: context
-- [ ] Close + user summary
+- [x] Context update (Sonnet)
+- [x] Commit: context
+- [x] Close + user summary
 
 ## Test attempts
 
