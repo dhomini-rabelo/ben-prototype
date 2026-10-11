@@ -15,8 +15,9 @@ const en = {
   callFailed: 'the model call failed',
   step: (number: number, phase: string) => `Step ${number} · ${phase}`,
   inputSummary: (messages: number, tools: number, chars: number) =>
-    `${messages} messages · ${tools} tools · ${chars} chars`,
-  chars: (count: number) => `${count} chars`,
+    `${messages} message${messages === 1 ? '' : 's'} · ${tools} tool${tools === 1 ? '' : 's'} · ${chars} char${chars === 1 ? '' : 's'}`,
+  chars: (count: number) => `${count} char${count === 1 ? '' : 's'}`,
+  phases: { context: 'context', format: 'format' },
   messages: 'Messages',
   systemPrompt: 'System prompt',
   tools: 'Tools',
@@ -51,8 +52,9 @@ export const messageTraceStrings: Localized<typeof en> = {
     callFailed: 'a chamada do modelo falhou',
     step: (number, phase) => `Etapa ${number} · ${phase}`,
     inputSummary: (messages, tools, chars) =>
-      `${messages} mensagens · ${tools} ferramentas · ${chars} caracteres`,
-    chars: (count) => `${count} caracteres`,
+      `${messages} ${messages === 1 ? 'mensagem' : 'mensagens'} · ${tools} ${tools === 1 ? 'ferramenta' : 'ferramentas'} · ${chars} ${chars === 1 ? 'caractere' : 'caracteres'}`,
+    chars: (count) => `${count} ${count === 1 ? 'caractere' : 'caracteres'}`,
+    phases: { context: 'contexto', format: 'formato' },
     messages: 'Mensagens',
     systemPrompt: 'Prompt do sistema',
     tools: 'Ferramentas',

@@ -70,3 +70,8 @@ Skill: simple-loop
 - Result: PASS — `tests-01/verdict.md` (+ screenshots/); backend mockado via Playwright, login re-injetado
 - Achado: trace meta em pt-BR "1 mensagens · 1 ferramentas" (plural); "CONTEXT" sem tradução. Decisão: corrigir ambos; "Input"/"Output" ficam (termo técnico, igual "Ver input"); datas ISO ficam; 404 `/tasks//detail` provavelmente pré-existente — fora do escopo
 - Next: fix-after-test (sonnet fresh) → tests-02 focado
+
+## fix after tests-01 (impl-trace-plural-language-switch-fix2)
+
+- Plural en/pt-BR no trace meta (en também corrigido: "1 message"); fases context/format no dicionário. lint 0, tsc 0
+- Next: tests-02 focado (fresh, tester-retry)

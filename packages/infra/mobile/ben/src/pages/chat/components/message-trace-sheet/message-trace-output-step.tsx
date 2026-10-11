@@ -29,7 +29,7 @@ export function MessageTraceOutputStep({ step }: MessageTraceOutputStepProps) {
   return (
     <View>
       <Typography variant="label-caps" className="pt-2 text-on-surface-variant">
-        {strings.step(step.stepNumber + 1, step.phase)}
+        {strings.step(step.stepNumber + 1, strings.phases[step.phase])}
       </Typography>
 
       <View className="gap-1 py-2">

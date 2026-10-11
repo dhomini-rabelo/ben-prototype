@@ -116,3 +116,8 @@ Backend, Prisma, domínio, idioma do agente, sandbox de design, detecção do id
 ## Modo de system test
 
 UI pelo `browser-mobile-tester` em :8081: abrir Configurações, trocar para Português, conferir Configurações, menu (tarefas, notas, lembretes), chat e workspace, recarregar para checar a persistência, sair e entrar, e voltar para English.
+
+## Notes do implementador (após tests-01)
+- Plural: `inputSummary` e `chars` em `message-trace-strings.ts` pluralizam em en e pt-BR (mesmo shape de `todo-strings.ts`). O inglês antigo não pluralizava ("1 messages"); agora "1 message".
+- "CONTEXT" era `step.phase` cru vindo da API; novo `phases` no dicionário (pt-BR "contexto"/"formato"), usado em `message-trace-input-step.tsx` e `message-trace-output-step.tsx`.
+- Demais strings de contagem do chat (`peekActiveCount`) já pluralizavam.

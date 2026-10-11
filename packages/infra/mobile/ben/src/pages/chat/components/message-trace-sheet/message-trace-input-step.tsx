@@ -18,7 +18,7 @@ export function MessageTraceInputStep({ step }: MessageTraceInputStepProps) {
   return (
     <View>
       <Typography variant="label-caps" className="pt-2 text-on-surface-variant">
-        {strings.step(step.stepNumber + 1, step.phase)}
+        {strings.step(step.stepNumber + 1, strings.phases[step.phase])}
       </Typography>
 
       <Typography variant="code" className="py-2 text-on-surface-variant">
