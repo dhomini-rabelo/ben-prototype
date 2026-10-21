@@ -50,8 +50,10 @@ export function Chat() {
 
   useFocusEffect(
     useCallback(() => {
-      useVoiceStore.getState().setTranscriptHandler((text) => {
-        void useMessagesStore.getState().sendText(text)
+      useVoiceStore.getState().setTranscriptHandler((text, costUsd) => {
+        void useMessagesStore
+          .getState()
+          .sendText(text, { transcriptionCostUsd: costUsd })
       })
     }, []),
   )

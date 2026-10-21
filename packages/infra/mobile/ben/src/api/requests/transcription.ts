@@ -21,5 +21,8 @@ export async function requestTranscribeAudio(
     formData,
   )
 
-  return { text: response.data.text }
+  return {
+    text: response.data.text,
+    costUsd: response.data.costUsd ?? null,
+  }
 }

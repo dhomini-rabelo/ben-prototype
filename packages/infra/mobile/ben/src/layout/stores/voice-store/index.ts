@@ -20,7 +20,7 @@ export type {
 
 let timer: ReturnType<typeof setInterval> | null = null
 let transcriptionRunId = 0
-let onTranscript: (text: string) => void = () => {}
+let onTranscript: (text: string, costUsd: number | null) => void = () => {}
 
 function clearTimer() {
   if (timer !== null) {
@@ -59,11 +59,11 @@ export const useVoiceStore = create<VoiceStore>((set, get) => ({
 
         const runId = ++transcriptionRunId
         requestTranscribeAudio(audioUri)
-          .then(({ text }) => {
+          .then(({ text, costUsd }) => {
             if (transcriptionRunId !== runId) {
               return
             }
-            onTranscript(text)
+            onTranscript(text, costUsd)
             set({ transcription: 'idle' })
           })
           .catch(() => {

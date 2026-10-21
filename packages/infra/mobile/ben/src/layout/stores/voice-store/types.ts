@@ -18,5 +18,7 @@ export interface VoiceStore {
   retryVoice: () => void
   dismissError: () => void
   subscribeMicPermission: () => () => void
-  setTranscriptHandler: (handler: (text: string) => void) => void
+  setTranscriptHandler: (
+    handler: (text: string, costUsd: number | null) => void,
+  ) => void
 }

@@ -15,4 +15,6 @@ export interface Message {
   content: string
   createdAt: string
   capture?: MessageCapture
+  costUsd?: number | null
+  interactionCostUsd?: number | null
 }

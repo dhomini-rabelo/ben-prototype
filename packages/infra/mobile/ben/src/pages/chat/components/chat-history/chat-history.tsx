@@ -8,6 +8,7 @@ import { ROUTES } from '@/core/routes'
 import { CaptureCard } from '@/pages/chat/components/capture-card'
 import { MessageTracePressable } from '@/pages/chat/components/chat-history/message-trace-pressable'
 import { MessageBubble } from '@/pages/chat/components/message-bubble/message-bubble'
+import { CostFooter } from '@/pages/chat/components/message-footers/cost-footer'
 import { RetryFooter } from '@/pages/chat/components/message-footers/retry-footer'
 import { SendRetryFooter } from '@/pages/chat/components/message-footers/send-retry-footer'
 import { TranscribingFooter } from '@/pages/chat/components/message-footers/transcribing-footer'
@@ -46,7 +47,13 @@ export function ChatHistory({ listRef, bottomInset = 0 }: ChatHistoryProps) {
       <MessageBubble
         from={isBen ? 'ben' : 'user'}
         state={isFailed ? 'error' : 'default'}
-        footer={isFailed ? <SendRetryFooter /> : undefined}
+        footer={
+          isFailed ? (
+            <SendRetryFooter />
+          ) : (
+            isBen && <CostFooter costUsd={item.metadata?.interactionCostUsd} />
+          )
+        }
         className="mb-4"
       >
         {text}

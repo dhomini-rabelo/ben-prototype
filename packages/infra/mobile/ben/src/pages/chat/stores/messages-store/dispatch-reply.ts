@@ -8,13 +8,19 @@ export async function dispatchReply(
   set: StoreSet,
   get: StoreGet,
   message: string,
+  transcriptionCostUsd?: number | null,
 ) {
   set({ isAwaitingReply: true, sendError: false })
 
   try {
-    const reply = await requestSendChatMessage(message)
+    const reply = await requestSendChatMessage(message, transcriptionCostUsd)
     invalidateCapturedQueries(reply)
-    const benMessage = buildBenMessage(reply.messageId, '', reply.capture)
+    const benMessage = buildBenMessage(
+      reply.messageId,
+      '',
+      reply.capture,
+      reply.interactionCostUsd,
+    )
     set((state) => ({
       sessionMessages: [...state.sessionMessages, benMessage],
     }))

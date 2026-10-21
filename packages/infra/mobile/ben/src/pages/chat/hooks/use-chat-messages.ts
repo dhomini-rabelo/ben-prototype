@@ -9,7 +9,12 @@ export function mapHistoryToUiMessages(history: Message[]): BenUiMessage[] {
     id: message.id,
     role: message.role === 'ben' ? 'assistant' : 'user',
     parts: [{ type: 'text', text: message.content }],
-    metadata: { capture: message.capture, createdAt: message.createdAt },
+    metadata: {
+      capture: message.capture,
+      createdAt: message.createdAt,
+      costUsd: message.costUsd,
+      interactionCostUsd: message.interactionCostUsd,
+    },
   }))
 }
 

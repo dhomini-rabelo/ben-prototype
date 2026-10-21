@@ -31,4 +31,5 @@ export interface AgentReply {
   historyTopics: HistoryTopic[]
   capture: CaptureView | null
   messageId: string
+  interactionCostUsd: number | null
 }

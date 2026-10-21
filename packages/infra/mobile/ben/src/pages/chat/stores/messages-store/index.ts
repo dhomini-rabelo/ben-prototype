@@ -19,7 +19,7 @@ export const useMessagesStore = create<MessagesStore>((set, get) => ({
     }
   },
 
-  sendText: async (content) => {
+  sendText: async (content, options) => {
     const trimmed = content.trim()
     if (
       !trimmed ||
@@ -31,9 +31,12 @@ export const useMessagesStore = create<MessagesStore>((set, get) => ({
 
     get().stopTyping()
     set((state) => ({
-      sessionMessages: [...state.sessionMessages, buildUserMessage(trimmed)],
+      sessionMessages: [
+        ...state.sessionMessages,
+        buildUserMessage(trimmed, options?.transcriptionCostUsd),
+      ],
     }))
-    await dispatchReply(set, get, trimmed)
+    await dispatchReply(set, get, trimmed, options?.transcriptionCostUsd)
     return true
   },
 
@@ -45,6 +48,11 @@ export const useMessagesStore = create<MessagesStore>((set, get) => ({
     }
 
     get().stopTyping()
-    await dispatchReply(set, get, getMessageText(lastMessage))
+    await dispatchReply(
+      set,
+      get,
+      getMessageText(lastMessage),
+      lastMessage.metadata?.costUsd,
+    )
   },
 }))

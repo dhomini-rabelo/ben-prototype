@@ -1,6 +1,10 @@
 import type { StateCreator } from 'zustand'
 import type { BenUiMessage } from '@/pages/chat/utils/chat-messages'
 
+export interface SendTextOptions {
+  transcriptionCostUsd?: number | null
+}
+
 export interface MessagesStore {
   sessionMessages: BenUiMessage[]
   isAwaitingReply: boolean
@@ -8,7 +12,7 @@ export interface MessagesStore {
   typingIntervalId: ReturnType<typeof setInterval> | null
 
   stopTyping: () => void
-  sendText: (content: string) => Promise<boolean>
+  sendText: (content: string, options?: SendTextOptions) => Promise<boolean>
   retrySend: () => Promise<void>
 }
 

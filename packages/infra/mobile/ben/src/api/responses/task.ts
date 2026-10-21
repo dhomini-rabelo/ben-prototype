@@ -12,5 +12,6 @@ export interface TaskListItem {
 
 export interface TaskMessageReply {
   benMessage: string
+  costUsd?: number | null
   task: Task
 }

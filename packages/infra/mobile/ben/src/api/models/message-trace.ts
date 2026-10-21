@@ -33,6 +33,7 @@ export interface AgentCallUsage {
   outputTokens: number | null
   totalTokens: number | null
   reasoningTokens: number | null
+  costUsd: number | null
 }
 
 export interface AgentCallStepInput {

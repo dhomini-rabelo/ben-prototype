@@ -26,6 +26,7 @@ const en = {
   voiceErrorBubble: "couldn't catch that — tap to retry or type it instead",
   traceHint: 'Long press to inspect the model call',
   traceAction: 'Inspect model call',
+  costLabel: (cost: string) => `Cost of this interaction: ${cost}`,
 }
 
 export const chatStrings: Localized<typeof en> = {
@@ -60,5 +61,6 @@ export const chatStrings: Localized<typeof en> = {
       'não consegui entender — toque para tentar de novo ou digite',
     traceHint: 'Pressione e segure para inspecionar a chamada do modelo',
     traceAction: 'Inspecionar chamada do modelo',
+    costLabel: (cost) => `Custo desta interação: ${cost}`,
   },
 }
