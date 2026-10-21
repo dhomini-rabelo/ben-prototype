@@ -23,12 +23,21 @@ describe('GetUserPreferencesUseCase', () => {
     const user = await userFactory.create({
       language: 'pt-BR',
       showUsdCost: true,
+      morningTime: '07:30',
+      dailySummaryEnabled: false,
+      dailySummaryTime: '21:00',
     })
 
     const response = await sut.execute({ userId: user.id.toValue() })
 
     expect(response).toEqual({
-      item: { language: 'pt-BR', showUsdCost: true },
+      item: {
+        language: 'pt-BR',
+        showUsdCost: true,
+        morningTime: '07:30',
+        dailySummaryEnabled: false,
+        dailySummaryTime: '21:00',
+      },
     })
   })
 
@@ -37,11 +46,22 @@ describe('GetUserPreferencesUseCase', () => {
     const legacyProps: Partial<UserProps> = { ...user.props }
     delete legacyProps.language
     delete legacyProps.showUsdCost
+    delete legacyProps.morningTime
+    delete legacyProps.dailySummaryEnabled
+    delete legacyProps.dailySummaryTime
     user.props = legacyProps as UserProps
 
     const response = await sut.execute({ userId: user.id.toValue() })
 
-    expect(response).toEqual({ item: { language: null, showUsdCost: false } })
+    expect(response).toEqual({
+      item: {
+        language: null,
+        showUsdCost: false,
+        morningTime: '08:00',
+        dailySummaryEnabled: true,
+        dailySummaryTime: '08:00',
+      },
+    })
   })
 
   it('rejects an unknown user', async () => {

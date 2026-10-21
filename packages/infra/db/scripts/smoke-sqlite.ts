@@ -676,6 +676,9 @@ async function runUserCases(
         agentEffort: null,
         language: null,
         showUsdCost: false,
+        morningTime: null,
+        dailySummaryEnabled: null,
+        dailySummaryTime: null,
       })
       const reloaded = await userRepository.get({ id: user.id })
       assert(

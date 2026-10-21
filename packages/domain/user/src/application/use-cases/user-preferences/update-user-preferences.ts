@@ -1,9 +1,11 @@
 import { UserRepository } from '@ben/domain-user/application/repositories/user'
 import {
   isUserLanguage,
+  isValidTime,
   resolveUserPreferences,
   UserPreferences,
 } from '@ben/domain-user/application/utils/user-preferences'
+import { UserProps } from '@ben/domain-user/enterprise/entities/user'
 import { createID } from '@ben/domain-base'
 import { ValidationError } from '@ben/domain-base'
 import { ItemResponse } from '@ben/domain-base'
@@ -13,6 +15,9 @@ interface Payload {
   userId: string
   language?: string
   showUsdCost?: boolean
+  morningTime?: string
+  dailySummaryEnabled?: boolean
+  dailySummaryTime?: string
 }
 
 export class UpdateUserPreferencesUseCase implements UseCase<
@@ -35,8 +40,8 @@ export class UpdateUserPreferencesUseCase implements UseCase<
     return { item: resolveUserPreferences({ ...user.props, ...changes }) }
   }
 
-  private buildChanges(payload: Payload): Partial<UserPreferences> {
-    const changes: Partial<UserPreferences> = {}
+  private buildChanges(payload: Payload): Partial<UserProps> {
+    const changes: Partial<UserProps> = {}
 
     if (payload.language !== undefined) {
       if (!isUserLanguage(payload.language)) {
@@ -52,6 +57,31 @@ export class UpdateUserPreferencesUseCase implements UseCase<
       changes.showUsdCost = payload.showUsdCost
     }
 
+    if (payload.morningTime !== undefined) {
+      changes.morningTime = this.parseTime('morningTime', payload.morningTime)
+    }
+
+    if (payload.dailySummaryEnabled !== undefined) {
+      changes.dailySummaryEnabled = payload.dailySummaryEnabled
+    }
+
+    if (payload.dailySummaryTime !== undefined) {
+      changes.dailySummaryTime = this.parseTime(
+        'dailySummaryTime',
+        payload.dailySummaryTime,
+      )
+    }
+
     return changes
+  }
+
+  private parseTime(field: string, value: string): string {
+    if (!isValidTime(value)) {
+      throw new ValidationError({
+        errorField: field,
+        code: 'INVALID_TIME_FORMAT',
+      })
+    }
+    return value
   }
 }

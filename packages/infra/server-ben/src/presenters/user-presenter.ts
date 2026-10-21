@@ -6,7 +6,14 @@ export class UserPresenter {
     user: User,
   ): Omit<
     Serialize<WithID<UserProps>>,
-    'createdAt' | 'agentModelSlug' | 'agentEffort' | 'language' | 'showUsdCost'
+    | 'createdAt'
+    | 'agentModelSlug'
+    | 'agentEffort'
+    | 'language'
+    | 'showUsdCost'
+    | 'morningTime'
+    | 'dailySummaryEnabled'
+    | 'dailySummaryTime'
   > {
     return {
       id: user.id.toValue(),

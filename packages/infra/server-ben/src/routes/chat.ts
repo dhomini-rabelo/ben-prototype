@@ -44,7 +44,18 @@ const chatBodySchema = z.object({
     )
     .min(1),
   transcriptionCostUsd: z.number().finite().nonnegative().nullable().optional(),
+  timeZone: z.string().optional(),
 })
+
+function resolveTimeZone(timeZone: string | undefined): string {
+  if (!timeZone) return 'UTC'
+  try {
+    new Intl.DateTimeFormat(undefined, { timeZone })
+    return timeZone
+  } catch {
+    return 'UTC'
+  }
+}
 
 const agentService = new BenAgentProviderService()
 const getAgentPreferencesUseCase = new GetAgentPreferencesUseCase(
@@ -142,6 +153,9 @@ export async function chat(
     const { reply, trace } = await agentService.generateReply({
       userId: request.userId,
       message,
+      now: new Date().toISOString(),
+      timeZone: resolveTimeZone(body.timeZone),
+      activeGoals: [],
       topicIndex,
       activeConversation: agentContext.activeConversation
         ? AgentMemoryContextPresenter.toActiveConversation(

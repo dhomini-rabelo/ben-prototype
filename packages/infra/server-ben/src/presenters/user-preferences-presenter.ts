@@ -6,6 +6,9 @@ export class UserPreferencesPresenter {
     return {
       language: preferences.language,
       showUsdCost: preferences.showUsdCost,
+      morningTime: preferences.morningTime,
+      dailySummaryEnabled: preferences.dailySummaryEnabled,
+      dailySummaryTime: preferences.dailySummaryTime,
     }
   }
 }

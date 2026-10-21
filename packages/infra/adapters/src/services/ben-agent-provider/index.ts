@@ -46,6 +46,9 @@ export class BenAgentProviderService implements AgentService {
       topicIndex: payload.topicIndex,
       activeConversation: payload.activeConversation,
       memories: payload.memories,
+      now: payload.now,
+      timeZone: payload.timeZone,
+      activeGoals: payload.activeGoals,
     })
     const contextRecorder: RecordedStep[] = []
 

@@ -17,6 +17,9 @@ export interface UserProps {
   agentEffort: AgentEffort | null
   language: UserLanguage | null
   showUsdCost: boolean
+  morningTime: string | null
+  dailySummaryEnabled: boolean | null
+  dailySummaryTime: string | null
 }
 
 export class User extends Entity<UserProps> {

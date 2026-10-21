@@ -19,6 +19,11 @@ export function createUserData(data: Partial<UserProps> = {}): UserProps {
     agentEffort: data.agentEffort !== undefined ? data.agentEffort : null,
     language: data.language !== undefined ? data.language : null,
     showUsdCost: data.showUsdCost !== undefined ? data.showUsdCost : false,
+    morningTime: data.morningTime !== undefined ? data.morningTime : null,
+    dailySummaryEnabled:
+      data.dailySummaryEnabled !== undefined ? data.dailySummaryEnabled : null,
+    dailySummaryTime:
+      data.dailySummaryTime !== undefined ? data.dailySummaryTime : null,
   }
 }
 

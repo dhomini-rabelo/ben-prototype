@@ -50,10 +50,52 @@ export type UserMemory = { key: string; value: string }
 
 export type ConversationUpdate = { slug: string; summary: string }
 
+export type ReminderKind = 'alarm' | 'goal' | 'conditional'
+
+export type ReminderAlert =
+  | { kind: 'at-event' }
+  | { kind: 'day-before' }
+  | { kind: 'morning-of' }
+  | { kind: 'minutes-before'; minutes: number }
+
+export type GoalRecurrence =
+  | { type: 'none' }
+  | { type: 'daily' }
+  | { type: 'weekdays'; weekdays: number[] }
+
+export type CheckFrequency =
+  | { type: 'daily' }
+  | { type: 'every-n-days'; days: number }
+  | { type: 'weekly' }
+
+export type SnoozeOption =
+  '10-minutes' | '30-minutes' | '1-hour' | '2-hours' | 'tomorrow-morning'
+
+export interface GoalDraft {
+  title: string
+  startsAt: string
+  recurrence: GoalRecurrence
+  messages: string[]
+}
+
+export interface GoalMessagesDraft {
+  goalId: string
+  messages: string[]
+}
+
+export interface ActiveGoal {
+  id: string
+  title: string
+  messages: string[]
+}
+
 export type ReminderDraft = {
   title: string
   remindAt?: string
   notes?: string
+  kind?: 'alarm' | 'conditional'
+  alerts?: ReminderAlert[]
+  checkFrequency?: CheckFrequency
 }
 
 export type NoteDraft = {
@@ -75,6 +117,8 @@ export type AgentReply = {
   newReminders: ReminderDraft[]
   newNotes: NoteDraft[]
   newTasks: TaskDraft[]
+  newGoals: GoalDraft[]
+  goalUpdates: GoalMessagesDraft[]
   historyTopics: Array<{ topic: TopicKey; summary: string }>
   conversation: ConversationUpdate
   memories: UserMemory[]
@@ -83,6 +127,9 @@ export type AgentReply = {
 export type GenerateReplyPayload = {
   userId: string
   message: string
+  now: string
+  timeZone: string
+  activeGoals: ActiveGoal[]
   topicIndex: TopicKey[]
   activeConversation: ActiveConversation | null
   memories: UserMemory[]

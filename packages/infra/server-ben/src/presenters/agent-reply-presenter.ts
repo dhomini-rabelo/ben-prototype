@@ -7,7 +7,10 @@ export class AgentReplyPresenter {
     capture: CaptureView | null,
     messageId: string,
     interactionCostUsd: number | null,
-  ): Omit<AgentReply, 'conversation' | 'memories'> & {
+  ): Omit<
+    AgentReply,
+    'conversation' | 'memories' | 'newGoals' | 'goalUpdates'
+  > & {
     capture: CaptureView | null
     messageId: string
     interactionCostUsd: number | null

@@ -12,6 +12,9 @@ const updateUserPreferencesUseCase = new UpdateUserPreferencesUseCase(
 const bodySchema = z.object({
   language: z.string().optional(),
   showUsdCost: z.boolean().optional(),
+  morningTime: z.string().optional(),
+  dailySummaryEnabled: z.boolean().optional(),
+  dailySummaryTime: z.string().optional(),
 })
 
 export async function updateUserPreferences(
@@ -26,6 +29,9 @@ export async function updateUserPreferences(
       userId: request.userId,
       language: body.language,
       showUsdCost: body.showUsdCost,
+      morningTime: body.morningTime,
+      dailySummaryEnabled: body.dailySummaryEnabled,
+      dailySummaryTime: body.dailySummaryTime,
     })
 
     return response

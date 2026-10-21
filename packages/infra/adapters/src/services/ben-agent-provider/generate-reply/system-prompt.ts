@@ -1,11 +1,31 @@
-import { ActiveConversation, TopicKey, UserMemory } from '@ben/adapters'
+import {
+  ActiveConversation,
+  ActiveGoal,
+  TopicKey,
+  UserMemory,
+} from '@ben/adapters'
 import { BEN_SYSTEM_PROMPT } from '@ben/infra-adapters/services/ben-agent-provider/ben-system-prompt'
 
 type SystemPromptInput = {
   topicIndex: TopicKey[]
   activeConversation: ActiveConversation | null
   memories: UserMemory[]
+  now: string
+  timeZone: string
+  activeGoals: ActiveGoal[]
 }
+
+const formatNow = (now: string, timeZone: string): string =>
+  new Intl.DateTimeFormat('pt-BR', {
+    timeZone,
+    weekday: 'long',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(new Date(now))
 
 export const buildSystemPrompt = (input: SystemPromptInput): string => {
   const renderedIndex =
@@ -29,7 +49,28 @@ export const buildSystemPrompt = (input: SystemPromptInput): string => {
           .join('\n')
       : '(nenhuma memória ainda)'
 
+  const renderedGoals =
+    input.activeGoals.length > 0
+      ? input.activeGoals
+          .map((goal) =>
+            [
+              `- id: ${goal.id} | título: ${goal.title}`,
+              ...goal.messages.map((message) => `  - mensagem: ${message}`),
+            ].join('\n'),
+          )
+          .join('\n')
+      : '(nenhum goal ativo)'
+
   const topicSection = [
+    '',
+    '',
+    '# Agora',
+    `Agora é ${formatNow(input.now, input.timeZone)} (${input.now}), no fuso ${input.timeZone}.`,
+    'Resolva "hoje", "amanhã", "sexta" etc. a partir deste instante. Datas SEMPRE em ISO 8601 com o offset do fuso do usuário (ex.: 2026-10-22T17:00:00-03:00).',
+    '',
+    '',
+    '# Goals ativos',
+    renderedGoals,
     '',
     '',
     '# Memória de tópicos',
@@ -59,9 +100,14 @@ export const buildSystemPrompt = (input: SystemPromptInput): string => {
     'A sua resposta será convertida posteriormente em um objeto com os campos abaixo, então deixe TODAS essas informações explícitas no seu texto:',
     '- `message`: a resposta em linguagem natural para o usuário, seguindo a sua persona.',
     '- `historyTopics`: os tópicos relacionados a este turno, cada um com um resumo curto.',
-    '- `newReminders`: lembretes, cada um com `title` e, opcionalmente, `remindAt` e `notes`.',
+    '- `newReminders`: lembretes, cada um com `title`, `kind` (`alarm` ou `conditional`) e, opcionalmente, `remindAt`, `notes`, `alerts` e `checkFrequency`.',
+    '  - `alerts` (só alarme): "um dia antes" → `day-before`; "pela manhã" → `morning-of`; "N minutos/horas antes" → `minutes-before` com `minutes`; sem frase de aviso → um único `at-event`.',
+    '  - Algo "quando X acontecer" sem data → `kind` `conditional`, sem `remindAt`, com `checkFrequency` (`daily` por padrão, `every-n-days` com `days` ou `weekly` se o usuário disser outra).',
     '- `newNotes`: notas, cada uma com `title` e `body`.',
     '- `newTasks`: tarefas, cada uma com `title` e `contentType` — use `todo` quando a intenção for uma lista de itens (liste os itens) e `text` quando for um rascunho/texto corrido (inclua o texto, pode ser vazio).',
+    '- `newGoals`: goals (hábito/objetivo com horário, ex.: academia às 11h), cada um com `title`, `startsAt` (ISO 8601 com offset), `recurrence` (`none`, `daily` ou `weekdays` com `weekdays`, 0 = domingo) e `messages` (frases motivacionais ou problemas que o usuário disse, curtas e literais).',
+    'Goals: quando o usuário falar de um hábito/objetivo com horário, PERGUNTE se quer salvar como goal e NÃO registre nada nesse turno. Só preencha `newGoals` no turno seguinte, se o usuário confirmar.',
+    '- `goalUpdates`: para acrescentar mensagens a um goal existente, `goalId` (id da lista "Goals ativos") e `messages` novas.',
     '- `conversation`: `slug` (reutilize o slug existente da conversa atual) e `summary`, um resumo cumulativo da conversa inteira, incluindo este turno.',
     '- `memories`: somente fatos duradouros novos ou alterados, cada um com `key` no formato `categoria:subcategoria` em kebab-case (ex.: `familia:nome-familiares` com valor "Mãe: Maria; Pai: João") e `value`; lista vazia quando não houver.',
     'Proponha lembretes, notas e tarefas somente quando a mensagem do usuário pedir ou implicar claramente esses itens; caso contrário, indique explicitamente que não há itens desse tipo.',

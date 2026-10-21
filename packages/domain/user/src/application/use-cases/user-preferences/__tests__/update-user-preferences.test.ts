@@ -31,7 +31,15 @@ describe('UpdateUserPreferencesUseCase', () => {
     })
 
     const storedUser = await userRepository.get({ id: user.id })
-    expect(response).toEqual({ item: { language: 'pt-BR', showUsdCost: true } })
+    expect(response).toEqual({
+      item: {
+        language: 'pt-BR',
+        showUsdCost: true,
+        morningTime: '08:00',
+        dailySummaryEnabled: true,
+        dailySummaryTime: '08:00',
+      },
+    })
     expect(storedUser.props.language).toBe('pt-BR')
     expect(storedUser.props.showUsdCost).toBe(true)
   })
@@ -48,7 +56,15 @@ describe('UpdateUserPreferencesUseCase', () => {
     })
 
     const storedUser = await userRepository.get({ id: user.id })
-    expect(response).toEqual({ item: { language: 'en', showUsdCost: true } })
+    expect(response).toEqual({
+      item: {
+        language: 'en',
+        showUsdCost: true,
+        morningTime: '08:00',
+        dailySummaryEnabled: true,
+        dailySummaryTime: '08:00',
+      },
+    })
     expect(storedUser.props.language).toBe('en')
     expect(storedUser.props.showUsdCost).toBe(true)
   })
@@ -61,7 +77,15 @@ describe('UpdateUserPreferencesUseCase', () => {
 
     const response = await sut.execute({ userId: user.id.toValue() })
 
-    expect(response).toEqual({ item: { language: 'en', showUsdCost: true } })
+    expect(response).toEqual({
+      item: {
+        language: 'en',
+        showUsdCost: true,
+        morningTime: '08:00',
+        dailySummaryEnabled: true,
+        dailySummaryTime: '08:00',
+      },
+    })
   })
 
   it('rejects an unsupported language and stores nothing', async () => {
@@ -91,5 +115,60 @@ describe('UpdateUserPreferencesUseCase', () => {
     await expectError(async () => {
       await sut.execute({ userId: some.uuid(), language: 'en' })
     }, ResourceNotFoundError)
+  })
+
+  it('stores the three schedule preferences', async () => {
+    const user = await userFactory.create()
+
+    const response = await sut.execute({
+      userId: user.id.toValue(),
+      morningTime: '07:30',
+      dailySummaryEnabled: false,
+      dailySummaryTime: '21:00',
+    })
+
+    const storedUser = await userRepository.get({ id: user.id })
+    expect(response.item).toMatchObject({
+      morningTime: '07:30',
+      dailySummaryEnabled: false,
+      dailySummaryTime: '21:00',
+    })
+    expect(storedUser.props.morningTime).toBe('07:30')
+    expect(storedUser.props.dailySummaryEnabled).toBe(false)
+    expect(storedUser.props.dailySummaryTime).toBe('21:00')
+  })
+
+  it.each(['24:00', '8:00', '12:60', 'abc', ''])(
+    'rejects the invalid time %j and stores nothing',
+    async (time) => {
+      const user = await userFactory.create()
+
+      const error = await expectError(async () => {
+        await sut.execute({
+          userId: user.id.toValue(),
+          dailySummaryTime: time,
+        })
+      }, ValidationError)
+
+      const storedUser = await userRepository.get({ id: user.id })
+      expect(error.response.errorField).toBe('dailySummaryTime')
+      expect(error.response.code).toBe('INVALID_TIME_FORMAT')
+      expect(storedUser.props.dailySummaryTime).toBeNull()
+    },
+  )
+
+  it('accepts the 00:00 and 23:59 boundaries', async () => {
+    const user = await userFactory.create()
+
+    const response = await sut.execute({
+      userId: user.id.toValue(),
+      morningTime: '00:00',
+      dailySummaryTime: '23:59',
+    })
+
+    expect(response.item).toMatchObject({
+      morningTime: '00:00',
+      dailySummaryTime: '23:59',
+    })
   })
 })

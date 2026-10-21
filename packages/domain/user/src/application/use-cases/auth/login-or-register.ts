@@ -60,6 +60,9 @@ export class LoginOrRegisterUseCase implements UseCase<Response> {
       agentModelSlug: null,
       agentEffort: null,
       language: null,
+      morningTime: null,
+      dailySummaryEnabled: null,
+      dailySummaryTime: null,
       showUsdCost: false,
     })
 
