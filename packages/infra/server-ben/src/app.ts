@@ -2,6 +2,8 @@ import { authMiddleware } from '@ben/server-ben/middlewares/auth'
 import { errorHandler } from '@ben/server-ben/middlewares/error-handler'
 import { getAgentPreferences } from '@ben/server-ben/routes/agent-preferences/get-agent-preferences'
 import { updateAgentPreferences } from '@ben/server-ben/routes/agent-preferences/update-agent-preferences'
+import { getUserPreferences } from '@ben/server-ben/routes/user-preferences/get-user-preferences'
+import { updateUserPreferences } from '@ben/server-ben/routes/user-preferences/update-user-preferences'
 import { loginOrRegister } from '@ben/server-ben/routes/auth/login-or-register'
 import { getCapturesCounts } from '@ben/server-ben/routes/captures/get-captures-counts'
 import { chat } from '@ben/server-ben/routes/chat'
@@ -82,6 +84,8 @@ app.get('/captures/counts', authMiddleware, getCapturesCounts)
 
 app.get('/agent-preferences/detail', authMiddleware, getAgentPreferences)
 app.post('/agent-preferences/update', authMiddleware, updateAgentPreferences)
+app.get('/user-preferences/detail', authMiddleware, getUserPreferences)
+app.post('/user-preferences/update', authMiddleware, updateUserPreferences)
 
 app.use(errorHandler)
 

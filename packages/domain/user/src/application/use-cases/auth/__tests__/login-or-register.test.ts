@@ -71,6 +71,8 @@ describe('LoginOrRegisterUseCase', () => {
       providerId: providerUser.id,
       agentModelSlug: null,
       agentEffort: null,
+      language: null,
+      showUsdCost: false,
     })
     expect(response.accessToken).toBe(`jwt-${response.user.id.toValue()}`)
     expect(jwtService.generatedFor).toEqual([response.user.id.toValue()])

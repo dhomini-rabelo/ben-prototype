@@ -17,6 +17,8 @@ export function createUserData(data: Partial<UserProps> = {}): UserProps {
     agentModelSlug:
       data.agentModelSlug !== undefined ? data.agentModelSlug : null,
     agentEffort: data.agentEffort !== undefined ? data.agentEffort : null,
+    language: data.language !== undefined ? data.language : null,
+    showUsdCost: data.showUsdCost !== undefined ? data.showUsdCost : false,
   }
 }
 

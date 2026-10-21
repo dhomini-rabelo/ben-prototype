@@ -674,6 +674,8 @@ async function runUserCases(
         createdAt: NOW,
         agentModelSlug: null,
         agentEffort: null,
+        language: null,
+        showUsdCost: false,
       })
       const reloaded = await userRepository.get({ id: user.id })
       assert(

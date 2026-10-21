@@ -59,6 +59,8 @@ export class LoginOrRegisterUseCase implements UseCase<Response> {
       createdAt: new Date(),
       agentModelSlug: null,
       agentEffort: null,
+      language: null,
+      showUsdCost: false,
     })
 
     return {

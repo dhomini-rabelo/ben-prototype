@@ -2,6 +2,10 @@ import { Entity } from '@ben/domain-base'
 import { ID } from '@ben/domain-base'
 import { AgentEffort, AgentModelSlug } from '@ben/adapters'
 
+export const USER_LANGUAGES = ['en', 'pt-BR'] as const
+
+export type UserLanguage = (typeof USER_LANGUAGES)[number]
+
 export interface UserProps {
   name: string
   username: string
@@ -11,6 +15,8 @@ export interface UserProps {
   createdAt: Date
   agentModelSlug: AgentModelSlug | null
   agentEffort: AgentEffort | null
+  language: UserLanguage | null
+  showUsdCost: boolean
 }
 
 export class User extends Entity<UserProps> {
