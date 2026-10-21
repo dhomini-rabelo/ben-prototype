@@ -38,4 +38,8 @@ export const API_ROUTES = {
     detail: '/agent-preferences/detail',
     update: '/agent-preferences/update',
   },
+  userPreferences: {
+    detail: '/user-preferences/detail',
+    update: '/user-preferences/update',
+  },
 } as const

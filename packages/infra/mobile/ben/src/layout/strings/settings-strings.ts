@@ -15,6 +15,9 @@ const en = {
   saveFailed: "didn't save that — try again?",
   modelSettingsFailed: "couldn't load your model settings",
   appVersions: 'App versions',
+  costTitle: 'Cost',
+  showUsdCost: 'Show cost in USD',
+  preferenceSaveFailed: "Couldn't save. Try again.",
 }
 
 export const settingsStrings: Localized<typeof en> = {
@@ -34,5 +37,8 @@ export const settingsStrings: Localized<typeof en> = {
     saveFailed: 'não salvamos isso — tentar de novo?',
     modelSettingsFailed: 'não deu para carregar as configurações do seu modelo',
     appVersions: 'Versões do app',
+    costTitle: 'Custo',
+    showUsdCost: 'Mostrar gasto em dólar',
+    preferenceSaveFailed: 'Não foi possível salvar. Tente de novo.',
   },
 }

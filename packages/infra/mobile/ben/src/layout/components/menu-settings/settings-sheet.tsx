@@ -25,6 +25,7 @@ type SettingsSheetProps = {
   signOutState?: SignOutState
   agentSection?: ReactNode
   languageSection?: ReactNode
+  usdCostSection?: ReactNode
   versionsSection?: ReactNode
   className?: string
   onSignOut?: () => void
@@ -40,6 +41,7 @@ export function SettingsSheet({
   signOutState = 'idle',
   agentSection,
   languageSection,
+  usdCostSection,
   versionsSection,
   className,
   onSignOut,
@@ -138,6 +140,8 @@ export function SettingsSheet({
         ) : null}
 
         {languageSection}
+
+        {usdCostSection}
 
         {versionsSection}
 

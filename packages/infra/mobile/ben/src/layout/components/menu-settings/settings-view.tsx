@@ -5,8 +5,10 @@ import { AgentSettingsControls } from '@/layout/components/menu-settings/agent-s
 import { AgentSettingsError } from '@/layout/components/menu-settings/agent-settings-error'
 import { AgentSettingsLoading } from '@/layout/components/menu-settings/agent-settings-loading'
 import { LanguageSection } from '@/layout/components/menu-settings/language-section'
+import { UsdCostSection } from '@/layout/components/menu-settings/usd-cost-section'
 import { AppVersionsSection } from '@/layout/components/menu-settings/app-versions-section'
 import { useAgentPreferences } from '@/layout/hooks/use-agent-preferences'
+import { useUserPreferences } from '@/layout/hooks/use-user-preferences'
 import { useAuthStore } from '@/layout/stores/auth-store'
 import { SettingsSheet } from './settings-sheet'
 
@@ -22,6 +24,7 @@ export function SettingsView({ onClose }: SettingsViewProps) {
   const clear = useAuthStore((store) => store.clear)
   const [signOutState, setSignOutState] = useState<SignOutState>('idle')
   const agent = useAgentPreferences()
+  const preferences = useUserPreferences()
 
   function handleSignOut() {
     setSignOutState('pending')
@@ -59,7 +62,18 @@ export function SettingsView({ onClose }: SettingsViewProps) {
       avatarUrl={user?.avatarUrl ?? undefined}
       signOutState={signOutState}
       agentSection={agentSection}
-      languageSection={<LanguageSection />}
+      languageSection={
+        <LanguageSection
+          hasError={preferences.state.hasLanguageError}
+          onSelectLanguage={preferences.actions.selectLanguage}
+        />
+      }
+      usdCostSection={
+        <UsdCostSection
+          hasError={preferences.state.hasUsdCostError}
+          onChange={preferences.actions.setShowUsdCost}
+        />
+      }
       versionsSection={<AppVersionsSection />}
       onSignOut={handleSignOut}
       onRetry={handleSignOut}

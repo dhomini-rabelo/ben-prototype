@@ -6,6 +6,7 @@ import {
   getStoredUser,
   setStoredUser,
 } from '@/storage/user-storage'
+import { useUserPreferencesStore } from '@/layout/stores/user-preferences-store'
 import { clearStoredToken } from '@/storage/token-storage'
 
 function toStoredUser(user: User): StoredUser {
@@ -46,6 +47,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   clear: () => {
     void clearStoredUser()
     void clearStoredToken()
+    useUserPreferencesStore.getState().reset()
     set({ user: null })
   },
   hydrate: async () => {

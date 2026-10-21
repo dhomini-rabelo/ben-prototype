@@ -1,10 +1,13 @@
 import { Redirect, Stack } from 'expo-router'
 import { ROUTES } from '@/core/routes'
+import { useUserPreferencesSync } from '@/layout/hooks/use-user-preferences-sync'
 import { useAuthStore } from '@/layout/stores/auth-store'
 import { getCachedToken } from '@/storage/token-storage'
 
 export default function ProtectedLayout() {
   const user = useAuthStore((store) => store.user)
+
+  useUserPreferencesSync()
 
   if (!getCachedToken() && !user) {
     return <Redirect href={ROUTES.login} />
