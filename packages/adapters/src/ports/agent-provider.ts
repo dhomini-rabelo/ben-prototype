@@ -27,6 +27,23 @@ export type ResolveHistoryContext = (input: {
   topics: TopicKey[]
 }) => Promise<HistoryContextResult>
 
+export type ConversationMessageRole = 'user' | 'assistant'
+
+export type ConversationMessage = {
+  role: ConversationMessageRole
+  content: string
+  createdAt: string
+}
+
+export type ConversationHistoryPage = {
+  messages: ConversationMessage[]
+  nextCursor: string | null
+}
+
+export type ResolveOlderMessages = (input: {
+  cursor: string
+}) => Promise<ConversationHistoryPage>
+
 export type ReminderDraft = {
   title: string
   remindAt?: string
@@ -60,6 +77,8 @@ export type GenerateReplyPayload = {
   message: string
   topicIndex: TopicKey[]
   resolveHistoryContext: ResolveHistoryContext
+  history: ConversationHistoryPage
+  resolveOlderMessages: ResolveOlderMessages
   model: AgentModelSelection
 }
 

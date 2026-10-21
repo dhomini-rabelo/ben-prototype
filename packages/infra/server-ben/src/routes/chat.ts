@@ -1,5 +1,6 @@
 import { PersistCapturesUseCase } from '@ben/domain-chat/application/use-cases/captures/persist-captures'
 import { GetAgentPreferencesUseCase } from '@ben/domain-user/application/use-cases/agent-preferences/get-agent-preferences'
+import { ListMessageHistoryUseCase } from '@ben/domain-chat/application/use-cases/messages/list-message-history'
 import { PersistBenMessageUseCase } from '@ben/domain-chat/application/use-cases/messages/persist-ben-message'
 import { PersistUserMessageUseCase } from '@ben/domain-chat/application/use-cases/messages/persist-user-message'
 import { BuildTopicIndexUseCase } from '@ben/domain-topic/application/use-cases/topics/build-topic-index'
@@ -14,6 +15,7 @@ import {
   topicSummaryRepository,
   userRepository,
 } from '@ben/server-ben/repositories'
+import { AgentConversationPresenter } from '@ben/server-ben/presenters/agent-conversation-presenter'
 import { AgentReplyPresenter } from '@ben/server-ben/presenters/agent-reply-presenter'
 import { BenAgentProviderService } from '@ben/infra-adapters'
 import { createID } from '@ben/domain-base'
@@ -43,6 +45,9 @@ const getAgentPreferencesUseCase = new GetAgentPreferencesUseCase(
   userRepository,
 )
 const persistUserMessageUseCase = new PersistUserMessageUseCase(
+  messageRepository,
+)
+const listMessageHistoryUseCase = new ListMessageHistoryUseCase(
   messageRepository,
 )
 const persistBenMessageUseCase = new PersistBenMessageUseCase(messageRepository)
@@ -108,12 +113,27 @@ export async function chat(
       userId: request.userId,
     })
 
+    const history = AgentConversationPresenter.toHistoryPage(
+      await listMessageHistoryUseCase.execute({
+        userId: request.userId,
+        beforeMessageId: userMessageResult.item.id.toValue(),
+      }),
+    )
+
     const { reply, trace } = await agentService.generateReply({
       userId: request.userId,
       message,
       topicIndex,
       resolveHistoryContext: ({ topics }) =>
         getHistoryContextUseCase.execute({ userId: request.userId, topics }),
+      history,
+      resolveOlderMessages: async ({ cursor }) =>
+        AgentConversationPresenter.toHistoryPage(
+          await listMessageHistoryUseCase.execute({
+            userId: request.userId,
+            cursor,
+          }),
+        ),
       model: preferences.item,
     })
 

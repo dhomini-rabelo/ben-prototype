@@ -14,6 +14,12 @@ import {
   HISTORY_CONTEXT_TOOL_NAME,
   historyContextInputSchema,
 } from './generate-reply/history-context-tool'
+import {
+  buildOlderMessagesTool,
+  OLDER_MESSAGES_TOOL_DESCRIPTION,
+  OLDER_MESSAGES_TOOL_NAME,
+  olderMessagesInputSchema,
+} from './generate-reply/older-messages-tool'
 import { agentReplySchema } from './generate-reply/schemas'
 import { buildSystemPrompt } from './generate-reply/system-prompt'
 import { toAgentReply } from './generate-reply/to-agent-reply'
@@ -28,6 +34,8 @@ import {
   RecordedStep,
 } from './trace-builders'
 
+const CONTEXT_MAX_STEPS = 5
+
 export class BenAgentProviderService implements AgentService {
   async generateReply(
     payload: GenerateReplyPayload,
@@ -40,21 +48,33 @@ export class BenAgentProviderService implements AgentService {
     const contextResult = await generateText({
       model,
       system: contextSystemPrompt,
-      prompt: payload.message,
+      messages: [
+        ...payload.history.messages.map(({ role, content }) => ({
+          role,
+          content,
+        })),
+        { role: 'user', content: payload.message },
+      ],
       tools: {
         'get-history-context': buildHistoryContextTool(
           payload.resolveHistoryContext,
         ),
+        [OLDER_MESSAGES_TOOL_NAME]: buildOlderMessagesTool({
+          initialCursor: payload.history.nextCursor,
+          resolveOlderMessages: payload.resolveOlderMessages,
+        }),
       },
       toolChoice: 'auto',
-      stopWhen: stepCountIs(2),
-      prepareStep: ({ messages }) => {
+      stopWhen: stepCountIs(CONTEXT_MAX_STEPS),
+      prepareStep: ({ messages, stepNumber }) => {
         contextRecorder.push({
           startedAt: new Date(),
           finishedAt: null,
           messages,
         })
-        return undefined
+        return stepNumber === CONTEXT_MAX_STEPS - 1
+          ? { toolChoice: 'none' }
+          : undefined
       },
       onStepFinish: () => {
         const current = contextRecorder[contextRecorder.length - 1]
@@ -70,6 +90,11 @@ export class BenAgentProviderService implements AgentService {
           name: HISTORY_CONTEXT_TOOL_NAME,
           description: HISTORY_CONTEXT_TOOL_DESCRIPTION,
           inputSchema: z.toJSONSchema(historyContextInputSchema),
+        },
+        {
+          name: OLDER_MESSAGES_TOOL_NAME,
+          description: OLDER_MESSAGES_TOOL_DESCRIPTION,
+          inputSchema: z.toJSONSchema(olderMessagesInputSchema),
         },
       ],
       outputSchema: null,

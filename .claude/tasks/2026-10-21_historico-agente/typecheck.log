@@ -1,0 +1,35 @@
+$ pnpm -r --if-present typecheck
+Scope: 15 of 16 workspace projects
+packages/infra/mobile/design typecheck$ tsc -b
+packages/adapters typecheck$ tsc -p tsconfig.json --noEmit
+packages/infra/mobile/ben typecheck$ tsc --noEmit -p tsconfig.json
+packages/modules/env typecheck$ tsc -p tsconfig.json --noEmit
+packages/adapters typecheck: Done
+packages/modules/utils typecheck$ tsc -p tsconfig.json --noEmit
+packages/modules/env typecheck: Done
+packages/modules/utils typecheck: Done
+packages/infra/mobile/design typecheck: Done
+packages/infra/mobile/ben typecheck: Done
+packages/domain/base typecheck$ tsc -p tsconfig.json --noEmit
+packages/infra/adapters typecheck$ tsc -p tsconfig.json --noEmit
+packages/modules/tests typecheck$ tsc -p tsconfig.json --noEmit
+packages/modules/tests typecheck: Done
+packages/domain/base typecheck: Done
+packages/infra/adapters typecheck: Done
+packages/domain/topic typecheck$ tsc -p tsconfig.json --noEmit
+packages/domain/transcription typecheck$ tsc -p tsconfig.json --noEmit
+packages/domain/user typecheck$ tsc -p tsconfig.json --noEmit
+packages/domain/transcription typecheck: Done
+packages/domain/user typecheck: Done
+packages/domain/topic typecheck: Done
+packages/domain/task typecheck$ tsc -p tsconfig.json --noEmit
+packages/domain/task typecheck: Done
+packages/domain/chat typecheck$ tsc -p tsconfig.json --noEmit
+packages/domain/chat typecheck: Done
+packages/infra/db typecheck$ prisma generate --no-hints && tsc -p tsconfig.json --noEmit
+packages/infra/db typecheck: Loaded Prisma config from prisma.config.ts.
+packages/infra/db typecheck: Prisma schema loaded from prisma/schema.prisma.
+packages/infra/db typecheck: ✔ Generated Prisma Client (7.10.0) to ./src/generated/prisma in 66ms
+packages/infra/db typecheck: Done
+packages/infra/server-ben typecheck$ tsc -p tsconfig.json --noEmit
+packages/infra/server-ben typecheck: Done
