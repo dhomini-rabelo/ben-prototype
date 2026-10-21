@@ -5,6 +5,7 @@ import { AgentSettingsControls } from '@/layout/components/menu-settings/agent-s
 import { AgentSettingsError } from '@/layout/components/menu-settings/agent-settings-error'
 import { AgentSettingsLoading } from '@/layout/components/menu-settings/agent-settings-loading'
 import { LanguageSection } from '@/layout/components/menu-settings/language-section'
+import { RemindersSettingsSection } from '@/layout/components/menu-settings/reminders-settings-section'
 import { UsdCostSection } from '@/layout/components/menu-settings/usd-cost-section'
 import { AppVersionsSection } from '@/layout/components/menu-settings/app-versions-section'
 import { useAgentPreferences } from '@/layout/hooks/use-agent-preferences'
@@ -66,6 +67,14 @@ export function SettingsView({ onClose }: SettingsViewProps) {
         <LanguageSection
           hasError={preferences.state.hasLanguageError}
           onSelectLanguage={preferences.actions.selectLanguage}
+        />
+      }
+      remindersSection={
+        <RemindersSettingsSection
+          hasError={preferences.state.hasReminderError}
+          onChangeSummaryEnabled={preferences.actions.setDailySummaryEnabled}
+          onChangeSummaryTime={preferences.actions.setDailySummaryTime}
+          onChangeMorningTime={preferences.actions.setMorningTime}
         />
       }
       usdCostSection={

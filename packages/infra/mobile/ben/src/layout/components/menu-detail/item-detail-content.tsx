@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { ScrollView, View } from 'react-native'
-import type { ReminderStatus } from '@/api/models/reminder'
+import type { ReminderKind, ReminderStatus } from '@/api/models/reminder'
 import { Typography } from '@/layout/components/ui/typography'
 import { ItemDetailCapturedMeta } from './item-detail-captured-meta'
 import { ItemDetailReminderMeta } from './item-detail-reminder-meta'
@@ -13,6 +13,9 @@ type ItemDetailContentProps = {
   firesAtRelative?: string
   firesAtAbsolute?: string
   status?: ReminderStatus
+  kind?: ReminderKind
+  nextFireAbsolute?: string
+  children?: ReactNode
 }
 
 export function ItemDetailContent({
@@ -23,6 +26,9 @@ export function ItemDetailContent({
   firesAtRelative,
   firesAtAbsolute,
   status,
+  kind,
+  nextFireAbsolute,
+  children,
 }: ItemDetailContentProps) {
   return (
     <View className="gap-3 px-5 pb-5">
@@ -37,6 +43,8 @@ export function ItemDetailContent({
           firesAtRelative={firesAtRelative}
           firesAtAbsolute={firesAtAbsolute}
           status={status}
+          kind={kind}
+          nextFireAbsolute={nextFireAbsolute}
         />
       )}
 
@@ -47,6 +55,8 @@ export function ItemDetailContent({
           </Typography>
         </ScrollView>
       )}
+
+      {children}
 
       {(capturedAtAbsolute || capturedAtRelative) && (
         <ItemDetailCapturedMeta

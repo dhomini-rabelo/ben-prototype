@@ -6,6 +6,12 @@ import { useAPIMutation } from '@/layout/hooks/use-api-mutation'
 import { useLanguageStore } from '@/layout/stores/language-store'
 import { useUserPreferencesStore } from '@/layout/stores/user-preferences-store'
 
+type UserPreferencesStoreState = ReturnType<
+  typeof useUserPreferencesStore.getState
+>
+type ReminderPreferenceKey =
+  'morningTime' | 'dailySummaryEnabled' | 'dailySummaryTime'
+
 export function useUserPreferences() {
   const { actions: dataActions } = useUserPreferencesData()
   const { actions: mutationActions } = useAPIMutation({
@@ -14,6 +20,7 @@ export function useUserPreferences() {
   const [pendingCount, setPendingCount] = useState(0)
   const [hasLanguageError, setHasLanguageError] = useState(false)
   const [hasUsdCostError, setHasUsdCostError] = useState(false)
+  const [hasReminderError, setHasReminderError] = useState(false)
 
   function selectLanguage(language: Language) {
     const languageStore = useLanguageStore.getState()
@@ -55,8 +62,46 @@ export function useUserPreferences() {
       .finally(() => setPendingCount((count) => count - 1))
   }
 
+  function saveReminderPreference<Key extends ReminderPreferenceKey>(
+    key: Key,
+    value: UserPreferencesStoreState[Key],
+  ) {
+    const preferencesStore = useUserPreferencesStore.getState()
+    const previous = preferencesStore[key]
+
+    if (value === previous) {
+      return
+    }
+
+    useUserPreferencesStore.setState({ [key]: value })
+    setHasReminderError(false)
+    setPendingCount((count) => count + 1)
+
+    mutationActions
+      .mutate({ [key]: value })
+      .then(() => dataActions.invalidate())
+      .catch(() => {
+        useUserPreferencesStore.setState({ [key]: previous })
+        setHasReminderError(true)
+      })
+      .finally(() => setPendingCount((count) => count - 1))
+  }
+
+  function setMorningTime(value: string) {
+    saveReminderPreference('morningTime', value)
+  }
+
+  function setDailySummaryEnabled(value: boolean) {
+    saveReminderPreference('dailySummaryEnabled', value)
+  }
+
+  function setDailySummaryTime(value: string) {
+    saveReminderPreference('dailySummaryTime', value)
+  }
+
   return {
     state: {
+      hasReminderError,
       isSaving: pendingCount > 0,
       hasLanguageError,
       hasUsdCostError,
@@ -64,6 +109,9 @@ export function useUserPreferences() {
     actions: {
       selectLanguage,
       setShowUsdCost,
+      setMorningTime,
+      setDailySummaryEnabled,
+      setDailySummaryTime,
     },
   }
 }

@@ -18,6 +18,11 @@ const en = {
   costTitle: 'Cost',
   showUsdCost: 'Show cost in USD',
   preferenceSaveFailed: "Couldn't save. Try again.",
+  remindersTitle: 'Reminders',
+  dailySummary: 'Daily summary',
+  dailySummaryTime: 'Summary time',
+  morningTime: 'Morning time',
+  morningTimeHint: '"In the morning" alerts use this time.',
 }
 
 export const settingsStrings: Localized<typeof en> = {
@@ -40,5 +45,10 @@ export const settingsStrings: Localized<typeof en> = {
     costTitle: 'Custo',
     showUsdCost: 'Mostrar gasto em dólar',
     preferenceSaveFailed: 'Não foi possível salvar. Tente de novo.',
+    remindersTitle: 'Lembretes',
+    dailySummary: 'Resumo diário',
+    dailySummaryTime: 'Horário do resumo',
+    morningTime: 'Horário da manhã',
+    morningTimeHint: 'Os avisos "pela manhã" usam este horário.',
   },
 }

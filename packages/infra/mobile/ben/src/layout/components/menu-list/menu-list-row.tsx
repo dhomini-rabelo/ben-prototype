@@ -1,5 +1,5 @@
 import { Bell, List, NotebookPen, Type } from 'lucide-react-native'
-import type { ComponentType } from 'react'
+import type { ComponentType, ReactNode } from 'react'
 import { Pressable, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { onSurfaceVariant } from '@/layout/utils/colors'
@@ -16,6 +16,7 @@ type MenuListRowProps = {
   trailing?: string
   bodyPreview?: string
   muted?: boolean
+  badge?: ReactNode
   emphasizeTrailing?: boolean
   className?: string
   onPress?: () => void
@@ -35,6 +36,7 @@ export function MenuListRow({
   trailing,
   bodyPreview,
   muted,
+  badge,
   emphasizeTrailing,
   className,
   onPress,
@@ -71,6 +73,7 @@ export function MenuListRow({
           >
             {title}
           </Typography>
+          {badge}
           {trailing ? (
             <Typography
               variant="label-caps"

@@ -11,6 +11,7 @@ import { ItemDetailError } from './item-detail-error'
 import { ItemDetailGone } from './item-detail-gone'
 import { ItemDetailLoading } from './item-detail-loading'
 import { ItemDetailRoot } from './item-detail-root'
+import { ReminderEditor } from './reminder-editor'
 
 type ReminderDetailProps = {
   reminderId: string
@@ -48,7 +49,17 @@ export function ReminderDetail({ reminderId, onClose }: ReminderDetailProps) {
           }
           capturedAtAbsolute={absoluteDateTime(reminder.capturedAt, language)}
           capturedAtRelative={relativeTime(reminder.capturedAt, language)}
-        />
+          kind={reminder.kind}
+          nextFireAbsolute={
+            reminder.nextFireAt
+              ? absoluteDateTime(reminder.nextFireAt, language)
+              : undefined
+          }
+        >
+          {reminder.status === 'active' ? (
+            <ReminderEditor reminder={reminder} />
+          ) : null}
+        </ItemDetailContent>
       ) : null}
     </ItemDetailRoot>
   )

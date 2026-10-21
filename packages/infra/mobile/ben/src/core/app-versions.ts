@@ -9,6 +9,19 @@ export type AppVersion = {
 
 export const APP_VERSIONS = [
   {
+    version: '1.2.0',
+    date: '2026-10-21',
+    title: {
+      en: 'Alarms, goals and daily summary',
+      'pt-BR': 'Alarmes, goals e resumo diário',
+    },
+    description: {
+      en: 'Alarms now have alerts (at the time, a day before, in the morning, minutes before) and a popup with dynamic snooze. Goals repeat and carry your saved messages, conditional reminders ask how often you choose, and a daily summary shows your day.',
+      'pt-BR':
+        'Os alarmes agora têm avisos (no horário, um dia antes, pela manhã, minutos antes) e um popup com adiar dinâmico. Goals se repetem e trazem suas mensagens salvas, lembretes condicionais perguntam na frequência que você escolher e um resumo diário mostra o seu dia.',
+    },
+  },
+  {
     version: '1.1.0',
     date: '2026-10-11',
     title: {

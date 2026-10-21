@@ -1,4 +1,5 @@
 import type { Localized } from '@/core/languages'
+import type { ReminderKind } from '@/api/models/reminder'
 
 const en = {
   closeMenu: 'Close menu',
@@ -23,12 +24,17 @@ const en = {
   remindersEmptyCatch: "and Ben'll catch it.",
   activeHeading: 'Active',
   finishedHeading: 'Finished',
-  upcomingHeading: 'Upcoming',
-  firedHeading: 'Fired',
+  upcomingHeading: 'Active',
+  firedHeading: 'Done',
   activeSupporting: (time: string) => `active · ${time}`,
   finishedSupporting: (time: string) => `finished ${time}`,
   capturedSupporting: (time: string) => `captured ${time}`,
-  firedSupporting: 'fired',
+  firedSupporting: 'done',
+  reminderKinds: {
+    alarm: 'Alarm',
+    goal: 'Goal',
+    conditional: 'When it happens',
+  } satisfies Record<ReminderKind, string>,
 }
 
 export const menuStrings: Localized<typeof en> = {
@@ -57,11 +63,16 @@ export const menuStrings: Localized<typeof en> = {
     remindersEmptyCatch: 'e o Ben anota.',
     activeHeading: 'Ativas',
     finishedHeading: 'Concluídas',
-    upcomingHeading: 'Próximos',
-    firedHeading: 'Disparados',
+    upcomingHeading: 'Ativos',
+    firedHeading: 'Concluídos',
     activeSupporting: (time: string) => `ativa · ${time}`,
     finishedSupporting: (time: string) => `concluída ${time}`,
     capturedSupporting: (time: string) => `capturado ${time}`,
-    firedSupporting: 'disparado',
+    firedSupporting: 'concluído',
+    reminderKinds: {
+      alarm: 'Alarme',
+      goal: 'Goal',
+      conditional: 'Quando acontecer',
+    },
   },
 }

@@ -1,10 +1,16 @@
+import type { Language } from '@/core/languages'
 import type { ReminderListItem } from '@/api/models/reminder'
 import { MenuListRow } from '@/layout/components/menu-list/menu-list-row'
 import { Typography } from '@/layout/components/ui/typography'
 import { firesAtRelative, relativeTime } from '@/layout/utils/format-time'
 import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
 import { menuStrings } from '@/layout/strings/menu-strings'
+import { ReminderKindBadge } from '@/layout/components/menu-reminders/reminder-kind-badge'
 import { View } from 'react-native'
+
+function nextFireLabel(reminder: ReminderListItem, language: Language) {
+  return firesAtRelative(reminder.nextFireAt ?? reminder.firesAt, language)
+}
 
 type MenuRemindersListProps = {
   reminders: ReminderListItem[]
@@ -36,7 +42,8 @@ export function MenuRemindersList({
                 key={reminder.id}
                 kind="reminder"
                 title={reminder.title}
-                trailing={firesAtRelative(reminder.firesAt, language)}
+                badge={<ReminderKindBadge kind={reminder.kind} />}
+                trailing={nextFireLabel(reminder, language)}
                 emphasizeTrailing
                 supporting={strings.capturedSupporting(
                   relativeTime(reminder.capturedAt, language),
@@ -62,6 +69,7 @@ export function MenuRemindersList({
                 key={reminder.id}
                 kind="reminder"
                 title={reminder.title}
+                badge={<ReminderKindBadge kind={reminder.kind} />}
                 trailing={firesAtRelative(reminder.firesAt, language)}
                 supporting={strings.firedSupporting}
                 muted

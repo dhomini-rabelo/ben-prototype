@@ -1,6 +1,7 @@
 import { View } from 'react-native'
-import type { ReminderStatus } from '@/api/models/reminder'
+import type { ReminderKind, ReminderStatus } from '@/api/models/reminder'
 import { Typography } from '@/layout/components/ui/typography'
+import { ReminderKindBadge } from '@/layout/components/menu-reminders/reminder-kind-badge'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { menuDetailStrings } from '@/layout/strings/menu-detail-strings'
 import { cn } from '@/layout/utils/styles'
@@ -9,12 +10,16 @@ type ItemDetailReminderMetaProps = {
   firesAtRelative?: string
   firesAtAbsolute?: string
   status?: ReminderStatus
+  kind?: ReminderKind
+  nextFireAbsolute?: string
 }
 
 export function ItemDetailReminderMeta({
   firesAtRelative,
   firesAtAbsolute,
   status,
+  kind,
+  nextFireAbsolute,
 }: ItemDetailReminderMetaProps) {
   const strings = useStrings(menuDetailStrings)
   const isFired = status === 'done'
@@ -47,10 +52,11 @@ export function ItemDetailReminderMeta({
                 isFired ? 'text-on-surface-variant/70' : 'text-primary',
               )}
             >
-              {isFired ? strings.statusFired : strings.statusUpcoming}
+              {isFired ? strings.statusDone : strings.statusActive}
             </Typography>
           </View>
         )}
+        {kind && <ReminderKindBadge kind={kind} />}
       </View>
       {firesAtAbsolute && (
         <Typography
@@ -58,6 +64,16 @@ export function ItemDetailReminderMeta({
           className="normal-case text-on-surface-variant"
         >
           {firesAtAbsolute}
+        </Typography>
+      )}
+      {status === 'active' && (
+        <Typography
+          variant="label-caps"
+          className="normal-case text-on-surface-variant"
+        >
+          {nextFireAbsolute
+            ? strings.nextAlert(nextFireAbsolute)
+            : strings.noNextAlert}
         </Typography>
       )}
     </View>

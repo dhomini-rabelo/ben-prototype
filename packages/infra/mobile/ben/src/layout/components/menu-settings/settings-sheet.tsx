@@ -25,6 +25,7 @@ type SettingsSheetProps = {
   signOutState?: SignOutState
   agentSection?: ReactNode
   languageSection?: ReactNode
+  remindersSection?: ReactNode
   usdCostSection?: ReactNode
   versionsSection?: ReactNode
   className?: string
@@ -41,6 +42,7 @@ export function SettingsSheet({
   signOutState = 'idle',
   agentSection,
   languageSection,
+  remindersSection,
   usdCostSection,
   versionsSection,
   className,
@@ -140,6 +142,8 @@ export function SettingsSheet({
         ) : null}
 
         {languageSection}
+
+        {remindersSection}
 
         {usdCostSection}
 
