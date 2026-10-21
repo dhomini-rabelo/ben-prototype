@@ -12,7 +12,7 @@ modules/{utils,env,tests}  usados por qualquer camada (tests só em devDependenc
 
 - **`packages/domain/base`** (`@ben/domain-base`): primitivas de domínio. `Entity`, `AggregateRoot`, `ValueObject`, `WatchedList`, `ID`, `JsonField`, `Repository` (com cursor e paginação), `UseCase`, erros de domínio e `responses.ts` (`ItemResponse`, `ListingResponse`).
 - **`packages/domain/<módulo>`**: entidades, ports de repositório (`application/repositories/`) e use cases. Um módulo só importa de outro como consumidor do dono (ver `packages/domain/ownerships.md`).
-- **`packages/adapters`** (`@ben/adapters`): ports de serviços externos em `src/ports/` (`jwt`, `auth-provider`, `agent-provider`, `agent-call-trace`, `transcription-provider`).
+- **`packages/adapters`** (`@ben/adapters`): ports de serviços externos em `src/ports/` (`jwt`, `auth-provider`, `agent-provider`, `agent-call-trace`, `transcription-provider`); a resposta do agente e da transcrição carregam o custo em USD.
 - **`packages/infra/adapters`** (`@ben/infra-adapters`): implementações das ports em `src/services/` (JWT, Firebase auth, AssemblyAI, `ben-agent-provider/`).
 - **`packages/infra/db`** (`@ben/infra-db`): Prisma (`prisma/schema.prisma`, migrations, `dev.db`), cliente em `src/client/` e repositórios em `src/repos/{in-memory,sqlite}/`.
 - **`packages/infra/server-ben`** (`@ben/server-ben`): Express. `app.ts` registra as rotas e o `errorHandler`; `repositories.ts` centraliza a composição das dependências; um handler por arquivo em `routes/<feature>/`; um presenter por entidade em `presenters/`; `middlewares/` com `auth` e `error-handler`.

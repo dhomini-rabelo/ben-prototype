@@ -19,12 +19,13 @@ Rotas registradas em `packages/infra/server-ben/src/app.ts`. Todas, exceto `/hea
 | `GET /reminders/list`, `GET /reminders/:id/detail` | `routes/reminders/` | `chat` (`captures/`) |
 | `GET /captures/counts` | `routes/captures/get-captures-counts.ts` | `chat` (`captures/`) |
 | `GET /agent-preferences/detail`, `POST /agent-preferences/update` | `routes/agent-preferences/` | `user` (`agent-preferences/`) |
+| `GET /user-preferences/detail`, `POST /user-preferences/update` | `routes/user-preferences/` | `user` (`user-preferences/`) |
 
 ## Fluxo principal
 
 1. O app autentica com Google (Firebase) e chama `POST /auth/login-or-register`, que devolve o JWT do Ben.
 2. O áudio gravado vai para `POST /transcription` (AssemblyAI) e o texto volta para o app.
-3. `POST /chat` grava a mensagem do usuário, monta o contexto de tópicos (`topic`), chama o agente Ben (`BenAgentProviderService`) com as preferências do usuário e grava a resposta, as capturas (`persist-captures`: notas, lembretes e tarefas) e os resumos de tópico.
+3. `POST /chat` grava a mensagem do usuário, monta o contexto de tópicos (`topic`), chama o agente Ben (`BenAgentProviderService`) com as preferências do usuário, as 15 mensagens anteriores e um resolvedor de mensagens mais antigas, e grava a resposta (com o custo em USD), as capturas (`persist-captures`: notas, lembretes e tarefas), os resumos de tópico, a conversa atual e as memórias.
 4. Listas e detalhes (`/notes`, `/reminders`, `/tasks`, `/captures/counts`) alimentam o menu e o workspace de tarefas no app.
 5. No workspace de tarefas, `/tasks/:id/messages/create` conversa com o agente sobre a tarefa; o diff proposto é aprovado ou rejeitado, e a tarefa é concluída ou reaberta.
 

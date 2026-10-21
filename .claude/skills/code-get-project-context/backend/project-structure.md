@@ -22,6 +22,6 @@ Módulos e use cases: ver [description.md](./description.md).
 
 ## Infra
 
-- `packages/infra/db/`: `prisma/` (schema, migrations, `dev.db`), `prisma.config.ts`, `scripts/`, `src/client/` (`prisma`, `database-url`), `src/repos/in-memory/`, `src/repos/sqlite/` (um arquivo por entidade mais `sqlite-repository`).
-- `packages/infra/adapters/src/services/`: `jwt`, `firebase-auth-provider`, `assemblyai-transcription-provider`, `ben-agent-provider/`.
-- `packages/infra/server-ben/src/`: `server.ts` (entrada), `app.ts`, `repositories.ts`, `routes/` (`auth/`, `messages/`, `captures/`, `notes/`, `reminders/`, `tasks/`, `agent-preferences/`, `chat.ts`, `transcription.ts`), `presenters/`, `middlewares/` (`auth`, `error-handler`).
+- `packages/infra/db/`: `prisma/` (schema com `conversations` e `memories` além das demais tabelas, migrations, `dev.db`), `prisma.config.ts`, `scripts/`, `src/client/` (`prisma`, `database-url`), `src/repos/in-memory/`, `src/repos/sqlite/` (um arquivo por entidade mais `sqlite-repository`).
+- `packages/infra/adapters/src/services/`: `jwt`, `firebase-auth-provider`, `assemblyai-transcription-provider`, `ben-agent-provider/` (`generate-reply/` com as tools `history-context-tool` e `older-messages-tool`).
+- `packages/infra/server-ben/src/`: `server.ts` (entrada), `app.ts`, `repositories.ts`, `routes/` (`auth/`, `messages/`, `captures/`, `notes/`, `reminders/`, `tasks/`, `agent-preferences/`, `user-preferences/`, `chat.ts`, `transcription.ts`), `presenters/`, `middlewares/` (`auth`, `error-handler`).

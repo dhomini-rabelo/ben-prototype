@@ -8,11 +8,15 @@
 
 A implementação mobile do Ben, em React Native (Expo). Combina peças agnósticas de plataforma (cliente de API e contratos, estado com Zustand/Jotai, hooks do React Query, máquina de estados de voz, tokens de design) com apresentação e peças específicas de plataforma (primitivas de UI, navegação, áudio, auth, storage). Consome a API do [backend](../../backend/description.md).
 
-Cobre: login com Google, chat com o agente Ben, o workspace de tarefas e o menu de navegação (tarefas, notas, lembretes, com detalhe e configurações), mais notificações locais para lembretes. A folha de configurações escolhe modelo e esforço do agente, o idioma da interface (inglês `en` ou português `pt-BR`, padrão `en`) e lista as versões do app ("App versions"), cada uma expansível para ler o que mudou. Convenção: a cada release com funcionalidades testáveis, adicione uma entrada no topo de `APP_VERSIONS`, pois ela define a versão do Expo.
+Cobre: login com Google, chat com o agente Ben, o workspace de tarefas e o menu de navegação (tarefas, notas, lembretes, com detalhe e configurações), mais notificações locais para lembretes. A folha de configurações escolhe modelo e esforço do agente, o idioma da interface (inglês `en` ou português `pt-BR`, padrão `en`), o switch "mostrar gasto em dólar" (desligado por padrão) e lista as versões do app ("App versions"), cada uma expansível para ler o que mudou. Convenção: a cada release com funcionalidades testáveis, adicione uma entrada no topo de `APP_VERSIONS`, pois ela define a versão do Expo.
 
 ## Idioma da interface
 
-Todo texto da interface vive em dicionários tipados `Localized<T>` (um objeto `en` e um `pt-BR` com as mesmas chaves, que podem ser funções, por exemplo para plural e tempo relativo). Componentes leem com `useStrings(dicionario)`; código fora de componente usa `getStrings(dicionario)`. O idioma escolhido fica no `useLanguageStore` (Zustand), é gravado no AsyncStorage (`@ben/language`) e é restaurado no `auth-bootstrap` na abertura do app. Os formatadores `relativeTime` e `absoluteDateTime` recebem o `language` e usam o locale de `LANGUAGE_LOCALES`. Textos vindos do backend ou do agente não são traduzidos.
+Todo texto da interface vive em dicionários tipados `Localized<T>` (um objeto `en` e um `pt-BR` com as mesmas chaves, que podem ser funções, por exemplo para plural e tempo relativo). Componentes leem com `useStrings(dicionario)`; código fora de componente usa `getStrings(dicionario)`. O idioma escolhido fica no `useLanguageStore` (Zustand), é gravado no AsyncStorage (`@ben/language`) e é restaurado no `auth-bootstrap` na abertura do app. Depois do login o servidor é a fonte de verdade: as preferências (`language`, `showUsdCost`) são lidas e gravadas por `/user-preferences/*` (`use-user-preferences-sync`, `user-preferences-store`); o valor local vale antes do login e enquanto carrega.
+
+## Gasto em dólar
+
+Quando o switch está ligado, o rodapé de cada resposta do Ben mostra o custo total da interação (`cost-footer.tsx`, formatado por `format-usd-cost.ts`, por exemplo `US$ 0,0123`). Respostas sem custo salvo não mostram rodapé. Os formatadores `relativeTime` e `absoluteDateTime` recebem o `language` e usam o locale de `LANGUAGE_LOCALES`. Textos vindos do backend ou do agente não são traduzidos.
 
 ## Regras visuais
 
