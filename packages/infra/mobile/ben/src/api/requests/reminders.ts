@@ -39,6 +39,7 @@ export interface UpdateReminderBody {
   recurrence?: GoalRecurrence
   checkFrequency?: CheckFrequency
   status?: ReminderStatus
+  now?: string
 }
 
 export interface AcknowledgeReminderBody {

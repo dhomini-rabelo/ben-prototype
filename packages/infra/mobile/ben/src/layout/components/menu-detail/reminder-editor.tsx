@@ -205,7 +205,9 @@ export function ReminderEditor({ reminder }: ReminderEditorProps) {
       if (recurrence !== initialRecurrence) {
         body.recurrence = choiceToRecurrence(recurrence, reminder.recurrence)
       }
-      return body
+      return Object.keys(body).length === 0
+        ? body
+        : { ...body, now: now.toISOString() }
     }
 
     const base = day === 'current' && eventDate ? eventDate : now
@@ -213,6 +215,7 @@ export function ReminderEditor({ reminder }: ReminderEditorProps) {
     return {
       remindAt: toOffsetISO(dateAt(base, offset, time)),
       alerts: buildAlerts(atEvent, dayBefore, morning, minutesBefore),
+      now: now.toISOString(),
     }
   }
 
