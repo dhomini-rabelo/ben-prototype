@@ -104,7 +104,14 @@ export type TaskTurnReply = {
   updatedSummary: string
 }
 
+export type GenerateTaskTurnResult = {
+  reply: TaskTurnReply
+  costUsd: number | null
+}
+
 export interface AgentService {
   generateReply(payload: GenerateReplyPayload): Promise<GenerateReplyResult>
-  generateTaskTurn(payload: GenerateTaskTurnPayload): Promise<TaskTurnReply>
+  generateTaskTurn(
+    payload: GenerateTaskTurnPayload,
+  ): Promise<GenerateTaskTurnResult>
 }

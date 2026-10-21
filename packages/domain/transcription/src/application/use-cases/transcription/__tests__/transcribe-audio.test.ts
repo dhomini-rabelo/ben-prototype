@@ -20,10 +20,18 @@ describe('TranscribeAudioUseCase', () => {
 
     const response = await sut.execute({ audio, mimeType: 'audio/webm' })
 
-    expect(response).toEqual({ text: 'hello world' })
+    expect(response).toEqual({ text: 'hello world', costUsd: null })
     expect(transcriptionProvider.receivedPayloads).toEqual([
       { audio, mimeType: 'audio/webm' },
     ])
+  })
+
+  it('returns the provider cost', async () => {
+    transcriptionProvider.respondWith('hello world', 0.0035)
+
+    const response = await sut.execute({ audio: Buffer.from('audio-bytes') })
+
+    expect(response).toEqual({ text: 'hello world', costUsd: 0.0035 })
   })
 
   it('forwards an undefined mime type when none is given', async () => {

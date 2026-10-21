@@ -3,16 +3,17 @@ import {
   GenerateReplyPayload,
   GenerateReplyResult,
   GenerateTaskTurnPayload,
+  GenerateTaskTurnResult,
   TaskTurnReply,
 } from '@ben/adapters'
 
 export class FakeAgentService implements AgentService {
   public receivedPayloads: GenerateTaskTurnPayload[] = []
-  private replies: TaskTurnReply[] = []
+  private replies: GenerateTaskTurnResult[] = []
   private failure: Error | null = null
 
-  respondWith(reply: TaskTurnReply) {
-    this.replies.push(reply)
+  respondWith(reply: TaskTurnReply, costUsd: number | null = null) {
+    this.replies.push({ reply, costUsd })
   }
 
   failWith(error: Error) {
@@ -27,7 +28,7 @@ export class FakeAgentService implements AgentService {
 
   async generateTaskTurn(
     payload: GenerateTaskTurnPayload,
-  ): Promise<TaskTurnReply> {
+  ): Promise<GenerateTaskTurnResult> {
     this.receivedPayloads.push(payload)
 
     if (this.failure) {

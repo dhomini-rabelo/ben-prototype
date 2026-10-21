@@ -7,6 +7,7 @@ import { UseCase } from '@ben/domain-base'
 interface Payload {
   userId: string
   content: string
+  costUsd?: number | null
 }
 
 export class PersistUserMessageUseCase implements UseCase<
@@ -21,6 +22,8 @@ export class PersistUserMessageUseCase implements UseCase<
       content: payload.content,
       capture: null,
       trace: null,
+      costUsd: payload.costUsd ?? null,
+      interactionCostUsd: null,
       createdAt: new Date(),
     })
 

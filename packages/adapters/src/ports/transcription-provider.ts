@@ -5,6 +5,7 @@ export type TranscribePayload = {
 
 export type TranscribeResponse = {
   text: string
+  costUsd: number | null
 }
 
 export interface TranscriptionProvider {

@@ -45,6 +45,7 @@ export async function createTaskMessage(
     return response.status(HttpStatus.OK).json({
       item: TaskPresenter.toHttp(result.item),
       benMessage: result.benMessage,
+      costUsd: result.costUsd,
     })
   } catch (error) {
     next(error)

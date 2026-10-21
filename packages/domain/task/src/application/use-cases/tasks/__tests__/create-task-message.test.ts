@@ -128,6 +128,36 @@ describe('CreateTaskMessageUseCase', () => {
       expect(benMessage).toBe('the agent answer')
     })
 
+    it('returns the agent cost as costUsd', async () => {
+      const userId = createID()
+      const task = await taskFactory.create({ userId })
+      agentService.respondWith(buildReply(), 0.0042)
+
+      const { costUsd } = await sut.execute({
+        userId: userId.toValue(),
+        taskId: task.id.toValue(),
+        message: 'hello',
+        model,
+      })
+
+      expect(costUsd).toBe(0.0042)
+    })
+
+    it('returns a null costUsd when the agent reports no cost', async () => {
+      const userId = createID()
+      const task = await taskFactory.create({ userId })
+      agentService.respondWith(buildReply())
+
+      const { costUsd } = await sut.execute({
+        userId: userId.toValue(),
+        taskId: task.id.toValue(),
+        message: 'hello',
+        model,
+      })
+
+      expect(costUsd).toBeNull()
+    })
+
     it('builds a text pending diff using the current text as before', async () => {
       const userId = createID()
       const task = await taskFactory.create({

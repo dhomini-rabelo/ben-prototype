@@ -3,7 +3,7 @@ import {
   GenerateReplyPayload,
   GenerateReplyResult,
   GenerateTaskTurnPayload,
-  TaskTurnReply,
+  GenerateTaskTurnResult,
 } from '@ben/adapters'
 import { generateText, Output, stepCountIs } from 'ai'
 import { z } from 'zod'
@@ -24,6 +24,7 @@ import { resolveOpenRouterModel } from './models'
 import {
   buildAgentCallSteps,
   buildAgentCallTrace,
+  sumStepsCostUsd,
   RecordedStep,
 } from './trace-builders'
 
@@ -126,7 +127,7 @@ export class BenAgentProviderService implements AgentService {
 
   async generateTaskTurn(
     payload: GenerateTaskTurnPayload,
-  ): Promise<TaskTurnReply> {
+  ): Promise<GenerateTaskTurnResult> {
     const model = resolveOpenRouterModel(payload.model)
 
     const result = await generateText({
@@ -136,6 +137,9 @@ export class BenAgentProviderService implements AgentService {
       output: Output.object({ schema: taskTurnReplySchema }),
     })
 
-    return toTaskTurnReply(result.output)
+    return {
+      reply: toTaskTurnReply(result.output),
+      costUsd: sumStepsCostUsd(result.steps),
+    }
   }
 }

@@ -6,7 +6,12 @@ export class AgentReplyPresenter {
     reply: AgentReply,
     capture: CaptureView | null,
     messageId: string,
-  ): AgentReply & { capture: CaptureView | null; messageId: string } {
+    interactionCostUsd: number | null,
+  ): AgentReply & {
+    capture: CaptureView | null
+    messageId: string
+    interactionCostUsd: number | null
+  } {
     return {
       message: reply.message,
       newReminders: reply.newReminders,
@@ -15,6 +20,7 @@ export class AgentReplyPresenter {
       historyTopics: reply.historyTopics,
       capture,
       messageId,
+      interactionCostUsd,
     }
   }
 }

@@ -39,7 +39,21 @@ describe('PersistUserMessageUseCase', () => {
       expect(stored.props.content).toBe(content)
       expect(stored.props.capture).toBeNull()
       expect(stored.props.trace).toBeNull()
+      expect(stored.props.costUsd).toBeNull()
+      expect(stored.props.interactionCostUsd).toBeNull()
       expect(stored.props.createdAt).toEqual(now)
+    })
+
+    it('stores the transcription cost given for the message', async () => {
+      const { item } = await sut.execute({
+        userId: createID().toValue(),
+        content: some.text(),
+        costUsd: 0.0035,
+      })
+
+      const stored = await messageRepository.get({ id: item.id })
+      expect(stored.props.costUsd).toBe(0.0035)
+      expect(stored.props.interactionCostUsd).toBeNull()
     })
   })
 })

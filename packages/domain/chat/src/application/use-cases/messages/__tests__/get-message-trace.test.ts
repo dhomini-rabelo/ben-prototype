@@ -23,6 +23,7 @@ const trace: AgentCallTrace = {
     outputTokens: 2,
     totalTokens: 3,
     reasoningTokens: null,
+    costUsd: null,
   },
   steps: [],
 }

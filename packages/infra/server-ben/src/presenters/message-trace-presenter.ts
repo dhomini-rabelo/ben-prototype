@@ -7,7 +7,10 @@ import { Serialize, WithID } from '@ben/domain-base'
 export class MessageTracePresenter {
   static toHttp(
     message: Message,
-  ): Omit<Serialize<WithID<MessageProps>>, 'userId' | 'content' | 'capture'> {
+  ): Omit<
+    Serialize<WithID<MessageProps>>,
+    'userId' | 'content' | 'capture' | 'costUsd' | 'interactionCostUsd'
+  > {
     return {
       id: message.id.toValue(),
       role: message.props.role,

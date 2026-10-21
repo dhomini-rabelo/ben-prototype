@@ -22,7 +22,9 @@ export async function transcription(
       mimeType: request.file.mimetype,
     })
 
-    return response.status(HttpStatus.OK).json({ text: result.text })
+    return response
+      .status(HttpStatus.OK)
+      .json({ text: result.text, costUsd: result.costUsd })
   } catch (error) {
     next(error)
   }

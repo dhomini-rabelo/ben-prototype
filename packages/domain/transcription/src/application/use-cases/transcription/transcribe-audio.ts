@@ -9,6 +9,7 @@ interface Payload {
 
 interface Response {
   text: string
+  costUsd: number | null
 }
 
 export class TranscribeAudioUseCase implements UseCase<Response> {
@@ -22,11 +23,11 @@ export class TranscribeAudioUseCase implements UseCase<Response> {
       })
     }
 
-    const { text } = await this.transcriptionProvider.transcribe({
+    const { text, costUsd } = await this.transcriptionProvider.transcribe({
       audio: payload.audio,
       mimeType: payload.mimeType,
     })
 
-    return { text }
+    return { text, costUsd }
   }
 }

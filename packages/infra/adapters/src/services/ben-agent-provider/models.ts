@@ -18,6 +18,7 @@ export function resolveOpenRouterModel(
   selection: AgentModelSelection,
 ): LanguageModel {
   return openrouter(selection.modelSlug, {
+    usage: { include: true },
     extraBody: {
       provider: {
         sort: 'throughput',

@@ -20,6 +20,7 @@ interface Payload {
 
 type Response = ItemResponse<Task> & {
   benMessage: string
+  costUsd: number | null
 }
 
 export class CreateTaskMessageUseCase implements UseCase<Response> {
@@ -34,10 +35,10 @@ export class CreateTaskMessageUseCase implements UseCase<Response> {
       userId: createID(payload.userId),
     })
 
-    const reply = await this.generateAgentReply(payload, task)
+    const { reply, costUsd } = await this.generateAgentReply(payload, task)
     const item = await this.applyReplyToTask(task, reply)
 
-    return { item, benMessage: reply.message }
+    return { item, benMessage: reply.message, costUsd }
   }
 
   private generateAgentReply(payload: Payload, task: Task) {

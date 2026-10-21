@@ -35,6 +35,7 @@ const chatBodySchema = z.object({
       }),
     )
     .min(1),
+  transcriptionCostUsd: z.number().finite().nonnegative().nullable().optional(),
 })
 
 const agentService = new BenAgentProviderService()
@@ -93,9 +94,10 @@ export async function chat(
         .json({ message: 'No user message provided.' })
     }
 
-    await persistUserMessageUseCase.execute({
+    const userMessageResult = await persistUserMessageUseCase.execute({
       userId: request.userId,
       content: message,
+      costUsd: body.transcriptionCostUsd,
     })
 
     const topicIndex = await buildTopicIndexUseCase.execute({
@@ -131,6 +133,7 @@ export async function chat(
         ? { kind: primaryCapture.kind, itemId: createID(primaryCapture.itemId) }
         : null,
       trace,
+      triggerCostUsd: userMessageResult.item.props.costUsd,
     })
 
     await persistTopicSummariesUseCase.execute({
@@ -146,6 +149,7 @@ export async function chat(
           reply,
           primaryCapture,
           benMessageResult.item.id.toValue(),
+          benMessageResult.item.props.interactionCostUsd,
         ),
       )
   } catch (error) {

@@ -17,6 +17,8 @@ export interface MessageProps {
   content: string
   capture: MessageCapture | null
   trace: AgentCallTrace | null
+  costUsd: number | null
+  interactionCostUsd: number | null
   createdAt: Date
 }
 

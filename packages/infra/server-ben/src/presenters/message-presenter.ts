@@ -19,6 +19,8 @@ export class MessagePresenter {
       role: message.props.role,
       content: message.props.content,
       capture,
+      costUsd: message.props.costUsd ?? null,
+      interactionCostUsd: message.props.interactionCostUsd ?? null,
       createdAt: message.props.createdAt.toISOString(),
     }
   }

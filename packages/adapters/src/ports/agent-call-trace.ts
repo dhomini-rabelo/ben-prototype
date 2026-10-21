@@ -31,6 +31,7 @@ export type AgentCallUsage = {
   outputTokens: number | null
   totalTokens: number | null
   reasoningTokens: number | null
+  costUsd: number | null
 }
 
 export type AgentCallStepInput = {

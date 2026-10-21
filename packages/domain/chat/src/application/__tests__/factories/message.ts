@@ -16,6 +16,9 @@ export function createMessageData(
     content: data.content !== undefined ? data.content : some.text(),
     capture: data.capture !== undefined ? data.capture : null,
     trace: data.trace !== undefined ? data.trace : null,
+    costUsd: data.costUsd !== undefined ? data.costUsd : null,
+    interactionCostUsd:
+      data.interactionCostUsd !== undefined ? data.interactionCostUsd : null,
     createdAt: data.createdAt !== undefined ? data.createdAt : new Date(),
   }
 }

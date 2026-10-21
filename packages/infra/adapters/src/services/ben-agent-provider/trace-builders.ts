@@ -7,6 +7,7 @@ import {
   AgentCallUsage,
 } from '@ben/adapters'
 import { AgentModelSelection } from '@ben/adapters'
+import type { ProviderMetadata } from 'ai'
 
 type UsageLike = {
   inputTokens: number | undefined
@@ -32,6 +33,7 @@ type StepResultLike = {
   warnings: readonly unknown[] | undefined
   request: { body?: unknown }
   response: { id: string; modelId: string }
+  providerMetadata: ProviderMetadata | undefined
 }
 
 type GenerateTextResultLike = {
@@ -69,34 +71,57 @@ function buildMessages(
   }))
 }
 
-function buildUsage(usage: UsageLike): AgentCallUsage {
+function readStepCostUsd(step: StepResultLike): number | null {
+  const usage = step.providerMetadata?.openrouter?.usage as
+    { cost?: unknown } | undefined
+  return typeof usage?.cost === 'number' ? usage.cost : null
+}
+
+function addNullable(first: number | null, second: number | null) {
+  return first === null && second === null ? null : (first ?? 0) + (second ?? 0)
+}
+
+export function sumStepsCostUsd(
+  steps: readonly StepResultLike[],
+): number | null {
+  return steps.reduce<number | null>(
+    (accumulator, step) => addNullable(accumulator, readStepCostUsd(step)),
+    null,
+  )
+}
+
+function buildUsage(step: StepResultLike): AgentCallUsage {
+  const { usage } = step
   return {
     inputTokens: usage.inputTokens ?? null,
     outputTokens: usage.outputTokens ?? null,
     totalTokens: usage.totalTokens ?? null,
     reasoningTokens: usage.outputTokenDetails.reasoningTokens ?? null,
+    costUsd: readStepCostUsd(step),
   }
 }
 
 function sumUsage(steps: AgentCallStep[]): AgentCallUsage {
-  const add = (first: number | null, second: number | null) =>
-    first === null && second === null ? null : (first ?? 0) + (second ?? 0)
-
   return steps.reduce<AgentCallUsage>(
     (accumulator, step) => ({
-      inputTokens: add(accumulator.inputTokens, step.usage.inputTokens),
-      outputTokens: add(accumulator.outputTokens, step.usage.outputTokens),
-      totalTokens: add(accumulator.totalTokens, step.usage.totalTokens),
-      reasoningTokens: add(
+      inputTokens: addNullable(accumulator.inputTokens, step.usage.inputTokens),
+      outputTokens: addNullable(
+        accumulator.outputTokens,
+        step.usage.outputTokens,
+      ),
+      totalTokens: addNullable(accumulator.totalTokens, step.usage.totalTokens),
+      reasoningTokens: addNullable(
         accumulator.reasoningTokens,
         step.usage.reasoningTokens,
       ),
+      costUsd: addNullable(accumulator.costUsd, step.usage.costUsd),
     }),
     {
       inputTokens: null,
       outputTokens: null,
       totalTokens: null,
       reasoningTokens: null,
+      costUsd: null,
     },
   )
 }
@@ -150,7 +175,7 @@ export function buildAgentCallSteps(input: {
       },
       modelId: step.response.modelId,
       responseId: step.response.id,
-      usage: buildUsage(step.usage),
+      usage: buildUsage(step),
       startedAt: startedAt.toISOString(),
       finishedAt: finishedAt.toISOString(),
       latencyMs: finishedAt.getTime() - startedAt.getTime(),

@@ -10,6 +10,10 @@ import { PersistBenMessageUseCase } from '../persist-ben-message'
 
 const now = new Date('2026-03-10T12:00:00.000Z')
 
+function traceWithCost(costUsd: number | null): AgentCallTrace {
+  return { ...trace, totalUsage: { ...trace.totalUsage, costUsd } }
+}
+
 const trace: AgentCallTrace = {
   status: 'ok',
   error: null,
@@ -24,6 +28,7 @@ const trace: AgentCallTrace = {
     outputTokens: null,
     totalTokens: null,
     reasoningTokens: null,
+    costUsd: null,
   },
   steps: [],
 }
@@ -74,6 +79,46 @@ describe('PersistBenMessageUseCase', () => {
       const stored = await messageRepository.get({ id: item.id })
       expect(stored.props.capture).toBeNull()
       expect(stored.props.trace).toBeNull()
+      expect(stored.props.costUsd).toBeNull()
+      expect(stored.props.interactionCostUsd).toBeNull()
+    })
+
+    it('stores the trace cost and sums it with the trigger cost as the interaction cost', async () => {
+      const { item } = await sut.execute({
+        userId: createID().toValue(),
+        content: some.text(),
+        trace: traceWithCost(0.01),
+        triggerCostUsd: 0.0035,
+      })
+
+      const stored = await messageRepository.get({ id: item.id })
+      expect(stored.props.costUsd).toBe(0.01)
+      expect(stored.props.interactionCostUsd).toBeCloseTo(0.0135)
+    })
+
+    it('uses only the trace cost when there is no trigger cost', async () => {
+      const { item } = await sut.execute({
+        userId: createID().toValue(),
+        content: some.text(),
+        trace: traceWithCost(0.01),
+      })
+
+      const stored = await messageRepository.get({ id: item.id })
+      expect(stored.props.costUsd).toBe(0.01)
+      expect(stored.props.interactionCostUsd).toBe(0.01)
+    })
+
+    it('uses only the trigger cost when the trace has no cost', async () => {
+      const { item } = await sut.execute({
+        userId: createID().toValue(),
+        content: some.text(),
+        trace: traceWithCost(null),
+        triggerCostUsd: 0.0035,
+      })
+
+      const stored = await messageRepository.get({ id: item.id })
+      expect(stored.props.costUsd).toBeNull()
+      expect(stored.props.interactionCostUsd).toBe(0.0035)
     })
   })
 })
