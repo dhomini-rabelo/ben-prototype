@@ -17,10 +17,8 @@ export function MenuRemindersList({
 }: MenuRemindersListProps) {
   const language = useLanguage()
   const strings = useStrings(menuStrings)
-  const upcoming = reminders.filter(
-    (reminder) => reminder.status === 'upcoming',
-  )
-  const fired = reminders.filter((reminder) => reminder.status === 'fired')
+  const upcoming = reminders.filter((reminder) => reminder.status === 'active')
+  const fired = reminders.filter((reminder) => reminder.status === 'done')
 
   return (
     <View className="flex flex-col gap-2">

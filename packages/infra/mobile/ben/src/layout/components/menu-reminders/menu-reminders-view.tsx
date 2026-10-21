@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { MenuListEmpty } from '@/layout/components/menu-list/menu-list-empty'
 import { MenuListError } from '@/layout/components/menu-list/menu-list-error'
 import { MenuListLoading } from '@/layout/components/menu-list/menu-list-loading'
@@ -8,7 +7,6 @@ import { useStrings } from '@/layout/hooks/use-strings'
 import { useReminderListData } from '@/layout/hooks/api/use-reminder-list-data'
 import { useMenuStore } from '@/layout/stores/menu-store'
 import { menuStrings } from '@/layout/strings/menu-strings'
-import { syncReminderNotifications } from '@/services/notifications-service'
 import { MenuRemindersList } from './menu-reminders-list'
 
 export function MenuRemindersView() {
@@ -17,13 +15,6 @@ export function MenuRemindersView() {
   const goBackToMenu = useMenuStore((store) => store.goBackToMenu)
   const openDetail = useMenuStore((store) => store.openDetail)
   const reminders = state.data?.items ?? []
-
-  useEffect(() => {
-    if (state.isLoading || state.isError || !state.data) {
-      return
-    }
-    void syncReminderNotifications(state.data.items)
-  }, [state.isLoading, state.isError, state.data])
 
   return (
     <MenuListShell title={strings.reminders} onBack={goBackToMenu}>

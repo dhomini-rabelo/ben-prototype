@@ -2,8 +2,11 @@ import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
 
 import type { Reminder } from '@/api/models/reminder'
+import { requestActiveReminders } from '@/api/requests/reminders'
+import { useAlarmStore } from '@/layout/stores/alarm-store'
 
 const ANDROID_CHANNEL_ID = 'default'
+const DAILY_SUMMARY_ID = 'daily-summary'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -25,10 +28,10 @@ async function ensureAndroidChannel(): Promise<void> {
 }
 
 function getSchedulableFireDate(reminder: Reminder): Date | null {
-  if (reminder.status === 'fired' || reminder.firesAt === null) {
+  if (reminder.status !== 'active' || reminder.nextFireAt === null) {
     return null
   }
-  const fireDate = new Date(reminder.firesAt)
+  const fireDate = new Date(reminder.nextFireAt)
   const fireTime = fireDate.getTime()
   if (Number.isNaN(fireTime) || fireTime <= Date.now()) {
     return null
@@ -61,6 +64,7 @@ export async function scheduleReminderNotification(
     content: {
       title: reminder.title,
       body: reminder.body ?? undefined,
+      data: { reminderId: reminder.id, nextFireAt: reminder.nextFireAt },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
@@ -86,7 +90,6 @@ export async function syncReminderNotifications(
   reminders: Reminder[],
 ): Promise<void> {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync()
-  const scheduledIds = new Set(scheduled.map((item) => item.identifier))
   const schedulableIds = new Set<string>()
 
   for (const reminder of reminders) {
@@ -94,16 +97,64 @@ export async function syncReminderNotifications(
       continue
     }
     schedulableIds.add(reminder.id)
-    if (!scheduledIds.has(reminder.id)) {
-      await scheduleReminderNotification(reminder)
-    } else {
-      await rescheduleReminderNotification(reminder)
-    }
+    await rescheduleReminderNotification(reminder)
   }
 
-  for (const scheduledId of scheduledIds) {
-    if (!schedulableIds.has(scheduledId)) {
-      await cancelReminderNotification(scheduledId)
+  for (const item of scheduled) {
+    if (
+      item.identifier !== DAILY_SUMMARY_ID &&
+      !schedulableIds.has(item.identifier)
+    ) {
+      await cancelReminderNotification(item.identifier)
     }
   }
+}
+
+export async function scheduleDailySummaryNotification(
+  time: string,
+  title: string,
+  body: string,
+): Promise<void> {
+  const [hour, minute] = time.split(':').map(Number)
+  if (Number.isNaN(hour) || Number.isNaN(minute)) {
+    return
+  }
+  await ensureAndroidChannel()
+  await Notifications.cancelScheduledNotificationAsync(DAILY_SUMMARY_ID)
+  await Notifications.scheduleNotificationAsync({
+    identifier: DAILY_SUMMARY_ID,
+    content: { title, body },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DAILY,
+      hour,
+      minute,
+    },
+  })
+}
+
+export async function cancelDailySummaryNotification(): Promise<void> {
+  await Notifications.cancelScheduledNotificationAsync(DAILY_SUMMARY_ID)
+}
+
+export function subscribeToNotificationTaps(): () => void {
+  const subscription = Notifications.addNotificationResponseReceivedListener(
+    (response) => {
+      const data = response.notification.request.content.data
+      const reminderId = data?.reminderId
+      const nextFireAt = data?.nextFireAt
+      if (typeof reminderId !== 'string' || typeof nextFireAt !== 'string') {
+        return
+      }
+      void requestActiveReminders()
+        .then((items) => {
+          const reminder = items.find((item) => item.id === reminderId)
+          if (reminder) {
+            useAlarmStore.getState().enqueue({ reminder, firedAt: nextFireAt })
+          }
+        })
+        .catch(() => {})
+    },
+  )
+
+  return () => subscription.remove()
 }

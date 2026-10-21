@@ -8,6 +8,7 @@ export async function requestSendChatMessage(
 ): Promise<AgentReply> {
   const response = await authClient.post<AgentReply>(API_ROUTES.chat.send, {
     messages: [{ role: 'user', parts: [{ type: 'text', text }] }],
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     ...(typeof transcriptionCostUsd === 'number' && { transcriptionCostUsd }),
   })
 

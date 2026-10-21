@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { isAxiosError } from 'axios'
 import { useReminderDetailData } from '@/layout/hooks/api/use-reminder-detail-data'
 import {
@@ -7,10 +6,6 @@ import {
   relativeTime,
 } from '@/layout/utils/format-time'
 import { useLanguage } from '@/layout/hooks/use-strings'
-import {
-  cancelReminderNotification,
-  rescheduleReminderNotification,
-} from '@/services/notifications-service'
 import { ItemDetailContent } from './item-detail-content'
 import { ItemDetailError } from './item-detail-error'
 import { ItemDetailGone } from './item-detail-gone'
@@ -31,19 +26,6 @@ export function ReminderDetail({ reminderId, onClose }: ReminderDetailProps) {
   const isGone =
     (state.isError && isNotFound) ||
     (!state.isLoading && !state.isError && !reminder)
-
-  useEffect(() => {
-    if (state.isLoading) {
-      return
-    }
-    if (reminder) {
-      void rescheduleReminderNotification(reminder)
-      return
-    }
-    if (isGone) {
-      void cancelReminderNotification(reminderId)
-    }
-  }, [state.isLoading, reminder, isGone, reminderId])
 
   return (
     <ItemDetailRoot kind="reminder" onClose={onClose}>

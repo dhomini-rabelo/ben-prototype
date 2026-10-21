@@ -23,3 +23,15 @@ export async function rescheduleReminderNotification(
 export async function syncReminderNotifications(
   _reminders: Reminder[],
 ): Promise<void> {}
+
+export async function scheduleDailySummaryNotification(
+  _time: string,
+  _title: string,
+  _body: string,
+): Promise<void> {}
+
+export async function cancelDailySummaryNotification(): Promise<void> {}
+
+export function subscribeToNotificationTaps(): () => void {
+  return () => {}
+}

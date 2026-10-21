@@ -30,6 +30,10 @@ export const API_ROUTES = {
   reminders: {
     list: '/reminders/list',
     detail: (id: string) => `/reminders/${id}/detail`,
+    update: (id: string) => `/reminders/${id}/update`,
+    acknowledge: (id: string) => `/reminders/${id}/acknowledge`,
+    snoozeOptions: (id: string) => `/reminders/${id}/snooze-options`,
+    dailySummary: '/reminders/daily-summary',
   },
   captures: {
     counts: '/captures/counts',

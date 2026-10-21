@@ -17,7 +17,7 @@ export function ItemDetailReminderMeta({
   status,
 }: ItemDetailReminderMetaProps) {
   const strings = useStrings(menuDetailStrings)
-  const isFired = status === 'fired'
+  const isFired = status === 'done'
 
   return (
     <View className="gap-1 rounded-xl bg-surface-container-low px-3.5 py-3">
