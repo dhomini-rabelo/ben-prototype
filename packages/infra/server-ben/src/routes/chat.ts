@@ -1,3 +1,6 @@
+import { AppendGoalMessagesUseCase } from '@ben/domain-chat/application/use-cases/reminders/append-goal-messages'
+import { ListRemindersUseCase } from '@ben/domain-chat/application/use-cases/captures/list-reminders'
+import { GetUserPreferencesUseCase } from '@ben/domain-user/application/use-cases/user-preferences/get-user-preferences'
 import { PersistCapturesUseCase } from '@ben/domain-chat/application/use-cases/captures/persist-captures'
 import { GetAgentPreferencesUseCase } from '@ben/domain-user/application/use-cases/agent-preferences/get-agent-preferences'
 import { ListMessageHistoryUseCase } from '@ben/domain-chat/application/use-cases/messages/list-message-history'
@@ -58,6 +61,7 @@ function resolveTimeZone(timeZone: string | undefined): string {
 }
 
 const agentService = new BenAgentProviderService()
+const getUserPreferencesUseCase = new GetUserPreferencesUseCase(userRepository)
 const getAgentPreferencesUseCase = new GetAgentPreferencesUseCase(
   userRepository,
 )
@@ -84,6 +88,10 @@ const saveMemoriesUseCase = new SaveMemoriesUseCase(memoryRepository)
 const persistTopicSummariesUseCase = new PersistTopicSummariesUseCase(
   topicRepository,
   topicSummaryRepository,
+)
+const listRemindersUseCase = new ListRemindersUseCase(reminderRepository)
+const appendGoalMessagesUseCase = new AppendGoalMessagesUseCase(
+  reminderRepository,
 )
 const persistCapturesUseCase = new PersistCapturesUseCase(
   noteRepository,
@@ -150,12 +158,29 @@ export async function chat(
       userId: request.userId,
     })
 
+    const timeZone = resolveTimeZone(body.timeZone)
+    const { item: userPreferences } = await getUserPreferencesUseCase.execute({
+      userId: request.userId,
+    })
+    const { morningTime } = userPreferences
+    const activeGoals = (
+      await listRemindersUseCase.execute({
+        userId: request.userId,
+        kind: 'goal',
+        status: 'active',
+      })
+    ).items.map((goal) => ({
+      id: goal.id.toValue(),
+      title: goal.props.title,
+      messages: goal.props.messages,
+    }))
+
     const { reply, trace } = await agentService.generateReply({
       userId: request.userId,
       message,
       now: new Date().toISOString(),
-      timeZone: resolveTimeZone(body.timeZone),
-      activeGoals: [],
+      timeZone,
+      activeGoals,
       topicIndex,
       activeConversation: agentContext.activeConversation
         ? AgentMemoryContextPresenter.toActiveConversation(
@@ -183,6 +208,14 @@ export async function chat(
       newReminders: reply.newReminders,
       newNotes: reply.newNotes,
       newTasks: reply.newTasks,
+      newGoals: reply.newGoals,
+      timeZone,
+      morningTime,
+    })
+
+    await appendGoalMessagesUseCase.execute({
+      userId: request.userId,
+      updates: reply.goalUpdates,
     })
 
     const primaryCapture = capturesResult.items[0] ?? null

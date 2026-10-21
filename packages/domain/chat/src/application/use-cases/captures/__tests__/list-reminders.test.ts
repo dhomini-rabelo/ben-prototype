@@ -54,6 +54,23 @@ describe('ListRemindersUseCase', () => {
       ])
     })
 
+    it('filters by kind and status', async () => {
+      const userId = createID()
+      const activeGoal = await reminderFactory.create({ userId, kind: 'goal' })
+      await reminderFactory.create({ userId, kind: 'goal', status: 'done' })
+      await reminderFactory.create({ userId, kind: 'alarm' })
+
+      const { items } = await sut.execute({
+        userId: userId.toValue(),
+        kind: 'goal',
+        status: 'active',
+      })
+
+      expect(items.map((item) => item.id.toValue())).toEqual([
+        activeGoal.id.toValue(),
+      ])
+    })
+
     it('returns an empty list when the user has no reminders', async () => {
       await reminderFactory.create({ userId: createID() })
 

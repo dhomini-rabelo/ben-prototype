@@ -16,6 +16,19 @@ export function createReminderData(
     remindAt: data.remindAt !== undefined ? data.remindAt : null,
     notes: data.notes !== undefined ? data.notes : null,
     createdAt: data.createdAt !== undefined ? data.createdAt : new Date(),
+    kind: data.kind ?? 'alarm',
+    status: data.status ?? 'active',
+    timeZone: data.timeZone ?? 'UTC',
+    alerts: data.alerts ?? [{ kind: 'at-event' }],
+    recurrence: data.recurrence !== undefined ? data.recurrence : null,
+    messages: data.messages ?? [],
+    checkFrequency:
+      data.checkFrequency !== undefined ? data.checkFrequency : null,
+    acknowledgedUntil:
+      data.acknowledgedUntil !== undefined ? data.acknowledgedUntil : null,
+    snoozedUntil: data.snoozedUntil !== undefined ? data.snoozedUntil : null,
+    nextFireAt: data.nextFireAt !== undefined ? data.nextFireAt : null,
+    completedAt: data.completedAt !== undefined ? data.completedAt : null,
   }
 }
 

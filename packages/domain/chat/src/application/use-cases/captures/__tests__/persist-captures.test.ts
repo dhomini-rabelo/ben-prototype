@@ -12,7 +12,14 @@ let reminderRepository: InMemoryReminderRepository
 let taskRepository: InMemoryTaskRepository
 let sut: PersistCapturesUseCase
 
-const noDrafts = { newReminders: [], newNotes: [], newTasks: [] }
+const noDrafts = {
+  newReminders: [],
+  newNotes: [],
+  newTasks: [],
+  newGoals: [],
+  timeZone: 'America/Sao_Paulo',
+  morningTime: '08:00',
+}
 
 describe('PersistCapturesUseCase', () => {
   beforeEach(() => {
@@ -69,6 +76,110 @@ describe('PersistCapturesUseCase', () => {
       expect(reminder.props.remindAt).toBeNull()
       expect(reminder.props.notes).toBeNull()
       expect(items[0].meta).toBeNull()
+    })
+
+    it('persists an alarm with its alerts and a filled nextFireAt', async () => {
+      const userId = createID()
+
+      await sut.execute({
+        ...noDrafts,
+        userId: userId.toValue(),
+        newReminders: [
+          {
+            title: 'Dentist',
+            remindAt: '2099-10-22T20:00:00Z',
+            alerts: [{ kind: 'day-before' }, { kind: 'at-event' }],
+          },
+        ],
+      })
+
+      const [reminder] = await reminderRepository.findMany({ userId })
+      expect(reminder.props.kind).toBe('alarm')
+      expect(reminder.props.status).toBe('active')
+      expect(reminder.props.timeZone).toBe('America/Sao_Paulo')
+      expect(reminder.props.alerts).toEqual([
+        { kind: 'day-before' },
+        { kind: 'at-event' },
+      ])
+      expect(reminder.props.nextFireAt?.toISOString()).toBe(
+        '2099-10-21T20:00:00.000Z',
+      )
+    })
+
+    it('treats an alarm with empty alerts as at-event', async () => {
+      const userId = createID()
+
+      await sut.execute({
+        ...noDrafts,
+        userId: userId.toValue(),
+        newReminders: [
+          { title: 'Call', remindAt: '2099-10-22T20:00:00Z', alerts: [] },
+        ],
+      })
+
+      const [reminder] = await reminderRepository.findMany({ userId })
+      expect(reminder.props.alerts).toEqual([{ kind: 'at-event' }])
+      expect(reminder.props.nextFireAt?.toISOString()).toBe(
+        '2099-10-22T20:00:00.000Z',
+      )
+    })
+
+    it('persists a conditional reminder without date, daily by default', async () => {
+      const userId = createID()
+
+      await sut.execute({
+        ...noDrafts,
+        userId: userId.toValue(),
+        newReminders: [
+          {
+            title: 'Visit mom',
+            kind: 'conditional',
+            remindAt: '2099-01-01T00:00:00Z',
+          },
+        ],
+      })
+
+      const [reminder] = await reminderRepository.findMany({ userId })
+      expect(reminder.props.kind).toBe('conditional')
+      expect(reminder.props.remindAt).toBeNull()
+      expect(reminder.props.alerts).toEqual([])
+      expect(reminder.props.checkFrequency).toEqual({ type: 'daily' })
+      expect(reminder.props.nextFireAt).toBeInstanceOf(Date)
+    })
+
+    it('persists a goal with recurrence and messages and returns its view', async () => {
+      const userId = createID()
+
+      const { items } = await sut.execute({
+        ...noDrafts,
+        userId: userId.toValue(),
+        newGoals: [
+          {
+            title: 'Gym',
+            startsAt: '2099-10-21T14:00:00Z',
+            recurrence: { type: 'daily' },
+            messages: ['Just go'],
+          },
+        ],
+      })
+
+      const [goal] = await reminderRepository.findMany({ userId })
+      expect(goal.props.kind).toBe('goal')
+      expect(goal.props.remindAt).toBe('2099-10-21T14:00:00Z')
+      expect(goal.props.alerts).toEqual([{ kind: 'at-event' }])
+      expect(goal.props.recurrence).toEqual({ type: 'daily' })
+      expect(goal.props.messages).toEqual(['Just go'])
+      expect(goal.props.nextFireAt?.toISOString()).toBe(
+        '2099-10-21T14:00:00.000Z',
+      )
+      expect(items).toEqual([
+        {
+          kind: 'reminder',
+          itemId: goal.id.toValue(),
+          title: 'Gym',
+          meta: '2099-10-21T14:00:00Z',
+        },
+      ])
     })
 
     it('persists a text task draft with its text content', async () => {
@@ -204,6 +315,9 @@ describe('PersistCapturesUseCase', () => {
         newNotes: [{ title: 'Note', body: 'Body' }],
         newTasks: [{ title: 'Task', contentType: 'text' }],
         newReminders: [{ title: 'Reminder' }],
+        newGoals: [],
+        timeZone: 'UTC',
+        morningTime: '08:00',
       })
 
       expect(items.map((item) => item.kind)).toEqual([

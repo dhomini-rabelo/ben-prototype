@@ -643,6 +643,17 @@ async function runReminderCases(
         remindAt: '2024-06-01T10:00:00.000Z',
         notes: null,
         createdAt: NOW,
+        kind: 'alarm',
+        status: 'active',
+        timeZone: 'UTC',
+        alerts: [{ kind: 'at-event' }],
+        recurrence: null,
+        messages: [],
+        checkFrequency: null,
+        acknowledgedUntil: null,
+        snoozedUntil: null,
+        nextFireAt: null,
+        completedAt: null,
       })
       assert(
         typeof reminder.props.remindAt === 'string',
