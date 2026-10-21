@@ -1,7 +1,13 @@
 import { AgentCallTrace } from '@ben/adapters/ports/agent-call-trace'
 
-export type AgentModelSlug =
-  'openai/gpt-5.6-luna' | 'deepseek/deepseek-v4.1-flash' | 'z-ai/glm-5.3-flash'
+export const AGENT_MODEL_SLUGS = [
+  'openai/gpt-6-luna',
+  'openai/gpt-6.1-sol',
+  'deepseek/deepseek-v4.1-flash',
+  'z-ai/glm-5.3-flash',
+] as const
+
+export type AgentModelSlug = (typeof AGENT_MODEL_SLUGS)[number]
 
 export type AgentEffort = 'none' | 'low' | 'medium' | 'high' | 'xhigh' | 'max'
 

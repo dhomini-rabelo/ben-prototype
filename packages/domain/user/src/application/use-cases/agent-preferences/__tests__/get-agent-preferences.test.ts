@@ -41,7 +41,7 @@ describe('GetAgentPreferencesUseCase', () => {
     const response = await sut.execute({ userId: user.id.toValue() })
 
     expect(response).toEqual({
-      item: { modelSlug: 'openai/gpt-5.6-luna', effort: 'medium' },
+      item: { modelSlug: 'openai/gpt-6-luna', effort: 'medium' },
     })
   })
 
@@ -67,7 +67,20 @@ describe('GetAgentPreferencesUseCase', () => {
     const response = await sut.execute({ userId: user.id.toValue() })
 
     expect(response).toEqual({
-      item: { modelSlug: 'openai/gpt-5.6-luna', effort: 'low' },
+      item: { modelSlug: 'openai/gpt-6-luna', effort: 'low' },
+    })
+  })
+
+  it('falls back to the default model keeping the effort when the stored slug is the legacy GPT-5.6 Luna', async () => {
+    const user = await userFactory.create({
+      agentModelSlug: 'openai/gpt-5.6-luna' as AgentModelSlug,
+      agentEffort: 'high',
+    })
+
+    const response = await sut.execute({ userId: user.id.toValue() })
+
+    expect(response).toEqual({
+      item: { modelSlug: 'openai/gpt-6-luna', effort: 'high' },
     })
   })
 

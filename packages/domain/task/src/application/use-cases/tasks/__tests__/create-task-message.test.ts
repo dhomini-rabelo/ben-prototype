@@ -12,7 +12,7 @@ import { InMemoryTaskRepository } from '@ben/domain-task/application/__tests__/r
 import { CreateTaskMessageUseCase } from '../create-task-message'
 
 const model: AgentModelSelection = {
-  modelSlug: 'openai/gpt-5.6-luna',
+  modelSlug: 'openai/gpt-6-luna',
   effort: 'medium',
 }
 
