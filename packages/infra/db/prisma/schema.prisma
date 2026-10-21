@@ -41,6 +41,22 @@ model Task {
   @@map("tasks")
 }
 
+model Conversation {
+  id    String @id
+  props String
+  types String
+
+  @@map("conversations")
+}
+
+model Memory {
+  id    String @id
+  props String
+  types String
+
+  @@map("memories")
+}
+
 model Topic {
   id    String @id
   props String

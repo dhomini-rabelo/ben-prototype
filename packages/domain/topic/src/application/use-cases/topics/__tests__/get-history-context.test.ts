@@ -4,17 +4,26 @@ import { createID } from '@ben/domain-base'
 
 import { InMemoryTopicSummaryRepository } from '@ben/domain-topic/application/__tests__/repositories/topic-summary'
 import { TopicSummaryFactory } from '@ben/domain-topic/application/__tests__/factories/topic-summary'
+import { InMemoryConversationRepository } from '@ben/domain-topic/application/__tests__/repositories/conversation'
+import { ConversationFactory } from '@ben/domain-topic/application/__tests__/factories/conversation'
+import { toConversationKey } from '@ben/domain-topic/application/utils/conversations'
 import { GetHistoryContextUseCase } from '../get-history-context'
 
 let topicSummaryRepository: InMemoryTopicSummaryRepository
 let topicSummaryFactory: TopicSummaryFactory
+let conversationFactory: ConversationFactory
 let sut: GetHistoryContextUseCase
 
 describe('GetHistoryContextUseCase', () => {
   beforeEach(() => {
     topicSummaryRepository = new InMemoryTopicSummaryRepository()
     topicSummaryFactory = new TopicSummaryFactory(topicSummaryRepository)
-    sut = new GetHistoryContextUseCase(topicSummaryRepository)
+    const conversationRepository = new InMemoryConversationRepository()
+    conversationFactory = new ConversationFactory(conversationRepository)
+    sut = new GetHistoryContextUseCase(
+      topicSummaryRepository,
+      conversationRepository,
+    )
   })
 
   describe('successful cases', () => {
@@ -76,6 +85,51 @@ describe('GetHistoryContextUseCase', () => {
 
       const context = await sut.execute({
         userId: userId.toValue(),
+        topics: [],
+      })
+
+      expect(context).toEqual({})
+    })
+
+    it('includes the active conversation without being requested', async () => {
+      const userId = createID()
+      const conversation = await conversationFactory.create({
+        userId,
+        summary: 'Resumo da conversa',
+      })
+
+      const context = await sut.execute({
+        userId: userId.toValue(),
+        topics: [],
+      })
+
+      expect(context).toEqual({
+        [toConversationKey(conversation)]: [
+          { id: conversation.id.toValue(), summary: 'Resumo da conversa' },
+        ],
+      })
+    })
+
+    it('does not include an expired conversation', async () => {
+      const userId = createID()
+      await conversationFactory.create({
+        userId,
+        lastMessageAt: new Date(Date.now() - 48 * 60 * 60 * 1000),
+      })
+
+      const context = await sut.execute({
+        userId: userId.toValue(),
+        topics: [],
+      })
+
+      expect(context).toEqual({})
+    })
+
+    it('does not include the conversation of another user', async () => {
+      await conversationFactory.create({ userId: createID() })
+
+      const context = await sut.execute({
+        userId: createID().toValue(),
         topics: [],
       })
 

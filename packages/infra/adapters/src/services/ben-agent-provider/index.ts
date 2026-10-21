@@ -42,7 +42,11 @@ export class BenAgentProviderService implements AgentService {
   ): Promise<GenerateReplyResult> {
     const model = resolveOpenRouterModel(payload.model)
     const traceStartedAt = new Date()
-    const contextSystemPrompt = buildSystemPrompt(payload.topicIndex)
+    const contextSystemPrompt = buildSystemPrompt({
+      topicIndex: payload.topicIndex,
+      activeConversation: payload.activeConversation,
+      memories: payload.memories,
+    })
     const contextRecorder: RecordedStep[] = []
 
     const contextResult = await generateText({

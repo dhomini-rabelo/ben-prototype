@@ -3,10 +3,15 @@ import { GetAgentPreferencesUseCase } from '@ben/domain-user/application/use-cas
 import { ListMessageHistoryUseCase } from '@ben/domain-chat/application/use-cases/messages/list-message-history'
 import { PersistBenMessageUseCase } from '@ben/domain-chat/application/use-cases/messages/persist-ben-message'
 import { PersistUserMessageUseCase } from '@ben/domain-chat/application/use-cases/messages/persist-user-message'
+import { LoadAgentContextUseCase } from '@ben/domain-topic/application/use-cases/context/load-agent-context'
+import { RecordConversationUseCase } from '@ben/domain-topic/application/use-cases/conversations/record-conversation'
+import { SaveMemoriesUseCase } from '@ben/domain-topic/application/use-cases/memories/save-memories'
 import { BuildTopicIndexUseCase } from '@ben/domain-topic/application/use-cases/topics/build-topic-index'
 import { GetHistoryContextUseCase } from '@ben/domain-topic/application/use-cases/topics/get-history-context'
 import { PersistTopicSummariesUseCase } from '@ben/domain-topic/application/use-cases/topics/persist-topic-summaries'
 import {
+  conversationRepository,
+  memoryRepository,
   messageRepository,
   noteRepository,
   reminderRepository,
@@ -16,6 +21,7 @@ import {
   userRepository,
 } from '@ben/server-ben/repositories'
 import { AgentConversationPresenter } from '@ben/server-ben/presenters/agent-conversation-presenter'
+import { AgentMemoryContextPresenter } from '@ben/server-ben/presenters/agent-memory-context-presenter'
 import { AgentReplyPresenter } from '@ben/server-ben/presenters/agent-reply-presenter'
 import { BenAgentProviderService } from '@ben/infra-adapters'
 import { createID } from '@ben/domain-base'
@@ -54,7 +60,16 @@ const persistBenMessageUseCase = new PersistBenMessageUseCase(messageRepository)
 const buildTopicIndexUseCase = new BuildTopicIndexUseCase(topicRepository)
 const getHistoryContextUseCase = new GetHistoryContextUseCase(
   topicSummaryRepository,
+  conversationRepository,
 )
+const loadAgentContextUseCase = new LoadAgentContextUseCase(
+  conversationRepository,
+  memoryRepository,
+)
+const recordConversationUseCase = new RecordConversationUseCase(
+  conversationRepository,
+)
+const saveMemoriesUseCase = new SaveMemoriesUseCase(memoryRepository)
 const persistTopicSummariesUseCase = new PersistTopicSummariesUseCase(
   topicRepository,
   topicSummaryRepository,
@@ -120,10 +135,22 @@ export async function chat(
       }),
     )
 
+    const agentContext = await loadAgentContextUseCase.execute({
+      userId: request.userId,
+    })
+
     const { reply, trace } = await agentService.generateReply({
       userId: request.userId,
       message,
       topicIndex,
+      activeConversation: agentContext.activeConversation
+        ? AgentMemoryContextPresenter.toActiveConversation(
+            agentContext.activeConversation,
+          )
+        : null,
+      memories: agentContext.memories.map(
+        AgentMemoryContextPresenter.toUserMemory,
+      ),
       resolveHistoryContext: ({ topics }) =>
         getHistoryContextUseCase.execute({ userId: request.userId, topics }),
       history,
@@ -160,6 +187,19 @@ export async function chat(
       userId: request.userId,
       topics: reply.historyTopics,
       messageId: benMessageResult.item.id.toValue(),
+    })
+
+    const conversationResult = await recordConversationUseCase.execute({
+      userId: request.userId,
+      slug: reply.conversation.slug,
+      summary: reply.conversation.summary,
+      lastMessageAt: userMessageResult.item.props.createdAt,
+    })
+
+    await saveMemoriesUseCase.execute({
+      userId: request.userId,
+      memories: reply.memories,
+      conversationId: conversationResult.item.id.toValue(),
     })
 
     return response

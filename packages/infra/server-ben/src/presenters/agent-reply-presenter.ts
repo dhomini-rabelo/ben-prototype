@@ -7,7 +7,7 @@ export class AgentReplyPresenter {
     capture: CaptureView | null,
     messageId: string,
     interactionCostUsd: number | null,
-  ): AgentReply & {
+  ): Omit<AgentReply, 'conversation' | 'memories'> & {
     capture: CaptureView | null
     messageId: string
     interactionCostUsd: number | null

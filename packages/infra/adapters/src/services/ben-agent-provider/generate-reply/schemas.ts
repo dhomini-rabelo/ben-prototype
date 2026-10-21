@@ -23,10 +23,22 @@ const historyTopicSchema = z.object({
   summary: z.string(),
 })
 
+const conversationUpdateSchema = z.object({
+  slug: z.string(),
+  summary: z.string(),
+})
+
+const userMemorySchema = z.object({
+  key: z.string(),
+  value: z.string(),
+})
+
 export const agentReplySchema = z.object({
   message: z.string(),
   newReminders: z.array(reminderDraftSchema),
   newNotes: z.array(noteDraftSchema),
   newTasks: z.array(taskDraftSchema),
   historyTopics: z.array(historyTopicSchema),
+  conversation: conversationUpdateSchema,
+  memories: z.array(userMemorySchema),
 })

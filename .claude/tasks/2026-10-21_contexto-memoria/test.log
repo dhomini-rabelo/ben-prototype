@@ -1,0 +1,71 @@
+$ pnpm -r --if-present test:unit
+Scope: 15 of 16 workspace projects
+packages/domain/topic test:unit$ vitest run --config vitest.config.ts
+packages/domain/transcription test:unit$ vitest run --config vitest.config.ts
+packages/domain/user test:unit$ vitest run --config vitest.config.ts
+packages/domain/user test:unit:  RUN  v3.2.7 /root/so/repos/ben-prototype/packages/domain/user
+packages/domain/topic test:unit:  RUN  v3.2.7 /root/so/repos/ben-prototype/packages/domain/topic
+packages/domain/transcription test:unit:  RUN  v3.2.7 /root/so/repos/ben-prototype/packages/domain/transcription
+packages/domain/topic test:unit:  ✓ src/application/use-cases/context/__tests__/load-agent-context.test.ts (2 tests) 31ms
+packages/domain/transcription test:unit:  ✓ src/application/use-cases/transcription/__tests__/transcribe-audio.test.ts (5 tests) 7ms
+packages/domain/transcription test:unit:  Test Files  1 passed (1)
+packages/domain/transcription test:unit:       Tests  5 passed (5)
+packages/domain/transcription test:unit:    Start at  21:58:58
+packages/domain/transcription test:unit:    Duration  1.60s (transform 356ms, setup 0ms, collect 835ms, tests 7ms, environment 3ms, prepare 197ms)
+packages/domain/topic test:unit:  ✓ src/application/use-cases/conversations/__tests__/record-conversation.test.ts (4 tests) 33ms
+packages/domain/topic test:unit:  ✓ src/application/use-cases/topics/__tests__/persist-topic-summaries.test.ts (6 tests) 33ms
+packages/domain/user test:unit:  ✓ src/application/use-cases/agent-preferences/__tests__/get-agent-preferences.test.ts (6 tests) 25ms
+packages/domain/user test:unit:  ✓ src/application/use-cases/agent-preferences/__tests__/update-agent-preferences.test.ts (7 tests) 26ms
+packages/domain/user test:unit:  ✓ src/application/use-cases/user-preferences/__tests__/update-user-preferences.test.ts (5 tests) 45ms
+packages/domain/transcription test:unit: Done
+packages/domain/topic test:unit:  ✓ src/application/use-cases/topics/__tests__/get-history-context.test.ts (7 tests) 24ms
+packages/domain/user test:unit:  ✓ src/application/use-cases/auth/__tests__/login-or-register.test.ts (3 tests) 16ms
+packages/domain/topic test:unit:  ✓ src/application/use-cases/topics/__tests__/build-topic-index.test.ts (4 tests) 18ms
+packages/domain/topic test:unit:  ✓ src/application/use-cases/memories/__tests__/save-memories.test.ts (5 tests) 27ms
+packages/domain/topic test:unit:  Test Files  6 passed (6)
+packages/domain/topic test:unit:       Tests  28 passed (28)
+packages/domain/topic test:unit:    Start at  21:58:58
+packages/domain/topic test:unit:    Duration  3.31s (transform 701ms, setup 0ms, collect 5.21s, tests 166ms, environment 1ms, prepare 1.24s)
+packages/domain/user test:unit:  ✓ src/application/use-cases/auth/__tests__/verify-authentication.test.ts (4 tests) 28ms
+packages/domain/user test:unit:  ✓ src/application/use-cases/user-preferences/__tests__/get-user-preferences.test.ts (3 tests) 21ms
+packages/domain/user test:unit:  Test Files  6 passed (6)
+packages/domain/user test:unit:       Tests  28 passed (28)
+packages/domain/user test:unit:    Start at  21:58:58
+packages/domain/user test:unit:    Duration  3.62s (transform 581ms, setup 0ms, collect 6.34s, tests 161ms, environment 3ms, prepare 1.12s)
+packages/domain/topic test:unit: Done
+packages/domain/user test:unit: Done
+packages/domain/task test:unit$ vitest run --config vitest.config.ts
+packages/domain/task test:unit:  RUN  v3.2.7 /root/so/repos/ben-prototype/packages/domain/task
+packages/domain/task test:unit:  ✓ src/application/use-cases/tasks/__tests__/reopen-task.test.ts (3 tests) 11ms
+packages/domain/task test:unit:  ✓ src/application/use-cases/tasks/__tests__/approve-task-diff.test.ts (5 tests) 16ms
+packages/domain/task test:unit:  ✓ src/application/use-cases/tasks/__tests__/create-task-message.test.ts (12 tests) 22ms
+packages/domain/task test:unit:  ✓ src/application/use-cases/tasks/__tests__/reject-task-diff.test.ts (4 tests) 14ms
+packages/domain/task test:unit:  ✓ src/application/use-cases/tasks/__tests__/finish-task.test.ts (3 tests) 14ms
+packages/domain/task test:unit:  ✓ src/application/use-cases/tasks/__tests__/update-task-content.test.ts (4 tests) 18ms
+packages/domain/task test:unit:  ✓ src/application/use-cases/tasks/__tests__/update-task-todos.test.ts (4 tests) 11ms
+packages/domain/task test:unit:  ✓ src/application/use-cases/tasks/__tests__/list-tasks.test.ts (4 tests) 10ms
+packages/domain/task test:unit:  ✓ src/application/use-cases/tasks/__tests__/get-task-detail.test.ts (3 tests) 7ms
+packages/domain/task test:unit:  Test Files  9 passed (9)
+packages/domain/task test:unit:       Tests  42 passed (42)
+packages/domain/task test:unit:    Start at  21:59:03
+packages/domain/task test:unit:    Duration  2.52s (transform 556ms, setup 0ms, collect 4.36s, tests 122ms, environment 2ms, prepare 817ms)
+packages/domain/task test:unit: Done
+packages/domain/chat test:unit$ vitest run --config vitest.config.ts
+packages/domain/chat test:unit:  RUN  v3.2.7 /root/so/repos/ben-prototype/packages/domain/chat
+packages/domain/chat test:unit:  ✓ src/application/use-cases/captures/__tests__/persist-captures.test.ts (10 tests) 10ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/messages/__tests__/list-messages.test.ts (6 tests) 15ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/captures/__tests__/get-captures-counts.test.ts (4 tests) 8ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/messages/__tests__/list-message-history.test.ts (5 tests) 11ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/messages/__tests__/persist-ben-message.test.ts (5 tests) 12ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/captures/__tests__/resolve-capture.test.ts (7 tests) 11ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/messages/__tests__/persist-user-message.test.ts (2 tests) 7ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/captures/__tests__/list-reminders.test.ts (3 tests) 7ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/captures/__tests__/get-note-detail.test.ts (3 tests) 8ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/captures/__tests__/list-notes.test.ts (3 tests) 7ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/messages/__tests__/get-message-trace.test.ts (3 tests) 7ms
+packages/domain/chat test:unit:  ✓ src/application/use-cases/captures/__tests__/get-reminder-detail.test.ts (3 tests) 6ms
+packages/domain/chat test:unit:  Test Files  12 passed (12)
+packages/domain/chat test:unit:       Tests  54 passed (54)
+packages/domain/chat test:unit:    Start at  21:59:06
+packages/domain/chat test:unit:    Duration  2.85s (transform 593ms, setup 0ms, collect 4.80s, tests 109ms, environment 3ms, prepare 991ms)
+packages/domain/chat test:unit: Done

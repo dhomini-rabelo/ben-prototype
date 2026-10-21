@@ -44,6 +44,12 @@ export type ResolveOlderMessages = (input: {
   cursor: string
 }) => Promise<ConversationHistoryPage>
 
+export type ActiveConversation = { key: string; summary: string }
+
+export type UserMemory = { key: string; value: string }
+
+export type ConversationUpdate = { slug: string; summary: string }
+
 export type ReminderDraft = {
   title: string
   remindAt?: string
@@ -70,12 +76,16 @@ export type AgentReply = {
   newNotes: NoteDraft[]
   newTasks: TaskDraft[]
   historyTopics: Array<{ topic: TopicKey; summary: string }>
+  conversation: ConversationUpdate
+  memories: UserMemory[]
 }
 
 export type GenerateReplyPayload = {
   userId: string
   message: string
   topicIndex: TopicKey[]
+  activeConversation: ActiveConversation | null
+  memories: UserMemory[]
   resolveHistoryContext: ResolveHistoryContext
   history: ConversationHistoryPage
   resolveOlderMessages: ResolveOlderMessages

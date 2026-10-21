@@ -5,7 +5,7 @@ import { z } from 'zod'
 export const HISTORY_CONTEXT_TOOL_NAME = 'get-history-context'
 
 export const HISTORY_CONTEXT_TOOL_DESCRIPTION =
-  'Busque o histórico relacionado a um conjunto de tópicos antes de responder. Use no máximo uma vez por mensagem.'
+  'Busque o histórico relacionado a um conjunto de tópicos antes de responder. O resultado sempre inclui a conversa atual (chave `conversa:…`). Use no máximo uma vez por mensagem.'
 
 export const historyContextInputSchema = z.object({
   topics: z.array(z.string()),

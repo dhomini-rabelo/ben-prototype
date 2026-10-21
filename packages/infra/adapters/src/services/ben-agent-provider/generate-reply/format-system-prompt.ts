@@ -7,5 +7,7 @@ export const buildFormatSystemPrompt = (): string =>
     '- `newReminders`: os lembretes citados, cada um com `title` e, quando houver, `remindAt` e `notes`.',
     '- `newNotes`: as notas citadas, cada uma com `title` e `body`.',
     '- `newTasks`: as tarefas citadas, cada uma com `title` e `contentType` (`todo` com `todoItems`, ou `text` com `textContent`).',
+    '- `conversation`: a conversa atual, com `slug` (kebab-case) e `summary` (resumo cumulativo).',
+    '- `memories`: as memórias citadas, cada uma com `key` (`categoria:subcategoria`) e `value`.',
     'Quando o texto indicar que não há itens de um tipo, retorne uma lista vazia para esse campo.',
   ].join('\n')
