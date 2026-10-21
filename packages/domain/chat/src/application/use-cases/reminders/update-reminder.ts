@@ -65,11 +65,32 @@ export class UpdateReminderUseCase implements UseCase<ItemResponse<Reminder>> {
         payload.status === 'done' ? (payload.now ?? new Date()) : null
     }
 
-    const merged = { ...reminder.props, ...changes }
+    const merged = {
+      ...reminder.props,
+      ...changes,
+      acknowledgedUntil: this.resolveAnchor(
+        reminder,
+        payload.now,
+        scheduleChanged,
+      ),
+    }
     changes.nextFireAt = computeNextFireAt(merged, payload.morningTime)
 
     const item = await this.reminderRepository.update(reminder.id, changes)
     return { item }
+  }
+
+  private resolveAnchor(
+    reminder: Reminder,
+    now: Date | undefined,
+    scheduleChanged: boolean,
+  ) {
+    const { acknowledgedUntil, createdAt } = reminder.props
+    const anchor = acknowledgedUntil ?? createdAt
+    if (!scheduleChanged || !now || now.getTime() <= anchor.getTime()) {
+      return acknowledgedUntil
+    }
+    return now
   }
 
   private validate(payload: Payload, kind: ReminderProps['kind']) {

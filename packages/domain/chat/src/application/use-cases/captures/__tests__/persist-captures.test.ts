@@ -78,6 +78,30 @@ describe('PersistCapturesUseCase', () => {
       expect(items[0].meta).toBeNull()
     })
 
+    it('stores a reminder with an unparseable remindAt as undated and skips a goal with an unparseable startsAt', async () => {
+      const userId = createID()
+
+      const { items } = await sut.execute({
+        ...noDrafts,
+        userId: userId.toValue(),
+        newReminders: [{ title: 'Call', remindAt: 'amanhã 17h' }],
+        newGoals: [
+          {
+            title: 'Dentist',
+            startsAt: 'amanhã 17h',
+            recurrence: { type: 'none' },
+            messages: [],
+          },
+        ],
+      })
+
+      expect(items).toHaveLength(1)
+      const stored = await reminderRepository.findMany({ userId })
+      expect(stored).toHaveLength(1)
+      expect(stored[0].props.remindAt).toBeNull()
+      expect(stored[0].props.nextFireAt).toBeNull()
+    })
+
     it('persists an alarm with its alerts and a filled nextFireAt', async () => {
       const userId = createID()
 

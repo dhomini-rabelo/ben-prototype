@@ -78,7 +78,7 @@ export class PersistCapturesUseCase implements UseCase<
     const reminderViews: CaptureView[] = []
 
     for (const draft of drafts) {
-      const remindAt = draft.remindAt ?? null
+      const remindAt = this.toValidDate(draft.remindAt)
       const isConditional = draft.kind === 'conditional'
       const alerts = draft.alerts?.length ? draft.alerts : AT_EVENT_ALERTS
       const reminder = await this.createReminder(userId, now, schedule, {
@@ -99,6 +99,11 @@ export class PersistCapturesUseCase implements UseCase<
     return reminderViews
   }
 
+  private toValidDate(value: string | undefined | null) {
+    if (!value || Number.isNaN(Date.parse(value))) return null
+    return value
+  }
+
   private async createGoalViews(
     userId: ID,
     drafts: GoalDraft[],
@@ -108,6 +113,8 @@ export class PersistCapturesUseCase implements UseCase<
     const goalViews: CaptureView[] = []
 
     for (const draft of drafts) {
+      if (!this.toValidDate(draft.startsAt)) continue
+
       const goal = await this.createReminder(userId, now, schedule, {
         title: draft.title,
         notes: null,

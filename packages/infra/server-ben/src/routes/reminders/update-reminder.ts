@@ -48,6 +48,7 @@ const bodySchema = z.object({
     ])
     .optional(),
   status: z.enum(['active', 'done']).optional(),
+  now: z.iso.datetime({ offset: true }).optional(),
 })
 
 const updateReminderUseCase = new UpdateReminderUseCase(reminderRepository)
@@ -70,6 +71,7 @@ export async function updateReminder(
       reminderId: id,
       morningTime: preferences.morningTime,
       ...body,
+      now: body.now ? new Date(body.now) : undefined,
     })
 
     return response

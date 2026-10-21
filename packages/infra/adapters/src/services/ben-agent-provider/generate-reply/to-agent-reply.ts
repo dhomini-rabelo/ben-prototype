@@ -36,13 +36,20 @@ function toRecurrence(recurrence: RecurrenceOutput): GoalRecurrence {
     : { type: 'daily' }
 }
 
+function isValidDate(value: string) {
+  return !Number.isNaN(Date.parse(value))
+}
+
 export function toAgentReply(output: AgentReplyOutput): AgentReply {
   return {
     ...output,
     newReminders: output.newReminders.map((reminder) => ({
       title: reminder.title,
       kind: reminder.kind,
-      remindAt: reminder.remindAt ?? undefined,
+      remindAt:
+        reminder.remindAt && isValidDate(reminder.remindAt)
+          ? reminder.remindAt
+          : undefined,
       notes: reminder.notes ?? undefined,
       alerts: reminder.alerts
         .map(toAlert)
@@ -57,11 +64,13 @@ export function toAgentReply(output: AgentReplyOutput): AgentReply {
       textContent: task.textContent ?? undefined,
       todoItems: task.todoItems ?? undefined,
     })),
-    newGoals: output.newGoals.map((goal) => ({
-      title: goal.title,
-      startsAt: goal.startsAt,
-      recurrence: toRecurrence(goal.recurrence),
-      messages: goal.messages,
-    })),
+    newGoals: output.newGoals
+      .filter((goal) => isValidDate(goal.startsAt))
+      .map((goal) => ({
+        title: goal.title,
+        startsAt: goal.startsAt,
+        recurrence: toRecurrence(goal.recurrence),
+        messages: goal.messages,
+      })),
   }
 }

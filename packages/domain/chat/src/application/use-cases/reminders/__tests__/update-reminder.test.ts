@@ -63,6 +63,37 @@ describe('UpdateReminderUseCase', () => {
     expect(item.props.nextFireAt).toEqual(new Date('2026-10-22T16:00:00Z'))
   })
 
+  it('does not schedule an alert in the past when the schedule changes after it', async () => {
+    const userId = createID()
+    const alarm = await reminderFactory.create({
+      userId,
+      createdAt,
+      remindAt: '2026-10-21T18:00:00Z',
+      alerts: [{ kind: 'at-event' }],
+    })
+
+    const withoutNow = await sut.execute({
+      userId: userId.toValue(),
+      reminderId: alarm.id.toValue(),
+      morningTime: '08:00',
+      alerts: [{ kind: 'minutes-before', minutes: 60 }],
+    })
+    expect(withoutNow.item.props.nextFireAt).toEqual(
+      new Date('2026-10-21T17:00:00Z'),
+    )
+
+    const withNow = await sut.execute({
+      userId: userId.toValue(),
+      reminderId: alarm.id.toValue(),
+      morningTime: '08:00',
+      alerts: [{ kind: 'minutes-before', minutes: 60 }, { kind: 'at-event' }],
+      now: new Date('2026-10-21T17:30:00Z'),
+    })
+    expect(withNow.item.props.nextFireAt).toEqual(
+      new Date('2026-10-21T18:00:00Z'),
+    )
+  })
+
   it('reactivates a done reminder and recomputes', async () => {
     const userId = createID()
     const alarm = await reminderFactory.create({

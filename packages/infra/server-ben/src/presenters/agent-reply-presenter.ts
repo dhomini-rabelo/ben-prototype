@@ -12,6 +12,7 @@ export class AgentReplyPresenter {
     'conversation' | 'memories' | 'newGoals' | 'goalUpdates'
   > & {
     capture: CaptureView | null
+    updatedGoalIds: string[]
     messageId: string
     interactionCostUsd: number | null
   } {
@@ -22,6 +23,7 @@ export class AgentReplyPresenter {
       newTasks: reply.newTasks,
       historyTopics: reply.historyTopics,
       capture,
+      updatedGoalIds: reply.goalUpdates.map((update) => update.goalId),
       messageId,
       interactionCostUsd,
     }
