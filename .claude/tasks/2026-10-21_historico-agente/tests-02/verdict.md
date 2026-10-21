@@ -1,0 +1,6 @@
+# Verdict tests-02 historico-agente (nonce modelos-gasto-historico-r14-test-real)
+Environment: server-ben 3335 restarted with the real OpenRouter key (masked sk-or-***; key never logged), sqlite test copy test.db (user u1), test JWT/Firebase envs, model openai/gpt-6.1-sol effort high; proxy 3334, Expo web 8082, viewport 390x844. Text only (no AssemblyAI). Seed: 24 messages (R14 prefix) plus 4 R12 ones; real model calls via POST /chat.
+- Case 1 (history, 15 previous messages): PASS. Asked "Qual e o nome do meu cachorro?" (Pipoca said in message 15 of 24); Ben answered "Pipoca". Trace of message 38d755ae..., step 0 phase=context: input.messages has 16 entries = the 15 previous messages in chronological order ("R14 boa escolha." ... "R14 combinado.") followed by the current message last; the current message is not duplicated inside the 15. Tools exposed: get-history-context, get-older-messages.
+- Case 2 (get-older-messages): PASS. Asked for the "codinome secreto da reforma" (Aurora-7, message 3, older than the window). Trace 93cb451b...: step 0 get-history-context, step 1 get-older-messages (input {}), step 2 final answer; Ben answered "Era Aurora-7". One older page was enough (the tool returned older R12 and R14 messages).
+Observation: when the answer was inside the 15 messages, no tool was called (2 steps only): correct.
+## PASS
