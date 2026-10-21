@@ -11,6 +11,10 @@ import { getMessageTrace } from '@ben/server-ben/routes/messages/get-message-tra
 import { listMessages } from '@ben/server-ben/routes/messages/list-messages'
 import { getNoteDetail } from '@ben/server-ben/routes/notes/get-note-detail'
 import { listNotes } from '@ben/server-ben/routes/notes/list-notes'
+import { acknowledgeReminder } from '@ben/server-ben/routes/reminders/acknowledge-reminder'
+import { getDailySummary } from '@ben/server-ben/routes/reminders/get-daily-summary'
+import { getSnoozeOptions } from '@ben/server-ben/routes/reminders/get-snooze-options'
+import { updateReminder } from '@ben/server-ben/routes/reminders/update-reminder'
 import { getReminderDetail } from '@ben/server-ben/routes/reminders/get-reminder-detail'
 import { listReminders } from '@ben/server-ben/routes/reminders/list-reminders'
 import { approveTaskDiff } from '@ben/server-ben/routes/tasks/approve-task-diff'
@@ -78,7 +82,11 @@ app.get('/notes/list', authMiddleware, listNotes)
 app.get('/notes/:id/detail', authMiddleware, getNoteDetail)
 
 app.get('/reminders/list', authMiddleware, listReminders)
+app.get('/reminders/daily-summary', authMiddleware, getDailySummary)
 app.get('/reminders/:id/detail', authMiddleware, getReminderDetail)
+app.get('/reminders/:id/snooze-options', authMiddleware, getSnoozeOptions)
+app.post('/reminders/:id/update', authMiddleware, updateReminder)
+app.post('/reminders/:id/acknowledge', authMiddleware, acknowledgeReminder)
 
 app.get('/captures/counts', authMiddleware, getCapturesCounts)
 
