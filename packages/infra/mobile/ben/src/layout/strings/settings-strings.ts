@@ -22,7 +22,8 @@ const en = {
   dailySummary: 'Daily summary',
   dailySummaryTime: 'Summary time',
   morningTime: 'Morning time',
-  morningTimeHint: '"In the morning" alerts use this time.',
+  morningTimeHint:
+    'Applies to "in the morning" alerts created or edited from now on.',
 }
 
 export const settingsStrings: Localized<typeof en> = {
@@ -49,6 +50,7 @@ export const settingsStrings: Localized<typeof en> = {
     dailySummary: 'Resumo diário',
     dailySummaryTime: 'Horário do resumo',
     morningTime: 'Horário da manhã',
-    morningTimeHint: 'Os avisos "pela manhã" usam este horário.',
+    morningTimeHint:
+      'Vale para os avisos "pela manhã" criados ou editados a partir de agora.',
   },
 }

@@ -45,11 +45,14 @@ export function useDailySummary() {
   const userId = useAuthStore((store) => store.user?.id)
   const enabled = useUserPreferencesStore((store) => store.dailySummaryEnabled)
   const time = useUserPreferencesStore((store) => store.dailySummaryTime)
+  const hasSynced = useUserPreferencesStore(
+    (store) => store.hasSyncedFromServer,
+  )
   const strings = useStrings(alarmStrings)
   const isChecking = useRef(false)
 
   useEffect(() => {
-    if (!userId || !enabled) {
+    if (!userId || !hasSynced || !enabled) {
       return
     }
 
@@ -69,6 +72,13 @@ export function useDailySummary() {
         }
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
         const summary = await requestDailySummary(date, timeZone)
+        const latest = useUserPreferencesStore.getState()
+        if (
+          !latest.dailySummaryEnabled ||
+          localTime(new Date()) < latest.dailySummaryTime
+        ) {
+          return
+        }
         await markDailySummaryShown(date)
         useDailySummaryStore.getState().show(summary)
       } catch {
@@ -81,12 +91,12 @@ export function useDailySummary() {
     void check()
     const interval = setInterval(() => void check(), CHECK_INTERVAL_MS)
     return () => clearInterval(interval)
-  }, [userId, enabled, time])
+  }, [userId, hasSynced, enabled, time])
 
   const { summaryNotificationTitle, summaryNotificationBody } = strings
 
   useEffect(() => {
-    if (!userId) {
+    if (!userId || !hasSynced) {
       return
     }
     if (enabled) {
@@ -98,7 +108,14 @@ export function useDailySummary() {
     } else {
       void cancelDailySummaryNotification().catch(() => {})
     }
-  }, [userId, enabled, time, summaryNotificationTitle, summaryNotificationBody])
+  }, [
+    userId,
+    hasSynced,
+    enabled,
+    time,
+    summaryNotificationTitle,
+    summaryNotificationBody,
+  ])
 
   useEffect(() => {
     if (!userId) {

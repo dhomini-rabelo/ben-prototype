@@ -42,6 +42,7 @@ export function useUserPreferencesSync() {
     preferencesStore.setMorningTime(item.morningTime)
     preferencesStore.setDailySummaryEnabled(item.dailySummaryEnabled)
     preferencesStore.setDailySummaryTime(item.dailySummaryTime)
+    preferencesStore.markSyncedFromServer()
 
     const languageStore = useLanguageStore.getState()
 

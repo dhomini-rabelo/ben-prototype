@@ -8,7 +8,6 @@ export type ReminderAlert =
   | { kind: 'morning-of' }
   | { kind: 'minutes-before'; minutes: number }
 
-// weekdays: 0 = Sunday
 export type GoalRecurrence =
   | { type: 'none' }
   | { type: 'daily' }

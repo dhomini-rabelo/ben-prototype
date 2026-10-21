@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import { useAuthStore } from '@/layout/stores/auth-store'
 import { useAlarmStore } from '@/layout/stores/alarm-store'
+import { requestActiveReminders } from '@/api/requests/reminders'
 import { useActiveRemindersData } from '@/layout/hooks/api/use-active-reminders-data'
 import {
   subscribeToNotificationTaps,
@@ -52,7 +53,20 @@ export function useAlarmScheduler() {
     if (!userId) {
       return
     }
-    const unsubscribe = subscribeToNotificationTaps()
+    const unsubscribe = subscribeToNotificationTaps(
+      ({ reminderId, nextFireAt }) => {
+        void requestActiveReminders()
+          .then((reminders) => {
+            const reminder = reminders.find((item) => item.id === reminderId)
+            if (reminder) {
+              useAlarmStore
+                .getState()
+                .enqueue({ reminder, firedAt: nextFireAt })
+            }
+          })
+          .catch(() => {})
+      },
+    )
     return unsubscribe
   }, [userId])
 

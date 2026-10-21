@@ -18,6 +18,13 @@ import { useStrings } from '@/layout/hooks/use-strings'
 import { useAlarmStore, type FiredAlarm } from '@/layout/stores/alarm-store'
 import { alarmStrings } from '@/layout/strings/alarm-strings'
 
+function resolveAcknowledgedAt(firedAt: string): string {
+  const deviceNow = Date.now()
+  return new Date(
+    Math.max(new Date(firedAt).getTime(), deviceNow),
+  ).toISOString()
+}
+
 type PopupMode = 'main' | 'snooze'
 
 type AlarmPopupContentProps = {
@@ -47,13 +54,20 @@ function AlarmPopupContent({ alarm }: AlarmPopupContentProps) {
   }
 
   const acknowledge = (snoozeUntil?: string) =>
-    run(() => requestAcknowledgeReminder(reminder.id, { firedAt, snoozeUntil }))
+    run(() =>
+      requestAcknowledgeReminder(reminder.id, {
+        firedAt: resolveAcknowledgedAt(firedAt),
+        snoozeUntil,
+      }),
+    )
   const markDone = () =>
     run(() => requestUpdateReminder(reminder.id, { status: 'done' }))
 
   async function finishGoal() {
     await run(async () => {
-      await requestAcknowledgeReminder(reminder.id, { firedAt })
+      await requestAcknowledgeReminder(reminder.id, {
+        firedAt: resolveAcknowledgedAt(firedAt),
+      })
       if (reminder.recurrence?.type === 'none') {
         await requestUpdateReminder(reminder.id, { status: 'done' })
       }
@@ -65,7 +79,9 @@ function AlarmPopupContent({ alarm }: AlarmPopupContentProps) {
       if (frequency) {
         await requestUpdateReminder(reminder.id, { checkFrequency: frequency })
       }
-      await requestAcknowledgeReminder(reminder.id, { firedAt })
+      await requestAcknowledgeReminder(reminder.id, {
+        firedAt: resolveAcknowledgedAt(firedAt),
+      })
     })
   }
 

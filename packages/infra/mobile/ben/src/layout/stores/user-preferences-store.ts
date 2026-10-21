@@ -5,6 +5,7 @@ const DEFAULTS = {
   morningTime: '08:00',
   dailySummaryEnabled: true,
   dailySummaryTime: '08:00',
+  hasSyncedFromServer: false,
 }
 
 interface UserPreferencesStore {
@@ -12,6 +13,8 @@ interface UserPreferencesStore {
   morningTime: string
   dailySummaryEnabled: boolean
   dailySummaryTime: string
+  hasSyncedFromServer: boolean
+  markSyncedFromServer: () => void
   setShowUsdCost: (showUsdCost: boolean) => void
   setMorningTime: (morningTime: string) => void
   setDailySummaryEnabled: (dailySummaryEnabled: boolean) => void
@@ -21,6 +24,7 @@ interface UserPreferencesStore {
 
 export const useUserPreferencesStore = create<UserPreferencesStore>((set) => ({
   ...DEFAULTS,
+  markSyncedFromServer: () => set({ hasSyncedFromServer: true }),
   setShowUsdCost: (showUsdCost) => set({ showUsdCost }),
   setMorningTime: (morningTime) => set({ morningTime }),
   setDailySummaryEnabled: (dailySummaryEnabled) => set({ dailySummaryEnabled }),

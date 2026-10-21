@@ -34,7 +34,7 @@ export function AlarmPopupGoal({
           {reminder.title}
         </Typography>
         <Typography variant="body-md" className="text-on-surface-variant">
-          {strings.goalAt(formatClock(firedAt, language))}
+          {strings.goalAt(formatClock(reminder.firesAt ?? firedAt, language))}
         </Typography>
       </View>
       {reminder.messages.length > 0 ? (

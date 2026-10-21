@@ -34,7 +34,7 @@ type RecurrenceChoice = 'none' | 'daily' | 'weekdays'
 type FrequencyChoice = 'daily' | 'every-2' | 'every-3' | 'weekly'
 type MinutesChoice = '15' | '30' | '60'
 
-const WEEKDAYS = [1, 2, 3, 4, 5]
+const DEFAULT_WEEKDAYS = [1, 2, 3, 4, 5]
 const MINUTES_OPTIONS: MinutesChoice[] = ['15', '30', '60']
 
 function pad(value: number): string {
@@ -50,7 +50,6 @@ function dayOffset(date: Date): number {
   return Math.round(diff / (24 * 60 * 60 * 1000))
 }
 
-// ISO 8601 with the device's UTC offset (not "Z").
 function toOffsetISO(date: Date): string {
   const offset = -date.getTimezoneOffset()
   const sign = offset >= 0 ? '+' : '-'
@@ -112,8 +111,17 @@ function recurrenceToChoice(
   return recurrence?.type ?? 'none'
 }
 
-function choiceToRecurrence(choice: RecurrenceChoice): GoalRecurrence {
-  if (choice === 'weekdays') return { type: 'weekdays', weekdays: WEEKDAYS }
+function choiceToRecurrence(
+  choice: RecurrenceChoice,
+  current: GoalRecurrence | null,
+): GoalRecurrence {
+  if (choice === 'weekdays') {
+    return {
+      type: 'weekdays',
+      weekdays:
+        current?.type === 'weekdays' ? current.weekdays : DEFAULT_WEEKDAYS,
+    }
+  }
   return { type: choice }
 }
 
@@ -170,22 +178,34 @@ export function ReminderEditor({ reminder }: ReminderEditorProps) {
   const [frequency, setFrequency] = useState<FrequencyChoice>(
     frequencyToChoice(reminder.checkFrequency),
   )
+  const initialTime = timeOf(reminder.firesAt)
+  const initialRecurrence = recurrenceToChoice(reminder.recurrence)
+  const initialFrequency = frequencyToChoice(reminder.checkFrequency)
   const [state, setState] = useState<'idle' | 'saving' | 'failed'>('idle')
 
   function buildBody(): UpdateReminderBody {
     if (reminder.kind === 'conditional') {
-      return { checkFrequency: choiceToFrequency(frequency) }
+      return frequency === initialFrequency
+        ? {}
+        : { checkFrequency: choiceToFrequency(frequency) }
     }
 
     const now = new Date()
     if (reminder.kind === 'goal') {
-      const today = dateAt(now, 0, time)
-      const remindAt =
-        today.getTime() > now.getTime() ? today : dateAt(now, 1, time)
-      return {
-        remindAt: toOffsetISO(remindAt),
-        recurrence: choiceToRecurrence(recurrence),
+      const body: UpdateReminderBody = {}
+      if (
+        time.hour !== initialTime.hour ||
+        time.minute !== initialTime.minute
+      ) {
+        const today = dateAt(now, 0, time)
+        const remindAt =
+          today.getTime() > now.getTime() ? today : dateAt(now, 1, time)
+        body.remindAt = toOffsetISO(remindAt)
       }
+      if (recurrence !== initialRecurrence) {
+        body.recurrence = choiceToRecurrence(recurrence, reminder.recurrence)
+      }
+      return body
     }
 
     const base = day === 'current' && eventDate ? eventDate : now
@@ -197,6 +217,9 @@ export function ReminderEditor({ reminder }: ReminderEditorProps) {
   }
 
   async function save(body: UpdateReminderBody) {
+    if (Object.keys(body).length === 0) {
+      return
+    }
     setState('saving')
     try {
       await requestUpdateReminder(reminder.id, body)

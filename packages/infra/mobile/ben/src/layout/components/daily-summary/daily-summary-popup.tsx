@@ -31,7 +31,7 @@ function SummarySection({ title, items, showTime }: SummarySectionProps) {
         {title}
       </Typography>
       {items.map((item) => {
-        const at = item.nextFireAt ?? item.firesAt
+        const at = item.firesAt ?? item.nextFireAt
         return (
           <View
             key={item.id}

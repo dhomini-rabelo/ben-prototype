@@ -26,6 +26,7 @@ export type CaptureView = MessageCapture
 export interface AgentReply {
   message: string
   newReminders: ReminderDraft[]
+  updatedGoalIds?: string[]
   newNotes: NoteDraft[]
   newTasks: TaskDraft[]
   historyTopics: HistoryTopic[]

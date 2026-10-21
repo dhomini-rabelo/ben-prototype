@@ -2,8 +2,6 @@ import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
 
 import type { Reminder } from '@/api/models/reminder'
-import { requestActiveReminders } from '@/api/requests/reminders'
-import { useAlarmStore } from '@/layout/stores/alarm-store'
 
 const ANDROID_CHANNEL_ID = 'default'
 const DAILY_SUMMARY_ID = 'daily-summary'
@@ -136,7 +134,14 @@ export async function cancelDailySummaryNotification(): Promise<void> {
   await Notifications.cancelScheduledNotificationAsync(DAILY_SUMMARY_ID)
 }
 
-export function subscribeToNotificationTaps(): () => void {
+export interface NotificationTap {
+  reminderId: string
+  nextFireAt: string
+}
+
+export function subscribeToNotificationTaps(
+  onTap: (tap: NotificationTap) => void,
+): () => void {
   const subscription = Notifications.addNotificationResponseReceivedListener(
     (response) => {
       const data = response.notification.request.content.data
@@ -145,14 +150,7 @@ export function subscribeToNotificationTaps(): () => void {
       if (typeof reminderId !== 'string' || typeof nextFireAt !== 'string') {
         return
       }
-      void requestActiveReminders()
-        .then((items) => {
-          const reminder = items.find((item) => item.id === reminderId)
-          if (reminder) {
-            useAlarmStore.getState().enqueue({ reminder, firedAt: nextFireAt })
-          }
-        })
-        .catch(() => {})
+      onTap({ reminderId, nextFireAt })
     },
   )
 

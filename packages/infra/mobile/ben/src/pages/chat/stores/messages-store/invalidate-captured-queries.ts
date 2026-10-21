@@ -2,7 +2,6 @@ import { queryClient } from '@/core/query-client'
 import type { CaptureKind } from '@/api/models/message'
 import { API_ROUTES } from '@/api/routes'
 import type { AgentReply } from '@/api/responses/agent-reply'
-import { ACTIVE_REMINDERS_PARAMS } from '@/api/requests/reminders'
 
 const LIST_ROUTE_BY_KIND: Record<CaptureKind, string> = {
   note: API_ROUTES.notes.list,
@@ -17,6 +16,9 @@ export function invalidateCapturedQueries(reply: AgentReply) {
   if (reply.newTasks.length > 0) capturedKinds.add('task')
   if (reply.newReminders.length > 0) capturedKinds.add('reminder')
   if (reply.capture) capturedKinds.add(reply.capture.kind)
+  if (reply.updatedGoalIds && reply.updatedGoalIds.length > 0) {
+    capturedKinds.add('reminder')
+  }
 
   if (capturedKinds.size === 0) return
 
@@ -25,10 +27,4 @@ export function invalidateCapturedQueries(reply: AgentReply) {
   }
 
   queryClient.invalidateQueries({ queryKey: [API_ROUTES.captures.counts] })
-
-  if (capturedKinds.has('reminder')) {
-    queryClient.invalidateQueries({
-      queryKey: [API_ROUTES.reminders.list, ACTIVE_REMINDERS_PARAMS],
-    })
-  }
 }

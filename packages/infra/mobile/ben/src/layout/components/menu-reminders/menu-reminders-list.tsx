@@ -34,7 +34,7 @@ export function MenuRemindersList({
             variant="label-caps"
             className="px-3 pt-2 text-on-surface-variant"
           >
-            {strings.upcomingHeading}
+            {strings.activeRemindersHeading}
           </Typography>
           <View className="flex flex-col">
             {upcoming.map((reminder) => (
@@ -61,7 +61,7 @@ export function MenuRemindersList({
             variant="label-caps"
             className="mt-4 px-3 text-on-surface-variant"
           >
-            {strings.firedHeading}
+            {strings.doneRemindersHeading}
           </Typography>
           <View className="flex flex-col">
             {fired.map((reminder) => (
@@ -71,7 +71,7 @@ export function MenuRemindersList({
                 title={reminder.title}
                 badge={<ReminderKindBadge kind={reminder.kind} />}
                 trailing={firesAtRelative(reminder.firesAt, language)}
-                supporting={strings.firedSupporting}
+                supporting={strings.doneSupporting}
                 muted
                 onPress={() => onSelect(reminder.id)}
               />
