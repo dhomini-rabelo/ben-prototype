@@ -1,5 +1,7 @@
 import { Redirect, Stack } from 'expo-router'
 import { ROUTES } from '@/core/routes'
+import { AlarmPopupOverlay } from '@/layout/components/alarm-popup/alarm-popup-overlay'
+import { DailySummaryPopup } from '@/layout/components/daily-summary/daily-summary-popup'
 import { useAlarmScheduler } from '@/layout/hooks/use-alarm-scheduler'
 import { useUserPreferencesSync } from '@/layout/hooks/use-user-preferences-sync'
 import { useAuthStore } from '@/layout/stores/auth-store'
@@ -16,8 +18,12 @@ export default function ProtectedLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="menu" options={{ presentation: 'modal' }} />
-    </Stack>
+    <>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="menu" options={{ presentation: 'modal' }} />
+      </Stack>
+      <DailySummaryPopup />
+      <AlarmPopupOverlay />
+    </>
   )
 }

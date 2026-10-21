@@ -1,13 +1,29 @@
 import { create } from 'zustand'
 
+const DEFAULTS = {
+  showUsdCost: false,
+  morningTime: '08:00',
+  dailySummaryEnabled: true,
+  dailySummaryTime: '08:00',
+}
+
 interface UserPreferencesStore {
   showUsdCost: boolean
+  morningTime: string
+  dailySummaryEnabled: boolean
+  dailySummaryTime: string
   setShowUsdCost: (showUsdCost: boolean) => void
+  setMorningTime: (morningTime: string) => void
+  setDailySummaryEnabled: (dailySummaryEnabled: boolean) => void
+  setDailySummaryTime: (dailySummaryTime: string) => void
   reset: () => void
 }
 
 export const useUserPreferencesStore = create<UserPreferencesStore>((set) => ({
-  showUsdCost: false,
+  ...DEFAULTS,
   setShowUsdCost: (showUsdCost) => set({ showUsdCost }),
-  reset: () => set({ showUsdCost: false }),
+  setMorningTime: (morningTime) => set({ morningTime }),
+  setDailySummaryEnabled: (dailySummaryEnabled) => set({ dailySummaryEnabled }),
+  setDailySummaryTime: (dailySummaryTime) => set({ dailySummaryTime }),
+  reset: () => set(DEFAULTS),
 }))

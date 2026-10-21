@@ -37,7 +37,11 @@ export function useUserPreferencesSync() {
       return
     }
 
-    useUserPreferencesStore.getState().setShowUsdCost(item.showUsdCost)
+    const preferencesStore = useUserPreferencesStore.getState()
+    preferencesStore.setShowUsdCost(item.showUsdCost)
+    preferencesStore.setMorningTime(item.morningTime)
+    preferencesStore.setDailySummaryEnabled(item.dailySummaryEnabled)
+    preferencesStore.setDailySummaryTime(item.dailySummaryTime)
 
     const languageStore = useLanguageStore.getState()
 
