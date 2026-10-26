@@ -1,26 +1,23 @@
-import { router } from 'expo-router'
 import type { RefObject } from 'react'
 import { FlatList, View } from 'react-native'
+import { BenLogo } from '@/layout/components/icons/ben-logo'
 import { Typography } from '@/layout/components/ui/typography'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
 import { useStrings } from '@/layout/hooks/use-strings'
-import { ROUTES } from '@/core/routes'
-import { CaptureCard } from '@/pages/chat/components/capture-card'
-import { MessageTracePressable } from '@/pages/chat/components/chat-history/message-trace-pressable'
+import { ChatHistoryItem } from '@/pages/chat/components/chat-history/chat-history-item'
 import { MessageBubble } from '@/pages/chat/components/message-bubble/message-bubble'
-import { CostFooter } from '@/pages/chat/components/message-footers/cost-footer'
 import { RetryFooter } from '@/pages/chat/components/message-footers/retry-footer'
-import { SendRetryFooter } from '@/pages/chat/components/message-footers/send-retry-footer'
 import { TranscribingFooter } from '@/pages/chat/components/message-footers/transcribing-footer'
 import { TypingIndicator } from '@/pages/chat/components/typing-indicator'
+import type { ChatListItem } from '@/pages/chat/hooks/use-chat-list'
 import { useChatList } from '@/pages/chat/hooks/use-chat-list'
 import { useMessagesStore } from '@/pages/chat/stores/messages-store'
 import { chatStrings } from '@/pages/chat/strings/chat-strings'
-import { getMessageText } from '@/pages/chat/utils/chat-messages'
-import type { BenUiMessage } from '@/pages/chat/utils/chat-messages'
+
+const BEN_AVATAR_SIZE = 28
 
 type ChatHistoryProps = {
-  listRef?: RefObject<FlatList<BenUiMessage> | null>
+  listRef?: RefObject<FlatList<ChatListItem> | null>
   bottomInset?: number
 }
 
@@ -37,71 +34,22 @@ export function ChatHistory({ listRef, bottomInset = 0 }: ChatHistoryProps) {
     ? sessionMessages[sessionMessages.length - 1]?.id
     : undefined
 
-  const renderItem = ({ item }: { item: BenUiMessage }) => {
-    const text = getMessageText(item)
-    const isBen = item.role === 'assistant'
-    const capture = item.metadata?.capture
-    const isFailed = item.id === failedMessageId
-
-    const bubble = (
-      <MessageBubble
-        from={isBen ? 'ben' : 'user'}
-        state={isFailed ? 'error' : 'default'}
-        footer={
-          isFailed ? (
-            <SendRetryFooter />
-          ) : (
-            isBen && <CostFooter costUsd={item.metadata?.interactionCostUsd} />
-          )
-        }
-        className="mb-4"
-      >
-        {text}
-        {isBen && capture && (
-          <CaptureCard.Root kind={capture.kind}>
-            <CaptureCard.Icon />
-            <CaptureCard.Body>
-              <CaptureCard.Title>{capture.title}</CaptureCard.Title>
-              {capture.meta && (
-                <CaptureCard.Meta>{capture.meta}</CaptureCard.Meta>
-              )}
-              <CaptureCard.Action
-                onAction={() =>
-                  router.push(ROUTES.taskWorkspace(capture.itemId))
-                }
-              />
-            </CaptureCard.Body>
-          </CaptureCard.Root>
-        )}
-      </MessageBubble>
-    )
-
-    if (!isBen) return bubble
-
-    return (
-      <MessageTracePressable
-        messageId={item.id}
-        createdAt={item.metadata?.createdAt ?? null}
-      >
-        {bubble}
-      </MessageTracePressable>
-    )
-  }
-
   return (
     <FlatList
       ref={listRef}
       inverted
       data={data}
       keyExtractor={(item) => item.id}
-      renderItem={renderItem}
+      renderItem={({ item }) => (
+        <ChatHistoryItem item={item} failedMessageId={failedMessageId} />
+      )}
       onEndReached={loadOlder}
       onEndReachedThreshold={0.2}
       contentContainerClassName="px-4 pb-2"
       contentContainerStyle={{ paddingTop: bottomInset }}
       keyboardShouldPersistTaps="handled"
       ListHeaderComponent={
-        <View className="gap-4">
+        <View className="gap-2">
           {voiceStatus === 'transcribing' && (
             <MessageBubble
               from="user"
@@ -122,18 +70,11 @@ export function ChatHistory({ listRef, bottomInset = 0 }: ChatHistoryProps) {
             </MessageBubble>
           )}
           {isAwaitingReply && (
-            <View className="w-full items-start">
-              <View className="flex-col items-start gap-1">
-                <View className="ml-1">
-                  <Typography
-                    variant="label-caps"
-                    className="text-on-surface-variant"
-                  >
-                    Ben
-                  </Typography>
-                </View>
-                <TypingIndicator />
+            <View className="w-full flex-row items-start gap-2">
+              <View className="mt-[3px]">
+                <BenLogo variant="avatar" size={BEN_AVATAR_SIZE} />
               </View>
+              <TypingIndicator className="rounded-[20px] rounded-tl-[6px] bg-bubble-ben" />
             </View>
           )}
         </View>

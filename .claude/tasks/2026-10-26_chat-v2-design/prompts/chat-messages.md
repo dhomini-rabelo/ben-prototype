@@ -21,3 +21,12 @@ Parallel: yes, with chat-shell (after capture-card and mobile-voice-duration).
 
 ## Acceptance
 Typecheck shows no error in owned files. Chat matches shot.png middle. A voice message shows the wave + duration, and still does after a reload. Pagination works.
+
+## Premissas do implementador
+- Extraí `chat-history/chat-history-item.tsx` (novo) para o renderItem, mantendo chat-history.tsx enxuto; o switch por `item.kind` fica lá.
+- Tipo união `ChatListItem` (message | divider) e `buildChatListItems` exportados de use-chat-list.ts; o divider fica após a mensagem mais antiga de cada dia (lista invertida), com contagem de Ben+capture dentre as mensagens carregadas.
+- `use-scroll-to-bottom.ts` (sem dono) teve só o tipo do ref trocado para `FlatList<ChatListItem>`, necessário para o typecheck.
+- Hora usa `formatClock` existente (HH:MM 2 dígitos, locale do idioma); wave usa fórmula de altura do index.html `(i*7+s)%15`.
+- Wave só aparece com `voiceDurationMs > 0`. Typing indicator do header ganhou avatar e raio/cor do bubble-ben via className (typing-indicator.tsx não é meu); o rótulo "Ben" foi removido.
+- CostFooter passou de label-caps (mono/uppercase) para Text 11px; CaptureCard recebe `className="mt-0"` para não somar a margem própria ao gap 6.
+- pt-BR `dayFiled`: singular "arquivado" quando n=1.

@@ -28,6 +28,9 @@ const en = {
   traceHint: 'Long press to inspect the model call',
   traceAction: 'Inspect model call',
   costLabel: (cost: string) => `Cost of this interaction: ${cost}`,
+  dayToday: 'Today',
+  dayYesterday: 'Yesterday',
+  dayFiled: (count: number) => `${count} filed`,
 }
 
 export const chatStrings: Localized<typeof en> = {
@@ -64,5 +67,8 @@ export const chatStrings: Localized<typeof en> = {
     traceHint: 'Pressione e segure para inspecionar a chamada do modelo',
     traceAction: 'Inspecionar chamada do modelo',
     costLabel: (cost) => `Custo desta interação: ${cost}`,
+    dayToday: 'Hoje',
+    dayYesterday: 'Ontem',
+    dayFiled: (count) => `${count} ${count === 1 ? 'arquivado' : 'arquivados'}`,
   },
 }

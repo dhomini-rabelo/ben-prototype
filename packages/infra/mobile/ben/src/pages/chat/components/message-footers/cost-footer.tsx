@@ -1,4 +1,4 @@
-import { Typography } from '@/layout/components/ui/typography'
+import { Text } from 'react-native'
 import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
 import { useUserPreferencesStore } from '@/layout/stores/user-preferences-store'
 import { cn } from '@/layout/utils/styles'
@@ -17,12 +17,14 @@ export function CostFooter({ costUsd, className }: CostFooterProps) {
   const formatted = formatUsdCost(costUsd, language)
 
   return (
-    <Typography
-      variant="label-caps"
+    <Text
       accessibilityLabel={strings.costLabel(formatted)}
-      className={cn('mt-1 text-on-surface-variant', className)}
+      className={cn(
+        'mt-1 text-[11px] leading-4 text-on-surface-variant',
+        className,
+      )}
     >
       {formatted}
-    </Typography>
+    </Text>
   )
 }

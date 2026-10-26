@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { FlatList } from 'react-native'
+import type { ChatListItem } from '@/pages/chat/hooks/use-chat-list'
 import {
   getMessageText,
   type BenUiMessage,
@@ -14,7 +15,7 @@ export function useScrollToBottom({
   messages,
   isAwaitingReply,
 }: UseScrollToBottomProps) {
-  const listRef = useRef<FlatList<BenUiMessage> | null>(null)
+  const listRef = useRef<FlatList<ChatListItem> | null>(null)
 
   const lastMessage = messages[messages.length - 1]
   const lastMessageId = lastMessage?.id
