@@ -20,8 +20,8 @@ Git: branch feat/chat-v2-design | commit-base bdc17ab
 - [ ] Commit: validate
 - [x] Decide system test mode (ambos)
 - [x] tests-01 — FAIL (fonte) -> fix2 c930675 -> tests-02 PASS
-- [ ] Context update (Sonnet)
-- [ ] Commit: context
+- [x] Context update (Sonnet)
+- [x] Commit: context
 - [ ] Close
 
 ## Test attempts

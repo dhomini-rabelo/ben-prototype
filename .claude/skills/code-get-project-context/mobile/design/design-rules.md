@@ -7,6 +7,7 @@ Valem para toda tela do Ben, no [sandbox de design](./description.md) e no [app 
 - **Ancore as mensagens do chat ao composer.** Mensagens e cards de captura ficam logo acima do input do chat, não flutuando no topo da viewport. Um vão alto entre o último balão e o microfone parece ar morto, principalmente em trocas curtas como capturas inline.
 - **Posição do `ActiveTaskPeek`.**
   - **Renderize só quando há tarefas ativas.** Não existe variante "vazia" em nenhuma tela: com zero tarefas em andamento o peek some. Ele existe para mostrar trabalho real, não para divulgar o conceito.
-  - **Mantenha no fim da pilha do rodapé.** Nunca acima de um balão de mensagem, de um `ChatBanner` (permissão negada, erro) ou de qualquer aviso inline. Na prática: uma tela com banner acima do input não renderiza peek. O peek só aparece nos estados limpos, em que a única coisa acima do input é o próprio peek.
+  - **No sandbox, mantenha no fim da pilha do rodapé** (`ChatShell` renderiza o `peek` acima do composer). Nunca acima de um balão de mensagem, de um `ChatBanner` (permissão negada, erro) ou de qualquer aviso inline. Na prática: uma tela com banner acima do input não renderiza peek. O peek só aparece nos estados limpos, em que a única coisa acima do input é o próprio peek.
+  - **No app Ben o peek fica no cabeçalho.** `ActiveTaskPicker` o renderiza logo abaixo da top bar, antes do `ChatTopBanner`, e ele continua só existindo quando há tarefas ativas.
 
 Antes de qualquer decisão visual, de UX ou de copy, abra os documentos fonte da verdade listados no [SKILL.md](../../SKILL.md#documentos-fonte-da-verdade).
