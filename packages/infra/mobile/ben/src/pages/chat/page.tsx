@@ -69,29 +69,28 @@ export function Chat() {
     setHeaderHeight(event.nativeEvent.layout.height)
   }
 
-  const isRecording = voiceStatus === 'recording'
   const hasVoiceBubble =
     voiceStatus === 'transcribing' || voiceStatus === 'error'
 
   return (
-    <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-surface">
+    <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
       <View className="flex-1">
         <View
           onLayout={handleHeaderLayout}
-          className="absolute inset-x-0 top-0 z-50 bg-surface"
+          className="absolute inset-x-0 top-0 z-50 bg-background"
         >
           <ChatTopBar onOpenMenu={() => router.push(ROUTES.menu)} />
+          <ActiveTaskPicker />
           <ChatTopBanner />
         </View>
 
-        <View className="flex-1">
+        <View className="flex-1" style={{ paddingTop: headerHeight }}>
           {historyState.isLoading ? (
             <ChatHistorySkeleton />
           ) : historyState.isEmpty && !hasVoiceBubble ? (
             <View
               className="flex-1 px-4"
               style={{
-                paddingTop: headerHeight,
                 paddingBottom: footerHeight + FOOTER_GAP + keyboardOffset,
               }}
             >
@@ -111,9 +110,8 @@ export function Chat() {
         >
           <View
             onLayout={handleFooterLayout}
-            className="flex-col gap-2 bg-surface px-4 pb-2 pt-2"
+            className="flex-col gap-2 bg-background px-4 pb-2 pt-2"
           >
-            {!isRecording && <ActiveTaskPicker />}
             <ChatFooter
               onStartRecording={() => useVoiceStore.getState().startRecording()}
             />

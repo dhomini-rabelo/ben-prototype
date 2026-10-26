@@ -1,4 +1,4 @@
-import { AlertCircle, TriangleAlert, WifiOff } from 'lucide-react-native'
+import { Warning, WarningCircle, WifiSlash } from 'phosphor-react-native'
 import { memo } from 'react'
 import { View } from 'react-native'
 import { useStrings } from '@/layout/hooks/use-strings'
@@ -23,22 +23,22 @@ function ChatTopBannerComponent() {
   }
 
   return (
-    <View className="px-4 pb-2">
+    <View className="px-4 pb-2 pt-2">
       {isOffline ? (
         <ChatBanner.Root tone="warn">
-          <ChatBanner.Icon icon={WifiOff} />
+          <ChatBanner.Icon icon={WifiSlash} />
           <ChatBanner.Text>{strings.offlineBanner}</ChatBanner.Text>
         </ChatBanner.Root>
       ) : isVoiceError ? (
         <ChatBanner.Root tone="error">
-          <ChatBanner.Icon icon={AlertCircle} />
+          <ChatBanner.Icon icon={WarningCircle} />
           <ChatBanner.Text>{strings.voiceErrorBanner}</ChatBanner.Text>
           <ChatBanner.Action label={strings.retry} onPress={retryVoice} />
           <ChatBanner.Dismiss onPress={dismissError} />
         </ChatBanner.Root>
       ) : isMicDenied ? (
         <ChatBanner.Root tone="warn">
-          <ChatBanner.Icon icon={TriangleAlert} />
+          <ChatBanner.Icon icon={Warning} />
           <ChatBanner.Text>{strings.micDeniedBanner}</ChatBanner.Text>
           <ChatBanner.Dismiss />
         </ChatBanner.Root>

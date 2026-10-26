@@ -24,6 +24,7 @@ export function ActiveTaskPicker() {
     <>
       <ActiveTaskPeek
         variant="summary"
+        className="mx-4 mt-0.5"
         count={tasks.length}
         title={tasks[0]?.title}
         onOpen={() => setIsOpen(true)}

@@ -21,3 +21,11 @@ Parallel: yes, with chat-messages (disjoint files; chat-strings is touched by bo
 
 ## Acceptance
 No lucide in owned files. Typecheck shows no error in owned files. Header and strip match shot.png top. With 0 active tasks the strip is gone and nothing overlaps.
+
+## Premissas do implementador
+- Data do header: `toLocaleDateString` com `LANGUAGE_LOCALES[language]` (weekday/month/day short), novo util `pages/chat/utils/format-short-date.ts`; en = "Wed, Oct 21", pt-BR segue o formato do locale.
+- sh-1 aproximado com a classe `shadow-[0_3px_10px_rgba(29,24,20,0.05)]` (mesma do chat-input; RN nao suporta sombra dupla).
+- Chave de string nova: `peekLatestTask`; `peekActiveCount` ja existia ("{n} active"/"{n} ativa(s)").
+- O strip agora aparece tambem durante a gravacao (antes o picker ficava oculto ao gravar no rodape).
+- A lista/skeleton/empty state recebem `paddingTop: headerHeight` num wrapper unico em page.tsx (ChatHistory nao foi tocado).
+- Rodape de page.tsx: bg-surface -> bg-background (mesmo hex).
