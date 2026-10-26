@@ -29,6 +29,7 @@ import { useStrings } from '@/layout/hooks/use-strings'
 import { workspaceStrings } from '@/pages/task-workspace/strings/workspace-strings'
 
 const FOOTER_GAP = 16
+const DEFAULT_HEADER_HEIGHT = 64
 
 export function TaskWorkspace() {
   const router = useRouter()
@@ -39,6 +40,7 @@ export function TaskWorkspace() {
   const task = state.data?.item ?? null
 
   const [footerHeight, setFooterHeight] = useState(0)
+  const [headerHeight, setHeaderHeight] = useState(DEFAULT_HEADER_HEIGHT)
 
   useConnectivity()
 
@@ -59,6 +61,10 @@ export function TaskWorkspace() {
 
   function handleFooterLayout(event: LayoutChangeEvent) {
     setFooterHeight(event.nativeEvent.layout.height)
+  }
+
+  function handleHeaderLayout(event: LayoutChangeEvent) {
+    setHeaderHeight(event.nativeEvent.layout.height)
   }
 
   if (state.isLoading) {
@@ -98,7 +104,10 @@ export function TaskWorkspace() {
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-surface">
       <View className="flex-1">
-        <View className="absolute inset-x-0 top-0 z-50 bg-surface">
+        <View
+          onLayout={handleHeaderLayout}
+          className="absolute inset-x-0 top-0 z-50 bg-surface"
+        >
           <WorkspaceTopBar />
           <WorkspaceTopBanner />
         </View>
@@ -107,7 +116,7 @@ export function TaskWorkspace() {
           className="flex-1"
           contentContainerStyle={{
             paddingHorizontal: 20,
-            paddingTop: 64,
+            paddingTop: headerHeight,
             paddingBottom: footerHeight + FOOTER_GAP,
           }}
           keyboardShouldPersistTaps="handled"

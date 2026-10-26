@@ -50,3 +50,12 @@ Typecheck shows no error in owned files. Chat matches shot.png middle. A voice m
 - Ano no chip: formatShortDate (usado pelo chip do lembrete, pelo divisor de dia e pelo cabecalho) passa a incluir `year: 'numeric'` apenas quando o ano da data difere do ano atual; datas do ano corrente continuam compactas.
 - Task picker: a className `bg-surface-container-lowest rounded-t-3xl` ja estava no fonte; o NativeWind nao aplica className em `Animated.View` na web (mesmo achado documentado em message-actions-menu.tsx). O fundo arredondado e o scrim passaram para um `View` simples aninhado; o `Animated.View` guarda so o `style` animado.
 - GET /tasks//detail: causa raiz inferida do codigo (servidores :3333/:8081 fora do ar, nao reproduzido no navegador): `useWorkspaceTask` le `taskId` com fallback `''` e `useTaskDetailData` buscava sem gate, entao qualquer render com o param ainda indefinido pedia `/tasks//detail`. Correcao: `enabled: Boolean(taskId)` em useTaskDetailData.
+
+## Premissas do implementador (fix3-B)
+
+- Gravar na web é desejado: toque para gravar, mesma UX do nativo (RecordingBar, duração), via getUserMedia + MediaRecorder em `audio-service.web.ts`, mesma API exportada do nativo; o nativo não foi tocado.
+- O formato gravado é o primeiro suportado entre webm/opus, webm, ogg/opus e mp4. O servidor (multer em memória, sem filtro de mime) e o AssemblyAI (recebe só o buffer, detecta o formato pelo conteúdo) aceitam esses formatos; o upload web busca o blob URL e envia um Blob com o nome `recording.webm` (o nativo segue enviando `{uri,name,type}`).
+- Permissão web: `navigator.permissions.query('microphone')` (falha vira `prompt`); sem getUserMedia/MediaRecorder (contexto inseguro) vira `denied`.
+- Banner sobre a primeira todo: o cabeçalho absoluto do workspace agora é medido por `onLayout` e esse valor é o `paddingTop` do scroll (antes fixo em 64), então o banner empurra a lista em vez de cobri-la.
+- Docs de project-context não tinham afirmação de "web sem captura de voz"; nenhuma linha alterada ali.
+- Verificação em navegador não feita: :8081 e :3333 estavam fora do ar e não foram iniciados; validado por leitura de código, lint e typecheck.
