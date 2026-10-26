@@ -55,3 +55,4 @@ Skill: simple-loop
 - impl chat-shell: ok, commit c360e16; strip no topo, picker saiu do footer; tsc 0.
 - impl chat-messages: ok, commit 8f8182f; voice-wave, day-divider, chat-history-item novos; tocou use-scroll-to-bottom.ts (tipo). tsc 0.
 - impl finalize: ok, commit 0c29803; lucide removido; lint:fix, typecheck, test (101) verdes na raiz.
+- validate r1: CHANGES_REQUIRED (Start button) -> fix1 6d7b9a3; validate r2: APPROVED_WITH_RESALVAS (suggested-action.tsx:32 font-semibold sem família; ano ausente no chip). Ponteiros: review-r1.md, review-r2.md
