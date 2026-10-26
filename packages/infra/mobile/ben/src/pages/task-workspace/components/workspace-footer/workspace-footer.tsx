@@ -1,11 +1,12 @@
 import { memo } from 'react'
-import { Mic, Send } from 'lucide-react-native'
+import { ArrowUp, Microphone } from 'phosphor-react-native'
 import { View } from 'react-native'
 import { ChatInput } from '@/layout/components/chat-input'
 import { RecordingBar } from '@/layout/components/recording-bar'
 import { IconButton } from '@/layout/components/ui/icon-button'
 import { useCanRecord } from '@/layout/hooks/use-can-record'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
+import { onPrimary } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 import { useWorkspaceInput } from '@/pages/task-workspace/hooks/use-workspace-input'
 import { useWorkspaceTask } from '@/pages/task-workspace/hooks/use-workspace-task'
@@ -52,7 +53,7 @@ function WorkspaceFooterComponent({ onStartRecording }: WorkspaceFooterProps) {
             onPress={isFinished ? undefined : handleSend}
             className={cn('ml-2 bg-primary', isFinished && 'opacity-60')}
           >
-            <Send size={20} className="text-on-primary" />
+            <ArrowUp size={20} color={onPrimary} />
           </IconButton>
         ) : (
           <IconButton
@@ -63,7 +64,7 @@ function WorkspaceFooterComponent({ onStartRecording }: WorkspaceFooterProps) {
               (isFinished || !canRecord) && 'opacity-60',
             )}
           >
-            <Mic size={20} className="text-on-primary" />
+            <Microphone size={20} color={onPrimary} />
           </IconButton>
         )}
       </View>

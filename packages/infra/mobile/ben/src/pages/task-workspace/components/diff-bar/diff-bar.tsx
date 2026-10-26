@@ -1,4 +1,4 @@
-import { Check, X } from 'lucide-react-native'
+import { Check, X } from 'phosphor-react-native'
 import { memo } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
@@ -40,7 +40,7 @@ function DiffBarComponent() {
             isMutating && 'opacity-60',
           )}
         >
-          <X size={16} strokeWidth={2} color={onSurface} />
+          <X size={16} color={onSurface} />
           <Text className="text-button font-semibold text-on-surface">
             {strings.reject}
           </Text>
@@ -55,7 +55,7 @@ function DiffBarComponent() {
             isMutating && 'opacity-60',
           )}
         >
-          <Check size={16} strokeWidth={2} color={onPrimary} />
+          <Check size={16} color={onPrimary} />
           <Text className="text-button font-semibold text-on-primary">
             {strings.approve}
           </Text>

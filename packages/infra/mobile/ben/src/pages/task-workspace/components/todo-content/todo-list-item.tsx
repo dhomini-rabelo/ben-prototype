@@ -1,4 +1,4 @@
-import { Check } from 'lucide-react-native'
+import { Check } from 'phosphor-react-native'
 import { memo } from 'react'
 import { Pressable, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
@@ -50,7 +50,7 @@ function TodoListItemComponent({
             : 'border-outline-variant bg-surface-container-lowest',
         )}
       >
-        {done && <Check size={14} strokeWidth={3} color={onPrimary} />}
+        {done && <Check size={14} weight="bold" color={onPrimary} />}
       </Pressable>
       <Typography
         variant="body-md"

@@ -1,4 +1,4 @@
-import { RotateCw } from 'lucide-react-native'
+import { ArrowClockwise } from 'phosphor-react-native'
 import { memo } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
@@ -73,7 +73,7 @@ function SubThreadBannerComponent({
           onPress={onRetry}
           className="shrink-0 flex-row items-center gap-1"
         >
-          <RotateCw size={12} color={textError} />
+          <ArrowClockwise size={12} color={textError} />
           <Text className="text-label-caps font-mono uppercase text-text-error">
             {strings.subThreadRetry}
           </Text>

@@ -1,4 +1,4 @@
-import { Plus } from 'lucide-react-native'
+import { Plus } from 'phosphor-react-native'
 import { useState } from 'react'
 import { TextInput, View } from 'react-native'
 import { onSurfaceVariant } from '@/layout/utils/colors'
@@ -25,7 +25,7 @@ export function AddTodoRow() {
   return (
     <View className="flex-row items-center gap-3 rounded-lg px-2 py-2.5">
       <View className="size-5 shrink-0 items-center justify-center rounded-md border border-dashed border-outline-variant">
-        <Plus size={12} strokeWidth={2} color={onSurfaceVariant} />
+        <Plus size={12} color={onSurfaceVariant} />
       </View>
       <TextInput
         value={value}

@@ -1,11 +1,11 @@
 import {
-  CheckCircle2,
-  ChevronLeft,
+  ArrowCounterClockwise,
+  CaretLeft,
+  CheckCircle,
+  DotsThree,
   List,
-  MoreHorizontal,
-  RotateCcw,
-  Type,
-} from 'lucide-react-native'
+  TextT,
+} from 'phosphor-react-native'
 import { memo, useState } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import { router } from 'expo-router'
@@ -30,7 +30,7 @@ function WorkspaceTopBarComponent() {
     return null
   }
 
-  const TypeIcon = task.contentType === 'todo' ? List : Type
+  const TypeIcon = task.contentType === 'todo' ? List : TextT
   const isFinished = task.status === 'finished'
 
   async function handleFinish() {
@@ -53,12 +53,12 @@ function WorkspaceTopBarComponent() {
         onPress={() => router.replace(ROUTES.chat)}
         className="size-10 shrink-0 items-center justify-center rounded-full active:bg-surface-container-low"
       >
-        <ChevronLeft size={20} strokeWidth={2} color={onSurfaceVariant} />
+        <CaretLeft size={20} color={onSurfaceVariant} />
       </Pressable>
 
       <View className="min-w-0 flex-1 flex-row items-center justify-center gap-2">
         <View className="size-6 shrink-0 items-center justify-center rounded-md bg-surface-container-high">
-          <TypeIcon size={14} strokeWidth={1.75} color={onSurfaceVariant} />
+          <TypeIcon size={14} color={onSurfaceVariant} />
         </View>
         <Typography
           variant="body-md"
@@ -80,7 +80,7 @@ function WorkspaceTopBarComponent() {
         onPress={() => setIsMenuOpen((open) => !open)}
         className="size-10 shrink-0 items-center justify-center rounded-full active:bg-surface-container-low"
       >
-        <MoreHorizontal size={20} strokeWidth={2} color={onSurfaceVariant} />
+        <DotsThree size={20} color={onSurfaceVariant} />
       </Pressable>
 
       {isMenuOpen && (
@@ -94,7 +94,7 @@ function WorkspaceTopBarComponent() {
                 isMutating && 'opacity-60',
               )}
             >
-              <RotateCcw size={16} strokeWidth={2} color={onSurface} />
+              <ArrowCounterClockwise size={16} color={onSurface} />
               <Text className="text-body-md text-on-surface">
                 {strings.reopenTask}
               </Text>
@@ -108,7 +108,7 @@ function WorkspaceTopBarComponent() {
                 isMutating && 'opacity-60',
               )}
             >
-              <CheckCircle2 size={16} strokeWidth={2} color={onSurface} />
+              <CheckCircle size={16} color={onSurface} />
               <Text className="text-body-md text-on-surface">
                 {strings.finishTask}
               </Text>
