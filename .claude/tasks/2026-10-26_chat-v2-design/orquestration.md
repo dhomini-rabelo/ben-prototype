@@ -52,3 +52,6 @@ Skill: simple-loop
 - impl icons-task-workspace: ok, commit e03fb1f, 8 arquivos; ícones on-primary agora com color explícito (mudança visível). tsc 0.
 - impl mobile-voice-duration: ok, commit 5ce4941, 12 arquivos + page.tsx (setTranscriptHandler). eslint rodou 1x em arquivos de outro agente por scratchpad compartilhado (ver Armadilhas). tsc 0.
 - impl capture-card: ok, commit af33453; Header removido, dog-ear novo. Aberto: server não popula capture.meta → chip de hora pode não aparecer.
+- impl chat-shell: ok, commit c360e16; strip no topo, picker saiu do footer; tsc 0.
+- impl chat-messages: ok, commit 8f8182f; voice-wave, day-divider, chat-history-item novos; tocou use-scroll-to-bottom.ts (tipo). tsc 0.
+- impl finalize: ok, commit 0c29803; lucide removido; lint:fix, typecheck, test (101) verdes na raiz.
