@@ -18,8 +18,8 @@ Git: branch feat/chat-v2-design | commit-base bdc17ab
 - [ ] Validate (fresh Opus)
 - [ ] Fix round / re-validate (if CHANGES_REQUIRED)
 - [ ] Commit: validate
-- [ ] Decide system test mode
-- [ ] tests-01 — PASS required (else fix loop)
+- [x] Decide system test mode (ambos)
+- [x] tests-01 — FAIL (fonte) -> fix2 c930675 -> tests-02 PASS
 - [ ] Context update (Sonnet)
 - [ ] Commit: context
 - [ ] Close
@@ -28,6 +28,8 @@ Git: branch feat/chat-v2-design | commit-base bdc17ab
 
 | Run | Result | Notes |
 |-----|--------|-------|
+| tests-01 | FAIL | Instrument Sans nao aplicada em bolhas/login/botoes (c,e,h,i, a,b,d,f,g cobertos); L1/L2 pre-existentes |
+| tests-02 | PASS | apos fix2 (c930675); 211 testes, lint/typecheck verdes; resalvas L1, L2, 404 /tasks//detail, mic web no-op |
 
 ## Notes
 
