@@ -30,6 +30,7 @@ Git: branch feat/chat-v2-design | commit-base bdc17ab
 |-----|--------|-------|
 | tests-01 | FAIL | Instrument Sans nao aplicada em bolhas/login/botoes (c,e,h,i, a,b,d,f,g cobertos); L1/L2 pre-existentes |
 | tests-02 | PASS | apos fix2 (c930675); 211 testes, lint/typecheck verdes; resalvas L1, L2, 404 /tasks//detail, mic web no-op |
+| tests-03 | PASS | apos fix3a a650506 + fix3b 44a327c (ano no chip, picker bg, 404 detail, mic web, banner); 211 testes; falha do AssemblyAI com audio falso e do provedor |
 
 ## Notes
 
