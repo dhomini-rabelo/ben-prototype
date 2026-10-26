@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { LogOut, RotateCw, User, X } from 'lucide-react-native'
+import { ArrowClockwise, SignOut, User, X } from 'phosphor-react-native'
 import {
   Image,
   Pressable,
@@ -167,7 +167,7 @@ export function SettingsSheet({
                 ? strings.signingOut
                 : strings.signOut}
             </Typography>
-            <LogOut size={16} color={onSurfaceVariant} />
+            <SignOut size={16} color={onSurfaceVariant} />
           </Pressable>
 
           {signOutState === 'failed' && (
@@ -180,7 +180,7 @@ export function SettingsSheet({
                 onPress={onRetry}
                 className="flex-row items-center gap-1.5"
               >
-                <RotateCw size={12} color={textError} />
+                <ArrowClockwise size={12} color={textError} />
                 <Typography
                   variant="label-caps"
                   className="font-mono text-text-error"

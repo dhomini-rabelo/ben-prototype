@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight } from 'lucide-react-native'
+import { CaretDown, CaretRight } from 'phosphor-react-native'
 import type { ComponentType, ReactNode } from 'react'
 import { useState } from 'react'
 import { Pressable, View } from 'react-native'
@@ -46,9 +46,9 @@ export function CollapsibleSection({
           onPress={() => setIsOpen((current) => !current)}
         >
           {isOpen ? (
-            <ChevronDown size={16} color={onSurfaceVariant} />
+            <CaretDown size={16} color={onSurfaceVariant} />
           ) : (
-            <ChevronRight size={16} color={onSurfaceVariant} />
+            <CaretRight size={16} color={onSurfaceVariant} />
           )}
           {Icon && <Icon size={16} color={onSurfaceVariant} />}
           <Typography

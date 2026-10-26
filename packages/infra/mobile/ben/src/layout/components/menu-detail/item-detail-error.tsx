@@ -1,4 +1,4 @@
-import { RotateCw } from 'lucide-react-native'
+import { ArrowClockwise } from 'phosphor-react-native'
 import { Pressable, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { useStrings } from '@/layout/hooks/use-strings'
@@ -24,7 +24,7 @@ export function ItemDetailError({ message, onRetry }: ItemDetailErrorProps) {
           onPress={onRetry}
           className="mt-1 flex-row items-center gap-1.5 self-start"
         >
-          <RotateCw size={14} color={textError} />
+          <ArrowClockwise size={14} color={textError} />
           <Typography
             variant="label-caps"
             className="font-mono text-text-error"

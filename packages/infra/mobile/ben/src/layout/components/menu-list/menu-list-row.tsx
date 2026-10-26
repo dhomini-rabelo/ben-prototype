@@ -1,13 +1,12 @@
-import { Bell, List, NotebookPen, Type } from 'lucide-react-native'
-import type { ComponentType, ReactNode } from 'react'
+import type { Icon as PhosphorIcon } from 'phosphor-react-native'
+import { Bell, List, NotePencil, TextT } from 'phosphor-react-native'
+import type { ReactNode } from 'react'
 import { Pressable, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { onSurfaceVariant } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 
 export type MenuListRowKind = 'task-text' | 'task-list' | 'note' | 'reminder'
-
-type IconProps = { size?: number; color?: string; strokeWidth?: number }
 
 type MenuListRowProps = {
   kind: MenuListRowKind
@@ -22,10 +21,10 @@ type MenuListRowProps = {
   onPress?: () => void
 }
 
-const KIND_ICON: Record<MenuListRowKind, ComponentType<IconProps>> = {
-  'task-text': Type,
+const KIND_ICON: Record<MenuListRowKind, PhosphorIcon> = {
+  'task-text': TextT,
   'task-list': List,
-  note: NotebookPen,
+  note: NotePencil,
   reminder: Bell,
 }
 
@@ -59,7 +58,7 @@ export function MenuListRow({
           muted && 'opacity-60',
         )}
       >
-        <Icon size={16} strokeWidth={1.75} color={onSurfaceVariant} />
+        <Icon size={16} color={onSurfaceVariant} />
       </View>
       <View className="min-w-0 flex-1 gap-0.5">
         <View className="flex-row items-baseline gap-2">

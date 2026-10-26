@@ -1,4 +1,4 @@
-import { ChevronLeft } from 'lucide-react-native'
+import { CaretLeft } from 'phosphor-react-native'
 import type { ReactNode } from 'react'
 import { ScrollView, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -25,7 +25,7 @@ export function MenuListShell({ title, onBack, children }: MenuListShellProps) {
     >
       <View className="h-16 flex-row items-center gap-2 px-3">
         <IconButton label={strings.backToMenu} onPress={onBack}>
-          <ChevronLeft size={20} strokeWidth={2} color={onSurfaceVariant} />
+          <CaretLeft size={20} color={onSurfaceVariant} />
         </IconButton>
         <Typography variant="body-md" className="font-semibold text-on-surface">
           {title}

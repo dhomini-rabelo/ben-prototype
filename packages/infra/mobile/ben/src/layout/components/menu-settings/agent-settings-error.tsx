@@ -1,4 +1,4 @@
-import { RotateCw } from 'lucide-react-native'
+import { ArrowClockwise } from 'phosphor-react-native'
 import { Pressable, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { useStrings } from '@/layout/hooks/use-strings'
@@ -22,7 +22,7 @@ export function AgentSettingsError({ onRetry }: AgentSettingsErrorProps) {
         onPress={onRetry}
         className="flex-row items-center gap-1.5"
       >
-        <RotateCw size={12} color={textError} />
+        <ArrowClockwise size={12} color={textError} />
         <Typography variant="label-caps" className="font-mono text-text-error">
           {strings.retry}
         </Typography>

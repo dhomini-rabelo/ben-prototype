@@ -1,4 +1,4 @@
-import { Check, Copy } from 'lucide-react-native'
+import { Check, Copy } from 'phosphor-react-native'
 import { useEffect, useRef, useState } from 'react'
 import { IconButton } from '@/layout/components/ui/icon-button'
 import { useStrings } from '@/layout/hooks/use-strings'

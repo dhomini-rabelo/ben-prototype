@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp } from 'lucide-react-native'
+import { CaretDown, CaretUp } from 'phosphor-react-native'
 import { useState } from 'react'
 import { Pressable, View } from 'react-native'
 import type { AppVersion } from '@/core/app-versions'
@@ -37,9 +37,9 @@ export function AppVersionItem({ version, defaultOpen }: AppVersionItemProps) {
             v{version.version}
           </Typography>
           {isOpen ? (
-            <ChevronUp size={16} color={onSurfaceVariant} />
+            <CaretUp size={16} color={onSurfaceVariant} />
           ) : (
-            <ChevronDown size={16} color={onSurfaceVariant} />
+            <CaretDown size={16} color={onSurfaceVariant} />
           )}
         </View>
       </Pressable>

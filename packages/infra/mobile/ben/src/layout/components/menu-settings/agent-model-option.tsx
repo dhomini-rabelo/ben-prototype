@@ -1,4 +1,4 @@
-import { Check } from 'lucide-react-native'
+import { Check } from 'phosphor-react-native'
 import { Pressable } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { onSurface } from '@/layout/utils/colors'

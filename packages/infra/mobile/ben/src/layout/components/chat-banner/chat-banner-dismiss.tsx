@@ -1,4 +1,4 @@
-import { X } from 'lucide-react-native'
+import { X } from 'phosphor-react-native'
 import { Pressable } from 'react-native'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { chatBannerStrings } from '@/layout/strings/chat-banner-strings'

@@ -1,4 +1,4 @@
-import { Bell, NotebookPen, X } from 'lucide-react-native'
+import { Bell, NotePencil, X } from 'phosphor-react-native'
 import type { ComponentType, ReactNode } from 'react'
 import { View } from 'react-native'
 import { MenuSheet } from '@/layout/components/menu/menu-sheet'
@@ -21,7 +21,7 @@ const KIND_ICON: Record<
   ItemKind,
   ComponentType<{ size?: number; color?: string }>
 > = {
-  note: NotebookPen,
+  note: NotePencil,
   reminder: Bell,
 }
 

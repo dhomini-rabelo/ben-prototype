@@ -1,4 +1,4 @@
-import { Minus, Plus } from 'lucide-react-native'
+import { Minus, Plus } from 'phosphor-react-native'
 import { Pressable, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { useStrings } from '@/layout/hooks/use-strings'

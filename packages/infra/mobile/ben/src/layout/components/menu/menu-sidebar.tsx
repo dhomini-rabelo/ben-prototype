@@ -1,5 +1,5 @@
-import { Bell, ListTodo, NotebookPen, Settings, X } from 'lucide-react-native'
-import type { ComponentType } from 'react'
+import type { Icon as PhosphorIcon } from 'phosphor-react-native'
+import { Bell, GearSix, ListChecks, NotePencil, X } from 'phosphor-react-native'
 import { Pressable, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BrandMark } from '@/layout/components/brand-mark'
@@ -12,8 +12,6 @@ import { onSurface, onSurfaceVariant } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 import { CountBadge, type CountValue } from './menu-sidebar-count-badge'
 
-type IconProps = { size?: number; color?: string; strokeWidth?: number }
-
 type MenuSidebarProps = {
   variant?: 'default' | 'loading' | 'error'
   counts?: Partial<Record<MenuEntryId, CountValue>>
@@ -22,11 +20,11 @@ type MenuSidebarProps = {
   onClose?: () => void
 }
 
-const ENTRY_ICONS: { id: MenuEntryId; icon: ComponentType<IconProps> }[] = [
-  { id: 'tasks', icon: ListTodo },
-  { id: 'notes', icon: NotebookPen },
+const ENTRY_ICONS: { id: MenuEntryId; icon: PhosphorIcon }[] = [
+  { id: 'tasks', icon: ListChecks },
+  { id: 'notes', icon: NotePencil },
   { id: 'reminders', icon: Bell },
-  { id: 'settings', icon: Settings },
+  { id: 'settings', icon: GearSix },
 ]
 
 export function MenuSidebar({
@@ -86,7 +84,7 @@ export function MenuSidebar({
               )}
             >
               <View className="size-9 items-center justify-center rounded-lg bg-surface-container-high">
-                <Icon size={16} strokeWidth={1.75} color={onSurfaceVariant} />
+                <Icon size={16} color={onSurfaceVariant} />
               </View>
               <Typography
                 variant="body-md"

@@ -7,7 +7,7 @@ import type {
 import { AgentEffortChips } from '@/layout/components/menu-settings/agent-effort-chips'
 import { AgentModelOption } from '@/layout/components/menu-settings/agent-model-option'
 import { Typography } from '@/layout/components/ui/typography'
-import { RotateCw } from 'lucide-react-native'
+import { ArrowClockwise } from 'phosphor-react-native'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { settingsStrings } from '@/layout/strings/settings-strings'
 import { textError } from '@/layout/utils/colors'
@@ -72,7 +72,7 @@ export function AgentSettingsControls({
             onPress={onRetry}
             className="flex-row items-center gap-1.5"
           >
-            <RotateCw size={12} color={textError} />
+            <ArrowClockwise size={12} color={textError} />
             <Typography
               variant="label-caps"
               className="font-mono text-text-error"
