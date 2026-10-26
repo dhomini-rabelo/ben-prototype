@@ -19,6 +19,8 @@ export function createMessageData(
     costUsd: data.costUsd !== undefined ? data.costUsd : null,
     interactionCostUsd:
       data.interactionCostUsd !== undefined ? data.interactionCostUsd : null,
+    voiceDurationMs:
+      data.voiceDurationMs !== undefined ? data.voiceDurationMs : null,
     createdAt: data.createdAt !== undefined ? data.createdAt : new Date(),
   }
 }

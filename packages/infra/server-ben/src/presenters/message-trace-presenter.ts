@@ -9,7 +9,12 @@ export class MessageTracePresenter {
     message: Message,
   ): Omit<
     Serialize<WithID<MessageProps>>,
-    'userId' | 'content' | 'capture' | 'costUsd' | 'interactionCostUsd'
+    | 'userId'
+    | 'content'
+    | 'capture'
+    | 'costUsd'
+    | 'interactionCostUsd'
+    | 'voiceDurationMs'
   > {
     return {
       id: message.id.toValue(),

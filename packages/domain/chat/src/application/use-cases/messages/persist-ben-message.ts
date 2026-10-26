@@ -34,6 +34,7 @@ export class PersistBenMessageUseCase implements UseCase<
         costUsd,
         payload.triggerCostUsd ?? null,
       ),
+      voiceDurationMs: null,
       createdAt: new Date(),
     })
 

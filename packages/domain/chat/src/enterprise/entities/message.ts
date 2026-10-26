@@ -19,6 +19,7 @@ export interface MessageProps {
   trace: AgentCallTrace | null
   costUsd: number | null
   interactionCostUsd: number | null
+  voiceDurationMs: number | null
   createdAt: Date
 }
 

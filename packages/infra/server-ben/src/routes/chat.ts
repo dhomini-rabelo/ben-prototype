@@ -47,6 +47,7 @@ const chatBodySchema = z.object({
     )
     .min(1),
   transcriptionCostUsd: z.number().finite().nonnegative().nullable().optional(),
+  voiceDurationMs: z.number().int().nonnegative().nullable().optional(),
   timeZone: z.string().optional(),
 })
 
@@ -137,6 +138,7 @@ export async function chat(
       userId: request.userId,
       content: message,
       costUsd: body.transcriptionCostUsd,
+      voiceDurationMs: body.voiceDurationMs,
     })
 
     const topicIndex = await buildTopicIndexUseCase.execute({

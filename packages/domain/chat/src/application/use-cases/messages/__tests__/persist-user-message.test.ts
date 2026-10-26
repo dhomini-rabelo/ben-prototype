@@ -41,7 +41,30 @@ describe('PersistUserMessageUseCase', () => {
       expect(stored.props.trace).toBeNull()
       expect(stored.props.costUsd).toBeNull()
       expect(stored.props.interactionCostUsd).toBeNull()
+      expect(stored.props.voiceDurationMs).toBeNull()
       expect(stored.props.createdAt).toEqual(now)
+    })
+
+    it('stores the voice duration given for the message', async () => {
+      const { item } = await sut.execute({
+        userId: createID().toValue(),
+        content: some.text(),
+        voiceDurationMs: 4200,
+      })
+
+      const stored = await messageRepository.get({ id: item.id })
+      expect(stored.props.voiceDurationMs).toBe(4200)
+    })
+
+    it('stores a null voice duration when it is explicitly null', async () => {
+      const { item } = await sut.execute({
+        userId: createID().toValue(),
+        content: some.text(),
+        voiceDurationMs: null,
+      })
+
+      const stored = await messageRepository.get({ id: item.id })
+      expect(stored.props.voiceDurationMs).toBeNull()
     })
 
     it('stores the transcription cost given for the message', async () => {

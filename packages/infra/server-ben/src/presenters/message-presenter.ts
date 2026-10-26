@@ -21,6 +21,7 @@ export class MessagePresenter {
       capture,
       costUsd: message.props.costUsd ?? null,
       interactionCostUsd: message.props.interactionCostUsd ?? null,
+      voiceDurationMs: message.props.voiceDurationMs ?? null,
       createdAt: message.props.createdAt.toISOString(),
     }
   }

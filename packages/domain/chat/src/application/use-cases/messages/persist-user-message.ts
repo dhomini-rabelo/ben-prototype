@@ -8,6 +8,7 @@ interface Payload {
   userId: string
   content: string
   costUsd?: number | null
+  voiceDurationMs?: number | null
 }
 
 export class PersistUserMessageUseCase implements UseCase<
@@ -24,6 +25,7 @@ export class PersistUserMessageUseCase implements UseCase<
       trace: null,
       costUsd: payload.costUsd ?? null,
       interactionCostUsd: null,
+      voiceDurationMs: payload.voiceDurationMs ?? null,
       createdAt: new Date(),
     })
 
