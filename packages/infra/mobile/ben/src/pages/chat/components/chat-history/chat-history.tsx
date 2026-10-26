@@ -61,7 +61,6 @@ export function ChatHistory({ listRef, bottomInset = 0 }: ChatHistoryProps) {
           <CaptureCard.Root kind={capture.kind}>
             <CaptureCard.Icon />
             <CaptureCard.Body>
-              <CaptureCard.Header />
               <CaptureCard.Title>{capture.title}</CaptureCard.Title>
               {capture.meta && (
                 <CaptureCard.Meta>{capture.meta}</CaptureCard.Meta>

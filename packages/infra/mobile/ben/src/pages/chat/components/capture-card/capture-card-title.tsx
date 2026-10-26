@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Typography } from '@/layout/components/ui/typography'
+import { Text } from 'react-native'
 import { cn } from '@/layout/utils/styles'
 import { useCaptureCard } from './contexts/capture-card-context'
 
@@ -12,17 +12,17 @@ export function CaptureCardTitle({ children }: CaptureCardTitleProps) {
   const isFired = state === 'fired'
 
   return (
-    <Typography
-      variant="body-md"
+    <Text
+      numberOfLines={1}
       className={cn(
-        'leading-snug',
+        'font-sans-semibold text-[15px] leading-[19px]',
         isError && 'text-text-error',
         isFinished && 'text-on-surface-variant line-through',
         isFired && 'text-on-surface-variant',
-        !isError && !isFinished && !isFired && 'text-on-surface',
+        !isError && !isFinished && !isFired && 'text-ink',
       )}
     >
       {children}
-    </Typography>
+    </Text>
   )
 }

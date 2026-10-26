@@ -6,5 +6,5 @@ type CaptureCardBodyProps = {
 }
 
 export function CaptureCardBody({ children }: CaptureCardBodyProps) {
-  return <View className="min-w-0 flex-1 flex-col gap-0.5">{children}</View>
+  return <View className="min-w-0 flex-1 flex-col">{children}</View>
 }

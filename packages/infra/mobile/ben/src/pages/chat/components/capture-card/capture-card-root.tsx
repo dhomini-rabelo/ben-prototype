@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { View } from 'react-native'
 import { cn } from '@/layout/utils/styles'
 import { CaptureCardContext } from './contexts/capture-card-context'
+import { CaptureCardDogEar } from './capture-card-dog-ear'
 import type { CaptureCardState, CaptureKind, TaskShape } from './types'
 
 type CaptureCardRootProps = {
@@ -10,6 +11,14 @@ type CaptureCardRootProps = {
   taskShape?: TaskShape
   children: ReactNode
   className?: string
+}
+
+const CARD_SHADOW = {
+  shadowColor: '#1d1814',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.07,
+  shadowRadius: 6,
+  elevation: 2,
 }
 
 export function CaptureCardRoot({
@@ -27,21 +36,19 @@ export function CaptureCardRoot({
   return (
     <CaptureCardContext.Provider value={{ kind, state, taskShape }}>
       <View
+        style={CARD_SHADOW}
         className={cn(
-          'mt-2 flex-row items-start gap-3 rounded-xl border bg-surface-container-lowest px-3.5 py-3',
-          isError && 'border-text-error/30 bg-surface-error',
-          isPending && 'border-outline-variant/30 opacity-80',
-          isFinished && 'border-outline-variant/40 bg-surface-container-low',
-          isFired && 'border-outline-variant/40 bg-surface-container-low',
-          !isError &&
-            !isPending &&
-            !isFinished &&
-            !isFired &&
-            'border-outline-variant/50',
+          'mt-1.5 min-w-[224px] max-w-[286px] self-start rounded-[14px] bg-surface-container-lowest',
+          isError && 'bg-surface-error',
+          isPending && 'opacity-80',
+          (isFinished || isFired) && 'bg-surface-container-low',
           className,
         )}
       >
-        {children}
+        <View className="flex-row items-center gap-2.5 overflow-hidden rounded-[14px] py-2 pl-2 pr-3.5">
+          {children}
+          <CaptureCardDogEar />
+        </View>
       </View>
     </CaptureCardContext.Provider>
   )

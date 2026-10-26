@@ -1,4 +1,4 @@
-import { RotateCw } from 'lucide-react-native'
+import { ArrowClockwise } from 'phosphor-react-native'
 import { Pressable, Text } from 'react-native'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { textError } from '@/layout/utils/colors'
@@ -26,8 +26,8 @@ export function CaptureCardErrorButton({
       onPress={onAction}
       className="mt-1 flex-row items-center gap-1.5 self-start"
     >
-      <RotateCw size={14} color={textError} />
-      <Text className="text-label-caps font-mono uppercase text-text-error">
+      <ArrowClockwise size={14} color={textError} />
+      <Text className="font-sans-semibold text-xs text-text-error">
         {errorMessage ?? strings.errorMessage[kind]}
       </Text>
     </Pressable>

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Typography } from '@/layout/components/ui/typography'
+import { Text } from 'react-native'
 import { useCaptureCard } from './contexts/capture-card-context'
 
 type CaptureCardSupportingTextProps = { children: ReactNode }
@@ -14,11 +14,11 @@ export function CaptureCardSupportingText({
   }
 
   return (
-    <Typography
-      variant="body-md"
-      className="text-[13px] leading-snug text-on-surface-variant"
+    <Text
+      numberOfLines={1}
+      className="mt-px font-sans text-xs text-on-surface-variant"
     >
       {children}
-    </Typography>
+    </Text>
   )
 }
