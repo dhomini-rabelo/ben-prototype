@@ -23,3 +23,8 @@ Parallel: yes, with the icons-* scopes, capture-card and chat-composer (code can
 
 ## Acceptance
 Typecheck shows no error in owned files. A voice message's optimistic UI message and its reloaded history message both carry metadata.voiceDurationMs.
+
+## Premissas do implementador
+- retryVoice in voice-store already re-records (calls startRecording) and never kept a pending uri, so no duration is stored in the voice store; each new recording passes its own durationMillis through onStop.
+- retrySend (messages-store) reuses lastMessage.metadata.voiceDurationMs, like costUsd.
+- Positional params (mirroring transcriptionCostUsd) were kept for buildUserMessage, dispatchReply and requestSendChatMessage.

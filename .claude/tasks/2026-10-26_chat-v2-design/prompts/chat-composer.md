@@ -23,3 +23,7 @@ Parallel: yes, with the icons-* scopes, capture-card and mobile-voice-duration.
 
 ## Acceptance
 No lucide in owned files. Typecheck shows no error in owned files. Typing turns the mic into send; tapping the mic still starts RecordingBar.
+
+## Premissas do implementador
+- Field styling (h 52, rounded 26, white, border 1.5, sh-1 approximated as a single shadow) lives on ChatInput.Input; Root became a plain row with gap 12, so workspace-footer (not owned) keeps working with its own action button.
+- Added ChatInput.ActionFrame (68 halo brand-light + 56 amber button) shared by ActionButton and ChatFooter.

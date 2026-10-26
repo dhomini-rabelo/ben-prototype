@@ -44,3 +44,11 @@ Skill: simple-loop
   - h) Menu, workspace de tarefa e login com a fonte e a paleta novas, sem ícone faltando nem texto âmbar ilegível.
   - i) Rolar para cima carrega mensagens antigas e as divisórias de dia aparecem.
 - plan: respostas aplicadas; 11 escopos em 4 grupos (G1 backend-voice-duration∥theme-foundation; G2 6∥; G3 chat-shell∥chat-messages; G4 finalize). Sem migration.
+- impl backend-voice-duration: ok, commit f14d23f, +message-trace-presenter.ts (Omit). tsc 0, test:unit 101 ok.
+- impl theme-foundation: ok, commit d37fcdd; tocou chat-top-bar.tsx e menu-sidebar.tsx (BrandMark sem props). tsc 0.
+- impl icons-chat-misc: ok, commit 4b8303a, 13 arquivos, tsc 0.
+- impl chat-composer: ok, commit a4a3cbf; novo ChatInput.ActionFrame; fluxo mic/send não exercitado (tester cobre).
+- impl icons-layout: ok, commit 4e11379, 15 arquivos, tsc 0.
+- impl icons-task-workspace: ok, commit e03fb1f, 8 arquivos; ícones on-primary agora com color explícito (mudança visível). tsc 0.
+- impl mobile-voice-duration: ok, commit 5ce4941, 12 arquivos + page.tsx (setTranscriptHandler). eslint rodou 1x em arquivos de outro agente por scratchpad compartilhado (ver Armadilhas). tsc 0.
+- impl capture-card: ok, commit af33453; Header removido, dog-ear novo. Aberto: server não popula capture.meta → chip de hora pode não aparecer.

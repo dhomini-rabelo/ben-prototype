@@ -19,3 +19,8 @@ Parallel: yes, with icons-layout, icons-chat-misc, capture-card, chat-composer a
 
 ## Acceptance
 None of the 8 files imports lucide. `pnpm --filter @ben/mobile-ben typecheck` shows no error in them.
+
+## Premissas do implementador
+- Icons absent from the mapping: MoreHorizontal→DotsThree, RotateCcw→ArrowCounterClockwise, CheckCircle2→CheckCircle.
+- strokeWidth 3 became weight="bold"; other strokeWidth values were dropped (Phosphor default regular).
+- Send/Mic/Check that used className="text-on-primary" (ignored on RN icons) now pass color={onPrimary} from @/layout/utils/colors.

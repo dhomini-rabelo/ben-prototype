@@ -23,3 +23,11 @@ Parallel: yes, with the icons-* scopes, chat-composer and mobile-voice-duration.
 
 ## Acceptance
 No lucide in capture-card/**. `pnpm --filter @ben/mobile-ben typecheck` shows no error in owned files.
+
+## Premissas do implementador
+- Dog-ear: root virou View externa (sombra/fundo) + View interna com overflow-hidden e radius 14; o triangulo SVG 12 px (so a metade dog-ear, canto inferior esquerdo raio 3) fica absoluto no topo direito. A metade "fundo" do design fica fora do canto arredondado, entao nao foi desenhada.
+- Icon em erro continua textError (comportamento existente); cor muted so em finished/fired. taskShape segue no contexto mas nao muda mais o icone (task = Kanban).
+- Meta so renderiza para reminder; formata com formatClock e prefixo "amanha/tomorrow" via alarmStrings.snoozeTomorrow quando isTomorrow; ISO invalido cai no texto cru. Outros dias mostram apenas a hora (limitacao do helper existente).
+- Action mostra ArrowRight em todos os estados; finished fica transparente com texto on-surface-variant.
+- Strings: removidos kindLabel, fired e active (so o Header usava); pt-BR default virou "Comecar".
+- Sombra sh-1 aproximada como shadow* + elevation 2 em const local no root.

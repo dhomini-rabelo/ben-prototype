@@ -19,3 +19,7 @@ Parallel: yes, with icons-layout, icons-task-workspace, capture-card, chat-compo
 
 ## Acceptance
 None of the 13 files imports lucide. `pnpm --filter @ben/mobile-ben typecheck` shows no error in them.
+
+## Premissas do implementador
+- Icones com className (task-picker-error, chat-empty-state) passaram a usar color de @/layout/utils/colors (onPrimary, onSurfaceVariant) e size, pois className e ignorado em icones (mobile-icon-colors.md).
+- strokeWidth removido; weight padrao do phosphor (regular) mantido.

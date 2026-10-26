@@ -11,7 +11,7 @@ Git: branch feat/chat-v2-design | commit-base bdc17ab
 - [x] Plan — question batch
 - [x] Plan — final plan.md + one ready prompt per scope
 - [x] Extract block written in orquestration.md
-- [ ] Commit: plan
+- [x] Commit: plan
 - [ ] Implement (Sonnet) — one agent per scope
 - [ ] Lint + type-check
 - [ ] Commit: implement
