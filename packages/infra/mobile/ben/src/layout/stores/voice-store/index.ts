@@ -20,7 +20,11 @@ export type {
 
 let timer: ReturnType<typeof setInterval> | null = null
 let transcriptionRunId = 0
-let onTranscript: (text: string, costUsd: number | null) => void = () => {}
+let onTranscript: (
+  text: string,
+  costUsd: number | null,
+  durationMillis: number | null,
+) => void = () => {}
 
 function clearTimer() {
   if (timer !== null) {
@@ -53,7 +57,7 @@ export const useVoiceStore = create<VoiceStore>((set, get) => ({
     const started = await startRecorder({
       onPermission: (permission) => set({ micPermission: permission }),
       onError: (message) => set({ recorderError: message }),
-      onStop: (audioUri) => {
+      onStop: (audioUri, durationMillis) => {
         clearTimer()
         set({ isRecording: false })
 
@@ -63,7 +67,7 @@ export const useVoiceStore = create<VoiceStore>((set, get) => ({
             if (transcriptionRunId !== runId) {
               return
             }
-            onTranscript(text, costUsd)
+            onTranscript(text, costUsd, durationMillis)
             set({ transcription: 'idle' })
           })
           .catch(() => {

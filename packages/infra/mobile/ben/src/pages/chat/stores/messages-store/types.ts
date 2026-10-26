@@ -3,6 +3,7 @@ import type { BenUiMessage } from '@/pages/chat/utils/chat-messages'
 
 export interface SendTextOptions {
   transcriptionCostUsd?: number | null
+  voiceDurationMs?: number | null
 }
 
 export interface MessagesStore {

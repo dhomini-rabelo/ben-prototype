@@ -33,10 +33,20 @@ export const useMessagesStore = create<MessagesStore>((set, get) => ({
     set((state) => ({
       sessionMessages: [
         ...state.sessionMessages,
-        buildUserMessage(trimmed, options?.transcriptionCostUsd),
+        buildUserMessage(
+          trimmed,
+          options?.transcriptionCostUsd,
+          options?.voiceDurationMs,
+        ),
       ],
     }))
-    await dispatchReply(set, get, trimmed, options?.transcriptionCostUsd)
+    await dispatchReply(
+      set,
+      get,
+      trimmed,
+      options?.transcriptionCostUsd,
+      options?.voiceDurationMs,
+    )
     return true
   },
 
@@ -53,6 +63,7 @@ export const useMessagesStore = create<MessagesStore>((set, get) => ({
       get,
       getMessageText(lastMessage),
       lastMessage.metadata?.costUsd,
+      lastMessage.metadata?.voiceDurationMs,
     )
   },
 }))

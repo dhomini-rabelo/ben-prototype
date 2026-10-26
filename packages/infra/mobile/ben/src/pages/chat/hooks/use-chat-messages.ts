@@ -13,6 +13,7 @@ export function mapHistoryToUiMessages(history: Message[]): BenUiMessage[] {
       capture: message.capture,
       createdAt: message.createdAt,
       costUsd: message.costUsd,
+      voiceDurationMs: message.voiceDurationMs,
       interactionCostUsd: message.interactionCostUsd,
     },
   }))

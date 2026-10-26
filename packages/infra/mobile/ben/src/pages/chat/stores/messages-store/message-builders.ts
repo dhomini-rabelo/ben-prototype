@@ -5,12 +5,13 @@ import type { BenUiMessage } from '@/pages/chat/utils/chat-messages'
 export function buildUserMessage(
   text: string,
   costUsd?: number | null,
+  voiceDurationMs?: number | null,
 ): BenUiMessage {
   return {
     id: randomUUID(),
     role: 'user',
     parts: [{ type: 'text', text }],
-    metadata: { createdAt: new Date().toISOString(), costUsd },
+    metadata: { createdAt: new Date().toISOString(), costUsd, voiceDurationMs },
   }
 }
 

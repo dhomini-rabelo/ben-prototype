@@ -5,6 +5,7 @@ export type BenMessageMetadata = {
   capture?: MessageCapture
   createdAt?: string
   costUsd?: number | null
+  voiceDurationMs?: number | null
   interactionCostUsd?: number | null
 }
 

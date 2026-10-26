@@ -9,11 +9,16 @@ export async function dispatchReply(
   get: StoreGet,
   message: string,
   transcriptionCostUsd?: number | null,
+  voiceDurationMs?: number | null,
 ) {
   set({ isAwaitingReply: true, sendError: false })
 
   try {
-    const reply = await requestSendChatMessage(message, transcriptionCostUsd)
+    const reply = await requestSendChatMessage(
+      message,
+      transcriptionCostUsd,
+      voiceDurationMs,
+    )
     invalidateCapturedQueries(reply)
     const benMessage = buildBenMessage(
       reply.messageId,

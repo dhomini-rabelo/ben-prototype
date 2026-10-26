@@ -19,6 +19,10 @@ export interface VoiceStore {
   dismissError: () => void
   subscribeMicPermission: () => () => void
   setTranscriptHandler: (
-    handler: (text: string, costUsd: number | null) => void,
+    handler: (
+      text: string,
+      costUsd: number | null,
+      durationMillis: number | null,
+    ) => void,
   ) => void
 }

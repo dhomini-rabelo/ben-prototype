@@ -13,7 +13,7 @@ const MIN_RECORDING_MILLIS = 500
 interface RecorderCallbacks {
   onPermission: (permission: MicPermission) => void
   onError: (message: string) => void
-  onStop: (audioUri: string) => void
+  onStop: (audioUri: string, durationMillis: number) => void
 }
 
 let activeCallbacks: RecorderCallbacks | null = null
@@ -65,7 +65,7 @@ export async function stopRecorder() {
       return
     }
 
-    callbacks.onStop(uri)
+    callbacks.onStop(uri, durationMillis)
   } catch {
     if (!isCancelled) {
       callbacks.onError(getStrings(recordingStrings).micError)
