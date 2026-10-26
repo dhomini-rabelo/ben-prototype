@@ -1,7 +1,7 @@
 import { Check } from 'lucide-react-native'
 import { Pressable } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
-import { primary } from '@/layout/utils/colors'
+import { onSurface } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 
 type AgentModelOptionProps = {
@@ -31,7 +31,7 @@ export function AgentModelOption({
       <Typography variant="body-md" className="text-on-surface">
         {label}
       </Typography>
-      {isSelected && <Check size={16} color={primary} />}
+      {isSelected && <Check size={16} color={onSurface} />}
     </Pressable>
   )
 }

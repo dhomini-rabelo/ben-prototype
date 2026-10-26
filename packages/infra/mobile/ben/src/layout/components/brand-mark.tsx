@@ -1,21 +1,18 @@
 import { View } from 'react-native'
-import { primary } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 import { BenLogo } from './icons/ben-logo'
 import { Typography } from './ui/typography'
 
+const LOGO_SIZE = 30
+
 type BrandMarkProps = {
   orientation?: 'row' | 'column'
-  logoWidth?: number
-  logoHeight?: number
   className?: string
   itemClassName?: string
 }
 
 export function BrandMark({
   orientation = 'row',
-  logoWidth,
-  logoHeight,
   className,
   itemClassName,
 }: BrandMarkProps) {
@@ -27,15 +24,13 @@ export function BrandMark({
         className,
       )}
     >
-      <BenLogo
-        className={cn('text-primary', itemClassName)}
-        color={primary}
-        width={logoWidth}
-        height={logoHeight}
-      />
+      <BenLogo variant="brand" size={LOGO_SIZE} />
       <Typography
         variant="wordmark"
-        className={cn('text-primary', itemClassName)}
+        className={cn(
+          'font-sans-bold text-[23px] leading-7 text-ink',
+          itemClassName,
+        )}
       >
         Ben
       </Typography>

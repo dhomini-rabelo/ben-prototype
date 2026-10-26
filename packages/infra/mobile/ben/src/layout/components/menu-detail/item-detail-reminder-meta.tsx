@@ -49,7 +49,7 @@ export function ItemDetailReminderMeta({
               variant="label-caps"
               className={cn(
                 'font-mono',
-                isFired ? 'text-on-surface-variant/70' : 'text-primary',
+                isFired ? 'text-on-surface-variant/70' : 'text-on-surface',
               )}
             >
               {isFired ? strings.statusDone : strings.statusActive}

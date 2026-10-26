@@ -29,3 +29,9 @@ Parallel: yes, with backend-voice-duration. Every mobile scope waits for you.
 
 ## Acceptance
 `pnpm --filter @ben/mobile-ben typecheck` clean. `grep -rn Hanken packages/infra/mobile/ben/{app,src,tailwind.config.js}` returns nothing. BenLogo exports both variants.
+
+## Premissas do implementador
+- BrandMark dropped logoWidth/logoHeight (logo fixed at 30 per contract); the two callers (chat-top-bar, menu-sidebar) now call `<BrandMark />`.
+- BenLogo no longer takes className/color/width/height; props are `variant` and `size`.
+- Ink icons in chat-top-bar, menu-sidebar and agent-model-option switched to `onSurface`; switch.tsx keeps `primary` (amber track is intended); capture-card-header.tsx untouched.
+- Reminder-meta active status and banner action/login footer links use `text-on-surface` (amber text on light surface lacks contrast).

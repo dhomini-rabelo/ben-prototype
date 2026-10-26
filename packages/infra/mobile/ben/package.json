@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.195",
-    "@expo-google-fonts/hanken-grotesk": "^0.4.3",
+    "@expo-google-fonts/instrument-sans": "^0.4.2",
     "@expo-google-fonts/jetbrains-mono": "^0.4.1",
     "@hookform/resolvers": "^5.4.0",
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -42,6 +42,7 @@
     "jotai": "^2.20.0",
     "lucide-react-native": "^0.544.0",
     "nativewind": "^4.2.1",
+    "phosphor-react-native": "^3.0.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.76.1",

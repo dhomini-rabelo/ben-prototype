@@ -6,7 +6,7 @@ import { Typography } from '@/layout/components/ui/typography'
 import { useDevAuth } from '@/layout/hooks/use-dev-auth'
 import { useGoogleAuth } from '@/layout/hooks/use-google-auth'
 import { useStrings } from '@/layout/hooks/use-strings'
-import { onPrimary, primary } from '@/layout/utils/colors'
+import { onPrimary } from '@/layout/utils/colors'
 import { loginStrings } from './strings/login-strings'
 
 export function Login() {
@@ -30,8 +30,8 @@ export function Login() {
     <View className="flex-1 items-center justify-center bg-background px-6">
       <View className="w-full max-w-[320px] items-center gap-8">
         <View className="items-center gap-3">
-          <BenLogo className="text-primary" color={primary} />
-          <Typography variant="wordmark" className="text-primary">
+          <BenLogo variant="brand" />
+          <Typography variant="wordmark" className="text-ink">
             Ben
           </Typography>
           <Typography
@@ -100,7 +100,7 @@ export function Login() {
               <Typography
                 key={link.label}
                 variant="label-caps"
-                className="font-medium text-primary"
+                className="font-medium text-on-surface"
                 onPress={() => {
                   void Linking.openURL(link.url)
                 }}

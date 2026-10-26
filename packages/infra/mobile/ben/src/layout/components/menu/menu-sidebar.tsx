@@ -8,7 +8,7 @@ import { Typography } from '@/layout/components/ui/typography'
 import { useStrings } from '@/layout/hooks/use-strings'
 import type { MenuEntryId } from '@/layout/stores/menu-store'
 import { menuStrings } from '@/layout/strings/menu-strings'
-import { onSurfaceVariant, primary } from '@/layout/utils/colors'
+import { onSurface, onSurfaceVariant } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 import { CountBadge, type CountValue } from './menu-sidebar-count-badge'
 
@@ -62,11 +62,11 @@ export function MenuSidebar({
     >
       <View className="h-16 flex-row items-center justify-between px-3">
         <View className="pl-2">
-          <BrandMark logoWidth={24} logoHeight={19} />
+          <BrandMark />
         </View>
         {onClose && (
           <IconButton label={strings.closeMenu} onPress={onClose}>
-            <X size={24} color={primary} />
+            <X size={24} color={onSurface} />
           </IconButton>
         )}
       </View>
