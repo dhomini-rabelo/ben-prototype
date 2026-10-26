@@ -1,4 +1,4 @@
-import { RotateCw } from 'lucide-react-native'
+import { ArrowClockwise } from 'phosphor-react-native'
 import { Pressable } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { textError } from '@/layout/utils/colors'
@@ -18,7 +18,7 @@ export function RetryFooter({ className }: RetryFooterProps) {
       onPress={retryVoice}
       className={cn('mt-1 flex-row items-center gap-1.5 pr-2', className)}
     >
-      <RotateCw size={14} color={textError} />
+      <ArrowClockwise size={14} color={textError} />
       <Typography variant="label-caps" className="text-text-error">
         {strings.tapToRetry}
       </Typography>

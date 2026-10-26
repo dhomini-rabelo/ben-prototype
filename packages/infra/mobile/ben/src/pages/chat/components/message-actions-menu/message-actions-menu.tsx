@@ -1,4 +1,4 @@
-import { FileInput, FileOutput } from 'lucide-react-native'
+import { FileArrowDown, FileArrowUp } from 'phosphor-react-native'
 import { useEffect, useState } from 'react'
 import {
   Modal,
@@ -127,12 +127,12 @@ export function MessageActionsMenu() {
           )}
           <MessageActionsMenuItem
             label={strings.viewInput}
-            icon={FileInput}
+            icon={FileArrowDown}
             onPress={() => openTrace('input')}
           />
           <MessageActionsMenuItem
             label={strings.viewOutput}
-            icon={FileOutput}
+            icon={FileArrowUp}
             onPress={() => openTrace('output')}
           />
         </View>

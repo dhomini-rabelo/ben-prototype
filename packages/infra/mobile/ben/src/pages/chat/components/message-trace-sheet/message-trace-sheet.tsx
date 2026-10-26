@@ -1,4 +1,4 @@
-import { Cpu, X } from 'lucide-react-native'
+import { Cpu, X } from 'phosphor-react-native'
 import { useState } from 'react'
 import { useWindowDimensions, View } from 'react-native'
 import type { MessageTraceTab } from '@/pages/chat/stores/message-trace-store'

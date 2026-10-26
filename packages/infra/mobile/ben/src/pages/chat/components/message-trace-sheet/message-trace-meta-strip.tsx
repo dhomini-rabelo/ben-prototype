@@ -1,5 +1,5 @@
 import type { AgentCallTrace } from '@/api/models/message-trace'
-import { CircleAlert } from 'lucide-react-native'
+import { WarningCircle } from 'phosphor-react-native'
 import { View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { useStrings } from '@/layout/hooks/use-strings'
@@ -50,7 +50,7 @@ export function MessageTraceMetaStrip({ trace }: MessageTraceMetaStripProps) {
             : 'flex-row items-center gap-1 rounded-full bg-surface-container px-2 py-1'
         }
       >
-        {isError && <CircleAlert size={12} color={textError} />}
+        {isError && <WarningCircle size={12} color={textError} />}
         <Typography
           variant="label-caps"
           className={

@@ -1,7 +1,8 @@
-import { RotateCw } from 'lucide-react-native'
+import { ArrowClockwise } from 'phosphor-react-native'
 import { Pressable, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { useStrings } from '@/layout/hooks/use-strings'
+import { onPrimary } from '@/layout/utils/colors'
 import { taskPickerStrings } from '@/pages/chat/strings/task-picker-strings'
 
 type TaskPickerErrorProps = {
@@ -20,7 +21,7 @@ export function TaskPickerError({ onRetry }: TaskPickerErrorProps) {
         onPress={onRetry}
         className="flex-row items-center gap-1.5 rounded-full bg-text-error px-3 py-1.5"
       >
-        <RotateCw className="text-on-primary" size={12} />
+        <ArrowClockwise size={12} color={onPrimary} />
         <Typography variant="label-caps" className="text-on-primary">
           {strings.retry}
         </Typography>

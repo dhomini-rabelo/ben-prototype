@@ -1,4 +1,4 @@
-import { CircleAlert } from 'lucide-react-native'
+import { WarningCircle } from 'phosphor-react-native'
 import { ScrollView, View } from 'react-native'
 import type { AgentCallTrace } from '@/api/models/message-trace'
 import { Typography } from '@/layout/components/ui/typography'
@@ -15,7 +15,7 @@ export function MessageTraceOutput({ trace }: MessageTraceOutputProps) {
     <ScrollView className="flex-1" contentContainerClassName="px-5 pb-8 gap-2">
       {trace.status === 'error' && (
         <View className="flex-row items-start gap-2 rounded-xl border border-text-error/30 bg-surface-error px-3.5 py-3">
-          <CircleAlert size={16} color={textError} />
+          <WarningCircle size={16} color={textError} />
           <Typography variant="body-md" className="flex-1 text-text-error">
             {trace.error ?? strings.callFailed}
           </Typography>

@@ -1,4 +1,4 @@
-import { X } from 'lucide-react-native'
+import { X } from 'phosphor-react-native'
 import { Pressable, View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { cn } from '@/layout/utils/styles'

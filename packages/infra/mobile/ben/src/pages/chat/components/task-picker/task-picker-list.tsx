@@ -1,5 +1,4 @@
-import { List, Type } from 'lucide-react-native'
-import type { ComponentType } from 'react'
+import { List, TextT, type Icon as PhosphorIcon } from 'phosphor-react-native'
 import { Pressable, ScrollView, View } from 'react-native'
 import type { TaskContentType } from '@/api/models/task'
 import type { TaskListItem } from '@/api/responses/task'
@@ -16,16 +15,8 @@ type TaskPickerListProps = {
   onSelect: (id: string) => void
 }
 
-const SHAPE_ICON: Record<
-  TaskContentType,
-  ComponentType<{
-    className?: string
-    color?: string
-    size?: number
-    strokeWidth?: number
-  }>
-> = {
-  text: Type,
+const SHAPE_ICON: Record<TaskContentType, PhosphorIcon> = {
+  text: TextT,
   todo: List,
 }
 
@@ -71,7 +62,7 @@ export function TaskPickerList({ tasks, onSelect }: TaskPickerListProps) {
             )}
           >
             <View className="size-9 shrink-0 items-center justify-center rounded-lg bg-surface-container-high">
-              <Icon color={onSurfaceVariant} size={16} strokeWidth={1.75} />
+              <Icon color={onSurfaceVariant} size={16} />
             </View>
             <View className="min-w-0 flex-1 flex-col">
               <Typography

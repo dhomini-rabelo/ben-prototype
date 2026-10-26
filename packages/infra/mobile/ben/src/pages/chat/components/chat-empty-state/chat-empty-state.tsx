@@ -1,9 +1,10 @@
 import { useSetAtom } from 'jotai'
-import { Bell, MessageCircle, NotebookPen } from 'lucide-react-native'
+import { Bell, ChatCircle, NotePencil } from 'phosphor-react-native'
 import { useState } from 'react'
 import { View } from 'react-native'
 import { Typography } from '@/layout/components/ui/typography'
 import { useStrings } from '@/layout/hooks/use-strings'
+import { onSurfaceVariant } from '@/layout/utils/colors'
 import {
   SuggestedAction,
   type SuggestedActionIcon,
@@ -31,7 +32,7 @@ export function ChatEmptyState() {
     },
     {
       id: 'note',
-      icon: NotebookPen,
+      icon: NotePencil,
       label: strings.noteLabel,
       prefill: strings.notePrefill,
     },
@@ -48,10 +49,7 @@ export function ChatEmptyState() {
     <View className="flex-1">
       <View className="flex-1 flex-col items-center justify-center gap-4">
         <View className="size-16 items-center justify-center rounded-full bg-surface-container-high">
-          <MessageCircle
-            className="size-7 text-on-surface-variant"
-            strokeWidth={1.5}
-          />
+          <ChatCircle size={28} color={onSurfaceVariant} />
         </View>
         <View className="max-w-[280px] flex-col items-center gap-2">
           <Typography variant="tagline" className="text-on-surface text-center">

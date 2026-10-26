@@ -1,15 +1,10 @@
-import { ArrowRight } from 'lucide-react-native'
-import type { ComponentType, ReactNode } from 'react'
+import { ArrowRight, type Icon } from 'phosphor-react-native'
+import type { ReactNode } from 'react'
 import { Pressable, Text } from 'react-native'
 import { onSurfaceVariant } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 
-export type SuggestedActionIcon = ComponentType<{
-  className?: string
-  color?: string
-  size?: number
-  strokeWidth?: number
-}>
+export type SuggestedActionIcon = Icon
 
 type SuggestedActionProps = {
   icon: SuggestedActionIcon
@@ -33,11 +28,11 @@ export function SuggestedAction({
         className,
       )}
     >
-      <Icon color={onSurfaceVariant} size={20} strokeWidth={1.75} />
+      <Icon color={onSurfaceVariant} size={20} />
       <Text className="flex-1 text-button font-semibold text-on-surface">
         {children}
       </Text>
-      <ArrowRight color={onSurfaceVariant} size={16} strokeWidth={1.75} />
+      <ArrowRight color={onSurfaceVariant} size={16} />
     </Pressable>
   )
 }

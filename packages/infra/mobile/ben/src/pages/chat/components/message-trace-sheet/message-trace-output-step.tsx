@@ -1,4 +1,9 @@
-import { Braces, CircleAlert, MessageSquare, Wrench } from 'lucide-react-native'
+import {
+  BracketsCurly,
+  ChatCenteredText,
+  Wrench,
+  WarningCircle,
+} from 'phosphor-react-native'
 import { View } from 'react-native'
 import type { AgentCallStep } from '@/api/models/message-trace'
 import { CodeBlock } from '@/layout/components/ui/code-block'
@@ -47,7 +52,7 @@ export function MessageTraceOutputStep({ step }: MessageTraceOutputStepProps) {
 
       <CollapsibleSection
         title={strings.textResponse}
-        icon={MessageSquare}
+        icon={ChatCenteredText}
         defaultOpen
         copyValue={step.output.text}
       >
@@ -57,7 +62,11 @@ export function MessageTraceOutputStep({ step }: MessageTraceOutputStepProps) {
       </CollapsibleSection>
 
       {step.output.object != null && (
-        <CollapsibleSection title={strings.object} icon={Braces} defaultOpen>
+        <CollapsibleSection
+          title={strings.object}
+          icon={BracketsCurly}
+          defaultOpen
+        >
           <CodeBlock value={step.output.object} />
         </CollapsibleSection>
       )}
@@ -87,12 +96,12 @@ export function MessageTraceOutputStep({ step }: MessageTraceOutputStepProps) {
       )}
 
       {step.output.warnings.length > 0 && (
-        <CollapsibleSection title={strings.warnings} icon={CircleAlert}>
+        <CollapsibleSection title={strings.warnings} icon={WarningCircle}>
           <CodeBlock value={step.output.warnings} />
         </CollapsibleSection>
       )}
 
-      <CollapsibleSection title={strings.rawResponse} icon={Braces}>
+      <CollapsibleSection title={strings.rawResponse} icon={BracketsCurly}>
         <CodeBlock value={step.output} />
       </CollapsibleSection>
     </View>
