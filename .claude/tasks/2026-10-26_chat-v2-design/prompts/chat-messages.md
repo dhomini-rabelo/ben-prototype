@@ -44,3 +44,9 @@ Typecheck shows no error in owned files. Chat matches shot.png middle. A voice m
 - menu-list-row emphasized trailing text (label-caps, normal-case) moves from mono to Instrument Sans semibold, since there is no loaded mono semibold family; its non-emphasized sibling stays mono.
 - Standalone Text/TextInput outside Typography (message bubble body and time, cost footer, workspace top bar texts, chat input, text-content, add-todo-row) received `font-sans`.
 - Verified in the web DOM only on login (computed font-family: Ben InstrumentSans_700Bold, tagline 400, button 600, links 500); chat texts not re-checked in the browser (needs login), left to the tester.
+
+## Premissas do implementador (fix3-A)
+
+- Ano no chip: formatShortDate (usado pelo chip do lembrete, pelo divisor de dia e pelo cabecalho) passa a incluir `year: 'numeric'` apenas quando o ano da data difere do ano atual; datas do ano corrente continuam compactas.
+- Task picker: a className `bg-surface-container-lowest rounded-t-3xl` ja estava no fonte; o NativeWind nao aplica className em `Animated.View` na web (mesmo achado documentado em message-actions-menu.tsx). O fundo arredondado e o scrim passaram para um `View` simples aninhado; o `Animated.View` guarda so o `style` animado.
+- GET /tasks//detail: causa raiz inferida do codigo (servidores :3333/:8081 fora do ar, nao reproduzido no navegador): `useWorkspaceTask` le `taskId` com fallback `''` e `useTaskDetailData` buscava sem gate, entao qualquer render com o param ainda indefinido pedia `/tasks//detail`. Correcao: `enabled: Boolean(taskId)` em useTaskDetailData.

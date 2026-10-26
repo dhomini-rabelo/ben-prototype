@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useEffect } from 'react'
-import { Modal, Pressable, View } from 'react-native'
+import { Modal, Pressable, StyleSheet, View } from 'react-native'
 import {
   Gesture,
   GestureDetector,
@@ -73,38 +73,39 @@ export function TaskPickerSheet({
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View className="flex-1 justify-end">
           <Pressable className="absolute inset-0" onPress={onClose}>
-            <Animated.View
-              style={backdropStyle}
-              className="absolute inset-0 bg-inverse-surface/30"
-            />
+            <Animated.View style={[StyleSheet.absoluteFill, backdropStyle]}>
+              <View className="flex-1 bg-inverse-surface/30" />
+            </Animated.View>
           </Pressable>
 
           <GestureDetector gesture={panGesture}>
-            <Animated.View
-              style={[sheetStyle, { paddingBottom: insets.bottom + 24 }]}
-              className="w-full self-center rounded-t-3xl bg-surface-container-lowest"
-            >
-              <View className="items-center justify-center px-5 pt-3 pb-2">
-                <View className="h-1 w-10 rounded-full bg-outline-variant/60" />
-              </View>
-              <View className="flex-row items-center justify-between px-5 pt-1 pb-3">
-                <Typography
-                  variant="label-caps"
-                  className="text-on-surface-variant"
-                >
-                  {strings.title}
-                </Typography>
-                {count != null && count > 0 && (
+            <Animated.View style={sheetStyle}>
+              <View
+                style={{ paddingBottom: insets.bottom + 24 }}
+                className="w-full rounded-t-3xl bg-surface-container-lowest"
+              >
+                <View className="items-center justify-center px-5 pt-3 pb-2">
+                  <View className="h-1 w-10 rounded-full bg-outline-variant/60" />
+                </View>
+                <View className="flex-row items-center justify-between px-5 pt-1 pb-3">
                   <Typography
                     variant="label-caps"
-                    className="normal-case text-on-surface-variant/70"
+                    className="text-on-surface-variant"
                   >
-                    {strings.countSummary(count)}
+                    {strings.title}
                   </Typography>
-                )}
-              </View>
+                  {count != null && count > 0 && (
+                    <Typography
+                      variant="label-caps"
+                      className="normal-case text-on-surface-variant/70"
+                    >
+                      {strings.countSummary(count)}
+                    </Typography>
+                  )}
+                </View>
 
-              {children}
+                {children}
+              </View>
             </Animated.View>
           </GestureDetector>
         </View>

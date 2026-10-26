@@ -6,5 +6,6 @@ import { useAPIRequest } from '@/layout/hooks/use-api-request'
 export function useTaskDetailData(taskId: string) {
   return useAPIRequest<ItemResponse<Task>>({
     url: API_ROUTES.tasks.detail(taskId),
+    enabled: Boolean(taskId),
   })
 }
