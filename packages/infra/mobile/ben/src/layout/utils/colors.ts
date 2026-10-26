@@ -1,5 +1,5 @@
 // Single source of truth for theme color hexes used as icon `color` /
-// `placeholderTextColor` props. `lucide-react-native` SVG icons do not inherit
+// `placeholderTextColor` props. `phosphor-react-native` (react-native-svg) icons do not inherit
 // NativeWind `text-*` classes the way web SVG inherits `currentColor`, so these
 // props need explicit hex values. Keep in lockstep with the matching tokens in
 // `tailwind.config.js` (theme.extend.colors).
