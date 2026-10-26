@@ -21,7 +21,7 @@ export function WaveBar({ height, phase, clock }: WaveBarProps) {
 
   return (
     <Animated.View
-      className="w-1 rounded-full bg-primary/80"
+      className="w-1 rounded-full bg-wave"
       style={[{ height }, animatedStyle]}
     />
   )

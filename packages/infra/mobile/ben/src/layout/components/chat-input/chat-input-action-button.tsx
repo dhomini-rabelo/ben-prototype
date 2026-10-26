@@ -1,13 +1,12 @@
-import { Mic, Send } from 'lucide-react-native'
-import { Pressable } from 'react-native'
+import { ArrowUp, Microphone } from 'phosphor-react-native'
 import { useCanRecord } from '@/layout/hooks/use-can-record'
 import { useConnectivityStore } from '@/layout/stores/connectivity-store'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { chatInputStrings } from '@/layout/strings/chat-input-strings'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
-import { onPrimary } from '@/layout/utils/colors'
-import { cn } from '@/layout/utils/styles'
+import { ink } from '@/layout/utils/colors'
 import { useChatInputContext } from './contexts/chat-input'
+import { ChatInputActionFrame } from './chat-input-action-frame'
 
 export function ChatInputActionButton() {
   const startRecording = useVoiceStore((store) => store.startRecording)
@@ -23,34 +22,25 @@ export function ChatInputActionButton() {
   const isSendingDisabled = !disabled && (isOffline || isTranscribing)
   const hasText = draft.length > 0
 
-  const baseClassName =
-    'ml-2 size-10 shrink-0 items-center justify-center rounded-full bg-primary'
-
   if (hasText) {
-    const sendDisabled = disabled || isSendingDisabled
     return (
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={strings.send}
+      <ChatInputActionFrame
+        label={strings.send}
         onPress={onSend}
-        disabled={sendDisabled}
-        className={cn(baseClassName, sendDisabled && 'opacity-60')}
+        disabled={disabled || isSendingDisabled}
       >
-        <Send size={20} strokeWidth={2} color={onPrimary} />
-      </Pressable>
+        <ArrowUp size={24} color={ink} />
+      </ChatInputActionFrame>
     )
   }
 
-  const recordDisabled = disabled || !canRecord
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={strings.voiceInput}
+    <ChatInputActionFrame
+      label={strings.voiceInput}
       onPress={startRecording}
-      disabled={recordDisabled}
-      className={cn(baseClassName, recordDisabled && 'opacity-60')}
+      disabled={disabled || !canRecord}
     >
-      <Mic size={20} color={onPrimary} />
-    </Pressable>
+      <Microphone size={26} weight="fill" color={ink} />
+    </ChatInputActionFrame>
   )
 }

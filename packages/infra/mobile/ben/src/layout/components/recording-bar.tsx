@@ -1,4 +1,4 @@
-import { ArrowUp, Mic } from 'lucide-react-native'
+import { ArrowUp, Microphone } from 'phosphor-react-native'
 import { useEffect } from 'react'
 import { Pressable, View } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
@@ -15,7 +15,7 @@ import * as Haptics from 'expo-haptics'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { useVoiceStore } from '@/layout/stores/voice-store'
 import { recordingStrings } from '@/layout/strings/recording-strings'
-import { onPrimary, onSurfaceVariant } from '@/layout/utils/colors'
+import { ink, onSurfaceVariant } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 import { Typography } from './ui/typography'
 import { WaveBar } from './wave-bar'
@@ -159,9 +159,9 @@ export function RecordingBar({ className }: RecordingBarProps) {
         accessibilityRole="button"
         accessibilityLabel={strings.stopRecording}
         onPress={handleStop}
-        className="size-12 shrink-0 items-center justify-center rounded-full bg-text-error"
+        className="size-12 shrink-0 items-center justify-center rounded-full bg-primary"
       >
-        <Mic color={onPrimary} size={20} />
+        <Microphone color={ink} size={20} weight="fill" />
       </Pressable>
     </View>
   )

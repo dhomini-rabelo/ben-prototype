@@ -1,4 +1,4 @@
-import { Plus } from 'lucide-react-native'
+import { Plus } from 'phosphor-react-native'
 import { Pressable } from 'react-native'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { chatInputStrings } from '@/layout/strings/chat-input-strings'

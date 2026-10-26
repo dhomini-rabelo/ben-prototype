@@ -1,13 +1,11 @@
 import { memo } from 'react'
-import { Mic, Send } from 'lucide-react-native'
-import { View } from 'react-native'
+import { ArrowUp, Microphone } from 'phosphor-react-native'
 import { ChatInput } from '@/layout/components/chat-input'
 import { RecordingBar } from '@/layout/components/recording-bar'
-import { IconButton } from '@/layout/components/ui/icon-button'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { useCanRecord } from '@/layout/hooks/use-can-record'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
-import { onPrimary } from '@/layout/utils/colors'
+import { ink } from '@/layout/utils/colors'
 import { useChatInput } from '@/pages/chat/hooks/use-chat-input'
 import { useChatMessages } from '@/pages/chat/hooks/use-chat-messages'
 import { chatStrings } from '@/pages/chat/strings/chat-strings'
@@ -38,25 +36,22 @@ function ChatFooterComponent({ onStartRecording }: ChatFooterProps) {
       disabled={isDisabled}
     >
       <ChatInput.Input />
-      <View className="flex-row items-center">
-        {hasText ? (
-          <IconButton
-            label={strings.send}
-            onPress={isDisabled ? undefined : handleSend}
-            className="ml-2 bg-primary"
-          >
-            <Send size={20} color={onPrimary} />
-          </IconButton>
-        ) : (
-          <IconButton
-            label={strings.voiceInput}
-            onPress={canRecord ? onStartRecording : undefined}
-            className={`ml-2 bg-primary ${canRecord ? '' : 'opacity-60'}`}
-          >
-            <Mic size={20} color={onPrimary} />
-          </IconButton>
-        )}
-      </View>
+      {hasText ? (
+        <ChatInput.ActionFrame
+          label={strings.send}
+          onPress={isDisabled ? undefined : handleSend}
+        >
+          <ArrowUp size={24} color={ink} />
+        </ChatInput.ActionFrame>
+      ) : (
+        <ChatInput.ActionFrame
+          label={strings.voiceInput}
+          onPress={canRecord ? onStartRecording : undefined}
+          disabled={!canRecord}
+        >
+          <Microphone size={26} weight="fill" color={ink} />
+        </ChatInput.ActionFrame>
+      )}
     </ChatInput.Root>
   )
 }

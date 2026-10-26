@@ -4,7 +4,7 @@ const en = {
   send: 'Send',
   voiceInput: 'Voice input',
   attach: 'Attach',
-  placeholder: 'Message Ben...',
+  placeholder: 'Type or tap to talk',
 }
 
 export const chatInputStrings: Localized<typeof en> = {
@@ -13,6 +13,6 @@ export const chatInputStrings: Localized<typeof en> = {
     send: 'Enviar',
     voiceInput: 'Entrada de voz',
     attach: 'Anexar',
-    placeholder: 'Mensagem para o Ben...',
+    placeholder: 'Digite ou toque para falar',
   },
 }

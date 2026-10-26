@@ -1,9 +1,8 @@
 import { TextInput } from 'react-native'
+import { onSurfaceVariant } from '@/layout/utils/colors'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { chatInputStrings } from '@/layout/strings/chat-input-strings'
 import { useChatInputContext } from './contexts/chat-input'
-
-const ON_SURFACE_VARIANT_60 = 'rgba(68, 71, 72, 0.6)'
 
 type ChatInputInputProps = {
   placeholder?: string
@@ -22,14 +21,14 @@ export function ChatInputInput({ placeholder }: ChatInputInputProps) {
   return (
     <TextInput
       placeholder={placeholder ?? strings.placeholder}
-      placeholderTextColor={ON_SURFACE_VARIANT_60}
+      placeholderTextColor={onSurfaceVariant}
       value={draft}
       onChangeText={onDraftChange}
       onSubmitEditing={handleSubmit}
       editable={!disabled}
       returnKeyType="send"
       blurOnSubmit={false}
-      className="min-w-0 flex-1 bg-transparent px-2 text-body-md text-on-surface"
+      className="h-[52px] min-w-0 flex-1 rounded-[26px] border-[1.5px] border-field-border bg-surface-container-lowest px-[18px] text-[16px] text-on-surface shadow-[0_3px_10px_rgba(29,24,20,0.05)]"
     />
   )
 }
