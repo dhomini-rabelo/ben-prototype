@@ -1,8 +1,8 @@
 import { Text } from 'react-native'
-import { LANGUAGE_LOCALES } from '@/core/languages'
 import type { Language } from '@/core/languages'
 import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
 import { chatStrings } from '@/pages/chat/strings/chat-strings'
+import { formatShortDate } from '@/pages/chat/utils/format-short-date'
 
 type DayDividerProps = {
   createdAt: string
@@ -29,11 +29,7 @@ function formatDayLabel(
     return strings.dayYesterday
   }
 
-  return day.toLocaleDateString(LANGUAGE_LOCALES[language], {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-  })
+  return formatShortDate(day, language)
 }
 
 export function DayDivider({ createdAt, filedCount }: DayDividerProps) {
@@ -44,7 +40,7 @@ export function DayDivider({ createdAt, filedCount }: DayDividerProps) {
     filedCount > 0 ? `${dayLabel} · ${strings.dayFiled(filedCount)}` : dayLabel
 
   return (
-    <Text className="mb-2.5 self-center text-[12px] font-semibold leading-4 text-on-surface-variant">
+    <Text className="mb-2.5 self-center text-[12px] font-sans-semibold leading-4 text-on-surface-variant">
       {label}
     </Text>
   )

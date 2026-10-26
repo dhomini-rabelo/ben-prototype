@@ -8,9 +8,14 @@ import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
 import { alarmStrings } from '@/layout/strings/alarm-strings'
 import { brandDeep } from '@/layout/utils/colors'
 import type { Language } from '@/core/languages'
+import { formatShortDate } from '@/pages/chat/utils/format-short-date'
 import { useCaptureCard } from './contexts/capture-card-context'
 
 type CaptureCardMetaProps = { children: string }
+
+function isToday(iso: string) {
+  return new Date(iso).toDateString() === new Date().toDateString()
+}
 
 function formatRemindAt(
   iso: string,
@@ -21,7 +26,13 @@ function formatRemindAt(
     return iso
   }
   const clock = formatClock(iso, language)
-  return isTomorrow(iso) ? formatTomorrow(clock) : clock
+  if (isTomorrow(iso)) {
+    return formatTomorrow(clock)
+  }
+  if (isToday(iso)) {
+    return clock
+  }
+  return `${formatShortDate(new Date(iso), language)}, ${clock}`
 }
 
 export function CaptureCardMeta({ children }: CaptureCardMetaProps) {

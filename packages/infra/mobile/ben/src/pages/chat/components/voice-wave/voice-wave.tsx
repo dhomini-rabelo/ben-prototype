@@ -46,7 +46,7 @@ export function VoiceWave({ durationMs }: VoiceWaveProps) {
         />
       ))}
       <Text
-        className="ml-1 text-[12px] font-semibold leading-4 text-brand-deep"
+        className="ml-1 text-[12px] font-sans-semibold leading-4 text-brand-deep"
         style={TABULAR_NUMBERS}
       >
         {formatDuration(seconds)}

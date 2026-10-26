@@ -30,3 +30,10 @@ Typecheck shows no error in owned files. Chat matches shot.png middle. A voice m
 - Wave só aparece com `voiceDurationMs > 0`. Typing indicator do header ganhou avatar e raio/cor do bubble-ben via className (typing-indicator.tsx não é meu); o rótulo "Ben" foi removido.
 - CostFooter passou de label-caps (mono/uppercase) para Text 11px; CaptureCard recebe `className="mt-0"` para não somar a margem própria ao gap 6.
 - pt-BR `dayFiled`: singular "arquivado" quando n=1.
+
+## Premissas do implementador (fix1)
+
+- Start button moved out of CaptureCard.Body to be the last child of CaptureCard.Root (design index.html:132).
+- font-sans-semibold applied to voice-wave duration and day-divider label.
+- day-divider now calls formatShortDate (pages/chat/utils/format-short-date.ts).
+- capture-card-meta: "more than a day away" interpreted as any date that is neither today nor tomorrow (past dates included); shows "<short date>, <time>" via formatShortDate + formatClock. Today keeps time only; tomorrow keeps the existing "tomorrow <time>" string.

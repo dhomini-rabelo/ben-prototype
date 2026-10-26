@@ -81,12 +81,10 @@ export function ChatHistoryItem({
               {capture.meta && (
                 <CaptureCard.Meta>{capture.meta}</CaptureCard.Meta>
               )}
-              <CaptureCard.Action
-                onAction={() =>
-                  router.push(ROUTES.taskWorkspace(capture.itemId))
-                }
-              />
             </CaptureCard.Body>
+            <CaptureCard.Action
+              onAction={() => router.push(ROUTES.taskWorkspace(capture.itemId))}
+            />
           </CaptureCard.Root>
         )}
       </View>
