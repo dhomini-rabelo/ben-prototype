@@ -28,7 +28,7 @@ export function ChatInputInput({ placeholder }: ChatInputInputProps) {
       editable={!disabled}
       returnKeyType="send"
       blurOnSubmit={false}
-      className="h-[52px] min-w-0 flex-1 rounded-[26px] border-[1.5px] border-field-border bg-surface-container-lowest px-[18px] text-[16px] text-on-surface shadow-[0_3px_10px_rgba(29,24,20,0.05)]"
+      className="h-[52px] min-w-0 flex-1 rounded-[26px] border-[1.5px] border-field-border bg-surface-container-lowest px-[18px] font-sans text-[16px] text-on-surface shadow-[0_3px_10px_rgba(29,24,20,0.05)]"
     />
   )
 }

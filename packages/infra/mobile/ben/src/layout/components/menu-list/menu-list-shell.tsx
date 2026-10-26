@@ -27,7 +27,10 @@ export function MenuListShell({ title, onBack, children }: MenuListShellProps) {
         <IconButton label={strings.backToMenu} onPress={onBack}>
           <CaretLeft size={20} color={onSurfaceVariant} />
         </IconButton>
-        <Typography variant="body-md" className="font-semibold text-on-surface">
+        <Typography
+          variant="body-md"
+          className="font-sans-semibold text-on-surface"
+        >
           {title}
         </Typography>
       </View>

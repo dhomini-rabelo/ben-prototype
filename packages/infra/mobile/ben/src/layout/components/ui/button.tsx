@@ -12,7 +12,10 @@ type ButtonProps = Omit<PressableProps, 'children'> & {
 function renderChild(child: ReactNode, index: number) {
   if (typeof child === 'string' || typeof child === 'number') {
     return (
-      <Text key={index} className="text-on-primary text-button font-semibold">
+      <Text
+        key={index}
+        className="text-on-primary text-button font-sans-semibold"
+      >
         {child}
       </Text>
     )

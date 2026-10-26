@@ -13,11 +13,11 @@ export type TypographyVariant =
   | 'code'
 
 const variantClasses: Record<TypographyVariant, string> = {
-  wordmark: 'text-wordmark',
-  tagline: 'text-tagline',
-  'headline-lg': 'text-headline-lg',
-  'body-md': 'text-body-md',
-  'button-text': 'text-button',
+  wordmark: 'font-sans-bold text-wordmark',
+  tagline: 'font-sans text-tagline',
+  'headline-lg': 'font-sans-semibold text-headline-lg',
+  'body-md': 'font-sans text-body-md',
+  'button-text': 'font-sans-semibold text-button',
   'label-caps': 'text-label-caps font-mono uppercase',
   code: 'text-code font-mono',
 }

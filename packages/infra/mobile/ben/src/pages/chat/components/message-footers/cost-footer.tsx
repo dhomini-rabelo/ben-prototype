@@ -20,7 +20,7 @@ export function CostFooter({ costUsd, className }: CostFooterProps) {
     <Text
       accessibilityLabel={strings.costLabel(formatted)}
       className={cn(
-        'mt-1 text-[11px] leading-4 text-on-surface-variant',
+        'mt-1 font-sans text-[11px] leading-4 text-on-surface-variant',
         className,
       )}
     >

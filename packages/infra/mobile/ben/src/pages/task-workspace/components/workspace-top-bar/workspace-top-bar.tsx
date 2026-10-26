@@ -63,7 +63,7 @@ function WorkspaceTopBarComponent() {
         <Typography
           variant="body-md"
           numberOfLines={1}
-          className="shrink font-semibold text-on-surface"
+          className="shrink font-sans-semibold text-on-surface"
         >
           {task.title}
         </Typography>
@@ -95,7 +95,7 @@ function WorkspaceTopBarComponent() {
               )}
             >
               <ArrowCounterClockwise size={16} color={onSurface} />
-              <Text className="text-body-md text-on-surface">
+              <Text className="font-sans text-body-md text-on-surface">
                 {strings.reopenTask}
               </Text>
             </Pressable>
@@ -109,7 +109,7 @@ function WorkspaceTopBarComponent() {
               )}
             >
               <CheckCircle size={16} color={onSurface} />
-              <Text className="text-body-md text-on-surface">
+              <Text className="font-sans text-body-md text-on-surface">
                 {strings.finishTask}
               </Text>
             </Pressable>

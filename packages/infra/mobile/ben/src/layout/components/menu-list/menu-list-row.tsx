@@ -66,7 +66,7 @@ export function MenuListRow({
             variant="body-md"
             numberOfLines={1}
             className={cn(
-              'flex-1 font-semibold',
+              'flex-1 font-sans-semibold',
               muted ? 'text-on-surface-variant' : 'text-on-surface',
             )}
           >
@@ -79,7 +79,7 @@ export function MenuListRow({
               className={cn(
                 'shrink-0 normal-case',
                 emphasizeTrailing
-                  ? 'font-semibold text-on-surface'
+                  ? 'font-sans-semibold text-on-surface'
                   : 'text-on-surface-variant/70',
                 muted && 'text-on-surface-variant/70',
               )}

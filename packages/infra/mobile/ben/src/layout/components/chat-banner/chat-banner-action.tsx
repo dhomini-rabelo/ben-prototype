@@ -18,7 +18,7 @@ export function ChatBannerAction({ label, onPress }: ChatBannerActionProps) {
     >
       <Text
         className={cn(
-          'text-button font-semibold active:underline',
+          'text-button font-sans-semibold active:underline',
           tone === 'error' ? 'text-text-error' : 'text-on-surface',
         )}
       >

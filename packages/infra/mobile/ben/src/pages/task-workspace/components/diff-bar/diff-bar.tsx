@@ -41,7 +41,7 @@ function DiffBarComponent() {
           )}
         >
           <X size={16} color={onSurface} />
-          <Text className="text-button font-semibold text-on-surface">
+          <Text className="text-button font-sans-semibold text-on-surface">
             {strings.reject}
           </Text>
         </Pressable>
@@ -56,7 +56,7 @@ function DiffBarComponent() {
           )}
         >
           <Check size={16} color={onPrimary} />
-          <Text className="text-button font-semibold text-on-primary">
+          <Text className="text-button font-sans-semibold text-on-primary">
             {strings.approve}
           </Text>
         </Pressable>

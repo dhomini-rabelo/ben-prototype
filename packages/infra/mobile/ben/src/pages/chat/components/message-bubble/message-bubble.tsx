@@ -45,7 +45,7 @@ export function MessageBubble({
     typeof voiceDurationMs === 'number' && voiceDurationMs > 0
   const shouldShowMeta = !isBen && (hasVoiceDuration || Boolean(createdAt))
   const textClass = cn(
-    'text-[15px] leading-5',
+    'font-sans text-[15px] leading-5',
     isBen ? 'text-on-surface' : 'text-ink',
     state === 'error' && 'text-text-error',
   )
@@ -82,7 +82,7 @@ export function MessageBubble({
             {hasVoiceDuration && <VoiceWave durationMs={voiceDurationMs} />}
             {createdAt && (
               <Text
-                className="text-[12px] leading-4 text-on-surface-variant"
+                className="font-sans text-[12px] leading-4 text-on-surface-variant"
                 style={TABULAR_NUMBERS}
               >
                 {formatClock(createdAt, language)}

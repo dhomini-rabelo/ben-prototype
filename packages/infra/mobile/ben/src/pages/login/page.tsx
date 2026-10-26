@@ -78,7 +78,7 @@ export function Login() {
           {devAuth.isAvailable && (
             <Typography
               variant="body-md"
-              className="text-center font-medium text-secondary"
+              className="text-center font-sans-medium text-secondary"
               onPress={() => {
                 void devAuth.signIn()
               }}
@@ -100,7 +100,7 @@ export function Login() {
               <Typography
                 key={link.label}
                 variant="label-caps"
-                className="font-medium text-on-surface"
+                className="font-sans-medium text-on-surface"
                 onPress={() => {
                   void Linking.openURL(link.url)
                 }}

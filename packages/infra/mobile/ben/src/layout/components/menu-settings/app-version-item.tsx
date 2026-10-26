@@ -25,7 +25,7 @@ export function AppVersionItem({ version, defaultOpen }: AppVersionItemProps) {
       >
         <Typography
           variant="body-md"
-          className="min-w-0 flex-1 font-semibold text-on-surface"
+          className="min-w-0 flex-1 font-sans-semibold text-on-surface"
         >
           {version.title[language]}
         </Typography>

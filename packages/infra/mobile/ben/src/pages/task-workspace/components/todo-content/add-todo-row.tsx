@@ -36,7 +36,7 @@ export function AddTodoRow() {
         onBlur={commit}
         returnKeyType="done"
         blurOnSubmit={false}
-        className="flex-1 bg-transparent text-body-md text-on-surface"
+        className="flex-1 bg-transparent font-sans text-body-md text-on-surface"
       />
     </View>
   )

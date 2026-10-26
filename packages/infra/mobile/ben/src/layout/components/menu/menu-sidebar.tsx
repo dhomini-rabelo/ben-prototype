@@ -88,7 +88,7 @@ export function MenuSidebar({
               </View>
               <Typography
                 variant="body-md"
-                className="flex-1 font-semibold text-on-surface"
+                className="flex-1 font-sans-semibold text-on-surface"
               >
                 {label}
               </Typography>

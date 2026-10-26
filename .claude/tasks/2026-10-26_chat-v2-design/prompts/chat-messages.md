@@ -37,3 +37,10 @@ Typecheck shows no error in owned files. Chat matches shot.png middle. A voice m
 - font-sans-semibold applied to voice-wave duration and day-divider label.
 - day-divider now calls formatShortDate (pages/chat/utils/format-short-date.ts).
 - capture-card-meta: "more than a day away" interpreted as any date that is neither today nor tomorrow (past dates included); shows "<short date>, <time>" via formatShortDate + formatClock. Today keeps time only; tomorrow keeps the existing "tomorrow <time>" string.
+
+## Premissas do implementador (fix2)
+- Typography variants now carry the family matching the fontSize token weight: wordmark font-sans-bold, tagline font-sans, headline-lg font-sans-semibold, body-md font-sans, button-text font-sans-semibold (label-caps/code keep font-mono). Button text uses font-sans-semibold.
+- Every `font-semibold`/`font-medium` utility in src was replaced by `font-sans-semibold`/`font-sans-medium` (tailwind-merge treats font-sans* as one group, so the override wins over the variant family; a bare weight utility would not change the family).
+- menu-list-row emphasized trailing text (label-caps, normal-case) moves from mono to Instrument Sans semibold, since there is no loaded mono semibold family; its non-emphasized sibling stays mono.
+- Standalone Text/TextInput outside Typography (message bubble body and time, cost footer, workspace top bar texts, chat input, text-content, add-todo-row) received `font-sans`.
+- Verified in the web DOM only on login (computed font-family: Ben InstrumentSans_700Bold, tagline 400, button 600, links 500); chat texts not re-checked in the browser (needs login), left to the tester.

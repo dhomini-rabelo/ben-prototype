@@ -29,7 +29,7 @@ export function SuggestedAction({
       )}
     >
       <Icon color={onSurfaceVariant} size={20} />
-      <Text className="flex-1 text-button font-semibold text-on-surface">
+      <Text className="flex-1 text-button font-sans-semibold text-on-surface">
         {children}
       </Text>
       <ArrowRight color={onSurfaceVariant} size={16} />

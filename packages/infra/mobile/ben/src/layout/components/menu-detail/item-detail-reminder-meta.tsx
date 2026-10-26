@@ -31,7 +31,7 @@ export function ItemDetailReminderMeta({
           <Typography
             variant="body-md"
             className={cn(
-              'font-semibold',
+              'font-sans-semibold',
               isFired ? 'text-on-surface-variant' : 'text-on-surface',
             )}
           >

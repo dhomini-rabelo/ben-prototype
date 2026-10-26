@@ -82,7 +82,7 @@ export function TextContent({ readOnly }: TextContentProps) {
         onBlur={handleSave}
         onEndEditing={handleSave}
         className={cn(
-          'min-h-60 flex-1 bg-transparent text-body-md text-on-surface',
+          'min-h-60 flex-1 bg-transparent font-sans text-body-md text-on-surface',
           isFinished && 'text-on-surface-variant line-through',
         )}
       />

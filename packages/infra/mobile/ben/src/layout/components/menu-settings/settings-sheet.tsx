@@ -102,7 +102,7 @@ export function SettingsSheet({
                   <Typography
                     variant="body-md"
                     numberOfLines={1}
-                    className="font-semibold text-on-surface"
+                    className="font-sans-semibold text-on-surface"
                   >
                     {name}
                   </Typography>
@@ -161,7 +161,7 @@ export function SettingsSheet({
           >
             <Typography
               variant="body-md"
-              className="font-semibold text-on-surface"
+              className="font-sans-semibold text-on-surface"
             >
               {signOutState === 'pending'
                 ? strings.signingOut
