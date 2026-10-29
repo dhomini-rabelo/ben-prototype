@@ -41,7 +41,13 @@ REV=$(git -C "$APP_DIR" rev-parse --short HEAD)
 log "revisao $REV"
 
 log "build da imagem $IMAGE:$REV"
-docker build --quiet --build-arg "GIT_REV=$REV" -t "$IMAGE:$REV" -t "$IMAGE:latest" "$APP_DIR" >/dev/null
+# Heartbeat: o build pode ficar minutos sem saida e a conexao SSH ociosa e derrubada
+# (connection reset), o que mata o deploy no meio.
+( while sleep 20; do echo "[deploy-ben] build em andamento..."; done ) &
+HEARTBEAT=$!
+trap 'kill "$HEARTBEAT" 2>/dev/null || true' EXIT
+docker build --quiet --build-arg "GIT_REV=$REV" -t "$IMAGE:$REV" -t "$IMAGE:latest" "$APP_DIR" >/dev/null 2>&1
+kill "$HEARTBEAT" 2>/dev/null || true
 
 log "trocando o container"
 docker rm -f "$CONTAINER" >/dev/null 2>&1 || true

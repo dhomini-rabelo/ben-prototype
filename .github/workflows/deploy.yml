@@ -40,4 +40,4 @@ jobs:
           # servidor que atenda naquele IP.
           echo '179.199.145.68 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO32HoPEvZ53vjt3w9YSUH1v4HL14AMXJvVQ6CD+hn+e' > ~/.ssh/known_hosts
           # O `deploy` aqui e so simbolico — o sshd troca pelo forced command.
-          ssh -i ~/.ssh/deploy_key -o BatchMode=yes dev@179.199.145.68 deploy
+          ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=20 dev@179.199.145.68 deploy
