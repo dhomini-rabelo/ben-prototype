@@ -1,6 +1,6 @@
 # App Ben (mobile): stack
 
-Expo SDK 54 · React Native 0.81 · React 19 · Expo Router (rotas por arquivo) · NativeWind v4 (Tailwind v3) · Zustand · Jotai · TanStack Query · axios · Firebase + `@react-native-google-signin/google-signin` (auth) · `expo-audio` (áudio) · `expo-secure-store` + AsyncStorage · `expo-notifications` · `react-native-reanimated` + `react-native-gesture-handler` · `phosphor-react-native` (ícones, sobre `react-native-svg`) · `@expo-google-fonts/instrument-sans` e `@expo-google-fonts/jetbrains-mono` (fontes carregadas em `app/_layout.tsx`).
+Expo SDK 54 · React Native 0.81 · React 19 · Expo Router (rotas por arquivo) · NativeWind v4 (Tailwind v3) · Zustand · Jotai · TanStack Query · axios · Firebase + `@react-native-google-signin/google-signin` (auth) · `expo-audio` (áudio) · `expo-secure-store` + AsyncStorage · `expo-notifications` (notificações locais e token de push do Expo) · `expo-constants` (lê o `projectId` do EAS) · `expo-dev-client` · `react-native-reanimated` + `react-native-gesture-handler` · `phosphor-react-native` (ícones, sobre `react-native-svg`) · `@expo-google-fonts/instrument-sans` e `@expo-google-fonts/jetbrains-mono` (fontes carregadas em `app/_layout.tsx`).
 
 ## Tema e tipografia
 
@@ -18,5 +18,14 @@ Fontes: Instrument Sans (400, 500, 600, 700) e JetBrains Mono (400). No React Na
 | `pnpm dev` | sobe a API e o app juntos |
 | `pnpm --filter @ben/mobile-ben start` | `expo start` (Metro nativo) |
 | `pnpm typecheck` | `tsc` do app junto com os demais packages |
+| `pnpm --filter @ben/mobile-ben test:unit` | Vitest (ambiente node, `src/**/*.test.ts`, alias `@` para `src/`); `pnpm test` na raiz também o roda |
 
 O app **não** estende `tsconfig.base.json` da raiz (Metro não usa a base do backend). O alias `@/` do app aponta para o próprio `src/`.
+
+## Testes
+
+O app tem Vitest (`vitest.config.ts`) só para lógica sem renderização. O único arquivo hoje é `src/services/__tests__/notifications-service.test.ts` (canais e permissão, agendamento, toques e cold start, `getExpoPushToken`), com `expo-notifications` e `react-native` simulados.
+
+## Configuração Android
+
+`app.config.ts` declara as permissões `RECORD_AUDIO` e `android.permission.USE_EXACT_ALARM`, `googleServicesFile` (`./google-services.json`) e o `projectId` do EAS em `extra.eas`.

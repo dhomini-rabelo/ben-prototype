@@ -22,7 +22,8 @@ const config: ExpoConfig = {
   android: {
     package: 'com.benprototype.app',
     versionCode: 1,
-    permissions: ['RECORD_AUDIO'],
+    permissions: ['RECORD_AUDIO', 'android.permission.USE_EXACT_ALARM'],
+    googleServicesFile: './google-services.json',
     adaptiveIcon: {
       backgroundColor: '#f9f9f9',
       foregroundImage: './assets/adaptive-icon-foreground.png',

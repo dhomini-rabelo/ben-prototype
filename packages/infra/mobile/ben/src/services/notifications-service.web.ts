@@ -32,6 +32,10 @@ export async function scheduleDailySummaryNotification(
 
 export async function cancelDailySummaryNotification(): Promise<void> {}
 
+export async function getExpoPushToken(): Promise<string | null> {
+  return null
+}
+
 export function subscribeToNotificationTaps(): () => void {
   return () => {}
 }

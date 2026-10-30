@@ -22,6 +22,7 @@ const envSchema = z.object({
   ASSEMBLYAI_API_KEY: z.string(),
   PERSISTENCE_DRIVER: z.enum(['in-memory', 'sqlite']).default('in-memory'),
   DATABASE_URL: z.string().optional(),
+  EXPO_ACCESS_TOKEN: z.string().optional(),
 })
 
 const schema = envSchema.safeParse(process.env)

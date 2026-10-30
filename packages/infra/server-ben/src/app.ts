@@ -11,6 +11,8 @@ import { getMessageTrace } from '@ben/server-ben/routes/messages/get-message-tra
 import { listMessages } from '@ben/server-ben/routes/messages/list-messages'
 import { getNoteDetail } from '@ben/server-ben/routes/notes/get-note-detail'
 import { listNotes } from '@ben/server-ben/routes/notes/list-notes'
+import { registerPushDevice } from '@ben/server-ben/routes/push-devices/register-push-device'
+import { sendTestPush } from '@ben/server-ben/routes/push-devices/send-test-push'
 import { acknowledgeReminder } from '@ben/server-ben/routes/reminders/acknowledge-reminder'
 import { getDailySummary } from '@ben/server-ben/routes/reminders/get-daily-summary'
 import { getSnoozeOptions } from '@ben/server-ben/routes/reminders/get-snooze-options'
@@ -94,6 +96,9 @@ app.get('/agent-preferences/detail', authMiddleware, getAgentPreferences)
 app.post('/agent-preferences/update', authMiddleware, updateAgentPreferences)
 app.get('/user-preferences/detail', authMiddleware, getUserPreferences)
 app.post('/user-preferences/update', authMiddleware, updateUserPreferences)
+
+app.post('/push-devices/register', authMiddleware, registerPushDevice)
+app.post('/push-devices/test', authMiddleware, sendTestPush)
 
 app.use(errorHandler)
 

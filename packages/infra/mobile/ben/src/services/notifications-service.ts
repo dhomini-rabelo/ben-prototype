@@ -1,9 +1,32 @@
+import Constants from 'expo-constants'
 import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
 
 import type { Reminder } from '@/api/models/reminder'
 
-const ANDROID_CHANNEL_ID = 'default'
+const NOTIFICATION_CHANNELS = {
+  alarms: 'alarmes',
+  summaries: 'resumos',
+} as const
+
+type NotificationChannelId =
+  (typeof NOTIFICATION_CHANNELS)[keyof typeof NOTIFICATION_CHANNELS]
+
+const NOTIFICATION_CHANNEL_SETTINGS: Record<
+  NotificationChannelId,
+  { name: string; importance: Notifications.AndroidImportance }
+> = {
+  alarmes: {
+    name: 'Reminders',
+    importance: Notifications.AndroidImportance.HIGH,
+  },
+  resumos: {
+    name: 'Daily summary',
+    importance: Notifications.AndroidImportance.DEFAULT,
+  },
+}
+
+const LEGACY_CHANNEL_ID = 'default'
 const DAILY_SUMMARY_ID = 'daily-summary'
 
 Notifications.setNotificationHandler({
@@ -15,14 +38,20 @@ Notifications.setNotificationHandler({
   }),
 })
 
-async function ensureAndroidChannel(): Promise<void> {
+let permissionRequest: Promise<boolean> | null = null
+let lastDispatchedTapKey: string | null = null
+
+async function ensureAndroidChannels(): Promise<void> {
   if (Platform.OS !== 'android') {
     return
   }
-  await Notifications.setNotificationChannelAsync(ANDROID_CHANNEL_ID, {
-    name: 'Reminders',
-    importance: Notifications.AndroidImportance.DEFAULT,
-  })
+  for (const channelId of Object.values(NOTIFICATION_CHANNELS)) {
+    await Notifications.setNotificationChannelAsync(
+      channelId,
+      NOTIFICATION_CHANNEL_SETTINGS[channelId],
+    )
+  }
+  await Notifications.deleteNotificationChannelAsync(LEGACY_CHANNEL_ID)
 }
 
 function getSchedulableFireDate(reminder: Reminder): Date | null {
@@ -37,7 +66,8 @@ function getSchedulableFireDate(reminder: Reminder): Date | null {
   return fireDate
 }
 
-export async function requestNotificationPermission(): Promise<boolean> {
+async function resolveNotificationPermission(): Promise<boolean> {
+  await ensureAndroidChannels()
   const current = await Notifications.getPermissionsAsync()
   if (current.granted) {
     return true
@@ -49,6 +79,38 @@ export async function requestNotificationPermission(): Promise<boolean> {
   return requested.granted
 }
 
+export function requestNotificationPermission(): Promise<boolean> {
+  if (permissionRequest === null) {
+    permissionRequest = resolveNotificationPermission().catch((error) => {
+      permissionRequest = null
+      throw error
+    })
+  }
+  return permissionRequest
+}
+
+export async function getExpoPushToken(): Promise<string | null> {
+  if (Platform.OS !== 'android') {
+    return null
+  }
+  try {
+    const permissions = await Notifications.getPermissionsAsync()
+    if (!permissions.granted) {
+      return null
+    }
+    const projectId =
+      Constants.expoConfig?.extra?.eas?.projectId ??
+      Constants.easConfig?.projectId
+    if (!projectId) {
+      return null
+    }
+    const token = await Notifications.getExpoPushTokenAsync({ projectId })
+    return token.data
+  } catch {
+    return null
+  }
+}
+
 export async function scheduleReminderNotification(
   reminder: Reminder,
 ): Promise<void> {
@@ -56,7 +118,7 @@ export async function scheduleReminderNotification(
   if (fireDate === null) {
     return
   }
-  await ensureAndroidChannel()
+  await ensureAndroidChannels()
   await Notifications.scheduleNotificationAsync({
     identifier: reminder.id,
     content: {
@@ -67,6 +129,7 @@ export async function scheduleReminderNotification(
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
       date: fireDate,
+      channelId: NOTIFICATION_CHANNELS.alarms,
     },
   })
 }
@@ -117,7 +180,7 @@ export async function scheduleDailySummaryNotification(
   if (Number.isNaN(hour) || Number.isNaN(minute)) {
     return
   }
-  await ensureAndroidChannel()
+  await ensureAndroidChannels()
   await Notifications.cancelScheduledNotificationAsync(DAILY_SUMMARY_ID)
   await Notifications.scheduleNotificationAsync({
     identifier: DAILY_SUMMARY_ID,
@@ -126,6 +189,7 @@ export async function scheduleDailySummaryNotification(
       type: Notifications.SchedulableTriggerInputTypes.DAILY,
       hour,
       minute,
+      channelId: NOTIFICATION_CHANNELS.summaries,
     },
   })
 }
@@ -139,20 +203,36 @@ export interface NotificationTap {
   nextFireAt: string
 }
 
+function dispatchNotificationTap(
+  response: Notifications.NotificationResponse,
+  onTap: (tap: NotificationTap) => void,
+): void {
+  const data = response.notification.request.content.data
+  const reminderId = data?.reminderId
+  const nextFireAt = data?.nextFireAt
+  if (typeof reminderId !== 'string' || typeof nextFireAt !== 'string') {
+    return
+  }
+  const tapKey = `${response.notification.request.identifier}:${response.notification.date}`
+  if (tapKey === lastDispatchedTapKey) {
+    return
+  }
+  lastDispatchedTapKey = tapKey
+  onTap({ reminderId, nextFireAt })
+}
+
 export function subscribeToNotificationTaps(
   onTap: (tap: NotificationTap) => void,
 ): () => void {
   const subscription = Notifications.addNotificationResponseReceivedListener(
-    (response) => {
-      const data = response.notification.request.content.data
-      const reminderId = data?.reminderId
-      const nextFireAt = data?.nextFireAt
-      if (typeof reminderId !== 'string' || typeof nextFireAt !== 'string') {
-        return
-      }
-      onTap({ reminderId, nextFireAt })
-    },
+    (response) => dispatchNotificationTap(response, onTap),
   )
+
+  const lastResponse = Notifications.getLastNotificationResponse()
+  if (lastResponse) {
+    dispatchNotificationTap(lastResponse, onTap)
+    Notifications.clearLastNotificationResponse()
+  }
 
   return () => subscription.remove()
 }
