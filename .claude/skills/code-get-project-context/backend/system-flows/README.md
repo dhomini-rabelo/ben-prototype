@@ -24,6 +24,8 @@ Rotas registradas em `packages/infra/server-ben/src/app.ts`. Todas, exceto `/hea
 | `GET /captures/counts` | `routes/captures/get-captures-counts.ts` | `chat` (`captures/`) |
 | `GET /agent-preferences/detail`, `POST /agent-preferences/update` | `routes/agent-preferences/` | `user` (`agent-preferences/`) |
 | `GET /user-preferences/detail`, `POST /user-preferences/update` | `routes/user-preferences/` | `user` (`user-preferences/`) |
+| `POST /push-devices/register` (body `{ token }`; `201` ao criar, `200` ao atualizar) | `routes/push-devices/register-push-device.ts` | `notification` (`push-devices/`) |
+| `POST /push-devices/test` (devolve `{ item: { sentCount, removedCount } }`) | `routes/push-devices/send-test-push.ts` | `notification` (`push-notifications/`) |
 
 ## Fluxo principal
 
@@ -31,7 +33,8 @@ Rotas registradas em `packages/infra/server-ben/src/app.ts`. Todas, exceto `/hea
 2. O áudio gravado vai para `POST /transcription` (AssemblyAI) e o texto volta para o app.
 3. `POST /chat` grava a mensagem do usuário, monta o contexto de tópicos (`topic`), chama o agente Ben (`BenAgentProviderService`) com as preferências do usuário, as 15 mensagens anteriores e um resolvedor de mensagens mais antigas, e grava a resposta (com o custo em USD), as capturas (`persist-captures`: notas, lembretes e tarefas), os resumos de tópico, a conversa atual e as memórias.
 4. O app usa os lembretes ativos para agendar e mostrar os disparos: reconhece o disparo (`acknowledge`, com soneca opcional), edita o agendamento (`update`) e pede o resumo do dia (`daily-summary`). A mensagem do usuário vai com `voiceDurationMs` quando veio de áudio.
-5. Listas e detalhes (`/notes`, `/reminders`, `/tasks`, `/captures/counts`) alimentam o menu e o workspace de tarefas no app.
-6. No workspace de tarefas, `/tasks/:id/messages/create` conversa com o agente sobre a tarefa; o diff proposto é aprovado ou rejeitado, e a tarefa é concluída ou reaberta.
+5. O app Android registra o token Expo do aparelho em `POST /push-devices/register` depois do login; `POST /push-devices/test` manda uma notificação de teste (título `Ben`, canal `alarmes`, `data.type = test`) para todos os aparelhos do usuário e remove os que o Expo recusa como não registrados. O servidor não envia push de lembrete nem de resumo.
+6. Listas e detalhes (`/notes`, `/reminders`, `/tasks`, `/captures/counts`) alimentam o menu e o workspace de tarefas no app.
+7. No workspace de tarefas, `/tasks/:id/messages/create` conversa com o agente sobre a tarefa; o diff proposto é aprovado ou rejeitado, e a tarefa é concluída ou reaberta.
 
 As regras de negócio por trás dos fluxos estão em [razao-de-negocio-e-casos-de-uso-v1.md](../../../../memory/business-rules/razao-de-negocio-e-casos-de-uso-v1.md). Os fluxos acima vêm das rotas e dos use cases do código; abra o handler e o use case antes de alterar o comportamento.
