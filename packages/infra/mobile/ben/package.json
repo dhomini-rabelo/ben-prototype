@@ -11,7 +11,8 @@
     "ios": "expo run:ios",
     "android:prebuild": "expo prebuild --platform android --no-install --clean",
     "apk": "pnpm icons && pnpm android:prebuild && cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "vitest run --config vitest.config.ts"
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.195",
@@ -62,6 +63,7 @@
     "@babel/core": "^7.25.0",
     "@types/react": "~19.1.0",
     "babel-plugin-module-resolver": "^5.0.2",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^3.2.7"
   }
 }

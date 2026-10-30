@@ -1,4 +1,5 @@
 import { View } from 'react-native'
+import { TestNotificationButton } from '@/layout/components/menu-settings/test-notification-button'
 import { Switch } from '@/layout/components/ui/switch'
 import { TimeStepper } from '@/layout/components/ui/time-stepper'
 import type { TimeValue } from '@/layout/components/ui/time-stepper'
@@ -83,6 +84,8 @@ export function RemindersSettingsSection({
           {strings.morningTimeHint}
         </Typography>
       </View>
+
+      <TestNotificationButton />
 
       {hasError ? (
         <Typography variant="button-text" style={{ color: textError }}>

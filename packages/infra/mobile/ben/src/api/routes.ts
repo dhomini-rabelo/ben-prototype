@@ -42,6 +42,10 @@ export const API_ROUTES = {
     detail: '/agent-preferences/detail',
     update: '/agent-preferences/update',
   },
+  pushDevices: {
+    register: '/push-devices/register',
+    test: '/push-devices/test',
+  },
   userPreferences: {
     detail: '/user-preferences/detail',
     update: '/user-preferences/update',

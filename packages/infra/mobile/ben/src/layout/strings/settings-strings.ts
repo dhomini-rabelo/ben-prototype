@@ -24,6 +24,9 @@ const en = {
   morningTime: 'Morning time',
   morningTimeHint:
     'Applies to "in the morning" alerts created or edited from now on.',
+  sendTestNotification: 'Send test notification',
+  testNotificationSent: (count: number) => `Sent to ${count} device(s)`,
+  testNotificationFailed: "Couldn't send the test notification. Try again.",
 }
 
 export const settingsStrings: Localized<typeof en> = {
@@ -52,5 +55,10 @@ export const settingsStrings: Localized<typeof en> = {
     morningTime: 'Horário da manhã',
     morningTimeHint:
       'Vale para os avisos "pela manhã" criados ou editados a partir de agora.',
+    sendTestNotification: 'Enviar notificação de teste',
+    testNotificationSent: (count: number) =>
+      `Enviada para ${count} aparelho(s)`,
+    testNotificationFailed:
+      'Não foi possível enviar a notificação de teste. Tente de novo.',
   },
 }
