@@ -57,6 +57,14 @@ model Memory {
   @@map("memories")
 }
 
+model PushDevice {
+  id    String @id
+  props String
+  types String
+
+  @@map("push_devices")
+}
+
 model Topic {
   id    String @id
   props String

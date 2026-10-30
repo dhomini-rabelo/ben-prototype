@@ -21,6 +21,8 @@
       "@ben/domain-chat/*": ["./packages/domain/chat/src/*"],
       "@ben/domain-task": ["./packages/domain/task/src/index.ts"],
       "@ben/domain-task/*": ["./packages/domain/task/src/*"],
+      "@ben/domain-notification": ["./packages/domain/notification/src/index.ts"],
+      "@ben/domain-notification/*": ["./packages/domain/notification/src/*"],
       "@ben/domain-topic": ["./packages/domain/topic/src/index.ts"],
       "@ben/domain-topic/*": ["./packages/domain/topic/src/*"],
       "@ben/domain-transcription": ["./packages/domain/transcription/src/index.ts"],

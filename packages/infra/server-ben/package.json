@@ -15,6 +15,7 @@
     "@ben/adapters": "workspace:*",
     "@ben/domain-base": "workspace:*",
     "@ben/domain-chat": "workspace:*",
+    "@ben/domain-notification": "workspace:*",
     "@ben/domain-task": "workspace:*",
     "@ben/domain-topic": "workspace:*",
     "@ben/domain-transcription": "workspace:*",
