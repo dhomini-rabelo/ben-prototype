@@ -26,3 +26,10 @@ never the deliverable itself.
 
 - Recon (r3) complexa; planner opus (r4): plan.md + 2 escopos sequenciais (backend-push, mobile-notificacoes). Q1 respondida = P1.
 - Extrato escrito; commit da etapa plan; próximo: implement.
+
+## 2026-10-30 — implement, validate, test, context (O2)
+
+- Implement: backend-push (c2598f9) e mobile-notificacoes (a58657a), sonnet, sequenciais. typecheck/lint/test exit 0.
+- Validate r1 (opus): APPROVED_WITH_RESALVAS (5 resalvas, ver review-r1.md); sem fix round.
+- System test tests-01 (.test): PASS (8a42985).
+- Context update: updated (backend-ben novo em last-reviewed.json, mobile-ben incremental).

@@ -12,26 +12,26 @@ Git: branch fix/notificacoes | commit-base 6e631f5
 - [x] Plan — final plan.md + one ready prompt per scope
 - [x] Extract block written in orquestration.md
 - [x] Commit: plan
-- [ ] Implement (Sonnet) — one agent per scope
-- [ ] Lint + type-check (once, orchestrator)
-- [ ] Commit: implement
-- [ ] Validate + code-pattern review (fresh Opus)
-- [ ] Fix round (Sonnet) — only if CHANGES_REQUIRED
-- [ ] Re-validate (fresh, -r{N+1}) — only if there was a fix round
-- [ ] Commit: validate
-- [ ] Decide system test mode: `.test` only | Docker+browser only | both | skip (docs-only)
-- [ ] tests-01 — run + verdict.md (PASS required to finish; else fix loop)
-- [ ] On FAIL: plan notes → implement fix → tests-02 / tests-03 …
-- [ ] Commit: system-test (per attempt)
-- [ ] Context update (Sonnet) — task-update-project-context
-- [ ] Commit: context
-- [ ] Close + user summary
+- [x] Implement (Sonnet) — one agent per scope
+- [x] Lint + type-check (once, orchestrator)
+- [x] Commit: implement
+- [x] Validate + code-pattern review (fresh Opus)
+- [x] Fix round (Sonnet) — only if CHANGES_REQUIRED
+- [x] Re-validate (fresh, -r{N+1}) — only if there was a fix round
+- [x] Commit: validate
+- [x] Decide system test mode: `.test` only | Docker+browser only | both | skip (docs-only)
+- [x] tests-01 — run + verdict.md (PASS required to finish; else fix loop)
+- [x] On FAIL: plan notes → implement fix → tests-02 / tests-03 …
+- [x] Commit: system-test (per attempt)
+- [x] Context update (Sonnet) — task-update-project-context
+- [x] Commit: context
+- [x] Close + user summary
 
 ## Test attempts
 
 | Run | Result | Notes |
 |-----|--------|-------|
-| tests-01 | pending | |
+| tests-01 | PASS | modo .test: typecheck, lint, test na raiz exit 0 |
 
 ## Notes
 
