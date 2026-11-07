@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { Modal, Pressable, StyleSheet, View } from 'react-native'
 import {
   Gesture,
@@ -23,6 +23,7 @@ const SLIDE_OFFSET = 600
 const ANIMATION_DURATION = 220
 const SNAP_BACK_DURATION = 160
 const CLOSE_THRESHOLD = 80
+const INTERACTION_DELAY = 300
 
 export function DraggableSheetOverlay({
   isOpen,
@@ -31,11 +32,10 @@ export function DraggableSheetOverlay({
 }: DraggableSheetOverlayProps) {
   const translateY = useSharedValue(SLIDE_OFFSET)
   const backdropOpacity = useSharedValue(0)
-  const openedAt = useRef(0)
+  const [isInteractive, setIsInteractive] = useState(false)
 
   useEffect(() => {
     if (isOpen) {
-      openedAt.current = Date.now()
       translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
       backdropOpacity.value = withTiming(1, { duration: ANIMATION_DURATION })
     } else {
@@ -44,17 +44,21 @@ export function DraggableSheetOverlay({
     }
   }, [isOpen, translateY, backdropOpacity])
 
+  useEffect(() => {
+    if (!isOpen) {
+      setIsInteractive(false)
+      return
+    }
+    const timer = setTimeout(() => setIsInteractive(true), INTERACTION_DELAY)
+    return () => clearTimeout(timer)
+  }, [isOpen])
+
   const sheetStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
   }))
   const backdropStyle = useAnimatedStyle(() => ({
     opacity: backdropOpacity.value,
   }))
-
-  function handleScrimPress() {
-    if (Date.now() - openedAt.current < ANIMATION_DURATION) return
-    onClose()
-  }
 
   const panGesture = Gesture.Pan()
     .onUpdate((event) => {
@@ -76,8 +80,11 @@ export function DraggableSheetOverlay({
       onRequestClose={onClose}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <View className="flex-1 justify-end">
-          <Pressable className="absolute inset-0" onPress={handleScrimPress}>
+        <View
+          className="flex-1 justify-end"
+          pointerEvents={isInteractive ? 'auto' : 'none'}
+        >
+          <Pressable className="absolute inset-0" onPress={onClose}>
             <Animated.View style={[StyleSheet.absoluteFill, backdropStyle]}>
               <View className="flex-1 bg-inverse-surface/30" />
             </Animated.View>
