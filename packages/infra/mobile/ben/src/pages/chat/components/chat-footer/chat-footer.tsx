@@ -8,13 +8,18 @@ import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
 import { ink } from '@/layout/utils/colors'
 import { useChatInput } from '@/pages/chat/hooks/use-chat-input'
 import { useChatMessages } from '@/pages/chat/hooks/use-chat-messages'
+import { ChatMenuButton } from '@/pages/chat/components/chat-menu-button/chat-menu-button'
 import { chatStrings } from '@/pages/chat/strings/chat-strings'
 
 type ChatFooterProps = {
+  onOpenMenu: () => void
   onStartRecording?: () => void
 }
 
-function ChatFooterComponent({ onStartRecording }: ChatFooterProps) {
+function ChatFooterComponent({
+  onOpenMenu,
+  onStartRecording,
+}: ChatFooterProps) {
   const strings = useStrings(chatStrings)
   const { historyState } = useChatMessages()
   const { draft, handleDraftChange, handleSend } = useChatInput()
@@ -35,22 +40,26 @@ function ChatFooterComponent({ onStartRecording }: ChatFooterProps) {
       onSend={handleSend}
       disabled={isDisabled}
     >
+      <ChatMenuButton onPress={onOpenMenu} />
       <ChatInput.Input />
       {hasText ? (
-        <ChatInput.ActionFrame
+        <ChatInput.IconButton
+          variant="primary"
           label={strings.send}
-          onPress={isDisabled ? undefined : handleSend}
+          onPress={handleSend}
+          disabled={isDisabled}
         >
-          <ArrowUp size={24} color={ink} />
-        </ChatInput.ActionFrame>
+          <ArrowUp size={16} color={ink} />
+        </ChatInput.IconButton>
       ) : (
-        <ChatInput.ActionFrame
+        <ChatInput.IconButton
+          variant="primary"
           label={strings.voiceInput}
-          onPress={canRecord ? onStartRecording : undefined}
+          onPress={onStartRecording}
           disabled={!canRecord}
         >
-          <Microphone size={26} weight="fill" color={ink} />
-        </ChatInput.ActionFrame>
+          <Microphone size={16} weight="fill" color={ink} />
+        </ChatInput.IconButton>
       )}
     </ChatInput.Root>
   )

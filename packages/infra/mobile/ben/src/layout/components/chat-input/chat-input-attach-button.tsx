@@ -1,9 +1,8 @@
 import { Plus } from 'phosphor-react-native'
-import { Pressable } from 'react-native'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { chatInputStrings } from '@/layout/strings/chat-input-strings'
-import { onSurfaceVariant } from '@/layout/utils/colors'
-import { cn } from '@/layout/utils/styles'
+import { ink } from '@/layout/utils/colors'
+import { ChatInputIconButton } from './chat-input-icon-button'
 import { useChatInputContext } from './contexts/chat-input'
 
 type ChatInputAttachButtonProps = {
@@ -15,17 +14,13 @@ export function ChatInputAttachButton({ onPress }: ChatInputAttachButtonProps) {
   const { disabled } = useChatInputContext()
 
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={strings.attach}
+    <ChatInputIconButton
+      variant="subtle"
+      label={strings.attach}
       onPress={onPress}
       disabled={disabled}
-      className={cn(
-        'size-10 shrink-0 items-center justify-center rounded-full',
-        disabled && 'opacity-60',
-      )}
     >
-      <Plus size={20} color={onSurfaceVariant} />
-    </Pressable>
+      <Plus size={16} color={ink} />
+    </ChatInputIconButton>
   )
 }

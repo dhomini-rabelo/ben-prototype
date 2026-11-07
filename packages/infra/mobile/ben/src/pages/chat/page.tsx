@@ -34,6 +34,11 @@ export function Chat() {
   const { keyboardOffset } = useKeyboardHeight()
 
   const router = useRouter()
+
+  function handleOpenMenu() {
+    router.push(ROUTES.menu)
+  }
+
   const [footerHeight, setFooterHeight] = useState(0)
   const [headerHeight, setHeaderHeight] = useState(0)
 
@@ -79,7 +84,7 @@ export function Chat() {
           onLayout={handleHeaderLayout}
           className="absolute inset-x-0 top-0 z-50 bg-background"
         >
-          <ChatTopBar onOpenMenu={() => router.push(ROUTES.menu)} />
+          <ChatTopBar />
           <ActiveTaskPicker />
           <ChatTopBanner />
         </View>
@@ -113,6 +118,7 @@ export function Chat() {
             className="flex-col gap-2 bg-background px-4 pb-2 pt-2"
           >
             <ChatFooter
+              onOpenMenu={handleOpenMenu}
               onStartRecording={() => useVoiceStore.getState().startRecording()}
             />
           </View>

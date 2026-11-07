@@ -1,22 +1,20 @@
-import { ArrowUp, Microphone } from 'phosphor-react-native'
+import { ArrowUp, X } from 'phosphor-react-native'
 import { useEffect } from 'react'
-import { Pressable, View } from 'react-native'
-import { Gesture, GestureDetector } from 'react-native-gesture-handler'
+import { View } from 'react-native'
 import Animated, {
   Easing,
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
-  withSpring,
   withTiming,
 } from 'react-native-reanimated'
 import * as Haptics from 'expo-haptics'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { useVoiceStore } from '@/layout/stores/voice-store'
 import { recordingStrings } from '@/layout/strings/recording-strings'
-import { ink, onSurfaceVariant } from '@/layout/utils/colors'
+import { ink, onSurface, textError } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
+import { ChatInput } from './chat-input'
 import { Typography } from './ui/typography'
 import { WaveBar } from './wave-bar'
 
@@ -26,7 +24,6 @@ const WAVEFORM_BARS = [
 
 const WAVE_DURATION = 450
 const WAVE_STAGGER = 60
-const CANCEL_THRESHOLD = 56
 
 function formatTime(totalSeconds: number) {
   const safeSeconds = Math.max(0, Math.floor(totalSeconds))
@@ -47,7 +44,6 @@ export function RecordingBar({ className }: RecordingBarProps) {
 
   const dotPulse = useSharedValue(1)
   const waveClock = useSharedValue(0)
-  const dragY = useSharedValue(0)
 
   useEffect(() => {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {})
@@ -74,11 +70,6 @@ export function RecordingBar({ className }: RecordingBarProps) {
 
   const dotStyle = useAnimatedStyle(() => ({ opacity: dotPulse.value }))
 
-  const cardStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: dragY.value }],
-    opacity: 1 + dragY.value / (CANCEL_THRESHOLD * 3),
-  }))
-
   function handleStop() {
     stopRecording()
   }
@@ -90,79 +81,54 @@ export function RecordingBar({ className }: RecordingBarProps) {
     cancelRecording()
   }
 
-  const panGesture = Gesture.Pan()
-    .onUpdate((event) => {
-      dragY.value = Math.min(0, event.translationY)
-    })
-    .onEnd((event) => {
-      if (event.translationY <= -CANCEL_THRESHOLD) {
-        runOnJS(handleCancel)()
-      } else {
-        dragY.value = withSpring(0)
-      }
-    })
-
   return (
-    <View className={cn('flex-row items-center gap-3', className)}>
-      <GestureDetector gesture={panGesture}>
-        <Animated.View
-          className="flex-1 gap-2 rounded-2xl border border-outline-variant/40 bg-surface-container-lowest px-4 py-3"
-          style={cardStyle}
-        >
-          <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center gap-2">
-              <Animated.View
-                className="size-2 rounded-full bg-text-error"
-                style={dotStyle}
-              />
-              <Typography variant="label-caps" className="text-text-error">
-                {strings.recording}
-              </Typography>
-            </View>
-            <Typography
-              variant="label-caps"
-              className="font-mono normal-case text-on-surface-variant"
-            >
-              {formatTime(elapsedSeconds)}
-            </Typography>
-          </View>
-
-          <View className="h-8 flex-row items-center justify-center gap-1">
-            {WAVEFORM_BARS.map((height, index) => (
-              <WaveBar
-                key={index}
-                height={height}
-                phase={(index * WAVE_STAGGER) / WAVE_DURATION}
-                clock={waveClock}
-              />
-            ))}
-          </View>
-
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={strings.cancelRecording}
-            onPress={handleCancel}
-            className="flex-row items-center justify-center gap-2"
-          >
-            <ArrowUp color={onSurfaceVariant} size={14} />
-            <Typography
-              variant="label-caps"
-              className="text-on-surface-variant"
-            >
-              {strings.slideUpToCancel}
-            </Typography>
-          </Pressable>
-        </Animated.View>
-      </GestureDetector>
-
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={strings.stopRecording}
-        onPress={handleStop}
-        className="size-12 shrink-0 items-center justify-center rounded-full bg-primary"
+    <View
+      className={cn(
+        'h-[44px] flex-row items-center gap-2 rounded-full border-[1.5px] border-field-border bg-surface-container-lowest px-1.5',
+        className,
+      )}
+    >
+      <ChatInput.IconButton
+        variant="subtle"
+        label={strings.cancelRecording}
+        onPress={handleCancel}
       >
-        <Microphone color={ink} size={20} weight="fill" />
-      </Pressable>
+        <X size={16} color={onSurface} />
+      </ChatInput.IconButton>
+      <Animated.View
+        style={[
+          {
+            width: 8,
+            height: 8,
+            borderRadius: 4,
+            backgroundColor: textError,
+          },
+          dotStyle,
+        ]}
+      />
+      <Typography
+        variant="label-caps"
+        className="font-mono normal-case text-on-surface-variant"
+      >
+        {formatTime(elapsedSeconds)}
+      </Typography>
+      <View className="h-7 flex-1 flex-row items-center justify-center gap-1">
+        {WAVEFORM_BARS.map((height, index) => (
+          <WaveBar
+            key={index}
+            height={height}
+            phase={(index * WAVE_STAGGER) / WAVE_DURATION}
+            clock={waveClock}
+          />
+        ))}
+      </View>
+      <ChatInput.IconButton
+        variant="primary"
+        label={strings.stopRecording}
+        onPress={handleStop}
+      >
+        <ArrowUp size={16} color={ink} />
+      </ChatInput.IconButton>
     </View>
   )
 }

@@ -18,8 +18,6 @@ import { ActiveTaskPeek } from '@/pages/chat/components/active-task-peek'
 import { ChatTopBar } from '@/pages/chat/components/chat-top-bar/chat-top-bar'
 import { MessageBubble } from '@/pages/chat/components/message-bubble/message-bubble'
 
-function noop() {}
-
 export type DemoReminder = {
   id: string
   title: string
@@ -161,7 +159,7 @@ function ChatComposer() {
 export function ChatScreen({ renderCard }: ChatScreenProps) {
   return (
     <View className="flex-1 bg-background">
-      <ChatTopBar onOpenMenu={noop} />
+      <ChatTopBar />
       <ActiveTaskPeek
         variant="summary"
         className="mx-4 mt-0.5"
