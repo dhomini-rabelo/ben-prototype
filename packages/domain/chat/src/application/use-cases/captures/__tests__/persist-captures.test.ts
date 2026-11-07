@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { createID } from '@ben/domain-base'
+import type { GoalDraft } from '@ben/adapters'
 
 import { InMemoryNoteRepository } from '@ben/domain-chat/application/__tests__/repositories/note'
 import { InMemoryReminderRepository } from '@ben/domain-chat/application/__tests__/repositories/reminder'
@@ -59,6 +60,8 @@ describe('PersistCapturesUseCase', () => {
           itemId: reminder.id.toValue(),
           title: 'Call the dentist',
           meta: '2026-05-01T09:00:00Z',
+          reminderKind: 'alarm',
+          recurrence: null,
         },
       ])
     })
@@ -202,8 +205,115 @@ describe('PersistCapturesUseCase', () => {
           itemId: goal.id.toValue(),
           title: 'Gym',
           meta: '2099-10-21T14:00:00Z',
+          reminderKind: 'goal',
+          recurrence: { type: 'daily' },
         },
       ])
+    })
+
+    it('returns an alarm view with its kind and no recurrence', async () => {
+      const { items } = await sut.execute({
+        ...noDrafts,
+        userId: createID().toValue(),
+        newReminders: [
+          { title: 'Call', remindAt: '2099-01-01T09:00:00Z', kind: 'alarm' },
+        ],
+      })
+
+      expect(items[0].reminderKind).toBe('alarm')
+      expect(items[0].recurrence).toBeNull()
+    })
+
+    it('returns a goal view without recurrence when the recurrence is none or missing', async () => {
+      const { items } = await sut.execute({
+        ...noDrafts,
+        userId: createID().toValue(),
+        newGoals: [
+          {
+            title: 'Gym',
+            startsAt: '2099-10-21T14:00:00Z',
+            recurrence: { type: 'none' },
+            messages: [],
+          },
+          {
+            title: 'Run',
+            startsAt: '2099-10-21T15:00:00Z',
+            messages: [],
+          } as unknown as GoalDraft,
+        ],
+      })
+
+      expect(items.map((item) => item.reminderKind)).toEqual(['goal', 'goal'])
+      expect(items.map((item) => item.recurrence)).toEqual([null, null])
+    })
+
+    it('returns a goal view with daily recurrence', async () => {
+      const { items } = await sut.execute({
+        ...noDrafts,
+        userId: createID().toValue(),
+        newGoals: [
+          {
+            title: 'Gym',
+            startsAt: '2099-10-21T14:00:00Z',
+            recurrence: { type: 'daily' },
+            messages: [],
+          },
+        ],
+      })
+
+      expect(items[0].recurrence).toEqual({ type: 'daily' })
+    })
+
+    it('returns a goal view with Monday to Friday recurrence', async () => {
+      const { items } = await sut.execute({
+        ...noDrafts,
+        userId: createID().toValue(),
+        newGoals: [
+          {
+            title: 'Gym',
+            startsAt: '2099-10-21T14:00:00Z',
+            recurrence: { type: 'weekdays', weekdays: [1, 2, 3, 4, 5] },
+            messages: [],
+          },
+        ],
+      })
+
+      expect(items[0].recurrence).toEqual({
+        type: 'weekdays',
+        weekdays: [1, 2, 3, 4, 5],
+      })
+    })
+
+    it('returns a goal view with arbitrary weekdays recurrence', async () => {
+      const { items } = await sut.execute({
+        ...noDrafts,
+        userId: createID().toValue(),
+        newGoals: [
+          {
+            title: 'Plants',
+            startsAt: '2099-10-21T14:00:00Z',
+            recurrence: { type: 'weekdays', weekdays: [1, 3] },
+            messages: [],
+          },
+        ],
+      })
+
+      expect(items[0].recurrence).toEqual({
+        type: 'weekdays',
+        weekdays: [1, 3],
+      })
+    })
+
+    it('returns a conditional view without meta and without recurrence', async () => {
+      const { items } = await sut.execute({
+        ...noDrafts,
+        userId: createID().toValue(),
+        newReminders: [{ title: 'Visit mom', kind: 'conditional' }],
+      })
+
+      expect(items[0].reminderKind).toBe('conditional')
+      expect(items[0].meta).toBeNull()
+      expect(items[0].recurrence).toBeNull()
     })
 
     it('persists a text task draft with its text content', async () => {
@@ -232,6 +342,8 @@ describe('PersistCapturesUseCase', () => {
           itemId: task.id.toValue(),
           title: 'Write report',
           meta: null,
+          reminderKind: null,
+          recurrence: null,
         },
       ])
     })
@@ -329,6 +441,8 @@ describe('PersistCapturesUseCase', () => {
           itemId: note.id.toValue(),
           title: 'Idea',
           meta: null,
+          reminderKind: null,
+          recurrence: null,
         },
       ])
     })

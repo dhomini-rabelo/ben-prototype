@@ -9,7 +9,10 @@ import {
   ReminderDraft,
   TaskDraft,
 } from '@ben/adapters'
-import { computeNextFireAt } from '@ben/domain-chat/application/utils/reminders'
+import {
+  computeNextFireAt,
+  toReminderCaptureView,
+} from '@ben/domain-chat/application/utils/reminders'
 import {
   Reminder,
   ReminderProps,
@@ -164,12 +167,7 @@ export class PersistCapturesUseCase implements UseCase<
   }
 
   private toReminderView(reminder: Reminder): CaptureView {
-    return {
-      kind: 'reminder',
-      itemId: reminder.id.toValue(),
-      title: reminder.props.title,
-      meta: reminder.props.remindAt,
-    }
+    return toReminderCaptureView(reminder)
   }
 
   private async createTaskViews(
@@ -210,6 +208,8 @@ export class PersistCapturesUseCase implements UseCase<
         itemId: task.id.toValue(),
         title: task.props.title,
         meta: null,
+        reminderKind: null,
+        recurrence: null,
       })
     }
 
@@ -235,6 +235,8 @@ export class PersistCapturesUseCase implements UseCase<
         itemId: note.id.toValue(),
         title: note.props.title,
         meta: null,
+        reminderKind: null,
+        recurrence: null,
       })
     }
 
