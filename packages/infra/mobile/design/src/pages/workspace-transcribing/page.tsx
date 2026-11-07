@@ -15,7 +15,7 @@ export function WorkspaceTranscribingPage() {
           text="rewrite the closing to land on the marketing cadence first…"
         />
       }
-      footer={<ChatInput mode="sending-disabled" />}
+      footer={<ChatInput leading="attach" mode="sending-disabled" />}
     >
       <section className="flex flex-1 flex-col gap-4 pt-2">
         <Typography

@@ -1,14 +1,13 @@
 import { Bell, ListTodo, NotebookPen, Settings } from "lucide-react";
 import type { ComponentType } from "react";
 import { cn } from "@/layout/utils/styles";
-import { BrandMark } from "@/layout/components/common/brand-mark";
 import { Typography } from "@/layout/components/ui/typography";
 
 export type MenuEntryId = "tasks" | "notes" | "reminders" | "settings";
 
 type CountValue = number | "skeleton" | "dash" | undefined;
 
-type MenuSidebarProps = {
+type MenuEntryListProps = {
   variant?: "default" | "loading" | "error";
   counts?: Partial<Record<MenuEntryId, CountValue>>;
   className?: string;
@@ -32,12 +31,12 @@ const ENTRIES: {
   { id: "settings", label: "Settings", icon: Settings },
 ];
 
-export function MenuSidebar({
+export function MenuEntryList({
   variant = "default",
   counts,
   className,
   onSelect,
-}: MenuSidebarProps) {
+}: MenuEntryListProps) {
   const effectiveCounts: Partial<Record<MenuEntryId, CountValue>> =
     variant === "loading"
       ? { tasks: "skeleton", notes: "skeleton", reminders: "skeleton" }
@@ -46,48 +45,37 @@ export function MenuSidebar({
         : (counts ?? {});
 
   return (
-    <aside
-      className={cn(
-        "flex h-full w-full flex-col bg-surface-container-lowest shadow-[8px_0_32px_rgba(0,0,0,0.08)]",
-        className,
-      )}
-    >
-      <div className="flex h-16 items-center px-5">
-        <BrandMark logoWidth={24} logoHeight={19} />
-      </div>
-
-      <nav className="flex flex-col px-2 pt-2">
-        {ENTRIES.map(({ id, label, icon: Icon, formatCount }) => {
-          const value = effectiveCounts[id];
-          const showCount = id !== "settings";
-          return (
-            <button
-              key={id}
-              type="button"
-              onClick={() => onSelect?.(id)}
-              className="flex items-center gap-3 rounded-xl px-3 py-3.5 text-left hover:bg-surface-container-low"
+    <nav className={cn("flex flex-col px-2 pb-2 pt-1", className)}>
+      {ENTRIES.map(({ id, label, icon: Icon, formatCount }) => {
+        const value = effectiveCounts[id];
+        const showCount = id !== "settings";
+        return (
+          <button
+            key={id}
+            type="button"
+            onClick={() => onSelect?.(id)}
+            className="flex items-center gap-3 rounded-xl px-3 py-3.5 text-left hover:bg-surface-container-low"
+          >
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant">
+              <Icon className="size-4" strokeWidth={1.75} />
+            </span>
+            <Typography
+              variant="body-md"
+              className="flex-1 font-semibold text-on-surface"
             >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant">
-                <Icon className="size-4" strokeWidth={1.75} />
-              </span>
-              <Typography
-                variant="body-md"
-                className="flex-1 font-semibold text-on-surface"
-              >
-                {label}
-              </Typography>
-              {showCount && (
-                <CountBadge
-                  entryId={id}
-                  value={value}
-                  formatCount={formatCount}
-                />
-              )}
-            </button>
-          );
-        })}
-      </nav>
-    </aside>
+              {label}
+            </Typography>
+            {showCount && (
+              <CountBadge
+                entryId={id}
+                value={value}
+                formatCount={formatCount}
+              />
+            )}
+          </button>
+        );
+      })}
+    </nav>
   );
 }
 

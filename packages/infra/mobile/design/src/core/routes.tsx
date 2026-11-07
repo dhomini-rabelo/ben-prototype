@@ -226,15 +226,6 @@ const TypingIndicatorPreviewPage = lazy(() =>
 const TypographyPreviewPage = lazy(() =>
   import("@/pages/typography-preview/page").then((module) => ({ default: module.TypographyPreviewPage })),
 );
-const MenuSidebarPopulatedPage = lazy(() =>
-  import("@/pages/menu-sidebar-populated/page").then((module) => ({ default: module.MenuSidebarPopulatedPage })),
-);
-const MenuSidebarLoadingPage = lazy(() =>
-  import("@/pages/menu-sidebar-loading/page").then((module) => ({ default: module.MenuSidebarLoadingPage })),
-);
-const MenuSidebarErrorPage = lazy(() =>
-  import("@/pages/menu-sidebar-error/page").then((module) => ({ default: module.MenuSidebarErrorPage })),
-);
 const MenuTasksEmptyPage = lazy(() =>
   import("@/pages/menu-tasks-empty/page").then((module) => ({ default: module.MenuTasksEmptyPage })),
 );
@@ -292,8 +283,14 @@ const MenuSettingsErrorPage = lazy(() =>
 const MenuSettingsEdgeCasesPage = lazy(() =>
   import("@/pages/menu-settings-edge-cases/page").then((module) => ({ default: module.MenuSettingsEdgeCasesPage })),
 );
-const MenuSidebarPreviewPage = lazy(() =>
-  import("@/pages/menu-sidebar-preview/page").then((module) => ({ default: module.MenuSidebarPreviewPage })),
+const MenuEntrySheetPreviewPage = lazy(() =>
+  import("@/pages/menu-entry-sheet-preview/page").then((module) => ({ default: module.MenuEntrySheetPreviewPage })),
+);
+const RecordingBarPreviewPage = lazy(() =>
+  import("@/pages/recording-bar-preview/page").then((module) => ({ default: module.RecordingBarPreviewPage })),
+);
+const ChatMenuOpenPage = lazy(() =>
+  import("@/pages/chat-menu-open/page").then((module) => ({ default: module.ChatMenuOpenPage })),
 );
 const MenuListRowPreviewPage = lazy(() =>
   import("@/pages/menu-list-row-preview/page").then((module) => ({ default: module.MenuListRowPreviewPage })),
@@ -315,6 +312,7 @@ export function AppRoutes() {
         <Route path="/app/chat-empty" element={<ChatEmptyPage />} />
         <Route path="/app/chat-loading" element={<ChatLoadingPage />} />
         <Route path="/app/chat-populated" element={<ChatPopulatedPage />} />
+        <Route path="/app/chat-menu-open" element={<ChatMenuOpenPage />} />
         <Route path="/app/chat-composing" element={<ChatComposingPage />} />
         <Route path="/app/chat-recording" element={<ChatRecordingPage />} />
         <Route path="/app/chat-transcribing" element={<ChatTranscribingPage />} />
@@ -381,9 +379,6 @@ export function AppRoutes() {
         <Route path="/components/diff-bar" element={<DiffBarPreviewPage />} />
         <Route path="/components/sub-thread-banner" element={<SubThreadBannerPreviewPage />} />
         <Route path="/components/task-picker-sheet" element={<TaskPickerSheetPreviewPage />} />
-        <Route path="/app/menu-sidebar-populated" element={<MenuSidebarPopulatedPage />} />
-        <Route path="/app/menu-sidebar-loading" element={<MenuSidebarLoadingPage />} />
-        <Route path="/app/menu-sidebar-error" element={<MenuSidebarErrorPage />} />
         <Route path="/app/menu-tasks-empty" element={<MenuTasksEmptyPage />} />
         <Route path="/app/menu-tasks-populated" element={<MenuTasksPopulatedPage />} />
         <Route path="/app/menu-tasks-loading" element={<MenuTasksLoadingPage />} />
@@ -403,7 +398,8 @@ export function AppRoutes() {
         <Route path="/app/menu-settings-loading" element={<MenuSettingsLoadingPage />} />
         <Route path="/app/menu-settings-error" element={<MenuSettingsErrorPage />} />
         <Route path="/app/menu-settings-edge-cases" element={<MenuSettingsEdgeCasesPage />} />
-        <Route path="/components/menu-sidebar" element={<MenuSidebarPreviewPage />} />
+        <Route path="/components/menu-entry-sheet" element={<MenuEntrySheetPreviewPage />} />
+        <Route path="/components/recording-bar" element={<RecordingBarPreviewPage />} />
         <Route path="/components/menu-list-row" element={<MenuListRowPreviewPage />} />
         <Route path="/components/settings-sheet" element={<SettingsSheetPreviewPage />} />
       </Routes>

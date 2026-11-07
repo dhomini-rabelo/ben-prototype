@@ -7,7 +7,7 @@ export function WorkspaceEmptyPage() {
     <WorkspaceShell
       title="Draft the Q3 brief"
       contentType="text"
-      footer={<ChatInput placeholder="Tell Ben what to put here…" />}
+      footer={<ChatInput leading="attach" placeholder="Tell Ben what to put here…" />}
     >
       <section className="flex flex-1 flex-col items-center justify-center gap-3 px-4 pb-8 text-center">
         <Typography variant="body-md" className="text-on-surface-variant">

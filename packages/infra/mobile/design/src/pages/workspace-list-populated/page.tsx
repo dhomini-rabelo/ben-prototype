@@ -14,7 +14,7 @@ export function WorkspaceListPopulatedPage() {
           text="added rain layer — the forecast looks wet Thursday"
         />
       }
-      footer={<ChatInput placeholder="Ask Ben to add or remove…" />}
+      footer={<ChatInput leading="attach" placeholder="Ask Ben to add or remove…" />}
     >
       <section className="flex flex-1 flex-col gap-1 pt-2">
         <TodoListItem title="Charger + adapter" done />

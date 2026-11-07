@@ -14,7 +14,7 @@ export function WorkspaceOfflinePage() {
           offline — Ben's listening but can't reply yet
         </ChatBanner>
       }
-      footer={<ChatInput placeholder="Message Ben (queued)" />}
+      footer={<ChatInput leading="attach" placeholder="Message Ben (queued)" />}
     >
       <section className="flex flex-1 flex-col gap-1 pt-2">
         <TodoListItem title="Charger + adapter" done />

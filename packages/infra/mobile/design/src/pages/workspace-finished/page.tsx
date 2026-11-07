@@ -9,7 +9,7 @@ export function WorkspaceFinishedPage() {
       title="Draft the Q3 brief"
       contentType="text"
       finishedIndicator
-      footer={<ChatInput mode="disabled" placeholder="reopen to keep editing" />}
+      footer={<ChatInput leading="attach" mode="disabled" placeholder="reopen to keep editing" />}
       overlay={
         <div className="pointer-events-none fixed inset-0 z-30 flex items-end justify-center bg-on-surface/5 pb-44">
           <div className="flex items-center gap-2 rounded-full bg-primary/95 px-4 py-2 text-on-primary shadow-[0_8px_24px_rgba(0,0,0,0.12)]">

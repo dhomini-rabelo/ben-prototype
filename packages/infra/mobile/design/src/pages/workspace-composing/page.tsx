@@ -15,7 +15,7 @@ export function WorkspaceComposingPage() {
         />
       }
       footer={
-        <ChatInput
+        <ChatInput leading="attach"
           mode="composing"
           value="rewrite the closing to land on the marketing cadence first"
         />
