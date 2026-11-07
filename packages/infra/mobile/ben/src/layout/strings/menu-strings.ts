@@ -2,7 +2,6 @@ import type { Localized } from '@/core/languages'
 import type { ReminderKind } from '@/api/models/reminder'
 
 const en = {
-  closeMenu: 'Close menu',
   backToMenu: 'Back to menu',
   retry: 'retry',
   tasks: 'Tasks',
@@ -40,7 +39,6 @@ const en = {
 export const menuStrings: Localized<typeof en> = {
   en,
   'pt-BR': {
-    closeMenu: 'Fechar menu',
     backToMenu: 'Voltar ao menu',
     retry: 'tentar de novo',
     tasks: 'Tarefas',

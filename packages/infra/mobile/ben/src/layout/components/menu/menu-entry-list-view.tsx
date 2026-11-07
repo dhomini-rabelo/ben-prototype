@@ -1,13 +1,12 @@
 import { useCapturesCountsData } from '@/layout/hooks/api/use-captures-counts-data'
-import { useMenuStore } from '@/layout/stores/menu-store'
-import { MenuSidebar } from './menu-sidebar'
+import type { MenuEntryId } from '@/layout/stores/menu-store'
+import { MenuEntryList } from './menu-entry-list'
 
-type MenuSidebarViewProps = {
-  onClose?: () => void
+type MenuEntryListViewProps = {
+  onSelect: (id: MenuEntryId) => void
 }
 
-export function MenuSidebarView({ onClose }: MenuSidebarViewProps) {
-  const selectEntry = useMenuStore((store) => store.selectEntry)
+export function MenuEntryListView({ onSelect }: MenuEntryListViewProps) {
   const { state } = useCapturesCountsData()
 
   const variant = state.isLoading
@@ -24,12 +23,5 @@ export function MenuSidebarView({ onClose }: MenuSidebarViewProps) {
       }
     : undefined
 
-  return (
-    <MenuSidebar
-      variant={variant}
-      counts={counts}
-      onSelect={selectEntry}
-      onClose={onClose}
-    />
-  )
+  return <MenuEntryList variant={variant} counts={counts} onSelect={onSelect} />
 }
