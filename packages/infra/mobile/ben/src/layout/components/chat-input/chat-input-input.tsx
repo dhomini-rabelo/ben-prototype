@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { TextInput } from 'react-native'
+import { Platform, TextInput } from 'react-native'
 import { onSurfaceVariant } from '@/layout/utils/colors'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { chatInputStrings } from '@/layout/strings/chat-input-strings'
@@ -11,6 +11,10 @@ const TEXT_MAX_LINES = 5
 const TEXT_MIN_HEIGHT = 32
 const TEXT_MAX_HEIGHT =
   TEXT_LINE_HEIGHT * TEXT_MAX_LINES + TEXT_VERTICAL_PADDING
+
+// No web, contentSize.height é o scrollHeight da textarea e já inclui o padding;
+// no nativo ele vem sem padding. Somar de novo no web realimentava a altura até o máximo.
+const MEASURE_PADDING = Platform.OS === 'web' ? 0 : TEXT_VERTICAL_PADDING
 
 type ChatInputInputProps = {
   placeholder?: string
@@ -34,7 +38,7 @@ export function ChatInputInput({ placeholder }: ChatInputInputProps) {
         setMeasuredHeight(
           Math.min(
             Math.max(
-              event.nativeEvent.contentSize.height + TEXT_VERTICAL_PADDING,
+              event.nativeEvent.contentSize.height + MEASURE_PADDING,
               TEXT_MIN_HEIGHT,
             ),
             TEXT_MAX_HEIGHT,
@@ -44,7 +48,7 @@ export function ChatInputInput({ placeholder }: ChatInputInputProps) {
       scrollEnabled={inputHeight >= TEXT_MAX_HEIGHT}
       editable={!disabled}
       style={{ lineHeight: TEXT_LINE_HEIGHT, height: inputHeight }}
-      className="min-w-0 flex-1 px-2 py-1.5 font-sans text-[15px] text-on-surface"
+      className="outline-none min-w-0 flex-1 px-2 py-1.5 font-sans text-[15px] text-on-surface"
     />
   )
 }
