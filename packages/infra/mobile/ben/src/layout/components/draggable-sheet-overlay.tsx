@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Modal, Pressable, StyleSheet, View } from 'react-native'
 import {
   Gesture,
@@ -31,9 +31,11 @@ export function DraggableSheetOverlay({
 }: DraggableSheetOverlayProps) {
   const translateY = useSharedValue(SLIDE_OFFSET)
   const backdropOpacity = useSharedValue(0)
+  const openedAt = useRef(0)
 
   useEffect(() => {
     if (isOpen) {
+      openedAt.current = Date.now()
       translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
       backdropOpacity.value = withTiming(1, { duration: ANIMATION_DURATION })
     } else {
@@ -48,6 +50,11 @@ export function DraggableSheetOverlay({
   const backdropStyle = useAnimatedStyle(() => ({
     opacity: backdropOpacity.value,
   }))
+
+  function handleScrimPress() {
+    if (Date.now() - openedAt.current < ANIMATION_DURATION) return
+    onClose()
+  }
 
   const panGesture = Gesture.Pan()
     .onUpdate((event) => {
@@ -70,7 +77,7 @@ export function DraggableSheetOverlay({
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View className="flex-1 justify-end">
-          <Pressable className="absolute inset-0" onPress={onClose}>
+          <Pressable className="absolute inset-0" onPress={handleScrimPress}>
             <Animated.View style={[StyleSheet.absoluteFill, backdropStyle]}>
               <View className="flex-1 bg-inverse-surface/30" />
             </Animated.View>
