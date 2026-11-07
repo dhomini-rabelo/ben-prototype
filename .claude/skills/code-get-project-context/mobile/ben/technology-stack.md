@@ -1,6 +1,6 @@
 # App Ben (mobile): stack
 
-Expo SDK 54 · React Native 0.81 · React 19 · Expo Router (rotas por arquivo) · NativeWind v4 (Tailwind v3) · Zustand · Jotai · TanStack Query · axios · Firebase + `@react-native-google-signin/google-signin` (auth) · `expo-audio` (áudio) · `expo-secure-store` + AsyncStorage · `expo-notifications` (notificações locais e token de push do Expo) · `expo-constants` (lê o `projectId` do EAS) · `expo-dev-client` · `react-native-reanimated` + `react-native-gesture-handler` · `phosphor-react-native` (ícones, sobre `react-native-svg`) · `@expo-google-fonts/instrument-sans` e `@expo-google-fonts/jetbrains-mono` (fontes carregadas em `app/_layout.tsx`).
+Expo SDK 54 · React Native 0.81 · React 19 · Expo Router (rotas por arquivo) · NativeWind v4 (Tailwind v3) · Zustand · Jotai · TanStack Query · axios · Firebase + `@react-native-google-signin/google-signin` (auth) · `expo-audio` (áudio) · `expo-secure-store` + AsyncStorage · `expo-notifications` (notificações locais e token de push do Expo) · `expo-constants` (lê o `projectId` do EAS) · `expo-dev-client` · `react-native-reanimated` + `react-native-gesture-handler` · `phosphor-react-native` (ícones, sobre `react-native-svg`) · `@resvg/resvg-js` (dev; rasteriza o SVG da logo nos ícones do app) · `@expo-google-fonts/instrument-sans` e `@expo-google-fonts/jetbrains-mono` (fontes carregadas em `app/_layout.tsx`).
 
 ## Tema e tipografia
 
