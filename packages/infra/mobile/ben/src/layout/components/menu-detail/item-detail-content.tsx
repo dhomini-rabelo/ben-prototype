@@ -15,6 +15,7 @@ type ItemDetailContentProps = {
   status?: ReminderStatus
   kind?: ReminderKind
   nextFireAbsolute?: string
+  recurrenceLabel?: string
   children?: ReactNode
 }
 
@@ -28,6 +29,7 @@ export function ItemDetailContent({
   status,
   kind,
   nextFireAbsolute,
+  recurrenceLabel,
   children,
 }: ItemDetailContentProps) {
   return (
@@ -45,6 +47,7 @@ export function ItemDetailContent({
           status={status}
           kind={kind}
           nextFireAbsolute={nextFireAbsolute}
+          recurrenceLabel={recurrenceLabel}
         />
       )}
 

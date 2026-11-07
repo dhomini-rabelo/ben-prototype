@@ -6,7 +6,20 @@ import { firesAtRelative, relativeTime } from '@/layout/utils/format-time'
 import { useLanguage, useStrings } from '@/layout/hooks/use-strings'
 import { menuStrings } from '@/layout/strings/menu-strings'
 import { ReminderKindBadge } from '@/layout/components/menu-reminders/reminder-kind-badge'
+import { getRecurrenceLabel } from '@/layout/utils/recurrence-label'
 import { View } from 'react-native'
+
+function withRecurrenceLabel(
+  reminder: ReminderListItem,
+  status: string,
+  language: Language,
+) {
+  const label = getRecurrenceLabel(
+    { kind: reminder.kind, recurrence: reminder.recurrence },
+    language,
+  )
+  return label ? `${label} · ${status}` : status
+}
 
 function nextFireLabel(reminder: ReminderListItem, language: Language) {
   return firesAtRelative(reminder.nextFireAt ?? reminder.firesAt, language)
@@ -45,8 +58,12 @@ export function MenuRemindersList({
                 badge={<ReminderKindBadge kind={reminder.kind} />}
                 trailing={nextFireLabel(reminder, language)}
                 emphasizeTrailing
-                supporting={strings.capturedSupporting(
-                  relativeTime(reminder.capturedAt, language),
+                supporting={withRecurrenceLabel(
+                  reminder,
+                  strings.capturedSupporting(
+                    relativeTime(reminder.capturedAt, language),
+                  ),
+                  language,
                 )}
                 onPress={() => onSelect(reminder.id)}
               />
@@ -71,7 +88,11 @@ export function MenuRemindersList({
                 title={reminder.title}
                 badge={<ReminderKindBadge kind={reminder.kind} />}
                 trailing={firesAtRelative(reminder.firesAt, language)}
-                supporting={strings.doneSupporting}
+                supporting={withRecurrenceLabel(
+                  reminder,
+                  strings.doneSupporting,
+                  language,
+                )}
                 muted
                 onPress={() => onSelect(reminder.id)}
               />
