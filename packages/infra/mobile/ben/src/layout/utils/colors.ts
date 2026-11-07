@@ -16,9 +16,12 @@ export const iconReminder = '#724aab'
 export const wave = '#ab7b48'
 export const ink = '#1d1814'
 export const surfaceLowest = '#ffffff'
+export const background = '#f6f4f2'
 export const fieldBorder = '#908b87'
 export const dogEar = '#e9d5c1'
 
 // Muted variant used for finished/fired capture-card icons. Not a tailwind
 // token, but kept here so all icon color values live in one place.
 export const onSurfaceVariantMuted = '#9a948f'
+export const silhouetteThemed = '#000000'
+export const silhouetteNotification = '#ffffff'

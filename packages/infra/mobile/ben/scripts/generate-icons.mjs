@@ -1,176 +1,124 @@
-// Regenerates every launcher/splash asset in `assets/` from the BenLogo geometry
-// in `src/layout/components/icons/ben-logo.tsx`. Run: pnpm --filter @ben/mobile-ben icons.
-// Kept dependency-free (no sharp) so a fresh clone can rebuild the icons offline.
-import { deflateSync } from 'node:zlib'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import {
+  BALLOON_BOUNDS,
+  BALLOON_PATH,
+  BAR_SHAPES,
+  FOLD_PATH,
+  LOGO_VIEW_BOX_SIZE,
+  SILHOUETTE_COLORS,
+  variantPalettes,
+} from '../src/layout/utils/ben-logo-geometry.ts'
+import { background } from '../src/layout/utils/colors.ts'
 
-const SURFACE = [0xf9, 0xf9, 0xf9]
-const PRIMARY = [0x12, 0x12, 0x13]
+const BALLOON_WIDTH = BALLOON_BOUNDS.maxX - BALLOON_BOUNDS.minX
+const BALLOON_HEIGHT = BALLOON_BOUNDS.maxY - BALLOON_BOUNDS.minY
+const CENTER_X = (BALLOON_BOUNDS.minX + BALLOON_BOUNDS.maxX) / 2
+const CENTER_Y = (BALLOON_BOUNDS.minY + BALLOON_BOUNDS.maxY) / 2
 
-const MARK = {
-  circles: [
-    { x: 9, y: 9, r: 5 },
-    { x: 22, y: 14, r: 6 },
-    { x: 13, y: 22, r: 4 },
-  ],
-  width: 24,
-  height: 22,
-  centerX: 16,
-  centerY: 15,
-}
-
-const MARK_DIAGONAL = Math.hypot(MARK.width, MARK.height)
-
-function crcTable() {
-  const table = new Int32Array(256)
-  for (let n = 0; n < 256; n++) {
-    let c = n
-    for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1
-    table[n] = c
-  }
-  return table
-}
-
-const CRC_TABLE = crcTable()
-
-function crc32(buffer) {
-  let c = 0xffffffff
-  for (const byte of buffer) c = CRC_TABLE[(c ^ byte) & 0xff] ^ (c >>> 8)
-  return (c ^ 0xffffffff) >>> 0
-}
-
-function chunk(type, data) {
-  const length = Buffer.alloc(4)
-  length.writeUInt32BE(data.length)
-  const body = Buffer.concat([Buffer.from(type, 'latin1'), data])
-  const crc = Buffer.alloc(4)
-  crc.writeUInt32BE(crc32(body))
-  return Buffer.concat([length, body, crc])
-}
-
-function encodePng(size, rgba) {
-  const header = Buffer.alloc(13)
-  header.writeUInt32BE(size, 0)
-  header.writeUInt32BE(size, 4)
-  header[8] = 8
-  header[9] = 6
-  const raw = Buffer.alloc((size * 4 + 1) * size)
-  for (let y = 0; y < size; y++) {
-    const rowStart = y * (size * 4 + 1)
-    raw[rowStart] = 0
-    rgba.copy(raw, rowStart + 1, y * size * 4, (y + 1) * size * 4)
-  }
-  return Buffer.concat([
-    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
-    chunk('IHDR', header),
-    chunk('IDAT', deflateSync(raw, { level: 9 })),
-    chunk('IEND', Buffer.alloc(0)),
-  ])
-}
-
-function coverage(px, py, circle, scale) {
-  const edgeDistanceInPixels =
-    (Math.hypot(px - circle.x, py - circle.y) - circle.r) * scale
-  return Math.min(Math.max(0.5 - edgeDistanceInPixels, 0), 1)
-}
-
-function renderMark({ size, scale, background, foreground }) {
-  const rgba = Buffer.alloc(size * size * 4)
-  const half = size / 2
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      const markX = (x + 0.5 - half) / scale + MARK.centerX
-      const markY = (y + 0.5 - half) / scale + MARK.centerY
-      let alpha = 0
-      for (const circle of MARK.circles) {
-        alpha = Math.max(alpha, coverage(markX, markY, circle, scale))
-      }
-      const offset = (y * size + x) * 4
-      if (background) {
-        rgba[offset] = Math.round(
-          background[0] * (1 - alpha) + foreground[0] * alpha,
-        )
-        rgba[offset + 1] = Math.round(
-          background[1] * (1 - alpha) + foreground[1] * alpha,
-        )
-        rgba[offset + 2] = Math.round(
-          background[2] * (1 - alpha) + foreground[2] * alpha,
-        )
-        rgba[offset + 3] = 255
-      } else {
-        rgba[offset] = foreground[0]
-        rgba[offset + 1] = foreground[1]
-        rgba[offset + 2] = foreground[2]
-        rgba[offset + 3] = Math.round(alpha * 255)
-      }
-    }
-  }
-  return encodePng(size, rgba)
-}
-
-function scaleToWidth(size, ratio) {
-  return (size * ratio) / MARK.width
+function scaleToExtent(size, ratio) {
+  return (size * ratio) / Math.max(BALLOON_WIDTH, BALLOON_HEIGHT)
 }
 
 function scaleToDiagonal(size, ratio) {
-  return (size * ratio) / MARK_DIAGONAL
+  return (size * ratio) / Math.hypot(BALLOON_WIDTH, BALLOON_HEIGHT)
 }
 
-const here = dirname(fileURLToPath(import.meta.url))
-const out = join(here, '..', 'assets')
-await mkdir(out, { recursive: true })
+function barRect(bar, fill) {
+  return `<rect x="${bar.x}" y="${bar.y}" width="${bar.width}" height="${bar.height}" rx="${bar.radius}" fill="${fill}"/>`
+}
+
+function brandLayer() {
+  const palette = variantPalettes.brand
+  return [
+    `<path d="${BALLOON_PATH}" fill="${palette.body}"/>`,
+    `<path d="${FOLD_PATH}" fill="${palette.fold}"/>`,
+    ...BAR_SHAPES.map((bar) => barRect(bar, palette.bars)),
+  ].join('')
+}
+
+function silhouetteLayer(color) {
+  const mask = [
+    `<mask id="bars">`,
+    `<rect width="${LOGO_VIEW_BOX_SIZE}" height="${LOGO_VIEW_BOX_SIZE}" fill="white"/>`,
+    ...BAR_SHAPES.map((bar) => barRect(bar, 'black')),
+    `</mask>`,
+  ].join('')
+  return `${mask}<g mask="url(#bars)" fill="${color}"><path d="${BALLOON_PATH}"/><path d="${FOLD_PATH}"/></g>`
+}
+
+function buildSvg({ size, scale, layer, backgroundColor }) {
+  const backgroundRect = backgroundColor
+    ? `<rect width="${size}" height="${size}" fill="${backgroundColor}"/>`
+    : ''
+  const transform = `translate(${size / 2} ${size / 2}) scale(${scale}) translate(${-CENTER_X} ${-CENTER_Y})`
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${backgroundRect}<g transform="${transform}">${layer}</g></svg>`
+}
 
 const assets = [
   {
     file: 'icon.png',
     size: 1024,
-    scale: scaleToWidth(1024, 0.6),
-    background: SURFACE,
-    foreground: PRIMARY,
+    scale: scaleToExtent(1024, 0.6),
+    backgroundColor: background,
+    layer: brandLayer(),
   },
   {
     file: 'adaptive-icon-foreground.png',
     size: 1024,
     scale: scaleToDiagonal(1024, 0.6),
-    background: null,
-    foreground: PRIMARY,
+    layer: brandLayer(),
   },
   {
     file: 'adaptive-icon-monochrome.png',
     size: 1024,
     scale: scaleToDiagonal(1024, 0.6),
-    background: null,
-    foreground: [0, 0, 0],
+    layer: silhouetteLayer(SILHOUETTE_COLORS.themed),
   },
   {
     file: 'splash-icon.png',
     size: 1024,
-    scale: scaleToWidth(1024, 0.72),
-    background: null,
-    foreground: PRIMARY,
+    scale: scaleToExtent(1024, 0.64),
+    layer: brandLayer(),
   },
   {
     file: 'notification-icon.png',
     size: 96,
-    scale: scaleToWidth(96, 0.86),
-    background: null,
-    foreground: [0xff, 0xff, 0xff],
+    scale: scaleToExtent(96, 0.86),
+    layer: silhouetteLayer(SILHOUETTE_COLORS.notification),
   },
   {
     file: 'favicon.png',
     size: 64,
-    scale: scaleToWidth(64, 0.7),
-    background: SURFACE,
-    foreground: PRIMARY,
+    scale: scaleToExtent(64, 0.8),
+    backgroundColor: background,
+    layer: brandLayer(),
   },
 ]
 
-for (const { file, size, scale, background, foreground } of assets) {
-  await writeFile(
-    join(out, file),
-    renderMark({ size, scale, background, foreground }),
-  )
-  console.log(`assets/${file} ${size}x${size}`)
+async function main() {
+  const here = dirname(fileURLToPath(import.meta.url))
+  const out = join(here, '..', 'assets')
+  let stage = 'load rasterizer'
+  try {
+    const rasterizer = await import('@resvg/resvg-js')
+    const { Resvg } = rasterizer.default ?? rasterizer
+    await mkdir(out, { recursive: true })
+    for (const asset of assets) {
+      stage = `render assets/${asset.file}`
+      const svg = buildSvg(asset)
+      const png = new Resvg(svg, { font: { loadSystemFonts: false } })
+        .render()
+        .asPng()
+      await writeFile(join(out, asset.file), png)
+      console.log(`assets/${asset.file} ${asset.size}x${asset.size}`)
+    }
+  } catch (error) {
+    console.error(`icons: failed at ${stage}: ${error.message}`)
+    console.error('Run `pnpm install` at the repository root and try again.')
+    process.exitCode = 1
+  }
 }
+
+await main()
