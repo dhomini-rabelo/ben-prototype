@@ -11,7 +11,7 @@ import type { Language } from '@/core/languages'
 import { formatShortDate } from '@/pages/chat/utils/format-short-date'
 import { useCaptureCard } from './contexts/capture-card-context'
 
-type CaptureCardMetaProps = { children: string }
+type CaptureCardMetaProps = { children: string; label?: string }
 
 function isToday(iso: string) {
   return new Date(iso).toDateString() === new Date().toDateString()
@@ -35,7 +35,7 @@ function formatRemindAt(
   return `${formatShortDate(new Date(iso), language)}, ${clock}`
 }
 
-export function CaptureCardMeta({ children }: CaptureCardMetaProps) {
+export function CaptureCardMeta({ children, label }: CaptureCardMetaProps) {
   const { kind, state } = useCaptureCard()
   const language = useLanguage()
   const strings = useStrings(alarmStrings)
@@ -44,11 +44,13 @@ export function CaptureCardMeta({ children }: CaptureCardMetaProps) {
     return null
   }
 
+  const time = formatRemindAt(children, language, strings.snoozeTomorrow)
+
   return (
     <View className="mt-[3px] flex-row items-center gap-1 self-start rounded-full bg-brand-50 py-0.5 pl-1.5 pr-2">
       <Clock size={13} color={brandDeep} />
       <Text className="font-sans-semibold text-xs text-brand-deep">
-        {formatRemindAt(children, language, strings.snoozeTomorrow)}
+        {label ? `${time} · ${label}` : time}
       </Text>
     </View>
   )

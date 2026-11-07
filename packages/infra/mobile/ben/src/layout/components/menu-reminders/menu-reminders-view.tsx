@@ -1,3 +1,4 @@
+import { router } from 'expo-router'
 import { MenuListEmpty } from '@/layout/components/menu-list/menu-list-empty'
 import { MenuListError } from '@/layout/components/menu-list/menu-list-error'
 import { MenuListLoading } from '@/layout/components/menu-list/menu-list-loading'
@@ -13,11 +14,15 @@ export function MenuRemindersView() {
   const { actions, state } = useReminderListData()
   const strings = useStrings(menuStrings)
   const goBackToMenu = useMenuStore((store) => store.goBackToMenu)
+  const origin = useMenuStore((store) => store.origin)
   const openDetail = useMenuStore((store) => store.openDetail)
   const reminders = state.data?.items ?? []
 
   return (
-    <MenuListShell title={strings.reminders} onBack={goBackToMenu}>
+    <MenuListShell
+      title={strings.reminders}
+      onBack={origin === 'chat' ? () => router.back() : goBackToMenu}
+    >
       {state.isLoading ? (
         <MenuListLoading />
       ) : state.isError ? (
