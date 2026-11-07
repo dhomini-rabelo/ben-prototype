@@ -8,7 +8,7 @@ Base: `packages/infra/mobile/design/src`. O app segue a estrutura de app do padr
   - Previews de componente: `<nome>-preview` (ex.: `button-preview`) e `design-tokens`, rota `/components/<nome>`.
   - `home/page.tsx` é a própria Design Gallery (aba Pages agrupa os estados por página; aba Components é a visão geral do design system).
 - `layout/components/ui/`: primitivas (`button`, `icon-button`, `typing-indicator`, `typography`).
-- `layout/components/common/`: composições compartilhadas e shells de tela (`chat-shell`, `preview-shell`, `menu-shell`, `detail-shell`, `workspace-shell`, `settings-shell`, `picker-shell`, `menu-list-shell`, `brand-mark`).
-- `layout/components/{capture-card,chat,icons,menu,workspace}/`: componentes por grupo de feature.
+- `layout/components/common/`: composições compartilhadas e shells de tela (`chat-shell`, `preview-shell`, `centered-top-bar`, `detail-shell`, `workspace-shell`, `settings-shell`, `picker-shell`, `menu-list-shell`, `brand-mark`).
+- `layout/components/{capture-card,chat,icons,menu,workspace}/`: componentes por grupo de feature (`chat/`: `chat-input`, `recording-bar`; `menu/`: `menu-entry-list`, `menu-entry-sheet`; o estado `chat-menu-open` mostra o sheet do menu sobre o chat).
 - `layout/utils/styles.ts`: helpers de estilo, incluindo `cn()` (import `@/layout/utils/styles`).
 - Fora de `src/`: `index.html`, `vite.config.ts`, `tsconfig.app.json`, `tsconfig.node.json`, `public/`.
