@@ -23,7 +23,12 @@ const config: ExpoConfig = {
   android: {
     package: 'com.benprototype.app',
     versionCode: 1,
-    permissions: ['RECORD_AUDIO', 'android.permission.USE_EXACT_ALARM'],
+    permissions: [
+      'RECORD_AUDIO',
+      'android.permission.USE_EXACT_ALARM',
+      'android.permission.USE_FULL_SCREEN_INTENT',
+      'android.permission.RECEIVE_BOOT_COMPLETED',
+    ],
     googleServicesFile: './google-services.json',
     adaptiveIcon: {
       backgroundColor: background,
@@ -51,6 +56,7 @@ const config: ExpoConfig = {
       {
         icon: './assets/notification-icon.png',
         color: primary,
+        sounds: ['./assets/sounds/ben_alarm.wav'],
       },
     ],
     [
@@ -62,6 +68,8 @@ const config: ExpoConfig = {
     ],
     '@react-native-google-signin/google-signin',
     './plugins/with-release-signing',
+    'react-native-notify-kit',
+    './plugins/with-alarm-activity',
     [
       'expo-font',
       {
