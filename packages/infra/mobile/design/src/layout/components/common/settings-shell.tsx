@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { MenuSidebar } from "@/layout/components/menu/menu-sidebar";
 
 type SettingsShellProps = {
   sheet: ReactNode;
@@ -8,10 +7,10 @@ type SettingsShellProps = {
 export function SettingsShell({ sheet }: SettingsShellProps) {
   return (
     <div className="relative flex min-h-dvh flex-col items-center bg-surface text-on-surface">
-      {/* Sidebar behind */}
-      <div className="fixed top-0 bottom-0 left-1/2 z-30 flex h-dvh w-full max-w-120 -translate-x-1/2">
-        <div className="flex h-full w-[78%] opacity-60">
-          <MenuSidebar counts={{ tasks: 3, notes: 12, reminders: 4 }} />
+      {/* Faint chat backdrop */}
+      <div className="pointer-events-none absolute inset-0 flex w-full max-w-120 self-center flex-col px-4 pt-20 pb-44 opacity-30">
+        <div className="ml-auto rounded-2xl rounded-tr-sm bg-surface-container-low px-4 py-3 text-body-md">
+          morning. what's on the list today?
         </div>
       </div>
 

@@ -24,7 +24,7 @@ export function WorkspaceErrorPage() {
           couldn't load this one — tap to retry
         </ChatBanner>
       }
-      footer={<ChatInput />}
+      footer={<ChatInput leading="attach" />}
     >
       <section className="flex flex-1 flex-col items-center justify-center gap-3 pt-2">
         <span className="flex size-12 items-center justify-center rounded-full bg-surface-error text-text-error">

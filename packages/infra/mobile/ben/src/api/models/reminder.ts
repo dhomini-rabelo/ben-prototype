@@ -26,6 +26,14 @@ export interface SnoozeOptionItem {
   at: string
 }
 
+export type ReminderActionType = 'stop' | 'snooze' | 'done'
+
+export interface ReminderAction {
+  type: ReminderActionType
+  firedAt: string
+  actedAt: string
+}
+
 export interface Reminder {
   id: string
   title: string
@@ -43,6 +51,7 @@ export interface Reminder {
   snoozedUntil: string | null
   acknowledgedUntil: string | null
   completedAt: string | null
+  actions: ReminderAction[]
 }
 
 export type ReminderListItem = Reminder

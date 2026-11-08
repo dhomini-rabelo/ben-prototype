@@ -19,11 +19,21 @@ const en = {
   showUsdCost: 'Show cost in USD',
   preferenceSaveFailed: "Couldn't save. Try again.",
   remindersTitle: 'Reminders',
+  fullScreenTitle: 'Full-screen alarm',
+  fullScreenOn: 'On',
+  fullScreenOff: 'Off — alarms arrive as a notification',
+  fullScreenAllow: 'Allow',
+  notificationsDeniedTitle: 'Notifications are off',
+  notificationsDeniedBody:
+    "Alarms won't ring while the app is closed. Turn notifications on for Ben.",
   dailySummary: 'Daily summary',
   dailySummaryTime: 'Summary time',
   morningTime: 'Morning time',
   morningTimeHint:
     'Applies to "in the morning" alerts created or edited from now on.',
+  sendTestNotification: 'Send test notification',
+  testNotificationSent: (count: number) => `Sent to ${count} device(s)`,
+  testNotificationFailed: "Couldn't send the test notification. Try again.",
 }
 
 export const settingsStrings: Localized<typeof en> = {
@@ -47,10 +57,22 @@ export const settingsStrings: Localized<typeof en> = {
     showUsdCost: 'Mostrar gasto em dólar',
     preferenceSaveFailed: 'Não foi possível salvar. Tente de novo.',
     remindersTitle: 'Lembretes',
+    fullScreenTitle: 'Alarme em tela cheia',
+    fullScreenOn: 'Ligado',
+    fullScreenOff: 'Desligado — o alarme chega como notificação',
+    fullScreenAllow: 'Liberar',
+    notificationsDeniedTitle: 'Notificações desligadas',
+    notificationsDeniedBody:
+      'Os alarmes não tocam com o app fechado. Ative as notificações do Ben.',
     dailySummary: 'Resumo diário',
     dailySummaryTime: 'Horário do resumo',
     morningTime: 'Horário da manhã',
     morningTimeHint:
       'Vale para os avisos "pela manhã" criados ou editados a partir de agora.',
+    sendTestNotification: 'Enviar notificação de teste',
+    testNotificationSent: (count: number) =>
+      `Enviada para ${count} aparelho(s)`,
+    testNotificationFailed:
+      'Não foi possível enviar a notificação de teste. Tente de novo.',
   },
 }

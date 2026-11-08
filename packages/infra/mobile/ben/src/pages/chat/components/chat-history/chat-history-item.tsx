@@ -1,8 +1,6 @@
-import { router } from 'expo-router'
 import { View } from 'react-native'
 import { BenLogo } from '@/layout/components/icons/ben-logo'
-import { ROUTES } from '@/core/routes'
-import { CaptureCard } from '@/pages/chat/components/capture-card'
+import { ChatCaptureCard } from '@/pages/chat/components/chat-history/chat-capture-card'
 import { MessageTracePressable } from '@/pages/chat/components/chat-history/message-trace-pressable'
 import { DayDivider } from '@/pages/chat/components/day-divider/day-divider'
 import { MessageBubble } from '@/pages/chat/components/message-bubble/message-bubble'
@@ -73,20 +71,7 @@ export function ChatHistoryItem({
             {getMessageText(message)}
           </MessageBubble>
         </MessageTracePressable>
-        {capture && (
-          <CaptureCard.Root kind={capture.kind} className="mt-0">
-            <CaptureCard.Icon />
-            <CaptureCard.Body>
-              <CaptureCard.Title>{capture.title}</CaptureCard.Title>
-              {capture.meta && (
-                <CaptureCard.Meta>{capture.meta}</CaptureCard.Meta>
-              )}
-            </CaptureCard.Body>
-            <CaptureCard.Action
-              onAction={() => router.push(ROUTES.taskWorkspace(capture.itemId))}
-            />
-          </CaptureCard.Root>
-        )}
+        {capture && <ChatCaptureCard capture={capture} />}
       </View>
     </View>
   )

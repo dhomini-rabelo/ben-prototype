@@ -9,6 +9,19 @@ export type AppVersion = {
 
 export const APP_VERSIONS = [
   {
+    version: '1.3.0',
+    date: '2026-11-08',
+    title: {
+      en: 'Full-screen alarm',
+      'pt-BR': 'Alarme em tela cheia',
+    },
+    description: {
+      en: 'Alarms now take over the screen with sound, even when the app is closed. Stop, snooze (5 min to 2 h) or finish right from the alarm, and your choice is saved even without internet.',
+      'pt-BR':
+        'Os alarmes agora ocupam a tela com som, mesmo com o app fechado. Pare, adie (de 5 min a 2 h) ou conclua direto no alarme, e a sua escolha fica guardada mesmo sem internet.',
+    },
+  },
+  {
     version: '1.2.0',
     date: '2026-10-21',
     title: {

@@ -1,13 +1,10 @@
 import { memo } from 'react'
 import { ArrowUp, Microphone } from 'phosphor-react-native'
-import { View } from 'react-native'
 import { ChatInput } from '@/layout/components/chat-input'
 import { RecordingBar } from '@/layout/components/recording-bar'
-import { IconButton } from '@/layout/components/ui/icon-button'
 import { useCanRecord } from '@/layout/hooks/use-can-record'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
 import { onPrimary } from '@/layout/utils/colors'
-import { cn } from '@/layout/utils/styles'
 import { useWorkspaceInput } from '@/pages/task-workspace/hooks/use-workspace-input'
 import { useWorkspaceTask } from '@/pages/task-workspace/hooks/use-workspace-task'
 import { useStrings } from '@/layout/hooks/use-strings'
@@ -46,28 +43,25 @@ function WorkspaceFooterComponent({ onStartRecording }: WorkspaceFooterProps) {
             : strings.footerPlaceholder
         }
       />
-      <View className="flex-row items-center">
-        {hasText ? (
-          <IconButton
-            label={strings.send}
-            onPress={isFinished ? undefined : handleSend}
-            className={cn('ml-2 bg-primary', isFinished && 'opacity-60')}
-          >
-            <ArrowUp size={20} color={onPrimary} />
-          </IconButton>
-        ) : (
-          <IconButton
-            label={strings.voiceInput}
-            onPress={isFinished || !canRecord ? undefined : onStartRecording}
-            className={cn(
-              'ml-2 bg-primary',
-              (isFinished || !canRecord) && 'opacity-60',
-            )}
-          >
-            <Microphone size={20} color={onPrimary} />
-          </IconButton>
-        )}
-      </View>
+      {hasText ? (
+        <ChatInput.IconButton
+          variant="primary"
+          label={strings.send}
+          onPress={handleSend}
+          disabled={isFinished}
+        >
+          <ArrowUp size={16} color={onPrimary} />
+        </ChatInput.IconButton>
+      ) : (
+        <ChatInput.IconButton
+          variant="primary"
+          label={strings.voiceInput}
+          onPress={onStartRecording}
+          disabled={isFinished || !canRecord}
+        >
+          <Microphone size={16} color={onPrimary} />
+        </ChatInput.IconButton>
+      )}
     </ChatInput.Root>
   )
 }

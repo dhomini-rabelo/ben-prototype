@@ -9,6 +9,14 @@ import type {
 
 export type ReminderStatus = 'active' | 'done'
 
+export type ReminderActionType = 'stop' | 'snooze' | 'done'
+
+export interface ReminderAction {
+  type: ReminderActionType
+  firedAt: Date
+  actedAt: Date
+}
+
 export interface ReminderProps {
   userId: ID
   title: string
@@ -27,6 +35,7 @@ export interface ReminderProps {
   snoozedUntil: Date | null
   nextFireAt: Date | null
   completedAt: Date | null
+  actions?: ReminderAction[]
 }
 
 export class Reminder extends Entity<ReminderProps> {

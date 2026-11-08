@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { View } from 'react-native'
-import type { CheckFrequency } from '@/api/models/reminder'
+import type { CheckFrequency, Reminder } from '@/api/models/reminder'
 import {
   requestAcknowledgeReminder,
   requestUpdateReminder,
 } from '@/api/requests/reminders'
-import { AlarmPopupAlarm } from '@/layout/components/alarm-popup/alarm-popup-alarm'
 import { AlarmPopupConditional } from '@/layout/components/alarm-popup/alarm-popup-conditional'
 import { AlarmPopupGoal } from '@/layout/components/alarm-popup/alarm-popup-goal'
 import { AlarmPopupSnooze } from '@/layout/components/alarm-popup/alarm-popup-snooze'
@@ -15,25 +14,18 @@ import { Typography } from '@/layout/components/ui/typography'
 import { useActiveRemindersData } from '@/layout/hooks/api/use-active-reminders-data'
 import { useDailySummaryStore } from '@/layout/hooks/use-daily-summary'
 import { useStrings } from '@/layout/hooks/use-strings'
-import { useAlarmStore, type FiredAlarm } from '@/layout/stores/alarm-store'
+import { selectVisiblePopup, useAlarmStore } from '@/layout/stores/alarm-store'
 import { alarmStrings } from '@/layout/strings/alarm-strings'
-
-function resolveAcknowledgedAt(firedAt: string): string {
-  const deviceNow = Date.now()
-  return new Date(
-    Math.max(new Date(firedAt).getTime(), deviceNow),
-  ).toISOString()
-}
 
 type PopupMode = 'main' | 'snooze'
 
 type AlarmPopupContentProps = {
-  alarm: FiredAlarm
+  reminder: Reminder
+  firedAt: string
 }
 
-function AlarmPopupContent({ alarm }: AlarmPopupContentProps) {
+function AlarmPopupContent({ reminder, firedAt }: AlarmPopupContentProps) {
   const strings = useStrings(alarmStrings)
-  const { reminder, firedAt } = alarm
   const { actions } = useActiveRemindersData({ enabled: false })
   const [mode, setMode] = useState<PopupMode>('main')
   const [busy, setBusy] = useState(false)
@@ -56,17 +48,25 @@ function AlarmPopupContent({ alarm }: AlarmPopupContentProps) {
   const acknowledge = (snoozeUntil?: string) =>
     run(() =>
       requestAcknowledgeReminder(reminder.id, {
-        firedAt: resolveAcknowledgedAt(firedAt),
+        firedAt,
+        actedAt: new Date().toISOString(),
         snoozeUntil,
       }),
     )
   const markDone = () =>
-    run(() => requestUpdateReminder(reminder.id, { status: 'done' }))
+    run(() =>
+      requestUpdateReminder(reminder.id, {
+        status: 'done',
+        firedAt,
+        actedAt: new Date().toISOString(),
+      }),
+    )
 
   async function finishGoal() {
     await run(async () => {
       await requestAcknowledgeReminder(reminder.id, {
-        firedAt: resolveAcknowledgedAt(firedAt),
+        firedAt,
+        actedAt: new Date().toISOString(),
       })
       if (reminder.recurrence?.type === 'none') {
         await requestUpdateReminder(reminder.id, { status: 'done' })
@@ -80,7 +80,8 @@ function AlarmPopupContent({ alarm }: AlarmPopupContentProps) {
         await requestUpdateReminder(reminder.id, { checkFrequency: frequency })
       }
       await requestAcknowledgeReminder(reminder.id, {
-        firedAt: resolveAcknowledgedAt(firedAt),
+        firedAt,
+        actedAt: new Date().toISOString(),
       })
     })
   }
@@ -95,15 +96,6 @@ function AlarmPopupContent({ alarm }: AlarmPopupContentProps) {
           busy={busy}
           onPick={(snoozeUntil) => void acknowledge(snoozeUntil)}
           onBack={() => setMode('main')}
-        />
-      ) : null}
-      {!showSnooze && reminder.kind === 'alarm' ? (
-        <AlarmPopupAlarm
-          reminder={reminder}
-          busy={busy}
-          onAcknowledge={() => void acknowledge()}
-          onSnooze={() => setMode('snooze')}
-          onComplete={() => void markDone()}
         />
       ) : null}
       {!showSnooze && reminder.kind === 'goal' ? (
@@ -140,14 +132,18 @@ export function AlarmPopupOverlay() {
 
   return (
     <SettingsSheetOverlay
-      isOpen={current !== null && !isSummaryOpen}
+      isOpen={
+        current?.reminder != null &&
+        selectVisiblePopup(current, isSummaryOpen) === 'popup'
+      }
       onClose={() => useAlarmStore.getState().dismissCurrent()}
     >
-      {current ? (
+      {current?.reminder ? (
         <MenuSheet>
           <AlarmPopupContent
-            key={`${current.reminder.id}:${current.firedAt}`}
-            alarm={current}
+            key={`${current.reminderId}:${current.firedAt}`}
+            reminder={current.reminder}
+            firedAt={current.firedAt}
           />
         </MenuSheet>
       ) : null}

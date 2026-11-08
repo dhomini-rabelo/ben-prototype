@@ -5,6 +5,7 @@ import {
   firesAtRelative,
   relativeTime,
 } from '@/layout/utils/format-time'
+import { getRecurrenceLabel } from '@/layout/utils/recurrence-label'
 import { useLanguage } from '@/layout/hooks/use-strings'
 import { ItemDetailContent } from './item-detail-content'
 import { ItemDetailError } from './item-detail-error'
@@ -50,6 +51,12 @@ export function ReminderDetail({ reminderId, onClose }: ReminderDetailProps) {
           capturedAtAbsolute={absoluteDateTime(reminder.capturedAt, language)}
           capturedAtRelative={relativeTime(reminder.capturedAt, language)}
           kind={reminder.kind}
+          recurrenceLabel={
+            getRecurrenceLabel(
+              { kind: reminder.kind, recurrence: reminder.recurrence },
+              language,
+            ) ?? undefined
+          }
           nextFireAbsolute={
             reminder.nextFireAt
               ? absoluteDateTime(reminder.nextFireAt, language)

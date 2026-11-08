@@ -167,4 +167,56 @@ describe('UpdateReminderUseCase', () => {
       }),
     ).rejects.toThrow()
   })
+
+  describe('actions', () => {
+    const firedAt = new Date('2026-10-22T17:00:00Z')
+    const actedAt = new Date('2026-10-22T17:00:07Z')
+    const now = new Date('2026-10-22T17:00:09Z')
+
+    async function update(
+      extra: Parameters<typeof sut.execute>[0] extends infer P
+        ? Partial<P>
+        : never,
+    ) {
+      const userId = createID()
+      const alarm = await reminderFactory.create({
+        userId,
+        createdAt,
+        remindAt: '2026-10-22T17:00:00Z',
+        nextFireAt: firedAt,
+      })
+      return sut.execute({
+        userId: userId.toValue(),
+        reminderId: alarm.id.toValue(),
+        morningTime: '08:00',
+        ...extra,
+      })
+    }
+
+    it('records a done action with firedAt and actedAt', async () => {
+      const { item } = await update({ status: 'done', now, firedAt, actedAt })
+
+      expect(item.props.actions).toEqual([{ type: 'done', firedAt, actedAt }])
+    })
+
+    it('uses now as actedAt when actedAt is missing', async () => {
+      const { item } = await update({ status: 'done', now, firedAt })
+
+      expect(item.props.actions).toEqual([
+        { type: 'done', firedAt, actedAt: now },
+      ])
+    })
+
+    it('does not record an action without firedAt', async () => {
+      const { item } = await update({ status: 'done', now, actedAt })
+
+      expect(item.props.actions).toBeUndefined()
+    })
+
+    it('does not record an action when status is not done', async () => {
+      const { item } = await update({ status: 'active', now, firedAt, actedAt })
+
+      expect(item.props.actions).toBeUndefined()
+    })
+  })
 })

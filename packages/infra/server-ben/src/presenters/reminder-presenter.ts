@@ -1,5 +1,6 @@
 import {
   Reminder,
+  ReminderActionType,
   ReminderProps,
 } from '@ben/domain-chat/enterprise/entities/reminder'
 import { Serialize, WithID } from '@ben/domain-base'
@@ -8,7 +9,7 @@ import { OverWrite } from '@ben/modules-utils'
 type ReminderHttp = OverWrite<
   Omit<
     Serialize<WithID<ReminderProps>>,
-    'userId' | 'remindAt' | 'notes' | 'createdAt'
+    'userId' | 'remindAt' | 'notes' | 'createdAt' | 'actions'
   >,
   {
     firesAt: string | null
@@ -18,6 +19,7 @@ type ReminderHttp = OverWrite<
     snoozedUntil: string | null
     acknowledgedUntil: string | null
     completedAt: string | null
+    actions: { type: ReminderActionType; firedAt: string; actedAt: string }[]
   }
 >
 
@@ -45,6 +47,11 @@ export class ReminderPresenter {
       snoozedUntil: toIso(props.snoozedUntil),
       acknowledgedUntil: toIso(props.acknowledgedUntil),
       completedAt: toIso(props.completedAt),
+      actions: (props.actions ?? []).map((action) => ({
+        type: action.type,
+        firedAt: action.firedAt.toISOString(),
+        actedAt: action.actedAt.toISOString(),
+      })),
     }
   }
 

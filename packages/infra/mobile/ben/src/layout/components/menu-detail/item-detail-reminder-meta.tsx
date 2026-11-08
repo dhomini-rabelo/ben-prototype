@@ -1,9 +1,11 @@
+import { Repeat } from 'phosphor-react-native'
 import { View } from 'react-native'
 import type { ReminderKind, ReminderStatus } from '@/api/models/reminder'
 import { Typography } from '@/layout/components/ui/typography'
 import { ReminderKindBadge } from '@/layout/components/menu-reminders/reminder-kind-badge'
 import { useStrings } from '@/layout/hooks/use-strings'
 import { menuDetailStrings } from '@/layout/strings/menu-detail-strings'
+import { onSurfaceVariant } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
 
 type ItemDetailReminderMetaProps = {
@@ -12,6 +14,7 @@ type ItemDetailReminderMetaProps = {
   status?: ReminderStatus
   kind?: ReminderKind
   nextFireAbsolute?: string
+  recurrenceLabel?: string
 }
 
 export function ItemDetailReminderMeta({
@@ -20,6 +23,7 @@ export function ItemDetailReminderMeta({
   status,
   kind,
   nextFireAbsolute,
+  recurrenceLabel,
 }: ItemDetailReminderMetaProps) {
   const strings = useStrings(menuDetailStrings)
   const isFired = status === 'done'
@@ -65,6 +69,17 @@ export function ItemDetailReminderMeta({
         >
           {firesAtAbsolute}
         </Typography>
+      )}
+      {recurrenceLabel && (
+        <View className="flex-row items-center gap-1.5 pt-0.5">
+          <Repeat size={14} color={onSurfaceVariant} />
+          <Typography
+            variant="body-md"
+            className="font-sans-semibold text-on-surface"
+          >
+            {recurrenceLabel}
+          </Typography>
+        </View>
       )}
       {status === 'active' && (
         <Typography

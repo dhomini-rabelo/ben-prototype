@@ -43,6 +43,7 @@ export const PAGES: ScreenPage[] = [
       { id: "empty", title: "Empty", file: "/app/chat-empty" },
       { id: "loading", title: "Loading", file: "/app/chat-loading" },
       { id: "populated", title: "Populated", file: "/app/chat-populated" },
+      { id: "menu-open", title: "Menu open", file: "/app/chat-menu-open" },
       { id: "composing", title: "Composing", file: "/app/chat-composing" },
       { id: "recording", title: "Recording", file: "/app/chat-recording" },
       {
@@ -122,12 +123,9 @@ export const PAGES: ScreenPage[] = [
     ],
   },
   {
-    id: "menu-sidebar",
-    title: "Menu sidebar",
+    id: "menu",
+    title: "Menu",
     states: [
-      { id: "sidebar-populated", title: "Sidebar — Populated", file: "/app/menu-sidebar-populated" },
-      { id: "sidebar-loading", title: "Sidebar — Loading", file: "/app/menu-sidebar-loading" },
-      { id: "sidebar-error", title: "Sidebar — Error", file: "/app/menu-sidebar-error" },
       { id: "tasks-empty", title: "Tasks — Empty", file: "/app/menu-tasks-empty" },
       { id: "tasks-populated", title: "Tasks — Populated", file: "/app/menu-tasks-populated" },
       { id: "tasks-loading", title: "Tasks — Loading", file: "/app/menu-tasks-loading" },
@@ -182,7 +180,8 @@ export const COMPONENTS: ComponentEntry[] = [
   { id: "diff-bar", title: "DiffBar", file: "/components/diff-bar" },
   { id: "sub-thread-banner", title: "SubThreadBanner", file: "/components/sub-thread-banner" },
   { id: "task-picker-sheet", title: "TaskPickerSheet", file: "/components/task-picker-sheet" },
-  { id: "menu-sidebar", title: "MenuSidebar", file: "/components/menu-sidebar" },
+  { id: "menu-entry-sheet", title: "Menu Entry Sheet", file: "/components/menu-entry-sheet" },
+  { id: "recording-bar", title: "Recording Bar", file: "/components/recording-bar" },
   { id: "menu-list-row", title: "MenuListRow", file: "/components/menu-list-row" },
   { id: "settings-sheet", title: "SettingsSheet", file: "/components/settings-sheet" },
 ];

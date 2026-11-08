@@ -14,6 +14,7 @@ const paramsSchema = z.object({ id: z.string() })
 const bodySchema = z.object({
   firedAt: z.iso.datetime({ offset: true }),
   snoozeUntil: z.iso.datetime({ offset: true }).optional(),
+  actedAt: z.iso.datetime({ offset: true }).optional(),
 })
 
 const acknowledgeReminderUseCase = new AcknowledgeReminderUseCase(
@@ -39,6 +40,7 @@ export async function acknowledgeReminder(
       morningTime: preferences.morningTime,
       firedAt: new Date(body.firedAt),
       snoozeUntil: body.snoozeUntil ? new Date(body.snoozeUntil) : undefined,
+      actedAt: body.actedAt ? new Date(body.actedAt) : undefined,
     })
 
     return response

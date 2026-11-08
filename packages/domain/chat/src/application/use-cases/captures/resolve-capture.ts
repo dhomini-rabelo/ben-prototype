@@ -3,6 +3,7 @@ import { NoteRepository } from '@ben/domain-chat/application/repositories/note'
 import { ReminderRepository } from '@ben/domain-chat/application/repositories/reminder'
 import { TaskRepository } from '@ben/domain-task/application/repositories/task'
 import { MessageCapture } from '@ben/domain-chat/enterprise/entities/message'
+import { toReminderCaptureView } from '@ben/domain-chat/application/utils/reminders'
 import { ID } from '@ben/domain-base'
 import { ItemResponse } from '@ben/domain-base'
 import { UseCase } from '@ben/domain-base'
@@ -32,7 +33,7 @@ export class ResolveCaptureUseCase implements UseCase<
     const id = capture.itemId
 
     if (capture.kind === 'reminder') {
-      return this.resolveReminderView(id, capture.itemId.toValue())
+      return this.resolveReminderView(id)
     }
 
     if (capture.kind === 'task') {
@@ -42,18 +43,10 @@ export class ResolveCaptureUseCase implements UseCase<
     return this.resolveNoteView(id, capture.itemId.toValue())
   }
 
-  private async resolveReminderView(
-    id: ID,
-    itemId: string,
-  ): Promise<CaptureView | null> {
+  private async resolveReminderView(id: ID): Promise<CaptureView | null> {
     const reminder = await this.reminderRepository.findUnique({ id })
     if (!reminder) return null
-    return {
-      kind: 'reminder',
-      itemId,
-      title: reminder.props.title,
-      meta: reminder.props.remindAt ?? null,
-    }
+    return toReminderCaptureView(reminder)
   }
 
   private async resolveTaskView(
@@ -62,7 +55,14 @@ export class ResolveCaptureUseCase implements UseCase<
   ): Promise<CaptureView | null> {
     const task = await this.taskRepository.findUnique({ id })
     if (!task) return null
-    return { kind: 'task', itemId, title: task.props.title, meta: null }
+    return {
+      kind: 'task',
+      itemId,
+      title: task.props.title,
+      meta: null,
+      reminderKind: null,
+      recurrence: null,
+    }
   }
 
   private async resolveNoteView(
@@ -71,6 +71,13 @@ export class ResolveCaptureUseCase implements UseCase<
   ): Promise<CaptureView | null> {
     const note = await this.noteRepository.findUnique({ id })
     if (!note) return null
-    return { kind: 'note', itemId, title: note.props.title, meta: null }
+    return {
+      kind: 'note',
+      itemId,
+      title: note.props.title,
+      meta: null,
+      reminderKind: null,
+      recurrence: null,
+    }
   }
 }

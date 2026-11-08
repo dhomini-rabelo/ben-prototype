@@ -49,6 +49,8 @@ const bodySchema = z.object({
     .optional(),
   status: z.enum(['active', 'done']).optional(),
   now: z.iso.datetime({ offset: true }).optional(),
+  firedAt: z.iso.datetime({ offset: true }).optional(),
+  actedAt: z.iso.datetime({ offset: true }).optional(),
 })
 
 const updateReminderUseCase = new UpdateReminderUseCase(reminderRepository)
@@ -72,6 +74,8 @@ export async function updateReminder(
       morningTime: preferences.morningTime,
       ...body,
       now: body.now ? new Date(body.now) : undefined,
+      firedAt: body.firedAt ? new Date(body.firedAt) : undefined,
+      actedAt: body.actedAt ? new Date(body.actedAt) : undefined,
     })
 
     return response

@@ -1,13 +1,21 @@
 import { useFocusEffect, useRouter } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
-import { useWindowDimensions, View, type LayoutChangeEvent } from 'react-native'
+import {
+  Keyboard,
+  useWindowDimensions,
+  View,
+  type LayoutChangeEvent,
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ROUTES } from '@/core/routes'
 import { SettingsSheetOverlay } from '@/layout/components/menu-settings/settings-sheet-overlay'
+import { SettingsView } from '@/layout/components/menu-settings/settings-view'
 import { useConnectivity } from '@/layout/hooks/use-connectivity'
+import { useMenuStore, type MenuEntryId } from '@/layout/stores/menu-store'
 import { selectVoiceStatus, useVoiceStore } from '@/layout/stores/voice-store'
 import { ChatEmptyState } from '@/pages/chat/components/chat-empty-state/chat-empty-state'
 import { ChatFooter } from '@/pages/chat/components/chat-footer/chat-footer'
+import { ChatMenuSheet } from '@/pages/chat/components/chat-menu-sheet/chat-menu-sheet'
 import { ChatHistory } from '@/pages/chat/components/chat-history/chat-history'
 import { ChatHistorySkeleton } from '@/pages/chat/components/chat-history/chat-history-skeleton'
 import { ChatTopBanner } from '@/pages/chat/components/chat-top-banner/chat-top-banner'
@@ -34,6 +42,26 @@ export function Chat() {
   const { keyboardOffset } = useKeyboardHeight()
 
   const router = useRouter()
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const isSettingsOpen = useMenuStore((store) => store.isSettingsOpen)
+  const closeSettings = useMenuStore((store) => store.closeSettings)
+
+  function handleOpenMenu() {
+    Keyboard.dismiss()
+    setIsMenuOpen(true)
+  }
+
+  function handleCloseMenu() {
+    setIsMenuOpen(false)
+  }
+
+  function handleSelectMenuEntry(id: MenuEntryId) {
+    setIsMenuOpen(false)
+    useMenuStore.getState().selectEntry(id)
+    if (id !== 'settings') router.push(ROUTES.menu)
+  }
+
   const [footerHeight, setFooterHeight] = useState(0)
   const [headerHeight, setHeaderHeight] = useState(0)
 
@@ -79,7 +107,7 @@ export function Chat() {
           onLayout={handleHeaderLayout}
           className="absolute inset-x-0 top-0 z-50 bg-background"
         >
-          <ChatTopBar onOpenMenu={() => router.push(ROUTES.menu)} />
+          <ChatTopBar />
           <ActiveTaskPicker />
           <ChatTopBanner />
         </View>
@@ -113,12 +141,23 @@ export function Chat() {
             className="flex-col gap-2 bg-background px-4 pb-2 pt-2"
           >
             <ChatFooter
+              onOpenMenu={handleOpenMenu}
               onStartRecording={() => useVoiceStore.getState().startRecording()}
             />
           </View>
         </View>
 
         <MessageActionsMenu />
+
+        <ChatMenuSheet
+          isOpen={isMenuOpen}
+          onClose={handleCloseMenu}
+          onSelect={handleSelectMenuEntry}
+        />
+
+        <SettingsSheetOverlay isOpen={isSettingsOpen} onClose={closeSettings}>
+          {isSettingsOpen && <SettingsView onClose={closeSettings} />}
+        </SettingsSheetOverlay>
 
         <SettingsSheetOverlay
           isOpen={traceTarget != null}

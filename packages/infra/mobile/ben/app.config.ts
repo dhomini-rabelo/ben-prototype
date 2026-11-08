@@ -1,5 +1,6 @@
 import type { ExpoConfig } from 'expo/config'
 import { CURRENT_APP_VERSION } from './src/core/app-versions.ts'
+import { background, primary } from './src/layout/utils/colors.ts'
 
 const config: ExpoConfig = {
   name: 'Ben',
@@ -22,9 +23,15 @@ const config: ExpoConfig = {
   android: {
     package: 'com.benprototype.app',
     versionCode: 1,
-    permissions: ['RECORD_AUDIO'],
+    permissions: [
+      'RECORD_AUDIO',
+      'android.permission.USE_EXACT_ALARM',
+      'android.permission.USE_FULL_SCREEN_INTENT',
+      'android.permission.RECEIVE_BOOT_COMPLETED',
+    ],
+    googleServicesFile: './google-services.json',
     adaptiveIcon: {
-      backgroundColor: '#f9f9f9',
+      backgroundColor: background,
       foregroundImage: './assets/adaptive-icon-foreground.png',
       monochromeImage: './assets/adaptive-icon-monochrome.png',
     },
@@ -40,7 +47,7 @@ const config: ExpoConfig = {
         image: './assets/splash-icon.png',
         imageWidth: 180,
         resizeMode: 'contain',
-        backgroundColor: '#f9f9f9',
+        backgroundColor: background,
       },
     ],
     'expo-secure-store',
@@ -48,7 +55,8 @@ const config: ExpoConfig = {
       'expo-notifications',
       {
         icon: './assets/notification-icon.png',
-        color: '#121213',
+        color: primary,
+        sounds: ['./assets/sounds/ben_alarm.wav'],
       },
     ],
     [
@@ -60,6 +68,8 @@ const config: ExpoConfig = {
     ],
     '@react-native-google-signin/google-signin',
     './plugins/with-release-signing',
+    'react-native-notify-kit',
+    './plugins/with-alarm-activity',
     [
       'expo-font',
       {

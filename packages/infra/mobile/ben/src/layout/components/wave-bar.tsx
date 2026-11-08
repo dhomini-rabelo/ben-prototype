@@ -2,6 +2,7 @@ import Animated, {
   useAnimatedStyle,
   type SharedValue,
 } from 'react-native-reanimated'
+import { wave } from '@/layout/utils/colors'
 
 const WAVE_MIN_SCALE = 0.4
 
@@ -14,15 +15,17 @@ type WaveBarProps = {
 export function WaveBar({ height, phase, clock }: WaveBarProps) {
   const animatedStyle = useAnimatedStyle(() => {
     const shifted = (clock.value + phase) % 1
-    const wave = Math.sin(shifted * Math.PI)
-    const scaleY = WAVE_MIN_SCALE + (1 - WAVE_MIN_SCALE) * wave
+    const waveProgress = Math.sin(shifted * Math.PI)
+    const scaleY = WAVE_MIN_SCALE + (1 - WAVE_MIN_SCALE) * waveProgress
     return { transform: [{ scaleY }] }
   })
 
   return (
     <Animated.View
-      className="w-1 rounded-full bg-wave"
-      style={[{ height }, animatedStyle]}
+      style={[
+        { width: 4, borderRadius: 2, backgroundColor: wave, height },
+        animatedStyle,
+      ]}
     />
   )
 }

@@ -1,0 +1,21 @@
+{
+  "name": "@ben/domain-notification",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": { ".": "./src/index.ts", "./*": "./src/*.ts" },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:unit": "vitest run --config vitest.config.ts"
+  },
+  "dependencies": {
+    "@ben/adapters": "workspace:*",
+    "@ben/domain-base": "workspace:*"
+  },
+  "devDependencies": {
+    "@ben/modules-tests": "workspace:*",
+    "@types/node": "^22.15.29",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

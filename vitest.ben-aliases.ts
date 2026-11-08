@@ -9,6 +9,7 @@ const benPackages = [
   ['@ben/domain-task', 'packages/domain/task'],
   ['@ben/domain-chat', 'packages/domain/chat'],
   ['@ben/domain-topic', 'packages/domain/topic'],
+  ['@ben/domain-notification', 'packages/domain/notification'],
   ['@ben/domain-transcription', 'packages/domain/transcription'],
   ['@ben/adapters', 'packages/adapters'],
   ['@ben/modules-utils', 'packages/modules/utils'],

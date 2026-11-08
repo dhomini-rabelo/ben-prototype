@@ -5,11 +5,13 @@ toolchain below — `pnpm dev:mobile` and Expo Go cover it.
 
 ## Branding assets
 
-`assets/` is generated from the `BenLogo` geometry in
-[`src/layout/components/icons/ben-logo.tsx`](./src/layout/components/icons/ben-logo.tsx) —
-the three circles in `#121213` on the `#f9f9f9` surface. Run `pnpm --filter @ben/mobile-ben icons` to regenerate
-(it also runs before `start` and `android`). The script writes PNGs directly through
-`node:zlib`, so there is no image dependency to install.
+`assets/` is generated from the amber speech balloon of the app header (`BenLogo`, without the
+wordmark). Its geometry and colors live in
+[`src/layout/utils/ben-logo-geometry.ts`](./src/layout/utils/ben-logo-geometry.ts), read by both the
+component and the generator. Run `pnpm --filter @ben/mobile-ben icons` to regenerate the 6 files
+(it also runs before `dev`, `start`, `android` and `apk`). The script rasterizes an SVG with
+`@resvg/resvg-js`, a dev dependency installed by `pnpm install` (no internet needed afterwards). If it
+is missing, the script stops and asks you to run `pnpm install` at the repository root.
 
 | File | Used by |
 | --- | --- |
@@ -19,9 +21,9 @@ the three circles in `#121213` on the `#f9f9f9` surface. Run `pnpm --filter @ben
 | `notification-icon.png` | `expo-notifications` status-bar icon for reminders |
 | `favicon.png` | web |
 
-Keep the generated files in version control. To change the mark, edit the geometry constants in
-[`scripts/generate-icons.mjs`](./scripts/generate-icons.mjs) so they stay in lockstep with
-`ben-logo.tsx`, then re-run the script.
+Keep the generated files in version control. To change the mark, edit
+[`src/layout/utils/ben-logo-geometry.ts`](./src/layout/utils/ben-logo-geometry.ts), then re-run the
+script.
 
 ## Android release APK
 

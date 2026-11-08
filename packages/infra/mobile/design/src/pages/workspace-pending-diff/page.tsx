@@ -9,7 +9,7 @@ export function WorkspacePendingDiffPage() {
       title="Packing for the offsite"
       contentType="list"
       diffBar={<DiffBar summary="Ben suggested 3 changes" />}
-      footer={<ChatInput placeholder="Reply to keep iterating…" />}
+      footer={<ChatInput leading="attach" placeholder="Reply to keep iterating…" />}
     >
       <section className="flex flex-1 flex-col gap-1 pt-2">
         <TodoListItem title="Charger + adapter" done />

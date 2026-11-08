@@ -15,12 +15,12 @@ O repositório é um monorepo pnpm no padrão do project-factory (`pnpm-workspac
 
 ```
 packages/
-  domain/{base,user,task,chat,topic,transcription}   regras de negócio por módulo
-  adapters/                                           portas de serviços externos
-  modules/{utils,env,tests}                           código compartilhado
+  domain/{base,user,task,chat,topic,transcription,notification}   regras de negócio por módulo
+  adapters/                                                        portas de serviços externos
+  modules/{utils,env,tests}                                        código compartilhado
   infra/
-    db/  adapters/  server-ben/                       persistência, serviços externos, API HTTP
-    mobile/{ben,design}                               app Expo e sandbox de design
+    db/  adapters/  server-ben/                                    persistência, serviços externos, API HTTP
+    mobile/{ben,design}                                            app Expo e sandbox de design
 ```
 
 > **Onde o trabalho acontece:** features novas entram no app `packages/infra/mobile/ben` (e no backend quando a API muda). O `packages/infra/mobile/design` é o passo *anterior* à implementação: a mudança é desenhada lá primeiro, para ser vista sem pagar o custo de implementar.
@@ -29,7 +29,7 @@ packages/
 
 | App | Tipo | Código | Responsabilidade | Contexto |
 |---|---|---|---|---|
-| Backend Ben | backend | `packages/domain/*`, `packages/adapters`, `packages/modules/*`, `packages/infra/{db,adapters,server-ben}` | API HTTP (Express 5) com domínio, ports, persistência e serviços externos | [backend/description.md](./backend/description.md) |
+| Backend Ben | backend | `packages/domain/*`, `packages/adapters`, `packages/modules/*`, `packages/infra/{db,adapters,server-ben}` | API HTTP (Express 5) com domínio, ports, persistência e serviços externos (inclui registro de aparelhos para push) | [backend/description.md](./backend/description.md) |
 | Ben (mobile) | mobile | `packages/infra/mobile/ben` | App React Native (Expo) que consome a API | [mobile/ben/description.md](./mobile/ben/description.md) |
 | Design (sandbox) | mobile (design) | `packages/infra/mobile/design` | Galeria Vite + React onde cada estado de tela é uma rota | [mobile/design/description.md](./mobile/design/description.md) |
 

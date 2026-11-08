@@ -1,5 +1,8 @@
 import { ReminderRepository } from '@ben/domain-chat/application/repositories/reminder'
-import { computeNextFireAt } from '@ben/domain-chat/application/utils/reminders'
+import {
+  appendReminderAction,
+  computeNextFireAt,
+} from '@ben/domain-chat/application/utils/reminders'
 import { Reminder } from '@ben/domain-chat/enterprise/entities/reminder'
 import {
   createID,
@@ -14,6 +17,7 @@ interface Payload {
   morningTime: string
   firedAt: Date
   snoozeUntil?: Date
+  actedAt?: Date
 }
 
 export class AcknowledgeReminderUseCase implements UseCase<
@@ -44,7 +48,19 @@ export class AcknowledgeReminderUseCase implements UseCase<
         : payload.firedAt
     const snoozedUntil = payload.snoozeUntil ?? null
 
-    const changes = { acknowledgedUntil, snoozedUntil }
+    const actions = payload.actedAt
+      ? appendReminderAction(reminder.props, {
+          type: payload.snoozeUntil ? 'snooze' : 'stop',
+          firedAt: payload.firedAt,
+          actedAt: payload.actedAt,
+        })
+      : undefined
+
+    const changes = {
+      acknowledgedUntil,
+      snoozedUntil,
+      ...(actions && { actions }),
+    }
     const nextFireAt = computeNextFireAt(
       { ...reminder.props, ...changes },
       payload.morningTime,

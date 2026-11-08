@@ -1,3 +1,5 @@
+import type { GoalRecurrence, ReminderKind } from '@/api/models/reminder'
+
 export type MessageRole = 'user' | 'ben'
 
 export type CaptureKind = 'note' | 'reminder' | 'task'
@@ -7,6 +9,8 @@ export interface MessageCapture {
   itemId: string
   title: string
   meta?: string | null
+  reminderKind?: ReminderKind | null
+  recurrence?: GoalRecurrence | null
 }
 
 export interface Message {

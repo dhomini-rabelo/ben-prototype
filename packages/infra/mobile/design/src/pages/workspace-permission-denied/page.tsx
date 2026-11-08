@@ -19,7 +19,7 @@ export function WorkspacePermissionDeniedPage() {
           Ben can't hear you yet — turn on mic in browser settings.
         </ChatBanner>
       }
-      footer={<ChatInput placeholder="Type — text works without mic" />}
+      footer={<ChatInput leading="attach" placeholder="Type — text works without mic" />}
     >
       <section className="flex flex-1 flex-col gap-4 pt-2">
         <Typography

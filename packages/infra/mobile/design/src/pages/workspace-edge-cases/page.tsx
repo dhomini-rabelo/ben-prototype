@@ -15,7 +15,7 @@ export function WorkspaceEdgeCasesPage() {
           text="your edits made the diff stale — ask Ben to redo those"
         />
       }
-      footer={<ChatInput mode="disabled" placeholder="reopen to edit" />}
+      footer={<ChatInput leading="attach" mode="disabled" placeholder="reopen to edit" />}
     >
       <section className="flex flex-1 flex-col gap-4 pt-2">
         <Typography

@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@ben/domain-base": "workspace:*",
+    "@ben/domain-notification": "workspace:*",
     "@ben/domain-chat": "workspace:*",
     "@ben/domain-task": "workspace:*",
     "@ben/domain-topic": "workspace:*",

@@ -40,11 +40,14 @@ export interface UpdateReminderBody {
   checkFrequency?: CheckFrequency
   status?: ReminderStatus
   now?: string
+  firedAt?: string
+  actedAt?: string
 }
 
 export interface AcknowledgeReminderBody {
   firedAt: string
   snoozeUntil?: string
+  actedAt?: string
 }
 
 export async function requestActiveReminders(): Promise<ReminderListItem[]> {

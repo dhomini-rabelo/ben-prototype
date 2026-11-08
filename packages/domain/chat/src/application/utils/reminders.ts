@@ -1,5 +1,10 @@
 import type { SnoozeOption } from '@ben/adapters'
-import type { ReminderProps } from '@ben/domain-chat/enterprise/entities/reminder'
+import type { CaptureView } from '@ben/domain-chat/application/types/capture-view'
+import type {
+  Reminder,
+  ReminderAction,
+  ReminderProps,
+} from '@ben/domain-chat/enterprise/entities/reminder'
 
 const MINUTE_MS = 60_000
 
@@ -303,4 +308,25 @@ export function occursOnLocalDate(
   if (props.kind !== 'goal') return false
   const [year, month, day] = date.split('-').map(Number)
   return goalMatchesDate(props.recurrence, startDate, { year, month, day })
+}
+
+export function toReminderCaptureView(reminder: Reminder): CaptureView {
+  const { kind, recurrence } = reminder.props
+  const repeats = kind === 'goal' && !!recurrence && recurrence.type !== 'none'
+
+  return {
+    kind: 'reminder',
+    itemId: reminder.id.toValue(),
+    title: reminder.props.title,
+    meta: reminder.props.remindAt ?? null,
+    reminderKind: kind,
+    recurrence: repeats ? recurrence : null,
+  }
+}
+
+export function appendReminderAction(
+  props: Pick<ReminderProps, 'actions'>,
+  action: ReminderAction,
+): ReminderAction[] {
+  return [...(props.actions ?? []), action]
 }

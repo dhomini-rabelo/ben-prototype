@@ -14,7 +14,7 @@ export function WorkspaceTextPopulatedPage() {
           text="tightened the intro — want me to take a pass at the closing?"
         />
       }
-      footer={<ChatInput placeholder="Ask Ben to edit…" />}
+      footer={<ChatInput leading="attach" placeholder="Ask Ben to edit…" />}
     >
       <section className="flex flex-1 flex-col gap-4 pt-2">
         <Typography

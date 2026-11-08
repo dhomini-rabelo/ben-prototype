@@ -49,6 +49,8 @@ describe('ResolveCaptureUseCase', () => {
         itemId: reminder.id.toValue(),
         title: 'Call the dentist',
         meta: '2026-05-01T09:00:00Z',
+        reminderKind: 'alarm',
+        recurrence: null,
       })
     })
 
@@ -60,6 +62,23 @@ describe('ResolveCaptureUseCase', () => {
       })
 
       expect(item?.meta).toBeNull()
+    })
+
+    it('resolves a goal reminder with its current recurrence after it changed', async () => {
+      const reminder = await reminderFactory.create({
+        kind: 'goal',
+        recurrence: { type: 'none' },
+      })
+      await reminderRepository.update(reminder.id, {
+        recurrence: { type: 'daily' },
+      })
+
+      const { item } = await sut.execute({
+        capture: { kind: 'reminder', itemId: reminder.id },
+      })
+
+      expect(item?.recurrence).toEqual({ type: 'daily' })
+      expect(item?.reminderKind).toBe('goal')
     })
 
     it('returns null when the captured reminder no longer exists', async () => {
@@ -82,6 +101,8 @@ describe('ResolveCaptureUseCase', () => {
         itemId: task.id.toValue(),
         title: 'Write report',
         meta: null,
+        reminderKind: null,
+        recurrence: null,
       })
     })
 
@@ -105,6 +126,8 @@ describe('ResolveCaptureUseCase', () => {
         itemId: note.id.toValue(),
         title: 'Idea',
         meta: null,
+        reminderKind: null,
+        recurrence: null,
       })
     })
 

@@ -26,7 +26,7 @@ export function ChatInputRoot({
     >
       <View
         className={cn(
-          'w-full flex-row items-center gap-3',
+          'min-h-[44px] w-full flex-row items-end gap-1 rounded-[22px] border-[1.5px] border-field-border bg-surface-container-lowest px-1.5 py-[3px] shadow-[0_3px_10px_rgba(29,24,20,0.05)]',
           disabled && 'opacity-60',
           className,
         )}

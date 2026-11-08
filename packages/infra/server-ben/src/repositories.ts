@@ -2,6 +2,7 @@ import { ConversationRepository } from '@ben/domain-topic/application/repositori
 import { MemoryRepository } from '@ben/domain-topic/application/repositories/memory'
 import { MessageRepository } from '@ben/domain-chat/application/repositories/message'
 import { NoteRepository } from '@ben/domain-chat/application/repositories/note'
+import { PushDeviceRepository } from '@ben/domain-notification/application/repositories/push-device'
 import { ReminderRepository } from '@ben/domain-chat/application/repositories/reminder'
 import { TaskRepository } from '@ben/domain-task/application/repositories/task'
 import { TopicRepository } from '@ben/domain-topic/application/repositories/topic'
@@ -13,6 +14,7 @@ import {
   InMemoryMemoryRepository,
   InMemoryMessageRepository,
   InMemoryNoteRepository,
+  InMemoryPushDeviceRepository,
   InMemoryReminderRepository,
   InMemoryTaskRepository,
   InMemoryTopicRepository,
@@ -22,6 +24,7 @@ import {
   SqliteMemoryRepository,
   SqliteMessageRepository,
   SqliteNoteRepository,
+  SqlitePushDeviceRepository,
   SqliteReminderRepository,
   SqliteTaskRepository,
   SqliteTopicRepository,
@@ -48,6 +51,10 @@ export const messageRepository: MessageRepository = useSqlite
 export const noteRepository: NoteRepository = useSqlite
   ? new SqliteNoteRepository(prisma!)
   : new InMemoryNoteRepository()
+
+export const pushDeviceRepository: PushDeviceRepository = useSqlite
+  ? new SqlitePushDeviceRepository(prisma!)
+  : new InMemoryPushDeviceRepository()
 
 export const reminderRepository: ReminderRepository = useSqlite
   ? new SqliteReminderRepository(prisma!)
