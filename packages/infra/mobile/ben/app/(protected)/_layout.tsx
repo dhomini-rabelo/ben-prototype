@@ -4,6 +4,7 @@ import { AlarmPopupOverlay } from '@/layout/components/alarm-popup/alarm-popup-o
 import { DailySummaryPopup } from '@/layout/components/daily-summary/daily-summary-popup'
 import { useAlarmScheduler } from '@/layout/hooks/use-alarm-scheduler'
 import { useFullScreenPermission } from '@/layout/hooks/use-full-screen-permission'
+import { usePendingAlarmActions } from '@/layout/hooks/use-pending-alarm-actions'
 import { usePushDeviceRegistration } from '@/layout/hooks/use-push-device-registration'
 import { useUserPreferencesSync } from '@/layout/hooks/use-user-preferences-sync'
 import { useAuthStore } from '@/layout/stores/auth-store'
@@ -15,6 +16,7 @@ export default function ProtectedLayout() {
   useUserPreferencesSync()
   useFullScreenPermission()
   useAlarmScheduler()
+  usePendingAlarmActions()
   usePushDeviceRegistration()
 
   if (!getCachedToken() && !user) {

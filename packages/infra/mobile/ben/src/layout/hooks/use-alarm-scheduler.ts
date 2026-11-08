@@ -3,7 +3,12 @@ import { useAuthStore } from '@/layout/stores/auth-store'
 import { useAlarmStore } from '@/layout/stores/alarm-store'
 import { useActiveRemindersData } from '@/layout/hooks/api/use-active-reminders-data'
 import { useAlarmPermissionStore } from '@/layout/stores/alarm-permission-store'
-import { openAlarmFromNotification } from '@/services/alarm-actions'
+import {
+  openAlarmFromNotification,
+  snoozeAlarm,
+  stopAlarm,
+  toFiredAlarm,
+} from '@/services/alarm-actions'
 import {
   cancelDisplayedAlarm,
   getInitialAlarm,
@@ -108,7 +113,13 @@ export function useAlarmScheduler() {
       }
       if (event.type === 'press') {
         openAlarmFromNotification(event.data)
+        return
       }
+      if (event.type === 'stop') {
+        void stopAlarm(toFiredAlarm(event.data))
+        return
+      }
+      void snoozeAlarm(toFiredAlarm(event.data), null)
     })
     void getInitialAlarm().then((data) => {
       if (data) {
