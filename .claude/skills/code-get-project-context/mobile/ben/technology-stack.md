@@ -28,4 +28,4 @@ O app tem Vitest (`vitest.config.ts`) só para lógica sem renderização. O ún
 
 ## Configuração Android
 
-`app.config.ts` declara as permissões `RECORD_AUDIO` e `android.permission.USE_EXACT_ALARM`, `googleServicesFile` (`./google-services.json`) e o `projectId` do EAS em `extra.eas`.
+`app.config.ts` declara as permissões `RECORD_AUDIO`, `android.permission.USE_EXACT_ALARM`, `USE_FULL_SCREEN_INTENT` e `RECEIVE_BOOT_COMPLETED`, os plugins `react-native-notify-kit` e `./plugins/with-alarm-activity` (tela por cima do bloqueio) e o som `./assets/sounds/ben_alarm.wav`, `googleServicesFile` (`./google-services.json`) e o `projectId` do EAS em `extra.eas`.
