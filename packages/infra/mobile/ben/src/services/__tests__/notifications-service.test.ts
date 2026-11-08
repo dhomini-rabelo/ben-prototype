@@ -54,6 +54,7 @@ function buildReminder(): Reminder {
     snoozedUntil: null,
     acknowledgedUntil: null,
     completedAt: null,
+    actions: [],
   }
 }
 

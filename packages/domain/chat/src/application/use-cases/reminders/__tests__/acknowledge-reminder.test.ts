@@ -98,4 +98,46 @@ describe('AcknowledgeReminderUseCase', () => {
     expect(item.props.snoozedUntil).toBeNull()
     expect(item.props.nextFireAt).toEqual(new Date('2026-10-28T08:00:00Z'))
   })
+
+  describe('actions', () => {
+    const firedAt = new Date('2026-10-22T16:00:00Z')
+    const actedAt = new Date('2026-10-22T16:00:05Z')
+
+    async function acknowledge(extra: { snoozeUntil?: Date; actedAt?: Date }) {
+      const userId = createID()
+      const alarm = await reminderFactory.create({
+        userId,
+        createdAt,
+        remindAt: '2026-10-22T17:00:00Z',
+      })
+      return sut.execute({
+        userId: userId.toValue(),
+        reminderId: alarm.id.toValue(),
+        morningTime: '08:00',
+        firedAt,
+        ...extra,
+      })
+    }
+
+    it('records a stop action with firedAt and actedAt', async () => {
+      const { item } = await acknowledge({ actedAt })
+
+      expect(item.props.actions).toEqual([{ type: 'stop', firedAt, actedAt }])
+    })
+
+    it('records a snooze action when snoozeUntil is given', async () => {
+      const { item } = await acknowledge({
+        actedAt,
+        snoozeUntil: new Date('2026-10-22T16:30:00Z'),
+      })
+
+      expect(item.props.actions).toEqual([{ type: 'snooze', firedAt, actedAt }])
+    })
+
+    it('does not record an action without actedAt', async () => {
+      const { item } = await acknowledge({})
+
+      expect(item.props.actions).toBeUndefined()
+    })
+  })
 })

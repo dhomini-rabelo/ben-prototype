@@ -4,7 +4,10 @@ import type {
   ReminderAlert,
 } from '@ben/adapters'
 import { ReminderRepository } from '@ben/domain-chat/application/repositories/reminder'
-import { computeNextFireAt } from '@ben/domain-chat/application/utils/reminders'
+import {
+  appendReminderAction,
+  computeNextFireAt,
+} from '@ben/domain-chat/application/utils/reminders'
 import {
   Reminder,
   ReminderProps,
@@ -28,6 +31,8 @@ interface Payload {
   checkFrequency?: CheckFrequency
   status?: ReminderStatus
   now?: Date
+  firedAt?: Date
+  actedAt?: Date
 }
 
 export class UpdateReminderUseCase implements UseCase<ItemResponse<Reminder>> {
@@ -63,6 +68,13 @@ export class UpdateReminderUseCase implements UseCase<ItemResponse<Reminder>> {
       changes.status = payload.status
       changes.completedAt =
         payload.status === 'done' ? (payload.now ?? new Date()) : null
+      if (payload.status === 'done' && payload.firedAt) {
+        changes.actions = appendReminderAction(reminder.props, {
+          type: 'done',
+          firedAt: payload.firedAt,
+          actedAt: payload.actedAt ?? payload.now ?? new Date(),
+        })
+      }
     }
 
     const merged = {

@@ -2,6 +2,7 @@ import type { SnoozeOption } from '@ben/adapters'
 import type { CaptureView } from '@ben/domain-chat/application/types/capture-view'
 import type {
   Reminder,
+  ReminderAction,
   ReminderProps,
 } from '@ben/domain-chat/enterprise/entities/reminder'
 
@@ -321,4 +322,11 @@ export function toReminderCaptureView(reminder: Reminder): CaptureView {
     reminderKind: kind,
     recurrence: repeats ? recurrence : null,
   }
+}
+
+export function appendReminderAction(
+  props: Pick<ReminderProps, 'actions'>,
+  action: ReminderAction,
+): ReminderAction[] {
+  return [...(props.actions ?? []), action]
 }
