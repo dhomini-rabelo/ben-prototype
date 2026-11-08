@@ -11,7 +11,14 @@ vi.mock('@/services/alarm-service', () => ({
   getFullScreenPermission: vi.fn(async () => 'granted'),
   leaveLockScreen: vi.fn(),
 }))
+const queryClient = vi.hoisted(() => ({ invalidateQueries: vi.fn() }))
+
+vi.mock('@/core/query-client', () => ({ queryClient }))
+vi.mock('@/api/routes', () => ({
+  API_ROUTES: { reminders: { list: '/reminders' } },
+}))
 vi.mock('@/api/requests/reminders', () => ({
+  ACTIVE_REMINDERS_PARAMS: { status: 'active' },
   requestAcknowledgeReminder: vi.fn(),
   requestUpdateReminder: vi.fn(),
 }))
@@ -141,6 +148,21 @@ describe('alarm actions', () => {
       type: 'snooze',
       snoozeUntil: input.firedAt,
     })
+  })
+
+  it('refetches the active reminders after the snooze is sent so the new firedAt can enter the queue', async () => {
+    const { actions, requests, useAlarmStore } = await load()
+    vi.mocked(requests.requestAcknowledgeReminder).mockResolvedValue(
+      undefined as never,
+    )
+    const nextFiredAt = '2026-01-01T10:10:00.000Z'
+
+    await actions.snoozeAlarm(ALARM, new Date(nextFiredAt))
+    expect(queryClient.invalidateQueries).toHaveBeenCalledTimes(1)
+
+    const second = { ...ALARM, firedAt: nextFiredAt }
+    expect(useAlarmStore.getState().enqueue(second)).toBe(true)
+    expect(useAlarmStore.getState().current).toEqual(second)
   })
 
   it('each new snooze reschedules again (T07)', async () => {

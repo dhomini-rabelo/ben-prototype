@@ -1,7 +1,10 @@
 import {
+  ACTIVE_REMINDERS_PARAMS,
   requestAcknowledgeReminder,
   requestUpdateReminder,
 } from '@/api/requests/reminders'
+import { API_ROUTES } from '@/api/routes'
+import { queryClient } from '@/core/query-client'
 import {
   getFiredKey,
   type FiredAlarm,
@@ -68,6 +71,9 @@ async function sendPendingAction(action: PendingAlarmAction): Promise<boolean> {
       })
     }
     await removePendingAlarmAction(action)
+    void queryClient.invalidateQueries({
+      queryKey: [API_ROUTES.reminders.list, ACTIVE_REMINDERS_PARAMS],
+    })
     return true
   } catch {
     return false
