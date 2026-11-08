@@ -2,7 +2,7 @@
   "name": "@ben/mobile-ben",
   "version": "0.0.0",
   "private": true,
-  "main": "expo-router/entry",
+  "main": "index.ts",
   "scripts": {
     "icons": "node scripts/generate-icons.mjs",
     "dev": "pnpm icons && expo start --web --port 8081",

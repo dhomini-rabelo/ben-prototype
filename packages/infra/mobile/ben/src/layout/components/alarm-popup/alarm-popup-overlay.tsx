@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { View } from 'react-native'
-import type { CheckFrequency } from '@/api/models/reminder'
+import type { CheckFrequency, Reminder } from '@/api/models/reminder'
 import {
   requestAcknowledgeReminder,
   requestUpdateReminder,
@@ -15,7 +15,7 @@ import { Typography } from '@/layout/components/ui/typography'
 import { useActiveRemindersData } from '@/layout/hooks/api/use-active-reminders-data'
 import { useDailySummaryStore } from '@/layout/hooks/use-daily-summary'
 import { useStrings } from '@/layout/hooks/use-strings'
-import { useAlarmStore, type FiredAlarm } from '@/layout/stores/alarm-store'
+import { useAlarmStore } from '@/layout/stores/alarm-store'
 import { alarmStrings } from '@/layout/strings/alarm-strings'
 
 function resolveAcknowledgedAt(firedAt: string): string {
@@ -28,12 +28,12 @@ function resolveAcknowledgedAt(firedAt: string): string {
 type PopupMode = 'main' | 'snooze'
 
 type AlarmPopupContentProps = {
-  alarm: FiredAlarm
+  reminder: Reminder
+  firedAt: string
 }
 
-function AlarmPopupContent({ alarm }: AlarmPopupContentProps) {
+function AlarmPopupContent({ reminder, firedAt }: AlarmPopupContentProps) {
   const strings = useStrings(alarmStrings)
-  const { reminder, firedAt } = alarm
   const { actions } = useActiveRemindersData({ enabled: false })
   const [mode, setMode] = useState<PopupMode>('main')
   const [busy, setBusy] = useState(false)
@@ -140,14 +140,15 @@ export function AlarmPopupOverlay() {
 
   return (
     <SettingsSheetOverlay
-      isOpen={current !== null && !isSummaryOpen}
+      isOpen={current?.reminder != null && !isSummaryOpen}
       onClose={() => useAlarmStore.getState().dismissCurrent()}
     >
-      {current ? (
+      {current?.reminder ? (
         <MenuSheet>
           <AlarmPopupContent
-            key={`${current.reminder.id}:${current.firedAt}`}
-            alarm={current}
+            key={`${current.reminderId}:${current.firedAt}`}
+            reminder={current.reminder}
+            firedAt={current.firedAt}
           />
         </MenuSheet>
       ) : null}

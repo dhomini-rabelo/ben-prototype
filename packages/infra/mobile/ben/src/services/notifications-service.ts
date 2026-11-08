@@ -3,6 +3,12 @@ import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
 
 import type { Reminder } from '@/api/models/reminder'
+import {
+  cancelReminderAlarm,
+  getScheduledAlarmReminderIds,
+  scheduleReminderAlarm,
+  type FullScreenPermission,
+} from '@/services/alarm-service'
 
 const NOTIFICATION_CHANNELS = {
   alarms: 'alarmes',
@@ -124,7 +130,12 @@ export async function scheduleReminderNotification(
     content: {
       title: reminder.title,
       body: reminder.body ?? undefined,
-      data: { reminderId: reminder.id, nextFireAt: reminder.nextFireAt },
+      data: {
+        reminderId: reminder.id,
+        nextFireAt: reminder.nextFireAt,
+        title: reminder.title,
+        kind: reminder.kind,
+      },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
@@ -147,26 +158,65 @@ export async function rescheduleReminderNotification(
   await scheduleReminderNotification(reminder)
 }
 
+function isAlarmFire(reminder: Reminder): boolean {
+  return (
+    reminder.kind === 'alarm' &&
+    reminder.nextFireAt !== null &&
+    (reminder.nextFireAt === reminder.firesAt ||
+      reminder.nextFireAt === reminder.snoozedUntil)
+  )
+}
+
+export async function getNotificationPermissionStatus(): Promise<
+  'granted' | 'denied'
+> {
+  const current = await Notifications.getPermissionsAsync()
+  return current.granted ? 'granted' : 'denied'
+}
+
 export async function syncReminderNotifications(
   reminders: Reminder[],
+  fullScreen: FullScreenPermission,
 ): Promise<void> {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync()
-  const schedulableIds = new Set<string>()
+  const scheduledAlarmIds = await getScheduledAlarmReminderIds()
+  const notificationIds = new Set<string>()
+  const alarmIds = new Set<string>()
 
   for (const reminder of reminders) {
-    if (getSchedulableFireDate(reminder) === null) {
+    const fireDate = getSchedulableFireDate(reminder)
+    if (fireDate === null) {
       continue
     }
-    schedulableIds.add(reminder.id)
+    if (isAlarmFire(reminder) && fullScreen === 'granted') {
+      alarmIds.add(reminder.id)
+      await scheduleReminderAlarm(
+        {
+          reminderId: reminder.id,
+          firedAt: reminder.nextFireAt ?? fireDate.toISOString(),
+          title: reminder.title,
+          kind: reminder.kind,
+        },
+        fullScreen,
+      )
+      continue
+    }
+    notificationIds.add(reminder.id)
     await rescheduleReminderNotification(reminder)
   }
 
   for (const item of scheduled) {
     if (
       item.identifier !== DAILY_SUMMARY_ID &&
-      !schedulableIds.has(item.identifier)
+      !notificationIds.has(item.identifier)
     ) {
       await cancelReminderNotification(item.identifier)
+    }
+  }
+
+  for (const reminderId of scheduledAlarmIds) {
+    if (!alarmIds.has(reminderId)) {
+      await cancelReminderAlarm(reminderId)
     }
   }
 }
@@ -201,6 +251,8 @@ export async function cancelDailySummaryNotification(): Promise<void> {
 export interface NotificationTap {
   reminderId: string
   nextFireAt: string
+  title: string
+  kind: Reminder['kind']
 }
 
 function dispatchNotificationTap(
@@ -210,7 +262,14 @@ function dispatchNotificationTap(
   const data = response.notification.request.content.data
   const reminderId = data?.reminderId
   const nextFireAt = data?.nextFireAt
-  if (typeof reminderId !== 'string' || typeof nextFireAt !== 'string') {
+  const title = data?.title
+  const kind = data?.kind
+  if (
+    typeof reminderId !== 'string' ||
+    typeof nextFireAt !== 'string' ||
+    typeof title !== 'string' ||
+    (kind !== 'alarm' && kind !== 'goal' && kind !== 'conditional')
+  ) {
     return
   }
   const tapKey = `${response.notification.request.identifier}:${response.notification.date}`
@@ -218,7 +277,7 @@ function dispatchNotificationTap(
     return
   }
   lastDispatchedTapKey = tapKey
-  onTap({ reminderId, nextFireAt })
+  onTap({ reminderId, nextFireAt, title, kind })
 }
 
 export function subscribeToNotificationTaps(

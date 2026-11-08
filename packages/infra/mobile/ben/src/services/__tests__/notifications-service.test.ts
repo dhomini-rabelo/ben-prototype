@@ -31,10 +31,17 @@ const notifications = vi.hoisted(() => ({
 vi.mock('expo-notifications', () => notifications)
 vi.mock('expo-constants', () => ({ default: constants }))
 vi.mock('react-native', () => ({ Platform: platform }))
+vi.mock('@/services/alarm-service', () => ({
+  cancelReminderAlarm: vi.fn(),
+  getScheduledAlarmReminderIds: vi.fn().mockResolvedValue([]),
+  scheduleReminderAlarm: vi.fn(),
+}))
 
 type Service = typeof import('@/services/notifications-service')
 
 const FUTURE_DATE = new Date(Date.now() + 60 * 60 * 1000).toISOString()
+
+const TAP_DATA = { title: 'Call mom', kind: 'alarm' } as const
 
 function buildReminder(): Reminder {
   return {
@@ -159,6 +166,29 @@ describe('notifications-service', () => {
       )
     })
 
+    it('keeps goal, conditional and the daily summary on today channels (T04)', async () => {
+      const service = await loadService()
+      notifications.getAllScheduledNotificationsAsync.mockResolvedValue([])
+
+      await service.syncReminderNotifications(
+        [
+          { ...buildReminder(), id: 'goal-1', kind: 'goal' },
+          { ...buildReminder(), id: 'cond-1', kind: 'conditional' },
+        ],
+        'granted',
+      )
+      await service.scheduleDailySummaryNotification('08:30', 'Title', 'Body')
+
+      const channels = notifications.scheduleNotificationAsync.mock.calls.map(
+        ([request]) => [request.identifier, request.trigger.channelId],
+      )
+      expect(channels).toEqual([
+        ['goal-1', 'alarmes'],
+        ['cond-1', 'alarmes'],
+        ['daily-summary', 'resumos'],
+      ])
+    })
+
     it('schedules the daily summary on the resumos channel', async () => {
       const service = await loadService()
 
@@ -180,7 +210,11 @@ describe('notifications-service', () => {
   describe('notification taps', () => {
     it('dispatches the cold start response and clears it', async () => {
       notifications.getLastNotificationResponse.mockReturnValue(
-        buildResponse({ reminderId: 'reminder-1', nextFireAt: FUTURE_DATE }),
+        buildResponse({
+          reminderId: 'reminder-1',
+          nextFireAt: FUTURE_DATE,
+          ...TAP_DATA,
+        }),
       )
       const service = await loadService()
       const onTap = vi.fn()
@@ -190,6 +224,7 @@ describe('notifications-service', () => {
       expect(onTap).toHaveBeenCalledWith({
         reminderId: 'reminder-1',
         nextFireAt: FUTURE_DATE,
+        ...TAP_DATA,
       })
       expect(notifications.clearLastNotificationResponse).toHaveBeenCalledTimes(
         1,
@@ -217,6 +252,7 @@ describe('notifications-service', () => {
       const response = buildResponse({
         reminderId: 'reminder-1',
         nextFireAt: FUTURE_DATE,
+        ...TAP_DATA,
       })
 
       listener(response)
@@ -228,7 +264,7 @@ describe('notifications-service', () => {
     it('dispatches the listener tap after a different cold start tap', async () => {
       notifications.getLastNotificationResponse.mockReturnValue(
         buildResponse(
-          { reminderId: 'reminder-1', nextFireAt: FUTURE_DATE },
+          { reminderId: 'reminder-1', nextFireAt: FUTURE_DATE, ...TAP_DATA },
           'id-1',
         ),
       )
@@ -240,7 +276,7 @@ describe('notifications-service', () => {
 
       listener(
         buildResponse(
-          { reminderId: 'reminder-2', nextFireAt: FUTURE_DATE },
+          { reminderId: 'reminder-2', nextFireAt: FUTURE_DATE, ...TAP_DATA },
           'id-2',
         ),
       )

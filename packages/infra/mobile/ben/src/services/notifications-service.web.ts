@@ -1,4 +1,5 @@
 import type { Reminder } from '@/api/models/reminder'
+import type { FullScreenPermission } from '@/services/alarm-service'
 
 // expo-notifications has only partial web support (e.g. push-token listeners are
 // no-ops and log warnings on import). Local reminder notifications aren't part of
@@ -20,8 +21,15 @@ export async function rescheduleReminderNotification(
   _reminder: Reminder,
 ): Promise<void> {}
 
+export async function getNotificationPermissionStatus(): Promise<
+  'granted' | 'denied'
+> {
+  return 'granted'
+}
+
 export async function syncReminderNotifications(
   _reminders: Reminder[],
+  _fullScreen: FullScreenPermission,
 ): Promise<void> {}
 
 export async function scheduleDailySummaryNotification(

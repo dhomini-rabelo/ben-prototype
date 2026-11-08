@@ -3,6 +3,7 @@ import { ROUTES } from '@/core/routes'
 import { AlarmPopupOverlay } from '@/layout/components/alarm-popup/alarm-popup-overlay'
 import { DailySummaryPopup } from '@/layout/components/daily-summary/daily-summary-popup'
 import { useAlarmScheduler } from '@/layout/hooks/use-alarm-scheduler'
+import { useFullScreenPermission } from '@/layout/hooks/use-full-screen-permission'
 import { usePushDeviceRegistration } from '@/layout/hooks/use-push-device-registration'
 import { useUserPreferencesSync } from '@/layout/hooks/use-user-preferences-sync'
 import { useAuthStore } from '@/layout/stores/auth-store'
@@ -12,6 +13,7 @@ export default function ProtectedLayout() {
   const user = useAuthStore((store) => store.user)
 
   useUserPreferencesSync()
+  useFullScreenPermission()
   useAlarmScheduler()
   usePushDeviceRegistration()
 
