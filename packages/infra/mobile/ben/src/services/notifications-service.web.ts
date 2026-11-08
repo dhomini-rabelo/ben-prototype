@@ -1,4 +1,5 @@
 import type { Reminder } from '@/api/models/reminder'
+import { isSimulated } from '@/services/alarm-service.web'
 import type { FullScreenPermission } from '@/services/alarm-service'
 
 // expo-notifications has only partial web support (e.g. push-token listeners are
@@ -24,7 +25,7 @@ export async function rescheduleReminderNotification(
 export async function getNotificationPermissionStatus(): Promise<
   'granted' | 'denied'
 > {
-  return 'granted'
+  return isSimulated('notificacoes-negadas') ? 'denied' : 'granted'
 }
 
 export async function syncReminderNotifications(

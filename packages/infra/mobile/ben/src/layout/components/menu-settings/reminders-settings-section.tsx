@@ -1,14 +1,17 @@
-import { View } from 'react-native'
+import { BellRinging } from 'phosphor-react-native'
+import { Linking, Pressable, View } from 'react-native'
 import { TestNotificationButton } from '@/layout/components/menu-settings/test-notification-button'
 import { Switch } from '@/layout/components/ui/switch'
 import { TimeStepper } from '@/layout/components/ui/time-stepper'
 import type { TimeValue } from '@/layout/components/ui/time-stepper'
 import { Typography } from '@/layout/components/ui/typography'
 import { useStrings } from '@/layout/hooks/use-strings'
+import { useAlarmPermissionStore } from '@/layout/stores/alarm-permission-store'
 import { useUserPreferencesStore } from '@/layout/stores/user-preferences-store'
 import { settingsStrings } from '@/layout/strings/settings-strings'
-import { textError } from '@/layout/utils/colors'
+import { onSurfaceVariant, textError } from '@/layout/utils/colors'
 import { cn } from '@/layout/utils/styles'
+import { openFullScreenSettings } from '@/services/alarm-service'
 
 type RemindersSettingsSectionProps = {
   hasError: boolean
@@ -38,12 +41,71 @@ export function RemindersSettingsSection({
   )
   const summaryTime = useUserPreferencesStore((store) => store.dailySummaryTime)
   const morningTime = useUserPreferencesStore((store) => store.morningTime)
+  const fullScreen = useAlarmPermissionStore((store) => store.fullScreen)
+  const notifications = useAlarmPermissionStore((store) => store.notifications)
 
   return (
     <View className="gap-4 border-t border-outline-variant/40 px-5 pt-4 pb-5">
       <Typography variant="label-caps" className="text-on-surface-variant">
         {strings.remindersTitle}
       </Typography>
+
+      {fullScreen !== 'unsupported' ? (
+        <View className="flex-row items-center justify-between gap-3">
+          <View className="min-w-0 flex-1 flex-row items-center gap-3">
+            <BellRinging size={22} weight="fill" color={onSurfaceVariant} />
+            <View className="min-w-0 flex-1 gap-0.5">
+              <Typography variant="button-text" className="text-on-surface">
+                {strings.fullScreenTitle}
+              </Typography>
+              <Typography
+                variant="body-md"
+                className="text-sm leading-5 text-on-surface-variant"
+              >
+                {fullScreen === 'granted'
+                  ? strings.fullScreenOn
+                  : strings.fullScreenOff}
+              </Typography>
+            </View>
+          </View>
+          {fullScreen === 'denied' ? (
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => void openFullScreenSettings()}
+              className="rounded-full bg-primary px-4 py-2 active:bg-inverse-surface"
+            >
+              <Typography variant="button-text" className="text-on-primary">
+                {strings.fullScreenAllow}
+              </Typography>
+            </Pressable>
+          ) : null}
+        </View>
+      ) : null}
+
+      {notifications === 'denied' ? (
+        <View className="flex-row items-center justify-between gap-3">
+          <View className="min-w-0 flex-1 gap-0.5">
+            <Typography variant="button-text" className="text-on-surface">
+              {strings.notificationsDeniedTitle}
+            </Typography>
+            <Typography
+              variant="body-md"
+              className="text-sm leading-5 text-on-surface-variant"
+            >
+              {strings.notificationsDeniedBody}
+            </Typography>
+          </View>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => void Linking.openSettings()}
+            className="rounded-full bg-primary px-4 py-2 active:bg-inverse-surface"
+          >
+            <Typography variant="button-text" className="text-on-primary">
+              {strings.fullScreenAllow}
+            </Typography>
+          </Pressable>
+        </View>
+      ) : null}
 
       <View className="flex-row items-center justify-between">
         <Typography variant="button-text" className="text-on-surface">

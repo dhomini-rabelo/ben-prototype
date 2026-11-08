@@ -1,7 +1,9 @@
 import { Redirect, Stack } from 'expo-router'
 import { ROUTES } from '@/core/routes'
 import { AlarmPopupOverlay } from '@/layout/components/alarm-popup/alarm-popup-overlay'
+import { AlarmScreenOverlay } from '@/layout/components/alarm-screen/alarm-screen-overlay'
 import { DailySummaryPopup } from '@/layout/components/daily-summary/daily-summary-popup'
+import { FullScreenNoticeSheet } from '@/layout/components/full-screen-notice/full-screen-notice-sheet'
 import { useAlarmScheduler } from '@/layout/hooks/use-alarm-scheduler'
 import { useFullScreenPermission } from '@/layout/hooks/use-full-screen-permission'
 import { usePendingAlarmActions } from '@/layout/hooks/use-pending-alarm-actions'
@@ -30,6 +32,8 @@ export default function ProtectedLayout() {
       </Stack>
       <DailySummaryPopup />
       <AlarmPopupOverlay />
+      <AlarmScreenOverlay />
+      <FullScreenNoticeSheet />
     </>
   )
 }

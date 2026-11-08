@@ -30,6 +30,21 @@ export const ALARM_CHANNEL = {
 
 export const ALARM_CATEGORY = 'alarm'
 
+const SIMULATION_KEY = 'ben-simular'
+
+// dev-only: `?simular=tela-cheia-negada,notificacoes-negadas` fakes denied permissions
+export function isSimulated(flag: string): boolean {
+  if (!__DEV__ || typeof window === 'undefined') {
+    return false
+  }
+  const fromUrl = new URLSearchParams(window.location.search).get('simular')
+  if (fromUrl !== null) {
+    window.sessionStorage.setItem(SIMULATION_KEY, fromUrl)
+  }
+  const flags = window.sessionStorage.getItem(SIMULATION_KEY) ?? ''
+  return flags.split(',').includes(flag)
+}
+
 export async function ensureAlarmChannel(): Promise<void> {}
 
 export async function startAlarmSound(
@@ -67,7 +82,7 @@ export async function stopAlarmSound(): Promise<void> {
 export function leaveLockScreen(): void {}
 
 export async function getFullScreenPermission(): Promise<FullScreenPermission> {
-  return 'unsupported'
+  return isSimulated('tela-cheia-negada') ? 'denied' : 'unsupported'
 }
 
 export async function openFullScreenSettings(): Promise<void> {}
