@@ -1,7 +1,12 @@
 import 'expo-router/entry'
 
-import { getRemainingSoundMs } from '@/layout/stores/alarm-store'
-import { snoozeAlarm, stopAlarm, toFiredAlarm } from '@/services/alarm-actions'
+import { getRemainingSoundMs, useAlarmStore } from '@/layout/stores/alarm-store'
+import {
+  openAlarmFromNotification,
+  snoozeAlarm,
+  stopAlarm,
+  toFiredAlarm,
+} from '@/services/alarm-actions'
 import {
   registerAlarmBackgroundHandler,
   startAlarmSound,
@@ -9,7 +14,14 @@ import {
 
 registerAlarmBackgroundHandler(async (event) => {
   if (event.type === 'delivered') {
+    useAlarmStore
+      .getState()
+      .enqueue({ ...toFiredAlarm(event.data), sound: 'on' })
     await startAlarmSound(getRemainingSoundMs(event.data.firedAt, Date.now()))
+    return
+  }
+  if (event.type === 'press') {
+    openAlarmFromNotification(event.data)
     return
   }
   if (event.type === 'stop') {

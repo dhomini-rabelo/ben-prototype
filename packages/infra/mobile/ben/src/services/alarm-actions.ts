@@ -75,7 +75,11 @@ async function sendPendingAction(action: PendingAlarmAction): Promise<boolean> {
 }
 
 async function settleAlarmAction(action: PendingAlarmAction): Promise<void> {
-  await addPendingAlarmAction(action)
+  try {
+    await addPendingAlarmAction(action)
+  } catch {
+    return
+  }
   await sendPendingAction(action)
 }
 

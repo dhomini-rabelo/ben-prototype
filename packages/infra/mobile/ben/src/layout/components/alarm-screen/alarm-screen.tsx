@@ -54,7 +54,6 @@ export function AlarmScreen({
     if (alarm.sound === 'on') {
       void tryStartSound()
     }
-    // starts once per fired alarm
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alarm.reminderId, alarm.firedAt, alarm.sound])
 

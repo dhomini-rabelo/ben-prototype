@@ -1,9 +1,3 @@
-/**
- * The alarm screen must open over the lock screen and wake the display.
- *
- * `android/` is generated and gitignored, so the attributes go on `.MainActivity` through this
- * plugin on every prebuild instead of a hand-edit of AndroidManifest.xml.
- */
 const { withAndroidManifest } = require('expo/config-plugins')
 
 const MAIN_ACTIVITY = '.MainActivity'

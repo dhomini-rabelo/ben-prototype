@@ -118,10 +118,14 @@ function parseAlarmData(
 
 function toAlarmEvent(event: Event): AlarmEvent | null {
   const data = parseAlarmData(event.detail.notification?.data)
-  if (
-    data === null ||
-    event.detail.notification?.id !== getAlarmId(data.reminderId)
-  ) {
+  if (data === null) {
+    return null
+  }
+  const notificationId = event.detail.notification?.id
+  const isMissedPress =
+    event.type === EventType.PRESS &&
+    notificationId === getMissedId(data.reminderId)
+  if (!isMissedPress && notificationId !== getAlarmId(data.reminderId)) {
     return null
   }
   if (event.type === EventType.DELIVERED) {
