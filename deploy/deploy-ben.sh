@@ -16,6 +16,8 @@ set -euo pipefail
 
 exec 9>/tmp/deploy-ben.lock
 flock 9
+exec 8>/tmp/deploy-docker.lock
+until flock -n 8; do echo "[deploy-ben] aguardando outro deploy no Docker..."; sleep 15; done
 
 APP_DIR=/srv/ben/app
 REPO_URL=git@github.com:dhomini-rabelo/ben-prototype.git
@@ -28,6 +30,16 @@ BEN_DEPLOY_BRANCH=main
 [ -f /etc/ben/deploy.env ] && . /etc/ben/deploy.env
 
 log() { echo "[deploy-ben] $*"; }
+
+IMAGES_TO_KEEP=2
+
+keep_recent_images() {
+  local image=$1
+  docker image ls "$image" --format '{{.Tag}}' \
+    | { grep -vx latest || true; } \
+    | tail -n +$((IMAGES_TO_KEEP + 1)) \
+    | while read -r tag; do docker rmi "$image:$tag" >/dev/null 2>&1 || true; done
+}
 
 if [ ! -d "$APP_DIR/.git" ]; then
   log "clonando $REPO_URL"
@@ -46,12 +58,13 @@ log "build da imagem $IMAGE:$REV"
 ( while sleep 20; do echo "[deploy-ben] build em andamento..."; done ) &
 HEARTBEAT=$!
 trap 'kill "$HEARTBEAT" 2>/dev/null || true' EXIT
-docker build --quiet --build-arg "GIT_REV=$REV" -t "$IMAGE:$REV" -t "$IMAGE:latest" "$APP_DIR" >/dev/null 2>&1
+docker build --quiet --force-rm --build-arg "GIT_REV=$REV" -t "$IMAGE:$REV" -t "$IMAGE:latest" "$APP_DIR" >/dev/null 2>&1
 kill "$HEARTBEAT" 2>/dev/null || true
 
 log "trocando o container"
 docker rm -f "$CONTAINER" >/dev/null 2>&1 || true
 docker run -d --name "$CONTAINER" --restart unless-stopped \
+  --log-opt max-size=10m --log-opt max-file=3 \
   -p "127.0.0.1:$HOST_PORT:$CONTAINER_PORT" \
   -v ben-data:/data \
   --env-file /etc/ben/ben.env \
@@ -60,7 +73,8 @@ docker run -d --name "$CONTAINER" --restart unless-stopped \
 for _ in $(seq 1 60); do
   if curl -fsS "http://127.0.0.1:$HOST_PORT/health" >/dev/null 2>&1; then
     log "no ar: $REV"
-    docker image prune -f >/dev/null
+    docker image prune -f >/dev/null || true
+    keep_recent_images "$IMAGE" || true
     exit 0
   fi
   sleep 2
